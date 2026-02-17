@@ -134,6 +134,38 @@ func InjectLayoutCSRF(store *CSRFTokenStore) func(http.Handler) http.Handler {
 	}
 }
 
+// mimeTypes maps file extensions to correct MIME types.
+// Go's http.FileServer relies on the OS MIME database which can be
+// incomplete on minimal Linux containers (e.g. Render, Docker Alpine).
+var mimeTypes = map[string]string{
+	".css":  "text/css; charset=utf-8",
+	".js":   "text/javascript; charset=utf-8",
+	".mjs":  "text/javascript; charset=utf-8",
+	".json": "application/json; charset=utf-8",
+	".svg":  "image/svg+xml",
+	".png":  "image/png",
+	".ico":  "image/x-icon",
+	".woff": "font/woff",
+	".woff2": "font/woff2",
+	".map":  "application/json",
+}
+
+// MIMETypeWrapper wraps an http.Handler and sets the correct Content-Type
+// header based on file extension before delegating to the inner handler.
+// This ensures correct MIME types regardless of the host OS MIME database.
+func MIMETypeWrapper(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		path := r.URL.Path
+		for ext, mime := range mimeTypes {
+			if strings.HasSuffix(path, ext) {
+				w.Header().Set("Content-Type", mime)
+				break
+			}
+		}
+		next.ServeHTTP(w, r)
+	})
+}
+
 // SecurityHeaders adds comprehensive security headers to all responses.
 // A unique CSP nonce is generated per request and stored in the context.
 func SecurityHeaders(next http.Handler) http.Handler {

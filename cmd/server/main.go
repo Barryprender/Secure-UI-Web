@@ -198,14 +198,18 @@ func main() {
 	})
 
 	// Static files - serve CSS, JS, images (no CSRF needed)
+	// MIMETypeWrapper ensures correct Content-Type on all platforms (including minimal Linux containers)
 	staticDir := filepath.Join(".", "static")
 	fs := http.FileServer(http.Dir(staticDir))
-	mux.Handle("/static/", http.StripPrefix("/static/", fs))
+	mux.Handle("/static/", http.StripPrefix("/static/", middleware.MIMETypeWrapper(fs)))
 
-	// Serve web components from sibling package (no CSRF needed)
-	componentsDir := filepath.Join("..", "secure-ui-components", "dist")
+	// Serve web components — first try local vendor copy, then fall back to sibling package
+	componentsDir := filepath.Join(".", "static", "components")
+	if _, err := os.Stat(componentsDir); os.IsNotExist(err) {
+		componentsDir = filepath.Join("..", "secure-ui-components", "dist")
+	}
 	componentFS := http.FileServer(http.Dir(componentsDir))
-	mux.Handle("/components/", http.StripPrefix("/components/", componentFS))
+	mux.Handle("/components/", http.StripPrefix("/components/", middleware.MIMETypeWrapper(componentFS)))
 
 	// Apply middleware chain
 	// Order matters: Security headers -> Layout CSRF -> Rate limiting -> Routes
