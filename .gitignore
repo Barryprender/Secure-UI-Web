@@ -37,3 +37,16 @@ data/
 # OS
 .DS_Store
 Thumbs.db
+
+# Crash dumps
+*.stackdump
+
+# Sensitive / session files
+cookies.txt
+
+# Backup files
+*.bak
+
+# Python cache
+__pycache__/
+*.pyc
