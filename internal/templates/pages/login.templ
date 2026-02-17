@@ -1,0 +1,41 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/templates/components"
+
+templ Login(csrfToken string, errorMessage string) {
+	@templates.Layout("Login", "Sign in to your account") {
+		<section class="py-3xl">
+			<div class="container">
+				<div class="section-header">
+					<h1 class="section-title">Login</h1>
+					<p class="section-description">
+						Sign in to your account
+					</p>
+				</div>
+
+				<div class="card card-narrow-sm">
+					if errorMessage != "" {
+						<div class="alert alert-danger" role="alert">
+							{ errorMessage }
+						</div>
+					}
+
+					@components.SecureFormWrapper("POST", "/login", csrfToken, "critical", "login-form") {
+						@components.SecureInputField("Email", "email", "email", "", "sensitive", "", true)
+
+						@components.SecureInputFieldWithLength("Password", "password", "password", "", "critical", "", true, 8, 0)
+
+						<button type="submit" class="btn btn-primary w-full">
+							Sign In
+						</button>
+
+						<p class="signin-text">
+							Don't have an account? <a href="/register">Create one</a>
+						</p>
+					}
+				</div>
+			</div>
+		</section>
+	}
+}

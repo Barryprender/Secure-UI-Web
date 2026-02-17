@@ -1,0 +1,132 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/templates/components"
+
+templ FormsPage(csrfToken string) {
+	@templates.Layout("Forms", "Interactive form components with built-in security") {
+		<section class="py-3xl">
+			<div class="container">
+				<div class="section-header">
+					<h1 class="section-title">Form Components</h1>
+					<p class="section-description">
+						Interactive demonstration of all secure form components with CSRF protection and progressive enhancement
+					</p>
+				</div>
+
+				<div class="card card-narrow">
+					<div class="form-header">
+						<h2>User Registration Form</h2>
+						<p>Demonstration of all secure-ui form components with security tier indicators</p>
+					</div>
+
+					@components.SecureFormWrapper("POST", "/api/forms/submit", csrfToken, "authenticated", "") {
+						<!-- Text Input Examples -->
+						<div class="form-section">
+							<h3>Text Inputs</h3>
+
+							@components.SecureInputField("Full Name", "name", "text", "John Doe", "public", "mb-lg", true)
+
+							@components.SecureInputField("Email Address", "email", "email", "john@example.com", "sensitive", "mb-lg", true)
+
+							@components.SecureInputField("Phone Number", "phone", "tel", "+1 (555) 123-4567", "sensitive", "mb-lg", false)
+
+							@components.SecureInputField("Password", "password", "password", "Enter a strong password", "critical", "mb-lg", true)
+
+							@components.SecureInputField("Website URL", "website", "url", "https://example.com", "public", "mb-lg", false)
+
+							@components.SecureInputFieldNumber("Age", "age", "25", "public", "mb-lg", "18", "120", false)
+						</div>
+
+						<!-- Textarea Example -->
+						<div class="form-section">
+							<h3>Textarea</h3>
+
+							@components.SecureTextareaField("Biography", "bio", "Tell us about yourself...", "public", "mb-lg", 4, false)
+
+							@components.SecureTextareaField("Private Notes", "notes", "Personal notes (encrypted)", "critical", "mb-lg", 3, false)
+						</div>
+
+						<!-- Select Dropdown Example -->
+						<div class="form-section">
+							<h3>Select Dropdown</h3>
+
+							@components.SecureSelectField("Country", "country", "public", "mb-lg", true) {
+								<option value="">Loading countries...</option>
+								<option value="us">United States</option>
+								<option value="gb">United Kingdom</option>
+								<option value="ca">Canada</option>
+								<option value="au">Australia</option>
+								<option value="de">Germany</option>
+							}
+
+							@components.SecureSelectField("Account Type", "account_type", "authenticated", "mb-lg", true) {
+								<option value="">Choose account type</option>
+								<option value="free">Free (Public)</option>
+								<option value="pro">Professional</option>
+								<option value="enterprise">Enterprise</option>
+							}
+
+							@components.SecureSelectField("Privacy Level", "privacy", "critical", "mb-lg", false) {
+								<option value="public">Public Profile</option>
+								<option value="friends">Friends Only</option>
+								<option value="private" selected>Private</option>
+							}
+						</div>
+
+						<!-- Date/Time Inputs -->
+						<div class="form-section">
+							<h3>Date &amp; Time</h3>
+
+							@components.SecureDateTimeField("Date of Birth", "dob", "date", "sensitive", "mb-lg", true)
+
+							@components.SecureDateTimeField("Appointment Time", "appointment", "datetime-local", "authenticated", "mb-lg", false)
+
+							@components.SecureDateTimeField("Preferred Contact Time", "contact_time", "time", "public", "mb-lg", false)
+						</div>
+
+						<!-- File Upload -->
+						<div class="form-section">
+							<h3>File Upload</h3>
+
+							@components.SecureFileUploadField("Profile Picture", "avatar", "image/*", "5242880", "authenticated", "mb-lg", false)
+
+							@components.SecureFileUploadField("Resume / CV", "resume", ".pdf,.doc,.docx", "10485760", "sensitive", "mb-lg", false)
+
+							@components.SecureFileUploadField("Identity Document (Encrypted)", "id_document", ".pdf,image/*", "5242880", "critical", "mb-lg", false)
+						</div>
+
+						<!-- Submit Button -->
+						<div class="form-submit">
+							<button type="submit" class="btn btn-primary w-full">
+								Submit Registration Form
+							</button>
+						</div>
+					}
+				</div>
+
+				<!-- Component Information -->
+				<div class="card security-info card-narrow mt-3xl">
+					<h3>Security Tiers Explained</h3>
+					<ul>
+						<li>
+							<strong>Public:</strong> <span>Standard security, visible data</span>
+						</li>
+						<li>
+							<strong>Authenticated:</strong> <span>Requires authentication, moderate protection</span>
+						</li>
+						<li>
+							<strong>Sensitive:</strong> <span>PII data, masked display, enhanced validation</span>
+						</li>
+						<li>
+							<strong>Critical:</strong> <span>Highest security, encrypted, full masking</span>
+						</li>
+					</ul>
+				</div>
+
+				<!-- Load countries from API -->
+				<script src="/static/js/country-loader.js" defer></script>
+			</div>
+		</section>
+	}
+}

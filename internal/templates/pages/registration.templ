@@ -1,0 +1,54 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/templates/components"
+
+templ Registration(csrfToken string) {
+	@templates.Layout("Registration", "User registration form") {
+		<section class="py-3xl">
+			<div class="container">
+				<div class="section-header">
+					<h1 class="section-title">Registration</h1>
+					<p class="section-description">
+						Create a new account with secure form handling
+					</p>
+				</div>
+
+				<div class="card card-narrow-sm">
+					@components.SecureFormWrapper("POST", "/register", csrfToken, "critical", "registration-form") {
+						@components.SecureInputFieldWithLength("First Name", "first_name", "text", "", "authenticated", "", true, 1, 50)
+
+						@components.SecureInputFieldWithLength("Last Name", "last_name", "text", "", "authenticated", "", true, 1, 50)
+
+						@components.SecureInputField("Email", "email", "email", "", "sensitive", "", true)
+
+						@components.SecureInputFieldWithLength("Password", "password", "password", "", "critical", "", true, 8, 0)
+
+						@components.SecureInputFieldWithLength("Confirm Password", "confirm_password", "password", "", "critical", "", true, 8, 0)
+
+						<div class="terms-row">
+							<input
+								type="checkbox"
+								id="terms"
+								name="terms"
+								required
+								class="terms-checkbox"
+							/>
+							<label for="terms" class="terms-label">
+								I agree to the Terms of Service and Privacy Policy
+							</label>
+						</div>
+
+						<button type="submit" class="btn btn-primary w-full">
+							Create Account
+						</button>
+
+						<p class="signin-text">
+							Already have an account? <a href="/login">Sign in</a>
+						</p>
+					}
+				</div>
+			</div>
+		</section>
+	}
+}

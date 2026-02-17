@@ -1,0 +1,335 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureTable() {
+	@templates.Layout("secure-table", "Documentation for the secure-table web component") {
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-table</span>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128200;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-table&gt;</h1>
+					<p class="docs-component-description">
+						A data table component with sorting, filtering, pagination, and XSS-safe
+						cell rendering. All content is sanitized before display.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#data-binding">Data Binding</a></li>
+					<li><a href="#features">Features</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+					<li><a href="#examples">Examples</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					The <code>&lt;secure-table&gt;</code> component renders tabular data with built-in
+					XSS protection. All cell values are sanitized, preventing script injection even
+					when displaying user-generated content.
+				</p>
+
+				<div class="docs-callout docs-callout--success">
+					<div class="docs-callout-title">Safe Data Display</div>
+					<div class="docs-callout-text">
+						Content like <code>&lt;script&gt;alert('xss')&lt;/script&gt;</code> is
+						automatically escaped and displayed as plain text.
+					</div>
+				</div>
+			</section>
+
+			<section id="data-binding" class="docs-section">
+				<h2 class="docs-section-title">Data Binding</h2>
+
+				<h3 class="docs-section-subtitle">Setting Data via JavaScript</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Loading Data</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const table = document.querySelector('secure-table');
+
+// Define columns
+table.setColumns([
+  { key: 'id', label: 'ID', sortable: true },
+  { key: 'name', label: 'Name', sortable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  { key: 'role', label: 'Role', filterable: true },
+  { key: 'created', label: 'Created', type: 'date' }
+]);
+
+// Set data
+table.setData([
+  { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin', created: '2024-01-15' },
+  { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User', created: '2024-01-16' },
+  // ...
+]);` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Loading from API</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Fetch and Display</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const table = document.querySelector('secure-table');
+
+async function loadUsers() {
+  const response = await fetch('/api/users');
+  const users = await response.json();
+
+  table.setColumns([
+    { key: 'id', label: 'ID' },
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'email', label: 'Email' },
+    { key: 'status', label: 'Status', filterable: true }
+  ]);
+
+  table.setData(users);
+}
+
+loadUsers();` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="features" class="docs-section">
+				<h2 class="docs-section-title">Features</h2>
+
+				<h3 class="docs-section-subtitle">Sorting</h3>
+				<p class="docs-text">
+					Enable sorting on columns by setting <code>sortable: true</code> in the column definition.
+					Click column headers to sort ascending/descending.
+				</p>
+
+				<h3 class="docs-section-subtitle">Filtering</h3>
+				<p class="docs-text">
+					Enable filtering with <code>filterable: true</code>. The table provides a search
+					input for text filtering and dropdown filters for enumerated values.
+				</p>
+
+				<h3 class="docs-section-subtitle">Pagination</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Pagination Configuration</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-table
+  page-size="25"
+  show-pagination="true"
+  security-tier="authenticated"
+></secure-table>` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Action Buttons</h3>
+				<p class="docs-text">
+					Add action buttons to table rows using <code>data-action</code> attributes.
+					The table emits a <code>table-action</code> event with all <code>data-*</code> attributes
+					from the clicked element.
+				</p>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Row Actions</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const table = document.querySelector('secure-table');
+
+// Listen for action button clicks
+table.addEventListener('table-action', (e) => {
+  console.log('Action:', e.detail.action);
+  console.log('Data attributes:', e.detail);
+  // e.g. { action: 'edit', userId: '123' }
+});` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>security-tier</code></td>
+							<td>string</td>
+							<td><code>"critical"</code></td>
+							<td>Security level</td>
+						</tr>
+						<tr>
+							<td><code>page-size</code></td>
+							<td>number</td>
+							<td><code>10</code></td>
+							<td>Rows per page</td>
+						</tr>
+						<tr>
+							<td><code>show-pagination</code></td>
+							<td>boolean</td>
+							<td><code>true</code></td>
+							<td>Show pagination controls</td>
+						</tr>
+						<tr>
+							<td><code>show-search</code></td>
+							<td>boolean</td>
+							<td><code>true</code></td>
+							<td>Show search input</td>
+						</tr>
+						<tr>
+							<td><code>striped</code></td>
+							<td>boolean</td>
+							<td><code>true</code></td>
+							<td>Alternate row colors</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Column Definition</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Column Object</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `interface TableColumn {
+  key: string;        // Data property key
+  label: string;      // Display header
+  sortable?: boolean; // Enable sorting
+  filterable?: boolean; // Enable filtering
+  type?: 'text' | 'number' | 'date' | 'boolean';
+  width?: string;     // CSS width
+  align?: 'left' | 'center' | 'right';
+  render?: (value: any, row: any) => string; // Custom renderer
+}` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">setColumns(columns: TableColumn[]): void</div>
+					<div class="docs-method-description">Define table columns</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">setData(data: object[]): void</div>
+					<div class="docs-method-description">Set table data</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
+					<div class="docs-method-description">Get security audit log entries</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Events</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Event</th>
+							<th>Detail</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>table-action</code></td>
+							<td><code>{ ` action, ...dataAttributes ` }</code></td>
+							<td>Fired when an action button inside the table is clicked</td>
+						</tr>
+						<tr>
+							<td><code>secure-audit</code></td>
+							<td><code>{ ` event, data ` }</code></td>
+							<td>Security audit event (sort, filter, mount, action)</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="examples" class="docs-section">
+				<h2 class="docs-section-title">Examples</h2>
+
+				<h3 class="docs-section-subtitle">User Management Table</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Complete Example</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-table
+  id="users-table"
+  page-size="25"
+  security-tier="authenticated"
+></secure-table>
+
+<script>
+  const table = document.getElementById('users-table');
+
+  table.setColumns([
+    { key: 'id', label: 'ID', width: '60px' },
+    { key: 'name', label: 'Name', sortable: true },
+    { key: 'email', label: 'Email', sortable: true },
+    { key: 'role', label: 'Role', filterable: true },
+    { key: 'status', label: 'Status', filterable: true },
+    { key: 'lastLogin', label: 'Last Login', type: 'date', sortable: true }
+  ]);
+
+  // Fetch and display users
+  fetch('/api/users')
+    .then(r => r.json())
+    .then(users => table.setData(users));
+
+  // Handle action buttons (e.g. edit, delete)
+  table.addEventListener('table-action', (e) => {
+    console.log('Action:', e.detail.action, 'User:', e.detail.userId);
+  });
+</script>` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Custom Cell Rendering</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Status Badge Renderer</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `table.setColumns([
+  { key: 'name', label: 'Name' },
+  {
+    key: 'status',
+    label: 'Status',
+    render: (value) => {
+      const colors = { active: 'green', pending: 'orange', inactive: 'red' };
+      // Note: return value is sanitized by the component
+      return '<span class="badge badge-' + colors[value] + '">' + value + '</span>';
+    }
+  }
+]);` }</code></pre>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}

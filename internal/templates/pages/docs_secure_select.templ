@@ -1,0 +1,462 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureSelect() {
+	@templates.Layout("secure-select", "Documentation for the secure-select web component") {
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-select</span>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128203;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-select&gt;</h1>
+					<p class="docs-component-description">
+						A security-hardened dropdown select component with option value validation,
+						injection prevention, and comprehensive audit logging.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#basic-usage">Basic Usage</a></li>
+					<li><a href="#options">Options</a></li>
+					<li><a href="#security-tiers">Security Tiers</a></li>
+					<li><a href="#validation">Validation</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+					<li><a href="#examples">Examples</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					The <code>&lt;secure-select&gt;</code> component provides a security-first dropdown
+					that prevents option value injection attacks. It validates that selected values
+					are from the allowed option set and sanitizes all option text to prevent XSS.
+				</p>
+
+				<div class="docs-callout docs-callout--success">
+					<div class="docs-callout-title">Option Value Protection</div>
+					<div class="docs-callout-text">
+						Selected values are validated against the allowed options set. Attempts to
+						inject values not in the original options are blocked and logged.
+					</div>
+				</div>
+			</section>
+
+			<section id="basic-usage" class="docs-section">
+				<h2 class="docs-section-title">Basic Usage</h2>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Simple Select</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-select
+  label="Country"
+  name="country"
+  security-tier="public"
+  required
+>
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
+  <option value="uk">United Kingdom</option>
+  <option value="ca">Canada</option>
+</secure-select>` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo</div>
+					<secure-select
+						label="Country"
+						name="demo-country"
+						security-tier="public"
+					>
+						<option value="">Select a country</option>
+						<option value="us">United States</option>
+						<option value="uk">United Kingdom</option>
+						<option value="ca">Canada</option>
+						<option value="au">Australia</option>
+					</secure-select>
+				</div>
+			</section>
+
+			<section id="options" class="docs-section">
+				<h2 class="docs-section-title">Options</h2>
+				<p class="docs-text">
+					Options can be defined declaratively in HTML or added programmatically via JavaScript.
+					All option values and text are sanitized to prevent XSS attacks.
+				</p>
+
+				<h3 class="docs-section-subtitle">Declarative Options</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">HTML Options</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-select label="Priority" name="priority">
+  <option value="">Select priority</option>
+  <option value="low">Low</option>
+  <option value="medium" selected>Medium</option>
+  <option value="high">High</option>
+  <option value="critical" disabled>Critical (Admin only)</option>
+</secure-select>` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Programmatic Options</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">JavaScript API</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const select = document.querySelector('secure-select[name="category"]');
+
+// Add options
+select.addOption('electronics', 'Electronics');
+select.addOption('clothing', 'Clothing');
+select.addOption('books', 'Books', true); // true = selected
+
+// Remove an option
+select.removeOption('clothing');
+
+// Clear all options
+select.clearOptions();` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Pre-selected Option</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Using selected Attribute</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-select label="Status" name="status">
+  <option value="draft">Draft</option>
+  <option value="published" selected>Published</option>
+  <option value="archived">Archived</option>
+</secure-select>` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo - Pre-selected</div>
+					<secure-select
+						label="Status"
+						name="demo-status"
+						security-tier="public"
+					>
+						<option value="draft">Draft</option>
+						<option value="published" selected>Published</option>
+						<option value="archived">Archived</option>
+					</secure-select>
+				</div>
+			</section>
+
+			<section id="security-tiers" class="docs-section">
+				<h2 class="docs-section-title">Security Tiers</h2>
+				<p class="docs-text">
+					Security tiers control validation strictness and features like autocomplete behavior.
+				</p>
+
+				<div class="docs-tier-grid">
+					<div class="docs-tier-card docs-tier-card--public">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--public">Public</span>
+						</div>
+						<div class="docs-tier-card-description">
+							<strong>Use for:</strong> Category selection, preferences<br/>
+							<strong>Features:</strong> Basic validation, browser autocomplete
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--sensitive">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--sensitive">Sensitive</span>
+						</div>
+						<div class="docs-tier-card-description">
+							<strong>Use for:</strong> Country, address type<br/>
+							<strong>Features:</strong> No autocomplete, rate limiting
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--critical">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--critical">Critical</span>
+						</div>
+						<div class="docs-tier-card-description">
+							<strong>Use for:</strong> Security questions, permissions<br/>
+							<strong>Features:</strong> Full audit logging, strict validation
+						</div>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Security Tier Examples</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- PUBLIC: General preferences -->
+<secure-select
+  security-tier="public"
+  label="Theme"
+  name="theme"
+>
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+  <option value="system">System</option>
+</secure-select>
+
+<!-- CRITICAL: Permission level -->
+<secure-select
+  security-tier="critical"
+  label="Access Level"
+  name="access_level"
+>
+  <option value="viewer">Viewer</option>
+  <option value="editor">Editor</option>
+  <option value="admin">Administrator</option>
+</secure-select>` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="validation" class="docs-section">
+				<h2 class="docs-section-title">Validation</h2>
+				<p class="docs-text">
+					The component validates that selected values exist in the allowed options set.
+					Injection attempts are blocked and logged for security monitoring.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Value Injection Prevention</div>
+					<div class="docs-callout-text">
+						If a script attempts to set the select value to something not in the options list,
+						the change is rejected and an audit entry is created.
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Validation Example</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const select = document.querySelector('secure-select');
+
+// Valid - option exists
+select.value = 'us'; // Works
+
+// Invalid - option doesn't exist
+select.value = 'injected-value'; // Blocked!
+
+// Check if valid
+if (select.valid) {
+  console.log('Selection is valid');
+}
+
+// See what was blocked
+const log = select.getAuditLog();
+// Contains: { action: 'invalid_option_detected', attemptedValue: 'injected-value' }` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>security-tier</code></td>
+							<td>string</td>
+							<td><code>"critical"</code></td>
+							<td>Security level for the select</td>
+						</tr>
+						<tr>
+							<td><code>name</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Form field name</td>
+						</tr>
+						<tr>
+							<td><code>label</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Accessible label text</td>
+						</tr>
+						<tr>
+							<td><code>required</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Field is required</td>
+						</tr>
+						<tr>
+							<td><code>disabled</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Disable the select</td>
+						</tr>
+						<tr>
+							<td><code>multiple</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Allow multiple selections</td>
+						</tr>
+						<tr>
+							<td><code>size</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Number of visible options</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Properties</h3>
+				<div class="docs-property-list">
+					<div class="docs-property">
+						<span class="docs-property-name">value</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">Get or set the selected value (validated)</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">selectedOptions</span>
+						<span class="docs-property-type">string[]</span>
+						<span class="docs-property-description">Array of selected values (for multiple select)</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">valid</span>
+						<span class="docs-property-type">boolean</span>
+						<span class="docs-property-description">Whether current selection passes validation</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">name</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">The form field name</span>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">addOption(value: string, text: string, selected?: boolean): void</div>
+					<div class="docs-method-description">Add a new option to the select</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">removeOption(value: string): void</div>
+					<div class="docs-method-description">Remove an option by value</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">clearOptions(): void</div>
+					<div class="docs-method-description">Remove all options</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">focus(): void</div>
+					<div class="docs-method-description">Focus the select element</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">blur(): void</div>
+					<div class="docs-method-description">Remove focus from the select</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
+					<div class="docs-method-description">Get audit log entries</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Events</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Event</th>
+							<th>Detail</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>secure-select</code></td>
+							<td><code>{ ` name, value, tier ` }</code></td>
+							<td>Fired when selection changes</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="examples" class="docs-section">
+				<h2 class="docs-section-title">Examples</h2>
+
+				<h3 class="docs-section-subtitle">Dynamic Options from API</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Loading Options Dynamically</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const countrySelect = document.querySelector('secure-select[name="country"]');
+
+// Fetch countries from API
+fetch('/api/countries')
+  .then(response => response.json())
+  .then(countries => {
+    // Clear existing options
+    countrySelect.clearOptions();
+
+    // Add placeholder
+    countrySelect.addOption('', 'Select a country');
+
+    // Add countries
+    countries.forEach(country => {
+      countrySelect.addOption(country.code, country.name);
+    });
+  });` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Multiple Selection</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Multi-Select</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-select
+  label="Select Skills"
+  name="skills"
+  multiple
+  size="5"
+  security-tier="public"
+>
+  <option value="js">JavaScript</option>
+  <option value="ts">TypeScript</option>
+  <option value="go">Go</option>
+  <option value="python">Python</option>
+  <option value="rust">Rust</option>
+</secure-select>` }</code></pre>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}

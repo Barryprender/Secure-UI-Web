@@ -1,0 +1,250 @@
+package components
+
+import "strconv"
+
+// SecureInputField renders a <secure-input> with a native <label> + <input> fallback.
+// Without JS, the native input is visible and functional.
+// With JS, shadow DOM hides the fallback and renders the enhanced version.
+templ SecureInputField(label, name, inputType, placeholder, securityTier, class string, required bool) {
+	<secure-input
+		label={ label }
+		name={ name }
+		type={ inputType }
+		placeholder={ placeholder }
+		security-tier={ securityTier }
+		if class != "" {
+			class={ class }
+		}
+		if required {
+			required
+		}
+	>
+		<label>{ label }</label>
+		<input
+			type={ inputType }
+			name={ name }
+			placeholder={ placeholder }
+			if required {
+				required
+			}
+		/>
+	</secure-input>
+}
+
+// SecureInputFieldWithLength renders a <secure-input> with minlength/maxlength support.
+templ SecureInputFieldWithLength(label, name, inputType, placeholder, securityTier, class string, required bool, minlength, maxlength int) {
+	<secure-input
+		label={ label }
+		name={ name }
+		type={ inputType }
+		placeholder={ placeholder }
+		security-tier={ securityTier }
+		if class != "" {
+			class={ class }
+		}
+		if required {
+			required
+		}
+		if minlength > 0 {
+			minlength={ strconv.Itoa(minlength) }
+		}
+		if maxlength > 0 {
+			maxlength={ strconv.Itoa(maxlength) }
+		}
+	>
+		<label>{ label }</label>
+		<input
+			type={ inputType }
+			name={ name }
+			placeholder={ placeholder }
+			if required {
+				required
+			}
+			if minlength > 0 {
+				minlength={ strconv.Itoa(minlength) }
+			}
+			if maxlength > 0 {
+				maxlength={ strconv.Itoa(maxlength) }
+			}
+		/>
+	</secure-input>
+}
+
+// SecureInputFieldNumber renders a <secure-input> for number type with min/max.
+templ SecureInputFieldNumber(label, name, placeholder, securityTier, class, min, max string, required bool) {
+	<secure-input
+		label={ label }
+		name={ name }
+		type="number"
+		placeholder={ placeholder }
+		security-tier={ securityTier }
+		if class != "" {
+			class={ class }
+		}
+		if required {
+			required
+		}
+		if min != "" {
+			min={ min }
+		}
+		if max != "" {
+			max={ max }
+		}
+	>
+		<label>{ label }</label>
+		<input
+			type="number"
+			name={ name }
+			placeholder={ placeholder }
+			if required {
+				required
+			}
+			if min != "" {
+				min={ min }
+			}
+			if max != "" {
+				max={ max }
+			}
+		/>
+	</secure-input>
+}
+
+// SecureTextareaField renders a <secure-textarea> with a native <label> + <textarea> fallback.
+templ SecureTextareaField(label, name, placeholder, securityTier, class string, rows int, required bool) {
+	<secure-textarea
+		label={ label }
+		name={ name }
+		placeholder={ placeholder }
+		security-tier={ securityTier }
+		rows={ strconv.Itoa(rows) }
+		if class != "" {
+			class={ class }
+		}
+		if required {
+			required
+		}
+	>
+		<label>{ label }</label>
+		<textarea
+			name={ name }
+			placeholder={ placeholder }
+			rows={ strconv.Itoa(rows) }
+			if required {
+				required
+			}
+		></textarea>
+	</secure-textarea>
+}
+
+// SecureSelectField renders a <secure-select> with a native <label> + <select> fallback.
+// Options are passed as children and will be placed inside both the custom element
+// and a native <select> for the no-JS fallback.
+//
+// Usage:
+//
+//	@components.SecureSelectField("Country", "country", "public", "mb-lg", true) {
+//	    <option value="">Select a country</option>
+//	    <option value="us">United States</option>
+//	}
+templ SecureSelectField(label, name, securityTier, class string, required bool) {
+	<secure-select
+		label={ label }
+		name={ name }
+		security-tier={ securityTier }
+		if class != "" {
+			class={ class }
+		}
+		if required {
+			required
+		}
+	>
+		<label>{ label }</label>
+		<select
+			name={ name }
+			if required {
+				required
+			}
+		>
+			{ children... }
+		</select>
+	</secure-select>
+}
+
+// SecureDateTimeField renders a <secure-datetime> with a native <label> + <input> fallback.
+templ SecureDateTimeField(label, name, inputType, securityTier, class string, required bool) {
+	<secure-datetime
+		label={ label }
+		name={ name }
+		type={ inputType }
+		security-tier={ securityTier }
+		if class != "" {
+			class={ class }
+		}
+		if required {
+			required
+		}
+	>
+		<label>{ label }</label>
+		<input
+			type={ inputType }
+			name={ name }
+			if required {
+				required
+			}
+		/>
+	</secure-datetime>
+}
+
+// SecureFileUploadField renders a <secure-file-upload> with a native <label> + <input type="file"> fallback.
+templ SecureFileUploadField(label, name, accept, maxSize, securityTier, class string, required bool) {
+	<secure-file-upload
+		label={ label }
+		name={ name }
+		accept={ accept }
+		max-size={ maxSize }
+		security-tier={ securityTier }
+		if class != "" {
+			class={ class }
+		}
+		if required {
+			required
+		}
+	>
+		<label>{ label }</label>
+		<input
+			type="file"
+			name={ name }
+			accept={ accept }
+			if required {
+				required
+			}
+		/>
+	</secure-file-upload>
+}
+
+// SecureFormWrapper renders a <secure-form> with a native <form> fallback.
+// The native form ensures submission works without JS.
+// Children (form fields) are passed via { children... }.
+//
+// Usage:
+//
+//	@components.SecureFormWrapper("POST", "/api/submit", csrfToken, "authenticated", "") {
+//	    @components.SecureInputField(...)
+//	    <button type="submit">Submit</button>
+//	}
+templ SecureFormWrapper(method, action, csrfToken, securityTier, class string) {
+	<secure-form
+		method={ method }
+		action={ action }
+		csrf-token={ csrfToken }
+		security-tier={ securityTier }
+		if class != "" {
+			class={ class }
+		}
+	>
+		<form method={ method } action={ action }>
+			<input type="hidden" name="csrf_token" value={ csrfToken }/>
+			{ children... }
+		</form>
+	</secure-form>
+}

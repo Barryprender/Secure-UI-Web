@@ -1,0 +1,277 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/models"
+import "fmt"
+import "time"
+
+templ Table(users []*models.User, csrfToken string) {
+	@templates.Layout("Data Table", "Secure data table with filtering and sorting") {
+
+		<div class="container py-2xl">
+			<h1>Data Table Demo</h1>
+			<p class="text-secondary" style="font-size: 1.125rem; margin-bottom: 2rem;">
+				Secure table component with real-time filtering, sorting, and pagination.
+			</p>
+
+			<!-- Search and Filter Controls -->
+			<div style="background: var(--secure-ui-color-bg-secondary); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+				<div style="display: grid; grid-template-columns: 1fr auto auto; gap: 1rem; align-items: end;">
+					<div>
+						<label for="searchInput" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Search</label>
+						<input
+							type="text"
+							id="searchInput"
+							placeholder="Search by name or email..."
+							style="width: 100%; padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+						/>
+					</div>
+					<div>
+						<label for="roleFilter" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Filter by Role</label>
+						<select
+							id="roleFilter"
+							style="padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+						>
+							<option value="">All Roles</option>
+							<option value="admin">Admin</option>
+							<option value="moderator">Moderator</option>
+							<option value="user">User</option>
+						</select>
+					</div>
+					<div>
+						<label for="statusFilter" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Filter by Status</label>
+						<select
+							id="statusFilter"
+							style="padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+						>
+							<option value="">All Statuses</option>
+							<option value="active">Active</option>
+							<option value="inactive">Inactive</option>
+							<option value="pending">Pending</option>
+						</select>
+					</div>
+				</div>
+			</div>
+
+			<!-- Users Table -->
+			<div style="background: var(--secure-ui-color-bg-secondary); border-radius: 8px; overflow: hidden;">
+				<div style="overflow-x: auto;">
+					<table id="usersTable" style="width: 100%; border-collapse: collapse;">
+						<thead>
+							<tr style="background: var(--secure-ui-color-bg-primary); border-bottom: 2px solid var(--secure-ui-color-border);">
+								<th onclick="sortTable(0)" style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none;">
+									ID <span class="sort-indicator">↕</span>
+								</th>
+								<th onclick="sortTable(1)" style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none;">
+									Name <span class="sort-indicator">↕</span>
+								</th>
+								<th onclick="sortTable(2)" style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none;">
+									Email <span class="sort-indicator">↕</span>
+								</th>
+								<th onclick="sortTable(3)" style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none;">
+									Role <span class="sort-indicator">↕</span>
+								</th>
+								<th onclick="sortTable(4)" style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none;">
+									Status <span class="sort-indicator">↕</span>
+								</th>
+								<th onclick="sortTable(5)" style="padding: 1rem; text-align: left; font-weight: 600; cursor: pointer; user-select: none;">
+									Created At <span class="sort-indicator">↕</span>
+								</th>
+								<th style="padding: 1rem; text-align: right; font-weight: 600;">Actions</th>
+							</tr>
+						</thead>
+						<tbody>
+							for _, user := range users {
+								<tr
+									class="user-row"
+									data-id={fmt.Sprintf("%d", user.ID)}
+									data-name={fmt.Sprintf("%s %s", user.FirstName, user.LastName)}
+									data-email={user.Email}
+									data-role={user.Role}
+									data-status={user.Status}
+									style="border-bottom: 1px solid var(--secure-ui-color-border);"
+								>
+									<td style="padding: 1rem;">{ fmt.Sprintf("%d", user.ID) }</td>
+									<td style="padding: 1rem;">{ user.FirstName } { user.LastName }</td>
+									<td style="padding: 1rem; color: var(--secure-ui-color-text-secondary);">{ user.Email }</td>
+									<td style="padding: 1rem;">
+										<span style="padding: 0.25rem 0.75rem; background: var(--secure-ui-color-bg-primary); border-radius: 4px; font-size: 0.875rem;">
+											{ user.Role }
+										</span>
+									</td>
+									<td style="padding: 1rem;">
+										<span style={ "padding: 0.25rem 0.75rem; border-radius: 4px; font-size: 0.875rem; " + getStatusStyle(user.Status) }>
+											{ user.Status }
+										</span>
+									</td>
+									<td style="padding: 1rem; color: var(--secure-ui-color-text-secondary); font-size: 0.875rem;">
+										{ formatDate(user.CreatedAt) }
+									</td>
+									<td style="padding: 1rem; text-align: right;">
+										<div style="display: flex; gap: 0.5rem; justify-content: flex-end;">
+											<button
+												type="button"
+												class="view-user-btn"
+												data-user-id={fmt.Sprintf("%d", user.ID)}
+												style="padding: 0.5rem 1rem; background: var(--secure-ui-color-primary); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem;"
+											>
+												View
+											</button>
+											<button
+												type="button"
+												class="delete-user-table-btn"
+												data-user-id={fmt.Sprintf("%d", user.ID)}
+												style="padding: 0.5rem 1rem; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem;"
+											>
+												Delete
+											</button>
+										</div>
+									</td>
+								</tr>
+							}
+						</tbody>
+					</table>
+				</div>
+
+				<!-- Pagination Info -->
+				<div style="padding: 1rem; border-top: 1px solid var(--secure-ui-color-border); display: flex; justify-content: space-between; align-items: center;">
+					<div id="paginationInfo" style="color: var(--secure-ui-color-text-secondary); font-size: 0.875rem;">
+						Showing <span id="showingCount">{ fmt.Sprintf("%d", len(users)) }</span> of <span id="totalCount">{ fmt.Sprintf("%d", len(users)) }</span> users
+					</div>
+					<div style="color: var(--secure-ui-color-text-secondary); font-size: 0.875rem;">
+						<a href="/dashboard" style="color: var(--secure-ui-color-primary); text-decoration: none;">Go to Dashboard to manage users</a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const csrfToken = {csrfToken};
+			let sortDirection = {};
+
+			// Search functionality
+			document.getElementById('searchInput').addEventListener('input', filterTable);
+			document.getElementById('roleFilter').addEventListener('change', filterTable);
+			document.getElementById('statusFilter').addEventListener('change', filterTable);
+
+			function filterTable() {
+				const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+				const roleFilter = document.getElementById('roleFilter').value.toLowerCase();
+				const statusFilter = document.getElementById('statusFilter').value.toLowerCase();
+
+				const rows = document.querySelectorAll('.user-row');
+				let visibleCount = 0;
+
+				rows.forEach(row => {
+					const name = row.dataset.name.toLowerCase();
+					const email = row.dataset.email.toLowerCase();
+					const role = row.dataset.role.toLowerCase();
+					const status = row.dataset.status.toLowerCase();
+
+					const matchesSearch = name.includes(searchTerm) || email.includes(searchTerm);
+					const matchesRole = !roleFilter || role === roleFilter;
+					const matchesStatus = !statusFilter || status === statusFilter;
+
+					if (matchesSearch && matchesRole && matchesStatus) {
+						row.style.display = '';
+						visibleCount++;
+					} else {
+						row.style.display = 'none';
+					}
+				});
+
+				document.getElementById('showingCount').textContent = visibleCount;
+			}
+
+			// Sort functionality
+			window.sortTable = (columnIndex) => {
+				const table = document.getElementById('usersTable');
+				const tbody = table.querySelector('tbody');
+				const rows = Array.from(tbody.querySelectorAll('.user-row'));
+
+				// Toggle sort direction
+				if (!sortDirection[columnIndex]) {
+					sortDirection[columnIndex] = 'asc';
+				} else {
+					sortDirection[columnIndex] = sortDirection[columnIndex] === 'asc' ? 'desc' : 'asc';
+				}
+
+				const direction = sortDirection[columnIndex];
+
+				rows.sort((a, b) => {
+					let aVal = a.cells[columnIndex].textContent.trim();
+					let bVal = b.cells[columnIndex].textContent.trim();
+
+					// Handle numeric sorting for ID column
+					if (columnIndex === 0) {
+						aVal = parseInt(aVal);
+						bVal = parseInt(bVal);
+					}
+
+					if (aVal < bVal) return direction === 'asc' ? -1 : 1;
+					if (aVal > bVal) return direction === 'asc' ? 1 : -1;
+					return 0;
+				});
+
+				// Update table
+				rows.forEach(row => tbody.appendChild(row));
+
+				// Update sort indicators
+				document.querySelectorAll('.sort-indicator').forEach((indicator, idx) => {
+					if (idx === columnIndex) {
+						indicator.textContent = direction === 'asc' ? '↑' : '↓';
+					} else {
+						indicator.textContent = '↕';
+					}
+				});
+			};
+
+			// View user - redirect to dashboard
+			function viewUser(userId) {
+				window.location.href = '/dashboard';
+			}
+
+			// Delete user from table
+			async function deleteUserFromTable(userId) {
+				if (!confirm('Are you sure you want to delete this user?')) {
+					return;
+				}
+
+				try {
+					const response = await fetch(`/api/users/${userId}`, {
+						method: 'DELETE',
+						headers: {
+							'X-CSRF-Token': csrfToken
+						}
+					});
+
+					const result = await response.json();
+
+					if (result.success) {
+						window.location.reload();
+					} else {
+						alert('Failed to delete user: ' + result.error);
+					}
+				} catch (error) {
+					alert('Failed to delete user. Please try again.');
+				}
+			}
+
+			// Event delegation for view and delete buttons
+			document.getElementById('usersTable').addEventListener('click', (e) => {
+				const target = e.target;
+				if (target.classList.contains('view-user-btn')) {
+					const userId = parseInt(target.dataset.userId);
+					viewUser(userId);
+				} else if (target.classList.contains('delete-user-table-btn')) {
+					const userId = parseInt(target.dataset.userId);
+					deleteUserFromTable(userId);
+				}
+			});
+		</script>
+	}
+}
+
+func formatDate(t time.Time) string {
+	return t.Format("Jan 02, 2006")
+}

@@ -1,0 +1,69 @@
+package templates
+
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates/partials"
+)
+
+templ Layout(title string, description string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		@Head(title, description)
+		<body>
+			@partials.Navbar(middleware.UserFromContext(ctx) != nil)
+			<div class="main-content">
+				<main>
+					{ children... }
+				</main>
+				@partials.Footer()
+			</div>
+			<!-- Prism.js syntax highlighting -->
+			<script src="/static/js/prism.js"></script>
+			<script src="/static/js/prism-go.min.js"></script>
+			<script src="/static/js/prism-javascript.min.js"></script>
+			<script src="/static/js/prism-typescript.min.js"></script>
+			<script src="/static/js/prism-bash.min.js"></script>
+			<script src="/static/js/prism-json.min.js"></script>
+			<script src="/static/js/prism-markup.min.js"></script>
+			<script src="/static/js/prism-css.min.js"></script>
+		</body>
+	</html>
+}
+
+templ Head(title string, description string) {
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>{ title } - Secure-UI</title>
+		if description != "" {
+			<meta name="description" content={ description }/>
+		}
+		<!-- Favicon - multiple formats for maximum compatibility -->
+		<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
+		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png"/>
+		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"/>
+		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
+
+		<!-- CSS Files -->
+		<link rel="stylesheet" href="/static/styles/tokens.css"/>
+		<link rel="stylesheet" href="/static/styles/base.css"/>
+		<link rel="stylesheet" href="/static/styles/navigation.css"/>
+		<link rel="stylesheet" href="/static/styles/footer.css"/>
+		<link rel="stylesheet" href="/static/styles/home.css"/>
+		<link rel="stylesheet" href="/static/styles/forms.css"/>
+		<link rel="stylesheet" href="/static/styles/documentation.css"/>
+		<link rel="stylesheet" href="/static/styles/prism.css"/>
+		<link rel="stylesheet" href="/static/styles/view-transitions.css"/>
+		<link rel="stylesheet" href="/static/styles/no-js-fallback.css"/>
+
+		<!-- View Transitions — directional navigation (parser-blocking, must run before first render) -->
+		<script nonce={ middleware.NonceFromContext(ctx) } src="/static/js/view-transitions.js"></script>
+
+		<!-- Secure-UI Components - auto-register when imported -->
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+			// Import all components - they self-register automatically
+			import '/components/index.js';
+		</script>
+	</head>
+}

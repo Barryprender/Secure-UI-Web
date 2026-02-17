@@ -1,0 +1,30 @@
+package partials
+
+// Navigation - Server-first navigation matching the original showcase site
+// Uses CSS checkbox hack for mobile menu (no JavaScript required)
+templ Navigation() {
+	<nav class="navbar" role="navigation" aria-label="Main navigation">
+		<div class="navbar-container">
+			<a href="/" class="navbar-brand">
+				<span aria-label="Lock icon">🔒</span>
+				<span>Secure-UI</span>
+			</a>
+
+			<!-- Mobile menu toggle (CSS-only, no JS) -->
+			<input type="checkbox" id="nav-toggle" class="navbar-toggle-input" aria-label="Toggle navigation menu"/>
+			<label for="nav-toggle" class="navbar-toggle" aria-label="Menu">
+				<span class="navbar-toggle-icon"></span>
+			</label>
+
+			<!-- Navigation links -->
+			<ul class="navbar-menu">
+				<li><a href="/">Home</a></li>
+				<li><a href="/forms">Form Components</a></li>
+				<li><a href="/registration">Registration</a></li>
+				<li><a href="/dashboard">Dashboard</a></li>
+				<li><a href="/table">Table Demo</a></li>
+				<li><a href="/css-customization">Styling</a></li>
+			</ul>
+		</div>
+	</nav>
+}

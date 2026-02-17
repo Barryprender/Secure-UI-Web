@@ -1,0 +1,324 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureForm() {
+	@templates.Layout("secure-form", "Documentation for the secure-form web component") {
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-form</span>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128220;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-form&gt;</h1>
+					<p class="docs-component-description">
+						A form wrapper with automatic CSRF protection, coordinated validation
+						across all child components, and comprehensive submission handling.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#csrf-protection">CSRF Protection</a></li>
+					<li><a href="#validation">Form Validation</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+					<li><a href="#examples">Examples</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					The <code>&lt;secure-form&gt;</code> component wraps standard form elements and
+					secure-ui components to provide coordinated security features. It automatically
+					handles CSRF token injection, validates all child components before submission,
+					and provides a unified event interface.
+				</p>
+
+				<div class="docs-callout docs-callout--success">
+					<div class="docs-callout-title">Light DOM for Form Submission</div>
+					<div class="docs-callout-text">
+						Unlike other secure-ui components, <code>&lt;secure-form&gt;</code> uses light DOM
+						to ensure native form submission works correctly. All child elements participate
+						in standard form submission.
+					</div>
+				</div>
+			</section>
+
+			<section id="csrf-protection" class="docs-section">
+				<h2 class="docs-section-title">CSRF Protection</h2>
+				<p class="docs-text">
+					CSRF tokens are automatically injected into the form when the <code>csrf-token</code>
+					attribute is set. The token is added as a hidden input field.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">CSRF Token Usage</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Server provides the CSRF token -->
+<secure-form
+  action="/api/submit"
+  method="POST"
+  csrf-token="abc123..."
+>
+  <secure-input name="email" type="email"></secure-input>
+  <button type="submit">Submit</button>
+</secure-form>
+
+<!-- Generates hidden field: -->
+<!-- <input type="hidden" name="csrf_token" value="abc123..."> -->` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Go/Templ Server Integration</span>
+						<span class="docs-code-language">Go</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-go">{ `// Handler generates CSRF token
+func (h *Handlers) ContactForm(w http.ResponseWriter, r *http.Request) {
+    csrfToken, _ := h.CSRFStore.GenerateToken()
+    pages.ContactForm(csrfToken).Render(r.Context(), w)
+}
+
+// Template uses the token
+// <secure-form csrf-token={ csrfToken }>...</secure-form>` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="validation" class="docs-section">
+				<h2 class="docs-section-title">Form Validation</h2>
+				<p class="docs-text">
+					The form validates all child secure-ui components before submission. If any
+					component is invalid, submission is prevented and errors are displayed.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Validation Flow</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const form = document.querySelector('secure-form');
+
+// Check form validity
+if (form.valid) {
+  console.log('All fields are valid');
+}
+
+// Get form data
+const data = form.getData();
+// Returns: { email: 'user@example.com', name: 'John' }
+
+// Listen for form events
+form.addEventListener('secure-form-submit', (e) => {
+  console.log('Form submitting:', e.detail);
+});
+
+form.addEventListener('secure-form-success', (e) => {
+  console.log('Form succeeded:', e.detail);
+});` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Server-Side Validation Required</div>
+					<div class="docs-callout-text">
+						Client-side validation is for UX only. Always validate and sanitize
+						all data on the server.
+					</div>
+				</div>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>action</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Form submission URL</td>
+						</tr>
+						<tr>
+							<td><code>method</code></td>
+							<td>string</td>
+							<td><code>"POST"</code></td>
+							<td>HTTP method (GET, POST)</td>
+						</tr>
+						<tr>
+							<td><code>csrf-token</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>CSRF token from server</td>
+						</tr>
+						<tr>
+							<td><code>security-tier</code></td>
+							<td>string</td>
+							<td><code>"critical"</code></td>
+							<td>Default tier for child components</td>
+						</tr>
+						<tr>
+							<td><code>novalidate</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Disable client-side validation</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Properties</h3>
+				<div class="docs-property-list">
+					<div class="docs-property">
+						<span class="docs-property-name">valid</span>
+						<span class="docs-property-type">boolean</span>
+						<span class="docs-property-description">Whether all child components pass validation (read-only)</span>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">getData(): Record&lt;string, string&gt;</div>
+					<div class="docs-method-description">Get all form field values as an object</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">reset(): void</div>
+					<div class="docs-method-description">Reset all form fields to initial values</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">submit(): void</div>
+					<div class="docs-method-description">Programmatically submit the form</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Events</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Event</th>
+							<th>Detail</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>secure-form-submit</code></td>
+							<td><code>{ ` data, csrfToken ` }</code></td>
+							<td>Fired before submission (cancelable)</td>
+						</tr>
+						<tr>
+							<td><code>secure-form-success</code></td>
+							<td><code>{ ` response ` }</code></td>
+							<td>Fired after successful submission</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="examples" class="docs-section">
+				<h2 class="docs-section-title">Examples</h2>
+
+				<h3 class="docs-section-subtitle">Complete Contact Form</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Contact Form with All Features</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-form
+	action="/api/contact"
+	method="POST"
+	csrf-token="server-generated-token"
+	security-tier="sensitive">
+
+	<secure-input
+		type="text"
+		label="Full Name"
+		name="name"
+		required>
+	</secure-input>
+
+	<secure-input
+		type="email"
+		label="Email"
+		name="email"
+		required>
+	</secure-input>
+
+	<secure-select
+		label="Subject"
+		name="subject"
+		required>
+		<option value="">Choose subject</option>
+		<option value="general">General Inquiry</option>
+		<option value="support">Technical Support</option>
+		<option value="sales">Sales</option>
+	</secure-select>
+
+	<secure-textarea
+		label="Message"
+		name="message"
+		rows="5"
+		required>
+	</secure-textarea>
+
+	<button type="submit" class="btn btn-primary">
+		Send Message
+	</button>
+</secure-form>` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">AJAX Form Submission</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">JavaScript Submission</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `const form = document.querySelector('secure-form');
+
+form.addEventListener('secure-form-submit', async (e) => {
+  e.preventDefault();
+
+  const response = await fetch(form.getAttribute('action'), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRF-Token': e.detail.csrfToken
+    },
+    body: JSON.stringify(e.detail.data)
+  });
+
+  if (response.ok) {
+    alert('Form submitted successfully!');
+    form.reset();
+  }
+});` }</code></pre>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}

@@ -1,0 +1,265 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureDatetime() {
+	@templates.Layout("secure-datetime", "Documentation for the secure-datetime web component") {
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-datetime</span>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128197;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-datetime&gt;</h1>
+					<p class="docs-component-description">
+						Date, time, and datetime inputs with range validation, timezone handling,
+						and format normalization.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#input-types">Input Types</a></li>
+					<li><a href="#validation">Validation</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					The <code>&lt;secure-datetime&gt;</code> component provides secure date and time
+					inputs with automatic format validation, range checking, and consistent output
+					format regardless of browser locale.
+				</p>
+			</section>
+
+			<section id="input-types" class="docs-section">
+				<h2 class="docs-section-title">Input Types</h2>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Date, Time, and DateTime</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Date only -->
+<secure-datetime
+  type="date"
+  label="Date of Birth"
+  name="dob"
+  security-tier="sensitive"
+  required
+></secure-datetime>
+
+<!-- Time only -->
+<secure-datetime
+  type="time"
+  label="Appointment Time"
+  name="appointment_time"
+  security-tier="authenticated"
+></secure-datetime>
+
+<!-- Date and Time -->
+<secure-datetime
+  type="datetime-local"
+  label="Event Start"
+  name="event_start"
+  security-tier="public"
+></secure-datetime>
+
+<!-- Month picker -->
+<secure-datetime
+  type="month"
+  label="Expiration"
+  name="card_expiry"
+  security-tier="critical"
+></secure-datetime>` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo</div>
+					<div style="display: flex; flex-direction: column; gap: 1rem;">
+						<secure-datetime
+							type="date"
+							label="Select Date"
+							name="demo-date"
+							security-tier="public"
+						></secure-datetime>
+						<secure-datetime
+							type="time"
+							label="Select Time"
+							name="demo-time"
+							security-tier="public"
+						></secure-datetime>
+						<secure-datetime
+							type="datetime-local"
+							label="Select Date & Time"
+							name="demo-datetime"
+							security-tier="public"
+						></secure-datetime>
+					</div>
+				</div>
+			</section>
+
+			<section id="validation" class="docs-section">
+				<h2 class="docs-section-title">Validation</h2>
+
+				<h3 class="docs-section-subtitle">Date Range Constraints</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Min/Max Dates</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Date of birth: must be at least 18 years ago -->
+<secure-datetime
+  type="date"
+  label="Date of Birth"
+  name="dob"
+  max="2006-01-01"
+  security-tier="sensitive"
+></secure-datetime>
+
+<!-- Future date only -->
+<secure-datetime
+  type="date"
+  label="Appointment Date"
+  name="appointment"
+  min="2024-01-01"
+  security-tier="authenticated"
+></secure-datetime>
+
+<!-- Time range (business hours) -->
+<secure-datetime
+  type="time"
+  label="Meeting Time"
+  name="meeting_time"
+  min="09:00"
+  max="17:00"
+  step="1800"
+></secure-datetime>` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>type</code></td>
+							<td>string</td>
+							<td><code>"date"</code></td>
+							<td>date, time, datetime-local, month, week</td>
+						</tr>
+						<tr>
+							<td><code>security-tier</code></td>
+							<td>string</td>
+							<td><code>"critical"</code></td>
+							<td>Security level</td>
+						</tr>
+						<tr>
+							<td><code>name</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Form field name</td>
+						</tr>
+						<tr>
+							<td><code>label</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Accessible label</td>
+						</tr>
+						<tr>
+							<td><code>min</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Minimum date/time</td>
+						</tr>
+						<tr>
+							<td><code>max</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Maximum date/time</td>
+						</tr>
+						<tr>
+							<td><code>step</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Step interval (seconds for time)</td>
+						</tr>
+						<tr>
+							<td><code>required</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Field is required</td>
+						</tr>
+						<tr>
+							<td><code>disabled</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Disable input</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Properties</h3>
+				<div class="docs-property-list">
+					<div class="docs-property">
+						<span class="docs-property-name">value</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">ISO format date/time value</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">valid</span>
+						<span class="docs-property-type">boolean</span>
+						<span class="docs-property-description">Validation state</span>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">getValueAsDate(): Date | null</div>
+					<div class="docs-method-description">Returns the current value as a JavaScript Date object, or null if empty or invalid</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Events</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Event</th>
+							<th>Detail</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>secure-datetime</code></td>
+							<td><pre><code class="language-js">{` name, value, tier `}</code></pre></td>
+							<td>Fired on value change</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	}
+}

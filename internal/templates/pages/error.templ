@@ -1,0 +1,32 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/middleware"
+import "fmt"
+
+templ ErrorPage(statusCode int, title string, message string) {
+	@templates.Layout(title, message) {
+		<section class="error-page">
+			<div class="container">
+				<div class="error-page-content">
+					<div class="error-page-code">{ fmt.Sprintf("%d", statusCode) }</div>
+					<h1 class="error-page-title">{ title }</h1>
+					<p class="error-page-message">{ message }</p>
+					<div class="error-page-actions">
+						<a href="/" class="btn btn-primary">Go Home</a>
+						<button type="button" class="btn btn-secondary" id="error-go-back">Go Back</button>
+					</div>
+				</div>
+			</div>
+		</section>
+		<script nonce={ middleware.NonceFromContext(ctx) }>
+			document.getElementById('error-go-back').addEventListener('click', function() {
+				if (history.length > 1) {
+					history.back();
+				} else {
+					location.href = '/';
+				}
+			});
+		</script>
+	}
+}

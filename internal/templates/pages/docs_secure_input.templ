@@ -1,0 +1,568 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureInput() {
+	@templates.Layout("secure-input", "Documentation for the secure-input web component") {
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-input</span>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128221;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-input&gt;</h1>
+					<p class="docs-component-description">
+						A security-hardened text input component with built-in XSS prevention,
+						type-specific validation, and comprehensive audit logging.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#basic-usage">Basic Usage</a></li>
+					<li><a href="#input-types">Input Types</a></li>
+					<li><a href="#security-tiers">Security Tiers</a></li>
+					<li><a href="#validation">Validation</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+					<li><a href="#examples">Examples</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					The <code>&lt;secure-input&gt;</code> component provides a security-first text input
+					that wraps native HTML input elements with enhanced protection. It supports all standard
+					input types while adding automatic sanitization, validation, and audit logging.
+				</p>
+
+				<div class="docs-callout docs-callout--info">
+					<div class="docs-callout-title">Progressive Enhancement</div>
+					<div class="docs-callout-text">
+						Works as a native <code>&lt;input&gt;</code> without JavaScript. When JS is enabled,
+						additional security features like client-side validation and audit logging are activated.
+					</div>
+				</div>
+			</section>
+
+			<section id="basic-usage" class="docs-section">
+				<h2 class="docs-section-title">Basic Usage</h2>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Simple Text Input</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-input
+	label="Full Name"
+	name="fullname"
+	type="text"
+	placeholder="Enter your name"
+	required>
+</secure-input>` }
+						</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo</div>
+					<secure-input
+						label="Full Name"
+						name="demo-fullname"
+						type="text"
+						placeholder="Enter your name"
+						security-tier="public"
+					></secure-input>
+				</div>
+			</section>
+
+			<section id="input-types" class="docs-section">
+				<h2 class="docs-section-title">Input Types</h2>
+				<p class="docs-text">
+					All standard HTML5 input types are supported with type-specific validation and security measures.
+				</p>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Type</th>
+							<th>Validation</th>
+							<th>Security Notes</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>text</code></td>
+							<td>Length, pattern</td>
+							<td>HTML entities encoded, scripts stripped</td>
+						</tr>
+						<tr>
+							<td><code>email</code></td>
+							<td>Email format</td>
+							<td>Normalized, validated using browser-native email format checking</td>
+						</tr>
+						<tr>
+							<td><code>password</code></td>
+							<td>Tier-based strength</td>
+							<td>Strength rules scale with tier, autocomplete disabled</td>
+						</tr>
+						<tr>
+							<td><code>tel</code></td>
+							<td>Pattern</td>
+							<td>Validated via pattern attribute, no auto-formatting</td>
+						</tr>
+						<tr>
+							<td><code>url</code></td>
+							<td>URL format</td>
+							<td>Protocol validation, javascript: blocked</td>
+						</tr>
+						<tr>
+							<td><code>number</code></td>
+							<td>Min/max, step</td>
+							<td>Safe integer range check, overflow protection</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Different Input Types</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Email with validation -->
+<secure-input
+	type="email"
+	label="Email Address"
+	name="email"
+	placeholder="user@example.com"
+	security-tier="sensitive"
+	required>
+</secure-input>
+
+<!-- Password with strength requirements -->
+<secure-input
+	type="password"
+	label="Password"
+	name="password"
+	placeholder="Enter a strong password"
+	security-tier="critical"
+	required>
+</secure-input>
+
+<!-- Number with range -->
+<secure-input
+	type="number"
+	label="Age"
+	name="age"
+	min="18"
+	max="120"
+	security-tier="public">
+</secure-input>` }
+						</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo - Email Input</div>
+					<secure-input
+						type="email"
+						label="Email Address"
+						name="demo-email"
+						placeholder="user@example.com"
+						security-tier="sensitive"
+					></secure-input>
+				</div>
+			</section>
+
+			<section id="security-tiers" class="docs-section">
+				<h2 class="docs-section-title">Security Tiers</h2>
+				<p class="docs-text">
+					Choose the appropriate security tier based on the sensitivity of the data being collected.
+					Each tier adjusts validation strictness, visual indicators, and security features.
+				</p>
+
+				<div class="docs-tier-grid">
+					<div class="docs-tier-card docs-tier-card--public">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--public">Public</span>
+						</div>
+						<div class="docs-tier-card-description">
+							<strong>Use for:</strong> Names, comments, general text<br/>
+							<strong>Features:</strong> Basic validation, autocomplete allowed
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--authenticated">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--authenticated">Authenticated</span>
+						</div>
+						<div class="docs-tier-card-description">
+							<strong>Use for:</strong> User preferences, settings<br/>
+							<strong>Features:</strong> Session validation, moderate logging
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--sensitive">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--sensitive">Sensitive</span>
+						</div>
+						<div class="docs-tier-card-description">
+							<strong>Use for:</strong> Email, phone, address (PII)<br/>
+							<strong>Features:</strong> No autocomplete, masking option, rate limited
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--critical">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--critical">Critical</span>
+						</div>
+						<div class="docs-tier-card-description">
+							<strong>Use for:</strong> Passwords, SSN, financial data<br/>
+							<strong>Features:</strong> Full masking, no storage, complete audit log
+						</div>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Security Tier Examples</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- PUBLIC: General information -->
+<secure-input
+	security-tier="public"
+	label="Website"
+	name="website"
+	type="url">
+</secure-input>
+
+<!-- SENSITIVE: Personal identifiable information -->
+<secure-input
+	security-tier="sensitive"
+	label="Phone Number"
+	name="phone"
+	type="tel">
+</secure-input>
+
+<!-- CRITICAL: Highly sensitive data -->
+<secure-input
+	security-tier="critical"
+	label="Social Security Number"
+	name="ssn"
+	type="text"
+	pattern="[0-9]{3}-[0-9]{2}-[0-9]{4}">
+</secure-input>` }
+						</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo - Security Tiers</div>
+					<div style="display: flex; flex-direction: column; gap: 1rem;">
+						<secure-input
+							security-tier="public"
+							label="Public Tier - Website"
+							name="demo-website"
+							type="url"
+							placeholder="https://example.com"
+						></secure-input>
+						<secure-input
+							security-tier="sensitive"
+							label="Sensitive Tier - Phone"
+							name="demo-phone"
+							type="tel"
+							placeholder="+1 (555) 123-4567"
+						></secure-input>
+						<secure-input
+							security-tier="critical"
+							label="Critical Tier - Password"
+							name="demo-password"
+							type="password"
+							placeholder="Enter password"
+						></secure-input>
+					</div>
+				</div>
+			</section>
+
+			<section id="validation" class="docs-section">
+				<h2 class="docs-section-title">Validation</h2>
+				<p class="docs-text">
+					Client-side validation provides immediate feedback while server-side validation
+					is the authoritative source. Use HTML5 validation attributes alongside custom patterns.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Validation Attributes</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Required field -->
+<secure-input
+	label="Username"
+	name="username"
+	required>
+</secure-input>
+
+<!-- Length constraints -->
+<secure-input
+	label="Bio"
+	name="bio"
+	minlength="10"
+	maxlength="500">
+</secure-input>
+
+<!-- Custom pattern -->
+<secure-input
+	label="Product Code"
+	name="code"
+	pattern="[A-Z]{3}-[0-9]{4}"
+	placeholder="ABC-1234">
+</secure-input>
+
+<!-- Number range -->
+<secure-input
+	type="number"
+	label="Quantity"
+	name="quantity"
+	min="1"
+	max="100"
+	step="1">
+</secure-input>` }
+						</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Always Validate Server-Side</div>
+					<div class="docs-callout-text">
+						Client-side validation improves UX but can be bypassed. Always implement
+						server-side validation as the authoritative check.
+					</div>
+				</div>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>security-tier</code></td>
+							<td>string</td>
+							<td><code>"critical"</code></td>
+							<td>Security level: "public", "authenticated", "sensitive", "critical"</td>
+						</tr>
+						<tr>
+							<td><code>type</code></td>
+							<td>string</td>
+							<td><code>"text"</code></td>
+							<td>Input type: text, email, password, tel, url, number, etc.</td>
+						</tr>
+						<tr>
+							<td><code>name</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Form field name for submission</td>
+						</tr>
+						<tr>
+							<td><code>label</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Accessible label text</td>
+						</tr>
+						<tr>
+							<td><code>placeholder</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Placeholder text</td>
+						</tr>
+						<tr>
+							<td><code>required</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Field is required</td>
+						</tr>
+						<tr>
+							<td><code>disabled</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Disable the input</td>
+						</tr>
+						<tr>
+							<td><code>readonly</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Make input read-only</td>
+						</tr>
+						<tr>
+							<td><code>minlength</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Minimum character length</td>
+						</tr>
+						<tr>
+							<td><code>maxlength</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Maximum character length</td>
+						</tr>
+						<tr>
+							<td><code>min</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Minimum value (for number type)</td>
+						</tr>
+						<tr>
+							<td><code>max</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Maximum value (for number type)</td>
+						</tr>
+						<tr>
+							<td><code>pattern</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Regex pattern for validation</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Properties</h3>
+				<div class="docs-property-list">
+					<div class="docs-property">
+						<span class="docs-property-name">value</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">Get or set the input value</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">valid</span>
+						<span class="docs-property-type">boolean</span>
+						<span class="docs-property-description">Whether the current value passes validation</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">securityTier</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">The current security tier (read-only after init)</span>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">focus(): void</div>
+					<div class="docs-method-description">Focus the input element</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">blur(): void</div>
+					<div class="docs-method-description">Remove focus from the input element</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
+					<div class="docs-method-description">Returns array of audit log entries for this component</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Events</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Event</th>
+							<th>Detail</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>secure-input</td>
+							<td><code>templ.Raw({ ` name, value, tier ` })</code></td>
+							<td>Fired on input change after validation</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="examples" class="docs-section">
+				<h2 class="docs-section-title">Examples</h2>
+
+				<h3 class="docs-section-subtitle">Login Form</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Complete Login Form</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-form action="/login" method="POST">
+	<secure-input
+		type="email"
+		label="Email"
+		name="email"
+		security-tier="sensitive"
+		required>
+	</secure-input>
+
+	<secure-input
+		type="password"
+		label="Password"
+		name="password"
+		security-tier="critical"
+		required>
+	</secure-input>
+
+	<button type="submit">Sign In</button>
+</secure-form>` }
+						</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Accessing Component via JavaScript</h3>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">JavaScript Integration</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `// Get component reference
+const emailInput = document.querySelector('secure-input[name="email"]');
+
+// Read value
+console.log(emailInput.value);
+
+// Check validation
+if (emailInput.valid) {
+console.log('Email is valid');
+}
+
+// Listen for changes
+emailInput.addEventListener('secure-input', (e) => {
+console.log('New value:', e.detail.value);
+console.log('Security tier:', e.detail.tier);
+});
+
+// Get audit log
+const auditLog = emailInput.getAuditLog();
+console.log('Audit entries:', auditLog);` }
+						</code></pre>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}

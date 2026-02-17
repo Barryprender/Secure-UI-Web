@@ -1,0 +1,229 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureTextarea() {
+	@templates.Layout("secure-textarea", "Documentation for the secure-textarea web component") {
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-textarea</span>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128196;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-textarea&gt;</h1>
+					<p class="docs-component-description">
+						A security-hardened multi-line text input with content sanitization,
+						length enforcement, and XSS prevention.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#basic-usage">Basic Usage</a></li>
+					<li><a href="#security-tiers">Security Tiers</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					The <code>&lt;secure-textarea&gt;</code> component provides a multi-line text input
+					with automatic content sanitization. All HTML tags are escaped, scripts are stripped,
+					and length limits are enforced based on security tier.
+				</p>
+			</section>
+
+			<section id="basic-usage" class="docs-section">
+				<h2 class="docs-section-title">Basic Usage</h2>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Simple Textarea</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-textarea
+  label="Biography"
+  name="bio"
+  rows="4"
+  placeholder="Tell us about yourself..."
+  security-tier="public"
+  maxlength="1000"
+></secure-textarea>` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo</div>
+					<secure-textarea
+						label="Biography"
+						name="demo-bio"
+						rows="4"
+						placeholder="Tell us about yourself..."
+						security-tier="public"
+					></secure-textarea>
+				</div>
+			</section>
+
+			<section id="security-tiers" class="docs-section">
+				<h2 class="docs-section-title">Security Tiers</h2>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Different Security Levels</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- PUBLIC: Comments, descriptions -->
+<secure-textarea
+  security-tier="public"
+  label="Comments"
+  name="comments"
+  rows="3"
+></secure-textarea>
+
+<!-- SENSITIVE: Personal notes -->
+<secure-textarea
+  security-tier="sensitive"
+  label="Medical Notes"
+  name="medical_notes"
+  rows="5"
+></secure-textarea>
+
+<!-- CRITICAL: Highly sensitive content -->
+<secure-textarea
+  security-tier="critical"
+  label="Confidential Notes"
+  name="confidential_notes"
+  rows="6"
+></secure-textarea>` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>security-tier</code></td>
+							<td>string</td>
+							<td><code>"critical"</code></td>
+							<td>Security level</td>
+						</tr>
+						<tr>
+							<td><code>name</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Form field name</td>
+						</tr>
+						<tr>
+							<td><code>label</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Accessible label</td>
+						</tr>
+						<tr>
+							<td><code>rows</code></td>
+							<td>number</td>
+							<td><code>3</code></td>
+							<td>Visible text lines</td>
+						</tr>
+						<tr>
+							<td><code>cols</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Visible character width</td>
+						</tr>
+						<tr>
+							<td><code>minlength</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Minimum characters</td>
+						</tr>
+						<tr>
+							<td><code>maxlength</code></td>
+							<td>number</td>
+							<td>-</td>
+							<td>Maximum characters</td>
+						</tr>
+						<tr>
+							<td><code>placeholder</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Placeholder text</td>
+						</tr>
+						<tr>
+							<td><code>required</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Field is required</td>
+						</tr>
+						<tr>
+							<td><code>disabled</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Disable textarea</td>
+						</tr>
+						<tr>
+							<td><code>readonly</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Read-only mode</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Properties</h3>
+				<div class="docs-property-list">
+					<div class="docs-property">
+						<span class="docs-property-name">value</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">Get or set the textarea content</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">valid</span>
+						<span class="docs-property-type">boolean</span>
+						<span class="docs-property-description">Validation state</span>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Events</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Event</th>
+							<th>Detail</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>secure-textarea</code></td>
+							<td><code>{ ` name, value, tier ` }</code></td>
+							<td>Fired on content change</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	}
+}

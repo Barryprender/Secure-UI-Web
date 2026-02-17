@@ -1,0 +1,26 @@
+package partials
+
+// Header partial for <head> section customization
+templ Header(title string, description string, extraCSS string, extraMeta templ.Component) {
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>{ title } - Secure-UI</title>
+		if description != "" {
+			<meta name="description" content={ description }/>
+		}
+		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+
+		<!-- CSS Bundle -->
+		<link rel="stylesheet" href="/static/styles/secure-ui.css"/>
+		<link rel="stylesheet" href="/static/styles/navigation.css"/>
+
+		if extraCSS != "" {
+			<link rel="stylesheet" href={ extraCSS }/>
+		}
+
+		if extraMeta != nil {
+			@extraMeta
+		}
+	</head>
+}

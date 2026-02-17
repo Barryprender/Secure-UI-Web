@@ -1,0 +1,67 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/templates/components"
+import "secure-ui-showcase-go/internal/models"
+
+templ Profile(user *models.User, csrfToken string, errorMessage ...string) {
+	@templates.Layout("Profile", "Your account profile") {
+		<section class="py-3xl">
+			<div class="container">
+				<div class="section-header">
+					<h1 class="section-title">Profile</h1>
+					<p class="section-description">Your account information</p>
+				</div>
+
+				<div class="card card-narrow-sm">
+					<div class="profile-info">
+						<div class="profile-field">
+							<span class="profile-label">Name</span>
+							<span class="profile-value">{ user.FirstName } { user.LastName }</span>
+						</div>
+						<div class="profile-field">
+							<span class="profile-label">Email</span>
+							<span class="profile-value">{ user.Email }</span>
+						</div>
+						<div class="profile-field">
+							<span class="profile-label">Role</span>
+							<span class="profile-value">{ user.Role }</span>
+						</div>
+						<div class="profile-field">
+							<span class="profile-label">Status</span>
+							<span class="profile-value">{ user.Status }</span>
+						</div>
+					</div>
+
+					@components.SecureFormWrapper("POST", "/logout", csrfToken, "authenticated", "logout-form") {
+						<button type="submit" class="btn btn-danger w-full">
+							Sign Out
+						</button>
+					}
+				</div>
+
+				<div class="card card-narrow-sm mt-xl">
+					<h2 class="card-title">Change Password</h2>
+
+					if len(errorMessage) > 0 && errorMessage[0] != "" {
+						<div class="alert alert-danger" role="alert">
+							{ errorMessage[0] }
+						</div>
+					}
+
+					@components.SecureFormWrapper("POST", "/profile/password", csrfToken, "critical", "change-password-form") {
+						@components.SecureInputFieldWithLength("Current Password", "current_password", "password", "", "critical", "", true, 1, 0)
+
+						@components.SecureInputFieldWithLength("New Password", "new_password", "password", "", "critical", "", true, 8, 0)
+
+						@components.SecureInputFieldWithLength("Confirm New Password", "confirm_password", "password", "", "critical", "", true, 8, 0)
+
+						<button type="submit" class="btn btn-primary w-full">
+							Change Password
+						</button>
+					}
+				</div>
+			</div>
+		</section>
+	}
+}

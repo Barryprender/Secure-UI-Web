@@ -1,0 +1,92 @@
+/**
+ * No-JS Fallback Styles
+ *
+ * Styles native HTML fallback content inside secure-ui custom elements.
+ * Uses :not(:defined) to only apply before JS registers the components.
+ * Once customElements.define() runs, shadow DOM hides these elements automatically.
+ */
+
+/* Labels */
+secure-input:not(:defined) > label,
+secure-textarea:not(:defined) > label,
+secure-select:not(:defined) > label,
+secure-datetime:not(:defined) > label,
+secure-file-upload:not(:defined) > label {
+  display: block;
+  margin-bottom: var(--secure-ui-space-1, 4px);
+  font-weight: var(--secure-ui-font-weight-medium, 500);
+  font-size: var(--secure-ui-font-size-sm, 14px);
+  color: var(--secure-ui-color-text-primary, #333);
+}
+
+/* Text inputs, email, password, url, tel, number, date, time */
+secure-input:not(:defined) > input,
+secure-datetime:not(:defined) > input {
+  width: 100%;
+  padding: var(--secure-ui-space-2, 8px) var(--secure-ui-space-3, 12px);
+  border: var(--secure-ui-border-width-thin, 1px) solid var(--secure-ui-color-border, #ccc);
+  border-radius: var(--secure-ui-border-radius-base, 4px);
+  font-size: var(--secure-ui-font-size-sm, 14px);
+  font-family: var(--secure-ui-font-family-base, inherit);
+  color: var(--secure-ui-color-text-primary, #333);
+  background-color: var(--secure-ui-color-bg-primary, #fff);
+  box-sizing: border-box;
+  margin-bottom: var(--secure-ui-space-4, 16px);
+}
+
+/* Textareas */
+secure-textarea:not(:defined) > textarea {
+  width: 100%;
+  padding: var(--secure-ui-space-2, 8px) var(--secure-ui-space-3, 12px);
+  border: var(--secure-ui-border-width-thin, 1px) solid var(--secure-ui-color-border, #ccc);
+  border-radius: var(--secure-ui-border-radius-base, 4px);
+  font-size: var(--secure-ui-font-size-sm, 14px);
+  font-family: var(--secure-ui-font-family-base, inherit);
+  color: var(--secure-ui-color-text-primary, #333);
+  background-color: var(--secure-ui-color-bg-primary, #fff);
+  box-sizing: border-box;
+  margin-bottom: var(--secure-ui-space-4, 16px);
+  resize: vertical;
+}
+
+/* Selects */
+secure-select:not(:defined) > select {
+  width: 100%;
+  padding: var(--secure-ui-space-2, 8px) var(--secure-ui-space-3, 12px);
+  border: var(--secure-ui-border-width-thin, 1px) solid var(--secure-ui-color-border, #ccc);
+  border-radius: var(--secure-ui-border-radius-base, 4px);
+  font-size: var(--secure-ui-font-size-sm, 14px);
+  font-family: var(--secure-ui-font-family-base, inherit);
+  color: var(--secure-ui-color-text-primary, #333);
+  background-color: var(--secure-ui-color-bg-primary, #fff);
+  box-sizing: border-box;
+  margin-bottom: var(--secure-ui-space-4, 16px);
+  cursor: pointer;
+}
+
+/* File inputs */
+secure-file-upload:not(:defined) > input[type="file"] {
+  width: 100%;
+  padding: var(--secure-ui-space-2, 8px);
+  font-size: var(--secure-ui-font-size-sm, 14px);
+  margin-bottom: var(--secure-ui-space-4, 16px);
+}
+
+/* Focus states */
+secure-input:not(:defined) > input:focus,
+secure-textarea:not(:defined) > textarea:focus,
+secure-select:not(:defined) > select:focus,
+secure-datetime:not(:defined) > input:focus {
+  outline: none;
+  border-color: var(--secure-ui-color-primary, #2563eb);
+  box-shadow: var(--secure-ui-shadow-focus, 0 0 0 3px rgba(37, 99, 235, 0.1));
+}
+
+/* Custom element display before definition */
+secure-input:not(:defined),
+secure-textarea:not(:defined),
+secure-select:not(:defined),
+secure-datetime:not(:defined),
+secure-file-upload:not(:defined) {
+  display: block;
+}

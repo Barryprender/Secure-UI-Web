@@ -1,0 +1,301 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/models"
+import "fmt"
+
+templ Dashboard(users []*models.User, csrfToken string) {
+	@templates.Layout("Dashboard", "User management dashboard with CRUD operations") {
+
+		<div class="container py-2xl">
+			<h1>User Dashboard</h1>
+			<p class="text-secondary" style="font-size: 1.125rem; margin-bottom: 2rem;">
+				Full CRUD operations with backend integration and server-side validation.
+			</p>
+
+			<div style="display: grid; gap: 2rem;">
+				<!-- User Form -->
+				<div style="background: var(--secure-ui-color-bg-secondary); padding: 2rem; border-radius: 8px;">
+					<h2 style="margin-bottom: 1.5rem;">Add New User</h2>
+
+					<form id="userForm" style="display: grid; gap: 1rem;">
+						<input type="hidden" name="csrf_token" value={csrfToken}/>
+						<input type="hidden" id="userId" name="userId" value=""/>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+							<div>
+								<label for="firstName" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">First Name</label>
+								<input
+									type="text"
+									id="firstName"
+									name="firstName"
+									required
+									style="width: 100%; padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+								/>
+							</div>
+							<div>
+								<label for="lastName" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Last Name</label>
+								<input
+									type="text"
+									id="lastName"
+									name="lastName"
+									required
+									style="width: 100%; padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email</label>
+							<input
+								type="email"
+								id="email"
+								name="email"
+								required
+								style="width: 100%; padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+							/>
+						</div>
+
+						<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+							<div>
+								<label for="role" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Role</label>
+								<select
+									id="role"
+									name="role"
+									required
+									style="width: 100%; padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+								>
+									<option value="">Select Role</option>
+									<option value="admin">Admin</option>
+									<option value="moderator">Moderator</option>
+									<option value="user">User</option>
+								</select>
+							</div>
+							<div>
+								<label for="status" style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Status</label>
+								<select
+									id="status"
+									name="status"
+									required
+									style="width: 100%; padding: 0.75rem; border: 1px solid var(--secure-ui-color-border); border-radius: 4px; background: var(--secure-ui-color-bg-primary);"
+								>
+									<option value="">Select Status</option>
+									<option value="active">Active</option>
+									<option value="inactive">Inactive</option>
+									<option value="pending">Pending</option>
+								</select>
+							</div>
+						</div>
+
+						<div id="formErrors" style="display: none; padding: 1rem; background: #fee; border: 1px solid #fcc; border-radius: 4px; color: #c00;"></div>
+
+						<div style="display: flex; gap: 1rem; margin-top: 1rem;">
+							<button
+								type="submit"
+								style="flex: 1; padding: 0.75rem 1.5rem; background: var(--secure-ui-color-primary); color: white; border: none; border-radius: 4px; font-weight: 500; cursor: pointer;"
+							>
+								<span id="submitText">Add User</span>
+							</button>
+							<button
+								type="button"
+								id="cancelBtn"
+								style="display: none; padding: 0.75rem 1.5rem; background: var(--secure-ui-color-border); color: var(--secure-ui-color-text); border: none; border-radius: 4px; font-weight: 500; cursor: pointer;"
+							>
+								Cancel
+							</button>
+						</div>
+					</form>
+				</div>
+
+				<!-- Users List -->
+				<div>
+					<h2 style="margin-bottom: 1.5rem;">Users ({ fmt.Sprintf("%d", len(users)) })</h2>
+
+					<div id="usersList" style="display: grid; gap: 1rem;">
+						for _, user := range users {
+							<div class="user-card" data-user-id={fmt.Sprintf("%d", user.ID)} style="background: var(--secure-ui-color-bg-secondary); padding: 1.5rem; border-radius: 8px; display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center;">
+								<div>
+									<h3 style="margin: 0 0 0.5rem 0; font-size: 1.125rem;">{ user.FirstName } { user.LastName }</h3>
+									<p style="margin: 0.25rem 0; color: var(--secure-ui-color-text-secondary); font-size: 0.875rem;">{ user.Email }</p>
+									<div style="display: flex; gap: 1rem; margin-top: 0.75rem; font-size: 0.875rem;">
+										<span style="padding: 0.25rem 0.75rem; background: var(--secure-ui-color-bg-primary); border-radius: 4px;">
+											Role: <strong>{ user.Role }</strong>
+										</span>
+										<span style={ "padding: 0.25rem 0.75rem; border-radius: 4px; " + getStatusStyle(user.Status) }>
+											{ user.Status }
+										</span>
+									</div>
+								</div>
+								<div style="display: flex; gap: 0.5rem;">
+									<button
+										type="button"
+										data-action="edit"
+										data-user-id={fmt.Sprintf("%d", user.ID)}
+										class="edit-user-btn"
+										style="padding: 0.5rem 1rem; background: var(--secure-ui-color-primary); color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem;"
+									>
+										Edit
+									</button>
+									<button
+										type="button"
+										data-action="delete"
+										data-user-id={fmt.Sprintf("%d", user.ID)}
+										class="delete-user-btn"
+										style="padding: 0.5rem 1rem; background: #dc3545; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.875rem;"
+									>
+										Delete
+									</button>
+								</div>
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			const csrfToken = {csrfToken};
+			let editingUserId = null;
+
+			// Form submission handler
+			document.getElementById('userForm').addEventListener('submit', async (e) => {
+				e.preventDefault();
+
+				const formData = {
+					firstName: document.getElementById('firstName').value,
+					lastName: document.getElementById('lastName').value,
+					email: document.getElementById('email').value,
+					role: document.getElementById('role').value,
+					status: document.getElementById('status').value
+				};
+
+				try {
+					let response;
+					if (editingUserId) {
+						// Update existing user
+						response = await fetch(`/api/users/${editingUserId}`, {
+							method: 'PUT',
+							headers: {
+								'Content-Type': 'application/json',
+								'X-CSRF-Token': csrfToken
+							},
+							body: JSON.stringify(formData)
+						});
+					} else {
+						// Create new user
+						response = await fetch('/api/users', {
+							method: 'POST',
+							headers: {
+								'Content-Type': 'application/json',
+								'X-CSRF-Token': csrfToken
+							},
+							body: JSON.stringify(formData)
+						});
+					}
+
+					const result = await response.json();
+
+					if (result.success) {
+						// Reload page to show updated data
+						window.location.reload();
+					} else {
+						// Show errors
+						showErrors(result.errors || [{ message: result.error }]);
+					}
+				} catch (error) {
+					showErrors([{ message: 'Failed to save user. Please try again.' }]);
+				}
+			});
+
+			// Edit user function
+			async function editUser(userId) {
+				try {
+					const response = await fetch(`/api/users/${userId}`);
+					const result = await response.json();
+
+					if (result.success) {
+						const user = result.data;
+						document.getElementById('firstName').value = user.firstName;
+						document.getElementById('lastName').value = user.lastName;
+						document.getElementById('email').value = user.email;
+						document.getElementById('role').value = user.role;
+						document.getElementById('status').value = user.status;
+
+						editingUserId = userId;
+						document.getElementById('submitText').textContent = 'Update User';
+						document.getElementById('cancelBtn').style.display = 'block';
+					}
+				} catch (error) {
+					alert('Failed to load user data');
+				}
+			}
+
+			// Delete user function
+			async function deleteUser(userId) {
+				if (!confirm('Are you sure you want to delete this user?')) {
+					return;
+				}
+
+				try {
+					const response = await fetch(`/api/users/${userId}`, {
+						method: 'DELETE',
+						headers: {
+							'X-CSRF-Token': csrfToken
+						}
+					});
+
+					const result = await response.json();
+
+					if (result.success) {
+						window.location.reload();
+					} else {
+						alert('Failed to delete user: ' + result.error);
+					}
+				} catch (error) {
+					alert('Failed to delete user. Please try again.');
+				}
+			}
+
+			// Event delegation for edit and delete buttons
+			document.getElementById('usersList').addEventListener('click', (e) => {
+				const target = e.target;
+				if (target.classList.contains('edit-user-btn')) {
+					const userId = parseInt(target.dataset.userId);
+					editUser(userId);
+				} else if (target.classList.contains('delete-user-btn')) {
+					const userId = parseInt(target.dataset.userId);
+					deleteUser(userId);
+				}
+			});
+
+			// Cancel edit
+			document.getElementById('cancelBtn').addEventListener('click', () => {
+				document.getElementById('userForm').reset();
+				editingUserId = null;
+				document.getElementById('submitText').textContent = 'Add User';
+				document.getElementById('cancelBtn').style.display = 'none';
+				document.getElementById('formErrors').style.display = 'none';
+			});
+
+			// Show validation errors
+			function showErrors(errors) {
+				const errorDiv = document.getElementById('formErrors');
+				errorDiv.innerHTML = errors.map(e => `<div>${e.message}</div>`).join('');
+				errorDiv.style.display = 'block';
+			}
+		</script>
+	}
+}
+
+func getStatusStyle(status string) string {
+	switch status {
+	case "active":
+		return "background: #d4edda; color: #155724;"
+	case "inactive":
+		return "background: #f8d7da; color: #721c24;"
+	case "pending":
+		return "background: #fff3cd; color: #856404;"
+	default:
+		return "background: var(--secure-ui-color-bg-primary);"
+	}
+}

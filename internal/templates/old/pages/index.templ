@@ -1,0 +1,230 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ Index() {
+	@templates.Layout("Home", "Security-first UI components with zero dependencies") {
+
+		<div class="container py-2xl">
+			<!-- Hero Section -->
+			<section class="hero">
+				<h1 class="hero-title">
+					Security-first<br/>
+					<span class="gradient-text">UI components</span>
+				</h1>
+				<p class="hero-subtitle">
+					Zero dependencies. Maximum protection. Built with vanilla JavaScript for developers who take security seriously.
+				</p>
+
+				<div class="btn-group">
+					<a href="/forms" class="btn btn-primary">
+						<span>View Interactive Demo</span>
+						<span>→</span>
+					</a>
+					<a href="/dashboard" class="btn btn-secondary">
+						Dashboard Demo
+					</a>
+				</div>
+
+				<!-- Trust indicators -->
+				<div class="logos-section">
+					<div class="trust-item">
+						<div class="trust-icon">📦</div>
+						<span class="trust-label">Zero Dependencies</span>
+					</div>
+					<div class="trust-item">
+						<div class="trust-icon">⚡</div>
+						<span class="trust-label">Vanilla JS</span>
+					</div>
+					<div class="trust-item">
+						<div class="trust-icon">🧩</div>
+						<span class="trust-label">Web Components</span>
+					</div>
+				</div>
+			</section>
+
+			<!-- Four-Tier Security Model -->
+			<section class="py-3xl">
+				<h2 class="section-title">Four-Tier Security Model</h2>
+				<p class="section-subtitle">
+					Every component is classified by security requirements, ensuring appropriate protection at every level.
+				</p>
+
+				@TierCards()
+			</section>
+
+			<!-- Key Features -->
+			<section class="py-3xl">
+				<h2 class="section-title">Built for Security</h2>
+				<p class="section-subtitle">
+					Enterprise-grade protection without the enterprise complexity
+				</p>
+
+				@Features()
+			</section>
+
+			<!-- Examples & Demos -->
+			<section class="py-3xl">
+				<h2 class="section-title">Examples & Demos</h2>
+				<p class="section-subtitle">
+					See Secure-UI in action with interactive demonstrations
+				</p>
+
+				@ExampleLinks()
+			</section>
+
+			<!-- Stats -->
+			<section class="py-3xl">
+				<div class="stats-grid">
+					<div class="stat">
+						<div class="stat-value">0</div>
+						<div class="stat-label">Dependencies</div>
+					</div>
+					<div class="stat">
+						<div class="stat-value">100%</div>
+						<div class="stat-label">Vanilla JS</div>
+					</div>
+					<div class="stat">
+						<div class="stat-value">4</div>
+						<div class="stat-label">Security Tiers</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Footer -->
+			<section class="py-3xl text-center">
+				<h2 class="section-title">Open Source</h2>
+				<p class="text-secondary" style="font-size: 1.125rem; margin-top: 1rem;">
+					Secure-UI is released under the MIT License
+				</p>
+				<div style="margin-top: 2rem; display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap; opacity: 0.7;">
+					<span class="text-secondary">Zero dependencies</span>
+					<span class="text-muted">•</span>
+					<span class="text-secondary">Production ready</span>
+					<span class="text-muted">•</span>
+					<span class="text-secondary">Security first</span>
+				</div>
+			</section>
+		</div>
+	}
+}
+
+templ TierCards() {
+	<div class="tier-grid">
+		<div class="tier-card public">
+			<span class="tier-icon">🌐</span>
+			<h3 class="tier-title">Public</h3>
+			<p class="tier-description">Non-sensitive data accessible to all users</p>
+			<p class="tier-examples">Search queries, comments, public profiles</p>
+		</div>
+
+		<div class="tier-card authenticated">
+			<span class="tier-icon">👤</span>
+			<h3 class="tier-title">Authenticated</h3>
+			<p class="tier-description">User-specific data requiring login</p>
+			<p class="tier-examples">Username, preferences, session data</p>
+		</div>
+
+		<div class="tier-card sensitive">
+			<span class="tier-icon">⚠️</span>
+			<h3 class="tier-title">Sensitive</h3>
+			<p class="tier-description">Personal identifiable information</p>
+			<p class="tier-examples">Email, phone number, address</p>
+		</div>
+
+		<div class="tier-card critical">
+			<span class="tier-icon">🔴</span>
+			<h3 class="tier-title">Critical</h3>
+			<p class="tier-description">High-risk security credentials</p>
+			<p class="tier-examples">Passwords, payment info, API keys</p>
+		</div>
+	</div>
+}
+
+templ Features() {
+	<div class="grid grid-3 mt-xl">
+		<div class="feature">
+			<div class="feature-icon">🛡️</div>
+			<h3 class="feature-title">Security by Design</h3>
+			<p class="feature-description">
+				Closed Shadow DOM, XSS prevention, tier-based controls, and comprehensive audit logging built into every component.
+			</p>
+		</div>
+
+		<div class="feature">
+			<div class="feature-icon">📱</div>
+			<h3 class="feature-title">Progressive Enhancement</h3>
+			<p class="feature-description">
+				Works without JavaScript using HTML5, then enhances with security features when JS is available.
+			</p>
+		</div>
+
+		<div class="feature">
+			<div class="feature-icon">📦</div>
+			<h3 class="feature-title">Zero Dependencies</h3>
+			<p class="feature-description">
+				Pure vanilla JavaScript - no external libraries, no build step, no supply chain vulnerabilities.
+			</p>
+		</div>
+
+		<div class="feature">
+			<div class="feature-icon">🌐</div>
+			<h3 class="feature-title">Backend Agnostic</h3>
+			<p class="feature-description">
+				Works with PHP, Python, .NET, Node.js, Go, or any backend framework. Just HTML and JavaScript.
+			</p>
+		</div>
+
+		<div class="feature">
+			<div class="feature-icon">🎨</div>
+			<h3 class="feature-title">Visual Security</h3>
+			<p class="feature-description">
+				Color-coded tiers, security badges, and visual indicators communicate data sensitivity to users.
+			</p>
+		</div>
+
+		<div class="feature">
+			<div class="feature-icon">📊</div>
+			<h3 class="feature-title">Audit Trail</h3>
+			<p class="feature-description">
+				Comprehensive event logging for security monitoring and compliance requirements.
+			</p>
+		</div>
+	</div>
+}
+
+templ ExampleLinks() {
+	<div class="grid grid-3 mt-xl">
+		<a href="/forms" class="link-card">
+			<h3 class="link-card-title">📋 Form Components</h3>
+			<p class="link-card-description">
+				Interactive demonstration of all four security tiers with real-time audit logging and form submission.
+			</p>
+			<span class="badge badge-authenticated">Recommended</span>
+		</a>
+
+		<a href="/dashboard" class="link-card">
+			<h3 class="link-card-title">👥 User Dashboard</h3>
+			<p class="link-card-description">
+				Full CRUD operations with backend integration. Create, read, update, and delete users with server-side validation.
+			</p>
+			<span class="badge badge-critical">Backend Required</span>
+		</a>
+
+		<a href="/table" class="link-card">
+			<h3 class="link-card-title">📊 Data Table Demo</h3>
+			<p class="link-card-description">
+				Secure table component with real-time filtering, sorting, and pagination. Displays user data with tier-based masking.
+			</p>
+			<span class="badge badge-sensitive">Backend Required</span>
+		</a>
+
+		<a href="/registration" class="link-card">
+			<h3 class="link-card-title">📝 Registration Form</h3>
+			<p class="link-card-description">
+				Real-world example showing username, email, and password inputs with different security tiers.
+			</p>
+			<span class="badge badge-sensitive">Example</span>
+		</a>
+	</div>
+}

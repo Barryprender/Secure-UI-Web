@@ -1,0 +1,37 @@
+package partials
+
+import "secure-ui-showcase-go/internal/middleware"
+
+templ Navbar(isLoggedIn bool) {
+	<header class="top-nav">
+		<div class="container">
+			<nav class="nav-content">
+				<a href="/" class="nav-logo">
+					<span class="nav-logo-icon">🛡️</span>
+					<span class="nav-logo-text">Secure-UI</span>
+				</a>
+
+				<ul class="nav-links">
+					<li><a href="/" class="nav-link">Home</a></li>
+					<li><a href="/forms" class="nav-link">Forms</a></li>
+					<li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+					<li><a href="/table" class="nav-link">Table</a></li>
+					<li><a href="/registration" class="nav-link">Registration</a></li>
+					<li><a href="/documentation" class="nav-link">Docs</a></li>
+				</ul>
+
+				<div class="nav-auth">
+					if isLoggedIn {
+						<a href="/profile" class="nav-link">Profile</a>
+						<form method="POST" action="/logout" class="nav-logout-form">
+							<input type="hidden" name="csrf_token" value={ middleware.LayoutCSRFFromContext(ctx) }/>
+							<button type="submit" class="btn btn-sm btn-secondary">Logout</button>
+						</form>
+					} else {
+						<a href="/login" class="btn btn-sm btn-accent">Sign In</a>
+					}
+				</div>
+			</nav>
+		</div>
+	</header>
+}

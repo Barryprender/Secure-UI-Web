@@ -1,0 +1,136 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/middleware"
+import "secure-ui-showcase-go/internal/models"
+import "fmt"
+
+templ Table(users []*models.User, csrfToken string) {
+	@templates.Layout("Data Table", "User data table with filtering and sorting") {
+		<section class="py-3xl">
+			<div class="container">
+				<div class="section-header">
+					<h1 class="section-title">Data Table</h1>
+					<p class="section-description">
+						Secure table component with user data display
+					</p>
+				</div>
+
+				<div class="card">
+					if len(users) == 0 {
+						<div class="table-empty">
+							<p class="text-secondary text-lg">No users to display</p>
+							<a href="/dashboard" class="btn btn-primary mt-lg">
+								Go to Dashboard
+							</a>
+						</div>
+					} else {
+						<secure-table
+							id="users-table"
+							enable-search="true"
+							enable-sort="true"
+							enable-pagination="true"
+							page-size="10"
+							security-tier="authenticated"
+						>
+							<!-- Server-rendered table with slot attribute for progressive enhancement dfsdf-->
+							<table slot="table" class="secure-table"> 
+								<thead>
+									<tr>
+										<th data-key="id" data-sortable="true">ID</th>
+										<th data-key="name" data-sortable="true" data-filterable="true">Name</th>
+										<th data-key="email" data-sortable="true" data-filterable="true" data-tier="sensitive">Email</th>
+										<th data-key="role" data-sortable="true" data-filterable="true">Role</th>
+										<th data-key="status" data-sortable="true" data-filterable="true">Status</th>
+										<th data-key="created" data-sortable="true">Created</th>
+										<th data-key="actions" data-sortable="false">Actions</th>
+									</tr>
+								</thead>
+								<tbody>
+									for _, user := range users {
+										<tr>
+											<td data-key="id">{ fmt.Sprintf("%d", user.ID) }</td>
+											<td data-key="name">{ user.FirstName } { user.LastName }</td>
+											<td data-key="email">{ user.Email }</td>
+											<td data-key="role">
+												if user.Role == "admin" {
+													<span class="badge badge-critical">admin</span>
+												} else if user.Role == "moderator" {
+													<span class="badge badge-authenticated">moderator</span>
+												} else {
+													<span class="badge badge-secondary">{ user.Role }</span>
+												}
+											</td>
+											<td data-key="status">{ user.Status }</td>
+											<td data-key="created">{ user.CreatedAt.Format("2006-01-02") }</td>
+											<td data-key="actions">
+												<button
+													type="button"
+													class="btn btn-secondary btn-xs"
+													data-action="delete"
+													data-user-id={ fmt.Sprintf("%d", user.ID) }
+													data-user-name={ user.FirstName + " " + user.LastName }
+												>
+													Delete
+												</button>
+											</td>
+										</tr>
+									}
+								</tbody>
+							</table>
+						</secure-table>
+
+						<div class="table-footer">
+							<p class="text-secondary">
+								Total Users: <span class="font-semibold text-primary">{ len(users) }</span>
+							</p>
+						</div>
+					}
+				</div>
+			</div>
+
+			<!-- Delete confirmation dialog -->
+			<dialog id="delete-dialog" class="confirm-dialog">
+				<div class="confirm-dialog-content">
+					<h3 class="confirm-dialog-title">Confirm Delete</h3>
+					<p class="confirm-dialog-message">
+						Are you sure you want to delete <strong id="delete-user-name"></strong>? This action cannot be undone.
+					</p>
+					<form method="POST" action="/users/delete" id="delete-form">
+						<input type="hidden" name="csrf_token" value={ middleware.LayoutCSRFFromContext(ctx) }/>
+						<input type="hidden" name="id" id="delete-user-id" value=""/>
+						<div class="confirm-dialog-actions">
+							<button type="button" class="btn btn-secondary btn-sm" id="delete-cancel-btn">
+								Cancel
+							</button>
+							<button type="submit" class="btn btn-danger btn-sm">
+								Delete
+							</button>
+						</div>
+					</form>
+				</div>
+			</dialog>
+
+			<!-- CSP-compliant script with nonce -->
+			<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+				var table = document.getElementById('users-table');
+				var dialog = document.getElementById('delete-dialog');
+				var userIdInput = document.getElementById('delete-user-id');
+				var userNameEl = document.getElementById('delete-user-name');
+				var cancelBtn = document.getElementById('delete-cancel-btn');
+
+				table.addEventListener('table-action', function(e) {
+					if (e.detail.action === 'delete') {
+						userIdInput.value = e.detail.userId;
+						userNameEl.textContent = e.detail.userName;
+						dialog.showModal();
+					}
+				});
+
+				cancelBtn.addEventListener('click', function() {
+					dialog.close();
+				});
+			</script>
+		</section>
+	}
+}

@@ -1,0 +1,43 @@
+package templates
+
+import "secure-ui-showcase-go/internal/templates/partials"
+
+templ Layout(title string, description string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		@Head(title, description)
+		<body>
+			@partials.Navigation()
+			<main>
+				{ children... }
+			</main>
+			@Footer()
+		</body>
+	</html>
+}
+
+templ Head(title string, description string) {
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>{ title } - Secure-UI</title>
+		if description != "" {
+			<meta name="description" content={ description }/>
+		}
+		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+
+		<!-- CSS Bundle - includes tokens.css, dark-theme.css, shared.css -->
+		<link rel="stylesheet" href="/static/styles/secure-ui.css"/>
+		<link rel="stylesheet" href="/static/styles/navigation.css"/>
+	</head>
+}
+
+templ Footer() {
+	<footer class="site-footer">
+		<div class="container">
+			<p style="text-align: center; color: var(--secure-ui-color-text-secondary); padding: 2rem 0;">
+				Secure-UI - MIT License - Zero Dependencies
+			</p>
+		</div>
+	</footer>
+}

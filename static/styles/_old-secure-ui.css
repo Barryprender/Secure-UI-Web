@@ -1,0 +1,153 @@
+/**
+ * Secure-UI CSS Bundle
+ *
+ * This file imports all the base CSS files needed for the Secure-UI showcase site.
+ * It ensures proper cascade order: tokens → theme → utilities
+ *
+ * Usage in HTML:
+ * <link rel="stylesheet" href="/static/styles/secure-ui.css">
+ */
+
+/* 1. Design Tokens - MUST be loaded first */
+@import url('../../secure-ui-components/src/styles/tokens.css');
+
+/* 2. Dark Theme Support - overrides tokens for dark mode */
+@import url('../../secure-ui-components/src/styles/dark-theme.css');
+
+/* 3. Shared Utilities - optional page-level styles */
+@import url('../../secure-ui-components/src/styles/shared.css');
+
+/* 4. Additional showcase-specific styles */
+.tier-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.tier-card {
+    background: var(--secure-ui-color-bg-tertiary);
+    border: 2px solid;
+    border-radius: var(--secure-ui-border-radius-lg);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.tier-card.public {
+    border-color: #71717a;
+}
+
+.tier-card.authenticated {
+    border-color: #3b82f6;
+}
+
+.tier-card.sensitive {
+    border-color: #f59e0b;
+}
+
+.tier-card.critical {
+    border-color: #ef4444;
+}
+
+.tier-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--secure-ui-shadow-xl);
+}
+
+.tier-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
+.tier-title {
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tier-description {
+    color: var(--secure-ui-color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.tier-examples {
+    color: var(--secure-ui-color-text-secondary);
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+    font-style: italic;
+    opacity: 0.7;
+}
+
+.logos-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4rem;
+    flex-wrap: wrap;
+    margin: 4rem 0 2rem 0;
+}
+
+.trust-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    transition: transform 0.3s ease;
+}
+
+.trust-item:hover {
+    transform: translateY(-4px);
+}
+
+.trust-icon {
+    font-size: 2.5rem;
+    line-height: 1;
+    filter: grayscale(0.3) opacity(0.9);
+    transition: filter 0.3s ease;
+}
+
+.trust-item:hover .trust-icon {
+    filter: grayscale(0) opacity(1);
+}
+
+.trust-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--secure-ui-color-text-secondary);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin: 3rem 0;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 3rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--secure-ui-color-primary) 0%, var(--secure-ui-color-info) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.stat-label {
+    color: var(--secure-ui-color-text-secondary);
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-top: 0.5rem;
+}

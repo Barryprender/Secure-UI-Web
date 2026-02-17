@@ -1,0 +1,311 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ Documentation() {
+	@templates.Layout("Documentation", "Complete documentation for Secure-UI web components") {
+		<div class="docs-container">
+			<header class="docs-header">
+				<h1 class="docs-title">Documentation</h1>
+				<p class="docs-subtitle">
+					Complete reference for Secure-UI web components. Security-first form elements
+					with built-in validation, XSS prevention, and audit logging.
+				</p>
+			</header>
+
+			<!-- Quick Start Section -->
+			<section class="docs-section">
+				<h2 class="docs-section-title">Quick Start</h2>
+				<p class="docs-text">
+					Add Secure-UI components to your project by importing the component library.
+					Components self-register and are immediately available for use.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Installation</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">&lt;!-- Import all components --&gt;
+&lt;script type="module" src="/components/index.js"&gt;&lt;/script&gt;
+
+&lt;!-- Or import individual components --&gt;
+&lt;script type="module" src="/components/secure-input/secure-input.js"&gt;&lt;/script&gt;</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Basic Usage</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">&lt;secure-input
+  label="Email Address"
+  name="email"
+  type="email"
+  security-tier="sensitive"
+  required
+&gt;&lt;/secure-input&gt;</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Tiers Section -->
+			<section class="docs-section">
+				<h2 class="docs-section-title">Security Tiers</h2>
+				<p class="docs-text">
+					Every component supports four security tiers that control validation strictness,
+					visual indicators, and security features. Choose the appropriate tier based on
+					the sensitivity of the data being collected.
+				</p>
+
+				<div class="docs-tier-grid">
+					<div class="docs-tier-card docs-tier-card--public">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--public">Public</span>
+						</div>
+						<div class="docs-tier-card-description">
+							Standard security for non-sensitive data. Basic validation, autocomplete allowed.
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--authenticated">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--authenticated">Authenticated</span>
+						</div>
+						<div class="docs-tier-card-description">
+							For logged-in users. Enhanced validation, session-aware features.
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--sensitive">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--sensitive">Sensitive</span>
+						</div>
+						<div class="docs-tier-card-description">
+							PII and personal data. Masking, no autocomplete, rate limiting.
+						</div>
+					</div>
+
+					<div class="docs-tier-card docs-tier-card--critical">
+						<div class="docs-tier-card-title">
+							<span class="docs-tier-badge docs-tier-badge--critical">Critical</span>
+						</div>
+						<div class="docs-tier-card-description">
+							Passwords, financial data. Maximum security, full audit logging.
+						</div>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Security Tier Example</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">&lt;!-- Public tier - for general information --&gt;
+&lt;secure-input security-tier="public" label="Name" name="name"&gt;&lt;/secure-input&gt;
+
+&lt;!-- Sensitive tier - for PII like email, phone --&gt;
+&lt;secure-input security-tier="sensitive" label="Email" name="email" type="email"&gt;&lt;/secure-input&gt;
+
+&lt;!-- Critical tier - for passwords, financial data --&gt;
+&lt;secure-input security-tier="critical" label="Password" name="password" type="password"&gt;&lt;/secure-input&gt;</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Components Section -->
+			<section class="docs-section">
+				<h2 class="docs-section-title">Components</h2>
+				<p class="docs-text">
+					Explore the complete set of Secure-UI form components. Each component is designed
+					with security as the primary concern while maintaining excellent usability.
+				</p>
+
+				<nav class="docs-nav">
+					<a href="/documentation/secure-input" class="docs-nav-card">
+						<div class="docs-nav-card-icon">&#128221;</div>
+						<div class="docs-nav-card-title">&lt;secure-input&gt;</div>
+						<div class="docs-nav-card-description">
+							Text, email, password, number, and other input types with XSS prevention and validation.
+						</div>
+					</a>
+
+					<a href="/documentation/secure-select" class="docs-nav-card">
+						<div class="docs-nav-card-icon">&#128203;</div>
+						<div class="docs-nav-card-title">&lt;secure-select&gt;</div>
+						<div class="docs-nav-card-description">
+							Dropdown select with option value validation and injection prevention.
+						</div>
+					</a>
+
+					<a href="/documentation/secure-textarea" class="docs-nav-card">
+						<div class="docs-nav-card-icon">&#128196;</div>
+						<div class="docs-nav-card-title">&lt;secure-textarea&gt;</div>
+						<div class="docs-nav-card-description">
+							Multi-line text input with content sanitization and length limits.
+						</div>
+					</a>
+
+					<a href="/documentation/secure-form" class="docs-nav-card">
+						<div class="docs-nav-card-icon">&#128220;</div>
+						<div class="docs-nav-card-title">&lt;secure-form&gt;</div>
+						<div class="docs-nav-card-description">
+							Form wrapper with automatic CSRF protection and coordinated validation.
+						</div>
+					</a>
+
+					<a href="/documentation/secure-file-upload" class="docs-nav-card">
+						<div class="docs-nav-card-icon">&#128228;</div>
+						<div class="docs-nav-card-title">&lt;secure-file-upload&gt;</div>
+						<div class="docs-nav-card-description">
+							File upload with type validation, size limits, magic number verification, and scan hook integration.
+						</div>
+					</a>
+
+					<a href="/documentation/secure-datetime" class="docs-nav-card">
+						<div class="docs-nav-card-icon">&#128197;</div>
+						<div class="docs-nav-card-title">&lt;secure-datetime&gt;</div>
+						<div class="docs-nav-card-description">
+							Date, time, and datetime inputs with timezone handling and validation.
+						</div>
+					</a>
+
+					<a href="/documentation/secure-table" class="docs-nav-card">
+						<div class="docs-nav-card-icon">&#128200;</div>
+						<div class="docs-nav-card-title">&lt;secure-table&gt;</div>
+						<div class="docs-nav-card-description">
+							Data table with sorting, filtering, pagination, and XSS-safe rendering.
+						</div>
+					</a>
+				</nav>
+			</section>
+
+			<!-- Common Attributes Section -->
+			<section class="docs-section">
+				<h2 class="docs-section-title">Common Attributes</h2>
+				<p class="docs-text">
+					All Secure-UI components share these common attributes inherited from the base component.
+				</p>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>security-tier</code></td>
+							<td>string</td>
+							<td><code>"critical"</code></td>
+							<td>Security level: "public", "authenticated", "sensitive", or "critical"</td>
+						</tr>
+						<tr>
+							<td><code>name</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Form field name for submission</td>
+						</tr>
+						<tr>
+							<td><code>label</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Accessible label text displayed above the field</td>
+						</tr>
+						<tr>
+							<td><code>required</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Whether the field is required</td>
+						</tr>
+						<tr>
+							<td><code>disabled</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Disables the component</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Security Features Section -->
+			<section class="docs-section">
+				<h2 class="docs-section-title">Built-in Security Features</h2>
+
+				<div class="docs-callout docs-callout--success">
+					<div class="docs-callout-title">Security by Default</div>
+					<div class="docs-callout-text">
+						Core security features like XSS prevention, input sanitization, and audit logging
+						are enabled by default with sensible defaults for each security tier.
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">XSS Prevention</h3>
+				<p class="docs-text">
+					All user input is automatically sanitized before rendering. HTML entities are
+					encoded, script tags are stripped, and event handlers are removed.
+				</p>
+
+				<h3 class="docs-section-subtitle">CSRF Protection</h3>
+				<p class="docs-text">
+					The <code>&lt;secure-form&gt;</code> component automatically includes and validates
+					CSRF tokens. Tokens are generated server-side and validated on form submission.
+				</p>
+
+				<h3 class="docs-section-subtitle">Input Validation</h3>
+				<p class="docs-text">
+					Type-specific validation is applied based on input type and security tier.
+					Email formats, URL patterns, and custom regex patterns are validated client-side
+					with server-side validation as the authoritative source.
+				</p>
+
+				<h3 class="docs-section-subtitle">Audit Logging</h3>
+				<p class="docs-text">
+					All components maintain an audit log of security-relevant events. Access the
+					log via the <code>getAuditLog()</code> method on any component instance.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Accessing Audit Logs</span>
+						<span class="docs-code-language">JavaScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">const input = document.querySelector('secure-input');
+const auditLog = input.getAuditLog();
+
+// Log contains entries like:
+// { action: 'input_focused', timestamp: '...', data: { name: 'email' } }
+// { action: 'validation_failed', timestamp: '...', data: { reason: 'invalid email' } }
+console.log(auditLog);</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Progressive Enhancement Section -->
+			<section class="docs-section">
+				<h2 class="docs-section-title">Progressive Enhancement</h2>
+				<p class="docs-text">
+					All components are built with progressive enhancement in mind. They work without
+					JavaScript using native HTML form elements, and enhance with additional security
+					features when JavaScript is available.
+				</p>
+
+				<div class="docs-callout docs-callout--info">
+					<div class="docs-callout-title">Graceful Degradation</div>
+					<div class="docs-callout-text">
+						When JavaScript is unavailable, components degrade to unstyled custom elements.
+						Server-side validation should always be the authoritative security layer regardless.
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}

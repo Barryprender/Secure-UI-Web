@@ -1,0 +1,138 @@
+/* ============================================
+   View Transitions — Cross-Document MPA
+   ============================================
+   Opt-in to the View Transitions API for smooth
+   page-to-page navigation. Degrades gracefully
+   in unsupported browsers (instant page load).
+
+   Ref: https://developer.chrome.com/docs/web-platform/view-transitions/cross-document
+   ============================================ */
+
+/* Opt-in: enable transitions on same-origin navigation */
+@view-transition {
+  navigation: auto;
+}
+
+/* ------------------------------------------
+   Transition Names
+   ------------------------------------------ */
+
+/* Top nav — persists across pages, no animation */
+.top-nav {
+  view-transition-name: top-nav;
+}
+
+/* Main content area — the only element that animates */
+.main-content > main {
+  view-transition-name: main-content;
+}
+
+/* ------------------------------------------
+   Root — Instant (no visible transition on root)
+   The root captures everything not named.
+   We hide it instantly so only named elements animate.
+   ------------------------------------------ */
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ------------------------------------------
+   Nav — Hold in Place (no flicker)
+   ------------------------------------------ */
+
+::view-transition-group(top-nav) {
+  animation: none;
+}
+
+::view-transition-old(top-nav),
+::view-transition-new(top-nav) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ------------------------------------------
+   Main Content — Crossfade (default)
+   ------------------------------------------ */
+
+::view-transition-old(main-content) {
+  animation: vt-fade-out 0.2s ease-out both;
+}
+
+::view-transition-new(main-content) {
+  animation: vt-fade-in 0.2s ease-in 0.1s both;
+}
+
+/* ------------------------------------------
+   Directional Slide — Forward Navigation
+   ------------------------------------------ */
+
+html:active-view-transition-type(forwards) {
+  &::view-transition-old(main-content) {
+    animation: vt-slide-out-left 0.2s ease-in both;
+  }
+  &::view-transition-new(main-content) {
+    animation: vt-slide-in-right 0.25s ease-out both;
+  }
+}
+
+/* ------------------------------------------
+   Directional Slide — Backward Navigation
+   ------------------------------------------ */
+
+html:active-view-transition-type(backwards) {
+  &::view-transition-old(main-content) {
+    animation: vt-slide-out-right 0.2s ease-in both;
+  }
+  &::view-transition-new(main-content) {
+    animation: vt-slide-in-left 0.25s ease-out both;
+  }
+}
+
+/* ------------------------------------------
+   Keyframes
+   ------------------------------------------ */
+
+@keyframes vt-fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
+
+@keyframes vt-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes vt-slide-out-left {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-40px); }
+}
+
+@keyframes vt-slide-in-right {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes vt-slide-out-right {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(40px); }
+}
+
+@keyframes vt-slide-in-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ------------------------------------------
+   Accessibility — Respect Reduced Motion
+   ------------------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

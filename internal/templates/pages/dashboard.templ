@@ -1,0 +1,73 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/templates/components"
+import "secure-ui-showcase-go/internal/models"
+import "fmt"
+
+templ Dashboard(users []*models.User, csrfToken string) {
+	@templates.Layout("Dashboard", "User management dashboard") {
+		<section class="py-3xl">
+			<div class="container">
+				<div class="section-header">
+					<h1 class="section-title">User Dashboard</h1>
+					<p class="section-description">
+						Manage users with full CRUD operations
+					</p>
+				</div>
+
+				<div class="card">
+					<div class="mb-xl">
+						<h2 class="dashboard-section-title">Add New User</h2>
+						<form
+							method="POST"
+							action="/users"
+							class="dashboard-add-form"
+						>
+							<input type="hidden" name="csrf_token" value={ csrfToken }/>
+
+							@components.SecureInputField("First Name", "firstName", "text", "", "public", "", true)
+
+							@components.SecureInputField("Last Name", "lastName", "text", "", "public", "", true)
+
+							@components.SecureInputField("Email", "email", "email", "", "authenticated", "", true)
+
+							<button type="submit" class="btn btn-primary">
+								Add User
+							</button>
+						</form>
+					</div>
+
+					<div>
+						<h2 class="dashboard-section-title">Users ({ fmt.Sprintf("%d", len(users)) })</h2>
+						if len(users) == 0 {
+							<p class="text-secondary">No users yet. Add one above!</p>
+						} else {
+							<div class="user-list">
+								for _, user := range users {
+									<div class="user-card">
+										<div>
+											<div class="user-card-name">{ user.FirstName } { user.LastName }</div>
+											<div class="user-card-email">{ user.Email }</div>
+											<div class="user-card-meta">
+												<span class="badge badge-secondary">{ user.Role }</span>
+												<span class="ml-sm">{ user.Status }</span>
+											</div>
+										</div>
+										<form method="POST" action="/users/delete" class="d-inline">
+											<input type="hidden" name="csrf_token" value={ csrfToken }/>
+											<input type="hidden" name="id" value={ fmt.Sprintf("%d", user.ID) }/>
+											<button type="submit" class="btn btn-secondary btn-sm">
+												Delete
+											</button>
+										</form>
+									</div>
+								}
+							</div>
+						}
+					</div>
+				</div>
+			</div>
+		</section>
+	}
+}

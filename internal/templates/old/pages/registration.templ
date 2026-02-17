@@ -1,0 +1,23 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ Registration() {
+	@templates.Layout("Registration Form", "User registration with multi-tier security") {
+		<div class="container py-2xl">
+			<h1>Registration Form</h1>
+			<p class="text-secondary" style="font-size: 1.125rem; margin-bottom: 3rem;">
+				Real-world example showing username, email, and password inputs with different security tiers.
+			</p>
+
+			<!-- Content will be added from existing registration-form.html -->
+			<p style="padding: 2rem; background: var(--secure-ui-color-bg-secondary); border-radius: 8px;">
+				🚧 This page is being migrated from the Node.js version.
+				<br/>
+				<br/>
+				For now, view the original at:
+				<a href="http://localhost:8000/registration-form.html" target="_blank">http://localhost:8000/registration-form.html</a>
+			</p>
+		</div>
+	}
+}

@@ -1,0 +1,468 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ Home() {
+	@templates.Layout("Home", "Build secure web applications with confidence. Zero dependencies, built-in security by default.") {
+<!-- Hero Section -->
+<section class="hero-section">
+	<div class="container">
+		<div class="hero-content">
+			<div class="hero-badge">
+				<span class="badge badge-primary">Zero Dependencies</span>
+			</div>
+
+			<h1 class="hero-title">
+				Build Secure Web Apps<br />
+				Without Compromise
+			</h1>
+
+			<p class="hero-description">
+				A security-first web component library with built-in protection against XSS, CSRF,
+				and common web vulnerabilities. Zero dependencies, progressive enhancement, graceful degradation without JavaScript.
+			</p>
+
+			<div class="hero-cta">
+				<a href="/documentation" class="btn btn-primary">Get Started</a>
+				<a href="/forms" class="btn btn-secondary">View Examples</a>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+	<div class="container">
+		<div class="stats-grid">
+			<div class="stat-card">
+				<div class="stat-value">Zero</div>
+				<div class="stat-label">Dependencies</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-value">Server</div>
+				<div class="stat-label">Authoritative</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-value">Built-in</div>
+				<div class="stat-label">Security</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Built-in Security Features Section -->
+<section class="features-section">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">Built-In Security Features</h2>
+			<p class="section-description">
+				Comprehensive security protection enabled by default. Secure out of the box with sensible defaults.
+			</p>
+		</div>
+
+		<div class="features-grid">
+			<!-- CSRF Protection -->
+			<div class="feature-card">
+				<div class="feature-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+						<path d="m9 12 2 2 4-4"></path>
+					</svg>
+				</div>
+				<h3 class="feature-title">Automatic CSRF Protection</h3>
+				<p class="feature-description">
+					All forms automatically include CSRF tokens. No manual token management required.
+				</p>
+				<ul class="feature-list">
+					<li>Per-session token generation</li>
+					<li>Automatic token validation</li>
+					<li>Seamless integration</li>
+				</ul>
+			</div>
+
+			<!-- Server-Side Validation -->
+			<div class="feature-card">
+				<div class="feature-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+						<rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+						<line x1="6" y1="6" x2="6.01" y2="6"></line>
+						<line x1="6" y1="18" x2="6.01" y2="18"></line>
+						<path d="m15 11 2 2 4-4"></path>
+					</svg>
+				</div>
+				<h3 class="feature-title">Layered Validation</h3>
+				<p class="feature-description">
+					Client-side validation for instant feedback, server-side validation as the security boundary. Defence in depth.
+				</p>
+				<ul class="feature-list">
+					<li>Real-time client-side feedback</li>
+					<li>Server-authoritative validation</li>
+					<li>Detailed error messages</li>
+				</ul>
+			</div>
+
+			<!-- Input Sanitization -->
+			<div class="feature-card">
+				<div class="feature-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="16 18 22 12 16 6"></polyline>
+						<polyline points="8 6 2 12 8 18"></polyline>
+						<line x1="15" y1="4" x2="9" y2="20"></line>
+					</svg>
+				</div>
+				<h3 class="feature-title">Input Sanitization</h3>
+				<p class="feature-description">
+					Automatic sanitization of all user input. XSS prevention built into every component.
+				</p>
+				<ul class="feature-list">
+					<li>HTML entity encoding</li>
+					<li>Script tag stripping</li>
+					<li>Event handler removal</li>
+				</ul>
+			</div>
+
+			<!-- Secure Defaults -->
+			<div class="feature-card">
+				<div class="feature-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+					</svg>
+				</div>
+				<h3 class="feature-title">Secure Defaults</h3>
+				<p class="feature-description">
+					Security-first configuration out of the box. Strict CSP, secure headers, and safe cookies.
+				</p>
+				<ul class="feature-list">
+					<li>Strict Content Security Policy</li>
+					<li>Closed Shadow DOM isolation</li>
+					<li>Tier-based security controls</li>
+				</ul>
+			</div>
+
+			<!-- Single Source of Truth -->
+			<div class="feature-card">
+				<div class="feature-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+						<path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
+						<path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
+					</svg>
+				</div>
+				<h3 class="feature-title">Single Source of Truth</h3>
+				<p class="feature-description">
+					Server owns all persistent state and security decisions. Components manage only transient UI state.
+				</p>
+				<ul class="feature-list">
+					<li>Server-authoritative data</li>
+					<li>No client-server state sync</li>
+					<li>Consistent security enforcement</li>
+				</ul>
+			</div>
+
+			<!-- Audit-Ready Logging -->
+			<div class="feature-card">
+				<div class="feature-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+						<rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+						<line x1="8" y1="10" x2="16" y2="10"></line>
+						<line x1="8" y1="14" x2="16" y2="14"></line>
+						<line x1="8" y1="18" x2="12" y2="18"></line>
+					</svg>
+				</div>
+				<h3 class="feature-title">Audit-Ready Logging</h3>
+				<p class="feature-description">
+					Built-in security event logging for compliance and monitoring requirements.
+				</p>
+				<ul class="feature-list">
+					<li>Component interaction events</li>
+					<li>Security tier violations</li>
+					<li>Input validation errors</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- OWASP Top 10:2025 Alignment Section -->
+<section class="owasp-section">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">OWASP Top 10:2025 Alignment</h2>
+			<p class="section-description">
+				Secure-UI components address key risks from the
+				<a href="https://owasp.org/Top10/2025/" target="_blank" rel="noopener" class="owasp-link">OWASP Top 10:2025</a>,
+				providing client-side defences that complement your server-side security.
+			</p>
+		</div>
+
+		<div class="owasp-grid">
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A01</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Broken Access Control</h3>
+				<p class="owasp-card-text">
+					Automatic CSRF token injection and validation via <code>&lt;secure-form&gt;</code>.
+					Immutable security tiers prevent runtime downgrade.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A02</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Security Misconfiguration</h3>
+				<p class="owasp-card-text">
+					Defaults to CRITICAL tier (highest security). Provides CSP directives and
+					security header recommendations out of the box.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A03</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Supply Chain Failures</h3>
+				<p class="owasp-card-text">
+					Zero runtime dependencies. No transitive supply chain risk.
+					The entire library is self-contained TypeScript.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--partial">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A04</span>
+					<span class="owasp-coverage owasp-coverage--partial">Complementary</span>
+				</div>
+				<h3 class="owasp-card-title">Cryptographic Failures</h3>
+				<p class="owasp-card-text">
+					Disables autocomplete and browser caching for sensitive tiers.
+					Cryptographic controls (TLS, hashing) require server-side implementation.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A05</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Injection</h3>
+				<p class="owasp-card-text">
+					All input is sanitized via HTML entity encoding, script tag stripping,
+					and event handler removal. Closed Shadow DOM isolates component internals.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A06</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Insecure Design</h3>
+				<p class="owasp-card-text">
+					Security-by-default architecture. Fail-secure defaults, four-tier security model,
+					and progressive enhancement ensure security without developer effort.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--partial">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A07</span>
+					<span class="owasp-coverage owasp-coverage--partial">Complementary</span>
+				</div>
+				<h3 class="owasp-card-title">Authentication Failures</h3>
+				<p class="owasp-card-text">
+					Client-side rate limiting on sensitive and critical tiers throttles brute-force attempts.
+					Authentication logic requires server-side implementation.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A08</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Data Integrity Failures</h3>
+				<p class="owasp-card-text">
+					CSRF protection prevents cross-site request forgery. File upload scan hooks
+					validate file integrity. Closed Shadow DOM prevents DOM tampering.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A09</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Logging &amp; Alerting Failures</h3>
+				<p class="owasp-card-text">
+					Every component records security events via <code>getAuditLog()</code> and
+					<code>secure-audit</code> custom events. Tier-configurable logging detail.
+				</p>
+			</div>
+
+			<div class="owasp-card owasp-card--covered">
+				<div class="owasp-card-header">
+					<span class="owasp-id">A10</span>
+					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
+				</div>
+				<h3 class="owasp-card-title">Exceptional Conditions</h3>
+				<p class="owasp-card-text">
+					Graceful validation feedback, rate limiting, and scan hook error handling.
+					Components never expose stack traces or internal state to users.
+				</p>
+			</div>
+		</div>
+
+		<div class="owasp-disclaimer">
+			<p>
+				Secure-UI provides client-side defences as part of a defence-in-depth strategy.
+				Server-side validation, authentication, and encryption remain essential.
+			</p>
+		</div>
+	</div>
+</section>
+
+<!-- Security Without Complexity Section -->
+<section class="code-section">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">Security Without Complexity</h2>
+			<p class="section-description">
+				Simple code that's automatically secure. No complex security configurations needed.
+			</p>
+		</div>
+
+		<div class="code-comparison">
+			<div class="code-example">
+				<div class="code-header">
+					<span class="code-title">Secure Form Handler</span>
+					<span class="badge badge-primary">Built-in Protection</span>
+				</div>
+				<div class="code-content">
+					<pre><code class="language-go">{ `// CSRF validation handled by middleware
+func HandleForm(w http.ResponseWriter, r *http.Request) {
+    if err := r.ParseForm(); err != nil {
+        http.Error(w, "Bad Request", 400)
+        return
+    }
+
+    // Sanitize and validate server-side
+    email := validation.Sanitize(r.FormValue("email"))
+
+    v := validation.New()
+    v.Required("email", email, "Email").
+        Email("email", email, "Email")
+
+    if !v.Valid() {
+        renderError(w, v.Errors)
+        return
+    }
+}` }</code></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Complete Theming Control Section -->
+<section class="theming-section">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">Complete Theming Control</h2>
+			<p class="section-description">
+				Customize every aspect of your UI with CSS variables. Full design system included.
+			</p>
+		</div>
+
+		<div class="theme-demo">
+			<div class="theme-variables">
+				<div class="theme-variable">
+					<span class="theme-variable-label">--accent-primary</span>
+					<div class="theme-variable-preview theme-preview-accent"></div>
+				</div>
+
+				<div class="theme-variable">
+					<span class="theme-variable-label">--bg-primary</span>
+					<div class="theme-variable-preview theme-preview-bg"></div>
+				</div>
+
+				<div class="theme-variable">
+					<span class="theme-variable-label">--text-primary</span>
+					<div class="theme-variable-preview theme-preview-text"></div>
+				</div>
+
+				<div class="theme-variable">
+					<span class="theme-variable-label">--border-subtle</span>
+					<div class="theme-variable-preview theme-preview-border"></div>
+				</div>
+			</div>
+
+			<button class="theme-preview-button">
+				Preview Button
+			</button>
+
+			<div class="code-example mt-xl">
+				<div class="code-header">
+					<span class="code-title">Custom Theme</span>
+				</div>
+				<div class="code-content">
+					<pre><code class="language-css">{ `:root {
+    --accent-primary: #10b981;
+    --bg-primary: #000000;
+    --text-primary: #ffffff;
+    --border-subtle: rgba(255, 255, 255, 0.1);
+}` }</code></pre>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Progressive Enhancement Section -->
+<section class="no-js-section">
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">Progressive Enhancement</h2>
+			<p class="section-description">
+				Built on semantic HTML foundations. Full functionality with JavaScript, graceful fallback without it.
+			</p>
+		</div>
+
+		<div class="no-js-grid">
+			<div class="no-js-card">
+				<div class="no-js-icon">📝</div>
+				<h3 class="no-js-title">Semantic Foundations</h3>
+				<p class="no-js-description">
+					Forms use native HTML elements as fallbacks. Server-side processing works with or without JavaScript.
+				</p>
+			</div>
+
+			<div class="no-js-card">
+				<div class="no-js-icon">🔄</div>
+				<h3 class="no-js-title">Progressive Enhancement</h3>
+				<p class="no-js-description">
+					Components enhance native HTML form elements. JavaScript adds validation, masking, and audit logging.
+				</p>
+			</div>
+
+			<div class="no-js-card">
+				<div class="no-js-icon">♿</div>
+				<h3 class="no-js-title">Accessible by Default</h3>
+				<p class="no-js-description">
+					Native HTML fallbacks ensure accessibility and compatibility across all browsers and assistive technologies.
+				</p>
+			</div>
+		</div>
+	</div>
+</section>
+}
+}

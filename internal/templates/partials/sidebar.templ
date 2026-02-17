@@ -1,0 +1,94 @@
+package partials
+
+templ Sidebar(isLoggedIn bool) {
+	<aside class="sidebar">
+		<nav class="sidebar-nav">
+			<div class="sidebar-section">
+				<h3 class="sidebar-heading">Main</h3>
+				<ul class="sidebar-menu">
+					<li>
+						<a href="/" class="sidebar-link">
+							<span class="sidebar-icon">🏠</span>
+							<span>Home</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sidebar-section">
+				<h3 class="sidebar-heading">Examples</h3>
+				<ul class="sidebar-menu">
+					<li>
+						<a href="/forms" class="sidebar-link">
+							<span class="sidebar-icon">📋</span>
+							<span>Forms</span>
+						</a>
+					</li>
+					<li>
+						<a href="/dashboard" class="sidebar-link">
+							<span class="sidebar-icon">👥</span>
+							<span>Dashboard</span>
+						</a>
+					</li>
+					<li>
+						<a href="/table" class="sidebar-link">
+							<span class="sidebar-icon">📊</span>
+							<span>Data Table</span>
+						</a>
+					</li>
+					<li>
+						<a href="/registration" class="sidebar-link">
+							<span class="sidebar-icon">📝</span>
+							<span>Registration</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sidebar-section">
+				<h3 class="sidebar-heading">Resources</h3>
+				<ul class="sidebar-menu">
+					<li>
+						<a href="/documentation" class="sidebar-link">
+							<span class="sidebar-icon">📖</span>
+							<span>Documentation</span>
+						</a>
+					</li>
+					<li>
+						<a href="https://github.com/secure-ui" class="sidebar-link" target="_blank" rel="noopener">
+							<span class="sidebar-icon">💻</span>
+							<span>GitHub</span>
+						</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="sidebar-section">
+				<h3 class="sidebar-heading">Account</h3>
+				<ul class="sidebar-menu">
+					if isLoggedIn {
+						<li>
+							<a href="/profile" class="sidebar-link">
+								<span class="sidebar-icon">👤</span>
+								<span>Profile</span>
+							</a>
+						</li>
+					} else {
+						<li>
+							<a href="/login" class="sidebar-link">
+								<span class="sidebar-icon">🔐</span>
+								<span>Login</span>
+							</a>
+						</li>
+						<li>
+							<a href="/register" class="sidebar-link">
+								<span class="sidebar-icon">📝</span>
+								<span>Register</span>
+							</a>
+						</li>
+					}
+				</ul>
+			</div>
+		</nav>
+	</aside>
+}

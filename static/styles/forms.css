@@ -1,0 +1,170 @@
+/**
+ * Form Components Dark Theme Styles
+ * Overrides for secure-ui components to match dark theme
+ */
+
+/* Secure Form Component */
+secure-form {
+  display: block;
+  --secure-ui-label-color: grey;
+}
+
+
+/* Secure Input Component - Override shadow DOM CSS custom properties */
+secure-input,
+secure-textarea,
+secure-select,
+secure-datetime,
+secure-file-upload {
+  /* Label colors */
+  --label-color: var(--text-primary);
+  --label-suffix-color: var(--text-secondary);
+
+  /* Input field colors */
+  --input-background: var(--bg-tertiary);
+  --input-color: var(--text-primary);
+  --input-border-color: var(--border-medium);
+  --input-placeholder-color: var(--text-muted);
+
+  /* Focus states */
+  --input-focus-border-color: var(--accent-primary);
+  --input-focus-background: var(--bg-tertiary);
+
+  /* Hover states */
+  --input-hover-border-color: var(--border-strong);
+
+  /* Error states */
+  --input-error-border-color: #f87171;
+  --input-error-background: rgba(244, 67, 54, 0.1);
+  --input-error-color: var(--text-primary);
+  --error-color: #f87171;
+
+  /* Disabled states */
+  --input-disabled-background: var(--bg-secondary);
+  --input-disabled-color: var(--text-muted);
+  --input-disabled-border-color: var(--border-subtle);
+
+  /* Readonly states */
+  --input-readonly-background: var(--bg-secondary);
+  --input-readonly-color: var(--text-secondary);
+  --input-readonly-border-color: var(--border-subtle);
+
+  /* Security badge */
+  --security-badge-background: var(--bg-elevated);
+  --security-badge-color: var(--text-secondary);
+}
+
+/* secure-input {
+  --secure-ui-input-text-color: lightgray;
+} */
+
+/* Form Sections */
+.form-section {
+  margin-bottom: var(--space-2xl);
+}
+
+.form-section h3 {
+  color: var(--text-primary);
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+/* Security Tier Info */
+.security-info {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+
+.security-info h3 {
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+
+.security-info ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.security-info li {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-sm);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-sm);
+}
+
+.security-info li:last-child {
+  margin-bottom: 0;
+}
+
+.security-info strong {
+  color: var(--text-primary);
+  font-weight: 600;
+  min-width: 140px;
+}
+
+.security-info span {
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+/* Form Submit Area */
+.form-submit {
+  border-top: 1px solid var(--border-subtle);
+  padding-top: var(--space-xl);
+  margin-top: var(--space-xl);
+}
+
+/* Override light backgrounds in form card */
+.card form,
+.card secure-form {
+  background: transparent;
+}
+
+/* Ensure all text is legible */
+.card h2,
+.card h3,
+.card label,
+.card p {
+  color: var(--text-primary);
+}
+
+.card .section-description {
+  color: var(--text-secondary);
+}
+
+/* Form header */
+.form-header {
+  margin-bottom: var(--space-xl);
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.form-header h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.form-header p {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+}
