@@ -215,7 +215,7 @@ func main() {
 	// Order matters: Security headers -> Layout CSRF -> Rate limiting -> Routes
 	handler := middleware.SecurityHeadersWithHSTS(secureCookie)(
 		middleware.InjectLayoutCSRF(csrfStore)(
-			middleware.RateLimit(rateLimiter)(mux),
+			middleware.RateLimit(rateLimiter, h.RenderErrorPage)(mux),
 		),
 	)
 

@@ -343,14 +343,24 @@ func ClientIP(r *http.Request, behindProxy bool) string {
 	return r.RemoteAddr
 }
 
-// RateLimit middleware applies rate limiting
-func RateLimit(limiter *RateLimiter) func(http.Handler) http.Handler {
+// ErrorRenderer is a function that renders a styled error page.
+// This allows the middleware to render error pages without importing
+// the handlers or templates packages (avoiding circular dependencies).
+type ErrorRenderer func(w http.ResponseWriter, r *http.Request, statusCode int)
+
+// RateLimit middleware applies rate limiting.
+// If onLimitExceeded is nil, a plain-text 429 response is returned.
+func RateLimit(limiter *RateLimiter, onLimitExceeded ErrorRenderer) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ip := ClientIP(r, limiter.behindProxy)
 
 			if !limiter.Allow(ip) {
-				http.Error(w, "Rate limit exceeded. Please try again later.", http.StatusTooManyRequests)
+				if onLimitExceeded != nil {
+					onLimitExceeded(w, r, http.StatusTooManyRequests)
+				} else {
+					http.Error(w, "Rate limit exceeded. Please try again later.", http.StatusTooManyRequests)
+				}
 				return
 			}
 
