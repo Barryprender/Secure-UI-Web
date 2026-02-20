@@ -349,10 +349,21 @@ func ClientIP(r *http.Request, behindProxy bool) string {
 type ErrorRenderer func(w http.ResponseWriter, r *http.Request, statusCode int)
 
 // RateLimit middleware applies rate limiting.
+// Static assets (/static/, /components/, /favicon.ico) are exempt so that
+// error pages can load their CSS/JS even when the limit is exceeded.
 // If onLimitExceeded is nil, a plain-text 429 response is returned.
 func RateLimit(limiter *RateLimiter, onLimitExceeded ErrorRenderer) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			// Allow static assets through without rate limiting
+			path := r.URL.Path
+			if strings.HasPrefix(path, "/static/") ||
+				strings.HasPrefix(path, "/components/") ||
+				path == "/favicon.ico" || path == "/favicon.svg" {
+				next.ServeHTTP(w, r)
+				return
+			}
+
 			ip := ClientIP(r, limiter.behindProxy)
 
 			if !limiter.Allow(ip) {
