@@ -203,8 +203,8 @@ func main() {
 	fs := http.FileServer(http.Dir(staticDir))
 	mux.Handle("/static/", http.StripPrefix("/static/", middleware.MIMETypeWrapper(fs)))
 
-	// Serve web components — first try local vendor copy, then fall back to sibling package
-	componentsDir := filepath.Join(".", "static", "components")
+	// Serve web components from submodule (production) or sibling folder (dev)
+	componentsDir := filepath.Join(".", "secure-ui-components", "dist")
 	if _, err := os.Stat(componentsDir); os.IsNotExist(err) {
 		componentsDir = filepath.Join("..", "secure-ui-components", "dist")
 	}
