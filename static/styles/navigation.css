@@ -1,18 +1,41 @@
 /**
- * Horizontal Top Navigation Styles
- * Clean, modern top nav bar
+ * Navigation — desktop horizontal bar + mobile left-side drawer
+ * Pure CSS toggle via hidden checkbox + sibling selectors
+ * Mobile breakpoint: 972px
  */
 
-/* Top Navigation Bar */
+/* ============================================================
+   Top bar
+   ============================================================ */
 .top-nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: var(--secure-ui-z-sticky, 100);
-  background: var(--bg-primary);
   border-bottom: 1px solid var(--border-subtle);
+  /*
+   * No background or backdrop-filter on the element itself.
+   * backdrop-filter on an element creates a new containing block for all
+   * position:fixed descendants — which clips the mobile drawer to the
+   * 60px header height. Both are moved to ::before instead.
+   */
+}
+
+.top-nav::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /*
+   * z-index: -1 paints this BEHIND .nav-content (non-positioned, auto z-index).
+   * Without it, ::before stacks above non-positioned children and backdrop-filter
+   * blurs the nav links along with everything else behind it.
+   */
+  z-index: -1;
+  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  pointer-events: none;
 }
 
 .top-nav .container {
@@ -22,12 +45,14 @@
 .top-nav .nav-content {
   display: flex;
   align-items: center;
-  gap: var(--space-lg);
+  gap: var(--space-md);
   padding: var(--space-sm) 0;
   height: 64px;
 }
 
-/* Logo */
+/* ============================================================
+   Logo
+   ============================================================ */
 .nav-logo {
   display: flex;
   align-items: center;
@@ -46,7 +71,6 @@
 }
 
 .nav-logo-icon {
-  font-size: 1.5rem;
   display: flex;
   align-items: center;
 }
@@ -56,7 +80,38 @@
   letter-spacing: -0.01em;
 }
 
-/* Navigation Links */
+/* ============================================================
+   Checkbox — hidden, state-only
+   ============================================================ */
+.nav-toggle-input {
+  display: none;
+}
+
+/* ============================================================
+   Hamburger toggle button — hidden on desktop
+   ============================================================ */
+.nav-toggle-btn {
+  display: none;
+}
+
+/* ============================================================
+   Nav panel — inline flex row on desktop
+   ============================================================ */
+.nav-panel {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Drawer header (brand + close button) — hidden on desktop */
+.nav-panel-header {
+  display: none;
+}
+
+/* ============================================================
+   Nav links list
+   ============================================================ */
 .nav-links {
   display: flex;
   align-items: center;
@@ -64,18 +119,18 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  flex: 1;
 }
 
 .nav-link {
+  display: inline-block;
   color: var(--text-secondary);
   text-decoration: none;
   padding: var(--space-xs) var(--space-sm);
   border-radius: var(--radius-md);
   font-weight: 500;
   font-size: 0.9375rem;
-  transition: all 0.2s ease;
   white-space: nowrap;
+  transition: color 0.2s ease, background 0.2s ease;
 }
 
 .nav-link:hover {
@@ -94,7 +149,9 @@
   background: rgba(16, 185, 129, 0.12);
 }
 
-/* Auth Section */
+/* ============================================================
+   Auth section — pushed to far right on desktop
+   ============================================================ */
 .nav-auth {
   display: flex;
   align-items: center;
@@ -109,91 +166,22 @@
   padding: 0;
 }
 
-/* Sign In Button - Accent style */
-.btn-accent {
-  background: var(--accent-primary);
-  color: #fff;
-  border: none;
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  transition: all 0.2s ease;
+/* ============================================================
+   Overlay — hidden on desktop
+   ============================================================ */
+.nav-overlay {
+  display: none;
 }
 
-.btn-accent:hover {
-  background: var(--accent-secondary);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-  color: #fff;
-  text-decoration: none;
-}
-
-/* Main Content Area - no sidebar offset */
-.main-content {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding-top: 64px;
-}
-
-.main-content main {
-  flex: 1;
-}
-
-/* Mobile Responsive */
-@media (max-width: 768px) {
-  .top-nav .nav-content {
-    flex-wrap: wrap;
-    height: auto;
-    padding: var(--space-sm) 0;
-    gap: var(--space-sm);
-  }
-
-  .nav-links {
-    order: 3;
-    width: 100%;
-    flex-wrap: wrap;
-    gap: 0;
-  }
-
-  .nav-link {
-    font-size: 0.875rem;
-    padding: var(--space-xs);
-  }
-
-  .nav-auth {
-    order: 2;
-  }
-
-  .main-content {
-    padding-top: 120px;
-  }
-}
-
-@media (max-width: 480px) {
-  .nav-logo {
-    font-size: 1.125rem;
-  }
-
-  .nav-logo-icon {
-    font-size: 1.25rem;
-  }
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .nav-link,
-  .nav-logo,
-  .btn-accent {
-    transition: none;
-  }
-}
-
-/* Dropdown Navigation — pure CSS, nested ul pattern */
+/* ============================================================
+   Dropdown — desktop hover / focus-within
+   Pure CSS nested ul pattern
+   ============================================================ */
 .nav-dropdown {
   position: relative;
 }
 
-/* Chevron indicator via ::after on the trigger link */
+/* Chevron via ::after — no extra element needed */
 .nav-dropdown > .nav-link::after {
   content: "";
   display: inline-block;
@@ -212,7 +200,6 @@
   transform: rotate(180deg);
 }
 
-/* The submenu */
 .nav-dropdown-menu {
   list-style: none;
   margin: 0;
@@ -226,14 +213,13 @@
   border-radius: var(--radius-md);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
   min-width: 200px;
-  /* Hidden by default */
+  /* Hidden by default; visibility used so keyboard focus still works */
   visibility: hidden;
   opacity: 0;
   transform: translateY(-6px);
   transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
 }
 
-/* Show on hover or when any child has focus */
 .nav-dropdown:hover > .nav-dropdown-menu,
 .nav-dropdown:focus-within > .nav-dropdown-menu {
   visibility: visible;
@@ -266,12 +252,188 @@
   outline-offset: -2px;
 }
 
-/* Mobile: flat inline list, always visible */
-@media (max-width: 768px) {
-  .nav-dropdown {
+/* ============================================================
+   Main content offset
+   ============================================================ */
+.main-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 64px;
+}
+
+.main-content main {
+  flex: 1;
+}
+
+/* ============================================================
+   Buttons
+   ============================================================ */
+.btn-accent {
+  background: var(--accent-primary);
+  color: #fff;
+  border: none;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  transition: all 0.2s ease;
+}
+
+.btn-accent:hover {
+  background: var(--accent-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  color: #fff;
+  text-decoration: none;
+}
+
+/* ============================================================
+   MOBILE — left-side drawer (≤ 972px)
+   Checkbox hack: #nav-toggle:checked ~ sibling selectors
+   ============================================================ */
+@media (max-width: 972px) {
+  /* Prevent body scroll when drawer is open */
+  html:has(#nav-toggle:checked) {
+    overflow: hidden;
+  }
+
+  .top-nav .nav-content {
+    height: 60px;
+    gap: 0;
+  }
+
+  /* --- Hamburger button --- */
+  .nav-toggle-btn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+    /* 44×44 minimum tap target */
+    width: 44px;
+    height: 44px;
+    margin-left: auto;
+    flex-shrink: 0;
+    cursor: pointer;
+    color: var(--text-primary);
+    border-radius: var(--radius-md);
+    transition: color 0.2s ease, background 0.2s ease;
+  }
+
+  .nav-toggle-btn:hover {
+    color: var(--accent-primary);
+    background: rgba(16, 185, 129, 0.08);
+  }
+
+  .bar {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    transform-origin: center;
+    transition: transform 0.3s ease, opacity 0.2s ease;
+  }
+
+  /* Bars animate to × when drawer is open */
+  #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+
+  #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  /* --- Nav panel: fixed left drawer --- */
+  .nav-panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    max-width: 85vw;
+    height: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    flex: none;
+    z-index: 400;
+    background: var(--bg-primary);
+    border-right: 1px solid var(--border-subtle);
+    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    /* Slide out to the left by default */
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding-bottom: var(--space-md);
+  }
+
+  /* Slide in when checkbox is checked */
+  #nav-toggle:checked ~ .nav-panel {
+    transform: translateX(0);
+  }
+
+  /* --- Drawer header --- */
+  .nav-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-sm) 0 var(--space-md);
+    height: 60px;
+    border-bottom: 1px solid var(--border-subtle);
+    flex-shrink: 0;
+  }
+
+  .nav-panel-brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    font-weight: 700;
+    font-size: 1.125rem;
+    color: var(--text-primary);
+  }
+
+  .nav-panel-close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    transition: color 0.15s ease, background 0.15s ease;
+  }
+
+  .nav-panel-close:hover {
+    color: var(--text-primary);
+    background: rgba(16, 185, 129, 0.08);
+  }
+
+  /* --- Nav links: vertical stack --- */
+  .nav-links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--space-sm) 0;
+  }
+
+  .nav-links > li {
     width: 100%;
   }
 
+  .nav-link {
+    display: block;
+    padding: 0.7rem var(--space-md);
+    border-radius: 0;
+    font-size: 1rem;
+    white-space: normal;
+  }
+
+  /* --- Dropdown on mobile: always expanded, indented --- */
   .nav-dropdown > .nav-link::after {
     display: none;
   }
@@ -285,23 +447,93 @@
     box-shadow: none;
     border: none;
     border-radius: 0;
-    padding: 0;
+    border-top: 1px solid var(--border-subtle);
+    padding: var(--space-xs) 0;
     min-width: 0;
-    display: flex;
-    flex-wrap: wrap;
-    background: transparent;
+    background: rgba(0, 0, 0, 0.03);
   }
 
   .nav-dropdown-link {
-    padding: var(--space-xs);
-    font-size: 0.875rem;
+    /* Double indent under the parent link */
+    padding: 0.5rem var(--space-md) 0.5rem calc(var(--space-md) * 2);
+    font-size: 0.9rem;
+    border-radius: 0;
+    white-space: normal;
+  }
+
+  /* --- Auth section: pinned to bottom of drawer --- */
+  .nav-auth {
+    margin-left: 0;
+    margin-top: auto;
+    padding: var(--space-md);
+    border-top: 1px solid var(--border-subtle);
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+  }
+
+  .nav-auth .nav-link {
+    display: block;
+    padding: 0.7rem var(--space-sm);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+
+  .nav-auth .btn {
+    width: 100%;
+    text-align: center;
+    justify-content: center;
+    display: block;
+  }
+
+  .nav-logout-form {
+    display: block;
+    width: 100%;
+  }
+
+  .nav-logout-form .btn {
+    width: 100%;
+  }
+
+  /* --- Overlay: tap outside to close --- */
+  .nav-overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 399;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  #nav-toggle:checked ~ .nav-overlay {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Main content: matches shorter mobile bar */
+  .main-content {
+    padding-top: 60px;
   }
 }
 
+/* ============================================================
+   Reduced motion
+   ============================================================ */
 @media (prefers-reduced-motion: reduce) {
+  .nav-logo,
+  .nav-link,
+  .btn-accent,
   .nav-dropdown > .nav-link::after,
   .nav-dropdown-menu,
-  .nav-dropdown-link {
+  .nav-dropdown-link,
+  .nav-toggle-btn,
+  .bar,
+  .nav-panel,
+  .nav-overlay,
+  .nav-panel-close {
     transition: none;
   }
 }

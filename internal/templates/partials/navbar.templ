@@ -5,7 +5,7 @@ import "secure-ui-showcase-go/internal/middleware"
 templ Navbar(isLoggedIn bool) {
 	<header class="top-nav">
 		<div class="container">
-			<nav class="nav-content">
+			<div class="nav-content">
 				<a href="/" class="nav-logo">
 					<span class="nav-logo-icon">
 						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
@@ -16,39 +16,77 @@ templ Navbar(isLoggedIn bool) {
 					<span class="nav-logo-text">Secure-UI</span>
 				</a>
 
-				<ul class="nav-links">
-					<li><a href="/" class="nav-link">Home</a></li>
-					<li><a href="/forms" class="nav-link">Forms</a></li>
-					<li><a href="/dashboard" class="nav-link">Dashboard</a></li>
-					<li><a href="/table" class="nav-link">Table</a></li>
-					<li><a href="/registration" class="nav-link">Registration</a></li>
-					<li class="nav-dropdown">
-						<a href="/components" class="nav-link">Components</a>
-						<ul class="nav-dropdown-menu">
-							<li><a href="/components/secure-input" class="nav-dropdown-link">secure-input</a></li>
-							<li><a href="/components/secure-select" class="nav-dropdown-link">secure-select</a></li>
-							<li><a href="/components/secure-textarea" class="nav-dropdown-link">secure-textarea</a></li>
-							<li><a href="/components/secure-form" class="nav-dropdown-link">secure-form</a></li>
-							<li><a href="/components/secure-file-upload" class="nav-dropdown-link">secure-file-upload</a></li>
-							<li><a href="/components/secure-datetime" class="nav-dropdown-link">secure-datetime</a></li>
-							<li><a href="/components/secure-table" class="nav-dropdown-link">secure-table</a></li>
-						</ul>
-					</li>
-					<li><a href="/documentation" class="nav-link">Docs</a></li>
-				</ul>
+				<!-- Checkbox used purely for CSS toggle state — no JS needed -->
+				<input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-hidden="true"/>
 
-				<div class="nav-auth">
-					if isLoggedIn {
-						<a href="/profile" class="nav-link">Profile</a>
-						<form method="POST" action="/logout" class="nav-logout-form">
-							<input type="hidden" name="csrf_token" value={ middleware.LayoutCSRFFromContext(ctx) }/>
-							<button type="submit" class="btn btn-sm btn-secondary">Logout</button>
-						</form>
-					} else {
-						<a href="/login" class="btn btn-sm btn-accent">Sign In</a>
-					}
-				</div>
-			</nav>
+				<!-- Hamburger button: visible on mobile only -->
+				<label for="nav-toggle" class="nav-toggle-btn" aria-label="Open navigation">
+					<span class="bar"></span>
+					<span class="bar"></span>
+					<span class="bar"></span>
+				</label>
+
+				<!--
+					Nav panel:
+					  Desktop — flex row, inline with logo
+					  Mobile  — fixed left drawer, slides in on toggle
+				-->
+				<nav class="nav-panel" aria-label="Main navigation">
+					<!-- Mobile drawer header (hidden on desktop) -->
+					<div class="nav-panel-header">
+						<span class="nav-panel-brand">
+							<svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<path d="M12 2L3 6v6c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V6L12 2z" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+								<path d="M8.5 12.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+							</svg>
+							Secure-UI
+						</span>
+						<label for="nav-toggle" class="nav-panel-close" aria-label="Close navigation">
+							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+								<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+							</svg>
+						</label>
+					</div>
+
+					<ul class="nav-links">
+						<li><a href="/" class="nav-link">Home</a></li>
+						<li><a href="/forms" class="nav-link">Forms</a></li>
+						if isLoggedIn {
+							<li><a href="/dashboard" class="nav-link">Dashboard</a></li>
+							<li><a href="/table" class="nav-link">Table</a></li>
+						}
+						<li><a href="/registration" class="nav-link">Registration</a></li>
+						<li class="nav-dropdown">
+							<a href="/components" class="nav-link">Components</a>
+							<ul class="nav-dropdown-menu">
+								<li><a href="/components/secure-input" class="nav-dropdown-link">secure-input</a></li>
+								<li><a href="/components/secure-select" class="nav-dropdown-link">secure-select</a></li>
+								<li><a href="/components/secure-textarea" class="nav-dropdown-link">secure-textarea</a></li>
+								<li><a href="/components/secure-form" class="nav-dropdown-link">secure-form</a></li>
+								<li><a href="/components/secure-file-upload" class="nav-dropdown-link">secure-file-upload</a></li>
+								<li><a href="/components/secure-datetime" class="nav-dropdown-link">secure-datetime</a></li>
+								<li><a href="/components/secure-table" class="nav-dropdown-link">secure-table</a></li>
+							</ul>
+						</li>
+						<li><a href="/documentation" class="nav-link">Docs</a></li>
+					</ul>
+
+					<div class="nav-auth">
+						if isLoggedIn {
+							<a href="/profile" class="nav-link">Profile</a>
+							<form method="POST" action="/logout" class="nav-logout-form">
+								<input type="hidden" name="csrf_token" value={ middleware.LayoutCSRFFromContext(ctx) }/>
+								<button type="submit" class="btn btn-sm btn-secondary">Logout</button>
+							</form>
+						} else {
+							<a href="/login" class="btn btn-sm btn-accent">Sign In</a>
+						}
+					</div>
+				</nav>
+
+				<!-- Tap outside to close (mobile only) -->
+				<label for="nav-toggle" class="nav-overlay" aria-hidden="true"></label>
+			</div>
 		</div>
 	</header>
 }
