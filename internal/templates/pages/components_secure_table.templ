@@ -1,0 +1,741 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureTable() {
+	@templates.Layout("secure-table Component", "Showcase and documentation for the secure-table web component") {
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-table&gt;</h1>
+					<p class="component-hero-description">
+						A data table component with XSS-safe cell rendering, column injection prevention,
+						and sanitized sort and filter inputs. Supports pagination, configurable page sizes,
+						and optional sort and filter UI. All data is treated as untrusted and escaped
+						before rendering.
+					</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-table/secure-table.js">
+</script>` }</code></pre>
+					</div>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-table security-tier="public" sortable>
+						<table slot="table">
+							<thead>
+								<tr>
+									<th data-key="name" data-sortable="true">Name</th>
+									<th data-key="role" data-sortable="true">Role</th>
+									<th data-key="status" data-sortable="true">Status</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr><td>Alice</td><td>Admin</td><td>Active</td></tr>
+								<tr><td>Bob</td><td>Editor</td><td>Active</td></tr>
+								<tr><td>Carol</td><td>Viewer</td><td>Inactive</td></tr>
+							</tbody>
+						</table>
+					</secure-table>
+				</div>
+			</section>
+
+			<!-- How Data Works -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">How to Provide Data</h2>
+				<p class="configs-section-description">
+					<code>&lt;secure-table&gt;</code> supports two data sources. The slotted HTML approach
+					provides progressive enhancement — the table is readable without JavaScript. The
+					programmatic approach is suited for dynamic or framework-managed data.
+				</p>
+
+				<div class="configs-grid configs-grid--2col">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">Slotted HTML (recommended)</span></div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<!-- Table data is in the light DOM.
+     Component reads it on mount, then
+     replaces it with an enhanced UI. -->
+<secure-table security-tier="public" sortable>
+  <table slot="table">
+    <thead>
+      <tr>
+        <th data-key="name">Name</th>
+        <th data-key="email">Email</th>
+        <th data-key="role">Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Alice</td>
+        <td>alice@example.com</td>
+        <td>Admin</td>
+      </tr>
+    </tbody>
+  </table>
+</secure-table>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">Programmatic (JavaScript)</span></div>
+						<div class="config-code">
+							<pre><code class="language-javascript">{ `// Set columns and data via JS properties
+// after the component is connected to the DOM.
+const table = document.querySelector('#myTable');
+
+table.columns = [
+  { key: 'name',  label: 'Name',  sortable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  { key: 'role',  label: 'Role',  sortable: true },
+];
+
+table.data = [
+  { name: 'Alice', email: 'alice@example.com', role: 'Admin' },
+  { name: 'Bob',   email: 'bob@example.com',   role: 'Editor' },
+];` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- All Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+
+					<!-- security-tier: public -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="public">
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="id">ID</th>
+											<th data-key="name">Name</th>
+											<th data-key="city">City</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>1</td><td>Alice</td><td>London</td></tr>
+										<tr><td>2</td><td>Bob</td><td>Paris</td></tr>
+										<tr><td>3</td><td>Carol</td><td>Berlin</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-table security-tier="public">
+  <table slot="table">
+    <thead><tr>
+      <th data-key="id">ID</th>
+      <th data-key="name">Name</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>1</td><td>Alice</td></tr>
+    </tbody>
+  </table>
+</secure-table>` }</code></pre>
+						</div>
+					</div>
+
+					<!-- security-tier: authenticated -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="authenticated">
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="name">Name</th>
+											<th data-key="department">Department</th>
+											<th data-key="joined">Joined</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>Alice</td><td>Engineering</td><td>2022-01-15</td></tr>
+										<tr><td>Bob</td><td>Design</td><td>2022-03-20</td></tr>
+										<tr><td>Carol</td><td>Engineering</td><td>2023-06-01</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-table security-tier="authenticated">
+  <table slot="table">...</table>
+</secure-table>` }</code></pre>
+						</div>
+					</div>
+
+					<!-- security-tier: sensitive -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="sensitive" — column masking</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="sensitive">
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="name">Name</th>
+											<th data-key="email" data-tier="sensitive">Email</th>
+											<th data-key="role">Role</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>Alice</td><td>alice@example.com</td><td>Admin</td></tr>
+										<tr><td>Bob</td><td>bob@example.com</td><td>Editor</td></tr>
+										<tr><td>Carol</td><td>carol@example.com</td><td>Viewer</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-table security-tier="sensitive">
+  <table slot="table">
+    <thead><tr>
+      <th data-key="name">Name</th>
+      <!-- data-tier on th masks this column -->
+      <th data-key="email" data-tier="sensitive">
+        Email
+      </th>
+    </tr></thead>
+    ...
+  </table>
+</secure-table>` }</code></pre>
+						</div>
+					</div>
+
+					<!-- security-tier: critical -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="critical" — full masking</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="critical">
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="name">Name</th>
+											<th data-key="token" data-tier="critical">API Token</th>
+											<th data-key="expires">Expires</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>Alice</td><td>sk-abc123456789</td><td>2025-12-31</td></tr>
+										<tr><td>Bob</td><td>sk-xyz987654321</td><td>2025-06-30</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<!-- data-tier="critical" on a column
+     fully masks all cell values -->
+<th data-key="token" data-tier="critical">
+  API Token
+</th>` }</code></pre>
+						</div>
+					</div>
+
+					<!-- sortable -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">sortable (column headers)</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="public" sortable>
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="name" data-sortable="true">Name</th>
+											<th data-key="score" data-sortable="true">Score</th>
+											<th data-key="level" data-sortable="true">Level</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>Alice</td><td>95</td><td>Senior</td></tr>
+										<tr><td>Bob</td><td>82</td><td>Mid</td></tr>
+										<tr><td>Carol</td><td>91</td><td>Senior</td></tr>
+										<tr><td>Dave</td><td>74</td><td>Junior</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<!-- data-sortable="true" on individual
+     columns enables click-to-sort -->
+<secure-table security-tier="public" sortable>
+  <table slot="table">
+    <thead><tr>
+      <th data-key="name" data-sortable="true">
+        Name
+      </th>
+      <th data-key="score" data-sortable="true">
+        Score
+      </th>
+    </tr></thead>
+    ...
+  </table>
+</secure-table>` }</code></pre>
+						</div>
+					</div>
+
+					<!-- filterable -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">filterable (search across columns)</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="public" filterable>
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="name" data-filterable="true">Name</th>
+											<th data-key="dept" data-filterable="true">Department</th>
+											<th data-key="location">Location</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>Alice</td><td>Engineering</td><td>London</td></tr>
+										<tr><td>Bob</td><td>Design</td><td>Paris</td></tr>
+										<tr><td>Carol</td><td>Engineering</td><td>Berlin</td></tr>
+										<tr><td>Dave</td><td>Marketing</td><td>London</td></tr>
+										<tr><td>Eve</td><td>Design</td><td>Tokyo</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<!-- data-filterable="true" includes a
+     column in the search filter -->
+<th data-key="name" data-filterable="true">
+  Name
+</th>` }</code></pre>
+						</div>
+					</div>
+
+					<!-- paginated -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">paginated (automatic on large datasets)</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="public" sortable filterable>
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="name" data-sortable="true" data-filterable="true">Name</th>
+											<th data-key="city" data-sortable="true" data-filterable="true">City</th>
+											<th data-key="status" data-sortable="true">Status</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>Alice</td><td>London</td><td>Active</td></tr>
+										<tr><td>Bob</td><td>Paris</td><td>Active</td></tr>
+										<tr><td>Carol</td><td>Berlin</td><td>Inactive</td></tr>
+										<tr><td>Dave</td><td>Tokyo</td><td>Active</td></tr>
+										<tr><td>Eve</td><td>Sydney</td><td>Active</td></tr>
+										<tr><td>Frank</td><td>New York</td><td>Inactive</td></tr>
+										<tr><td>Grace</td><td>Toronto</td><td>Active</td></tr>
+										<tr><td>Henry</td><td>Dublin</td><td>Active</td></tr>
+										<tr><td>Iris</td><td>Stockholm</td><td>Active</td></tr>
+										<tr><td>Jack</td><td>Madrid</td><td>Inactive</td></tr>
+										<tr><td>Karen</td><td>Vienna</td><td>Active</td></tr>
+										<tr><td>Leo</td><td>Lisbon</td><td>Active</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<!-- Pagination activates automatically
+     when row count exceeds page size (default 10).
+     Set programmatically to override: -->
+const table = document.querySelector('secure-table');
+table.columns = [...];
+table.data = [...]; // 12 rows → pagination shown` }</code></pre>
+						</div>
+					</div>
+
+					<!-- sortable + filterable combined -->
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">sortable + filterable combined</span></div>
+						<div class="config-demo">
+							<secure-table security-tier="authenticated" sortable filterable>
+								<table slot="table">
+									<thead>
+										<tr>
+											<th data-key="name" data-sortable="true" data-filterable="true">Name</th>
+											<th data-key="role" data-sortable="true" data-filterable="true">Role</th>
+											<th data-key="status" data-sortable="true">Status</th>
+											<th data-key="joined" data-sortable="true">Joined</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr><td>Alice</td><td>Admin</td><td>Active</td><td>2022-01</td></tr>
+										<tr><td>Bob</td><td>Editor</td><td>Inactive</td><td>2022-03</td></tr>
+										<tr><td>Carol</td><td>Viewer</td><td>Active</td><td>2023-06</td></tr>
+										<tr><td>Dave</td><td>Editor</td><td>Active</td><td>2023-09</td></tr>
+										<tr><td>Eve</td><td>Viewer</td><td>Inactive</td><td>2024-01</td></tr>
+									</tbody>
+								</table>
+							</secure-table>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-table
+  security-tier="authenticated"
+  sortable
+  filterable>
+  <table slot="table">...</table>
+</secure-table>` }</code></pre>
+						</div>
+					</div>
+
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Security Features</h2>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Feature</th>
+							<th><span class="tier-badge tier-badge--public">Public</span></th>
+							<th><span class="tier-badge tier-badge--authenticated">Authenticated</span></th>
+							<th><span class="tier-badge tier-badge--sensitive">Sensitive</span></th>
+							<th><span class="tier-badge tier-badge--critical">Critical</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>XSS-safe cell rendering</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Column injection prevention</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Sort/filter input sanitization</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Sensitive column masking (last 4 visible)</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Critical column full masking</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Audit logging</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro">Secure-UI uses CSS custom properties. Override at <code>:root</code>, per-component, or per-instance.</p>
+				<table class="css-vars-table">
+					<thead>
+						<tr>
+							<th>Variable</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>--secure-ui-table-border-color</code></td>
+							<td><code>var(--secure-ui-color-border)</code></td>
+							<td>Cell and table border colour</td>
+						</tr>
+						<tr>
+							<td><code>--secure-ui-table-header-bg</code></td>
+							<td><code>var(--secure-ui-color-bg-secondary)</code></td>
+							<td>Header row background</td>
+						</tr>
+						<tr>
+							<td><code>--secure-ui-table-row-hover</code></td>
+							<td><code>rgba(16,185,129,0.05)</code></td>
+							<td>Row hover background</td>
+						</tr>
+						<tr>
+							<td><code>--secure-ui-table-font-size</code></td>
+							<td><code>var(--secure-ui-font-size-sm)</code></td>
+							<td>Table cell font size</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="theme-demo-card">
+					<div class="theme-demo-card-header">Themed Example</div>
+					<div class="theme-demo-card-code">
+						<pre><code class="language-css">{ `secure-table {
+  --secure-ui-table-header-bg: rgba(99, 102, 241, 0.15);
+  --secure-ui-table-border-color: rgba(99, 102, 241, 0.3);
+  --secure-ui-table-row-hover: rgba(99, 102, 241, 0.05);
+}` }</code></pre>
+					</div>
+					<div class="theme-demo-card-preview">
+						<secure-table
+							security-tier="public"
+							sortable
+							style="--secure-ui-table-header-bg: rgba(99, 102, 241, 0.15); --secure-ui-table-border-color: rgba(99, 102, 241, 0.3); --secure-ui-table-row-hover: rgba(99, 102, 241, 0.05);"
+						>
+							<table slot="table">
+								<thead>
+									<tr>
+										<th data-key="name" data-sortable="true">Name</th>
+										<th data-key="role" data-sortable="true">Role</th>
+										<th data-key="status" data-sortable="true">Status</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr><td>Alice</td><td>Admin</td><td>Active</td></tr>
+									<tr><td>Bob</td><td>Editor</td><td>Active</td></tr>
+									<tr><td>Carol</td><td>Viewer</td><td>Inactive</td></tr>
+								</tbody>
+							</table>
+						</secure-table>
+					</div>
+				</div>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Web Components work natively in all frameworks. No wrappers, no adapters.</p>
+				<div class="framework-tabs">
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML — slotted (recommended)</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-table/secure-table.js">
+</script>
+
+<!-- Server renders the <table>; the component
+     reads it on mount and enhances it. -->
+<secure-table security-tier="authenticated" sortable filterable>
+  <table slot="table">
+    <thead>
+      <tr>
+        <th data-key="name"  data-sortable="true" data-filterable="true">Name</th>
+        <th data-key="email" data-sortable="true" data-filterable="true">Email</th>
+        <th data-key="role"  data-sortable="true">Role</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Alice</td><td>alice@example.com</td><td>Admin</td></tr>
+      <tr><td>Bob</td>  <td>bob@example.com</td>  <td>Editor</td></tr>
+    </tbody>
+  </table>
+</secure-table>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML — programmatic</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<script type="module">
+  import '/components/secure-table/secure-table.js';
+
+  const table = document.querySelector('#userTable');
+  table.columns = [
+    { key: 'name',  label: 'Name',  sortable: true, filterable: true },
+    { key: 'email', label: 'Email', sortable: true },
+    { key: 'role',  label: 'Role',  sortable: true },
+  ];
+  table.data = [
+    { name: 'Alice', email: 'alice@example.com', role: 'Admin' },
+    { name: 'Bob',   email: 'bob@example.com',   role: 'Editor' },
+  ];
+</script>
+
+<secure-table id="userTable"
+  security-tier="authenticated"
+  sortable filterable>
+</secure-table>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect, useRef } from 'react';
+
+const COLUMNS = [
+  { key: 'name',  label: 'Name',  sortable: true, filterable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  { key: 'role',  label: 'Role',  sortable: true },
+];
+
+export function UserTable({ users }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    import('/components/secure-table/secure-table.js').then(() => {
+      if (ref.current) {
+        ref.current.columns = COLUMNS;
+        ref.current.data = users;
+      }
+    });
+  }, [users]);
+
+  return (
+    <secure-table
+      ref={ref}
+      security-tier="authenticated"
+      sortable
+      filterable
+    />
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Vue 3</span>
+							<span class="framework-tab-lang">vue</span>
+						</div>
+						<pre><code class="language-markup">{ `<template>
+  <secure-table
+    ref="tableEl"
+    security-tier="authenticated"
+    sortable
+    filterable>
+  </secure-table>
+</template>
+
+<script setup>
+import { ref, onMounted, watch } from 'vue';
+
+const props = defineProps({ rows: Array });
+const tableEl = ref(null);
+
+const columns = [
+  { key: 'name',  label: 'Name',  sortable: true, filterable: true },
+  { key: 'email', label: 'Email', sortable: true },
+  { key: 'role',  label: 'Role',  sortable: true },
+];
+
+onMounted(async () => {
+  await import('/components/secure-table/secure-table.js');
+  tableEl.value.columns = columns;
+  tableEl.value.data = props.rows;
+});
+
+watch(() => props.rows, (rows) => {
+  if (tableEl.value) tableEl.value.data = rows;
+});
+</script>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Angular</span>
+							<span class="framework-tab-lang">typescript</span>
+						</div>
+						<pre><code class="language-typescript">{ "import {\n  Component, Input, AfterViewInit,\n  ElementRef, ViewChild,\n  CUSTOM_ELEMENTS_SCHEMA\n} from '@angular/core';\n\n@Component({\n  selector: 'app-user-table',\n  template: `\n    <secure-table\n      #tableEl\n      security-tier=\"authenticated\"\n      sortable filterable>\n    </secure-table>\n  `,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n})\nexport class UserTableComponent implements AfterViewInit {\n  @Input() rows: Record<string, unknown>[] = [];\n  @ViewChild('tableEl') tableEl!: ElementRef;\n\n  private columns = [\n    { key: 'name',  label: 'Name',  sortable: true, filterable: true },\n    { key: 'email', label: 'Email', sortable: true },\n    { key: 'role',  label: 'Role',  sortable: true },\n  ];\n\n  async ngAfterViewInit() {\n    await import('/components/secure-table/secure-table.js');\n    this.tableEl.nativeElement.columns = this.columns;\n    this.tableEl.nativeElement.data    = this.rows;\n  }\n}" }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Svelte</span>
+							<span class="framework-tab-lang">svelte</span>
+						</div>
+						<pre><code class="language-markup">{ `<script>
+  import { onMount } from 'svelte';
+  export let rows = [];
+
+  let tableEl;
+  const columns = [
+    { key: 'name',  label: 'Name',  sortable: true, filterable: true },
+    { key: 'email', label: 'Email', sortable: true },
+    { key: 'role',  label: 'Role',  sortable: true },
+  ];
+
+  onMount(async () => {
+    await import('/components/secure-table/secure-table.js');
+    tableEl.columns = columns;
+    tableEl.data    = rows;
+  });
+
+  $: if (tableEl) tableEl.data = rows;
+</script>
+
+<secure-table
+  bind:this={tableEl}
+  security-tier="authenticated"
+  sortable filterable>
+</secure-table>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ — slotted</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `// Pass rows from your handler — no JS required.
+// The component reads the slotted <table> on mount.
+templ UserTable(users []User) {
+  <secure-table security-tier="authenticated" sortable filterable>
+    <table slot="table">
+      <thead>
+        <tr>
+          <th data-key="name"  data-sortable="true">Name</th>
+          <th data-key="email" data-sortable="true">Email</th>
+          <th data-key="role"  data-sortable="true">Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        for _, u := range users {
+          <tr>
+            <td>{ u.Name }</td>
+            <td>{ u.Email }</td>
+            <td>{ u.Role }</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </secure-table>
+}` }</code></pre>
+					</div>
+
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components/secure-datetime" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">&lt;secure-datetime&gt;</span>
+				</a>
+				<a href="/components" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">Next</span>
+					<span class="component-nav-name">All Components</span>
+				</a>
+			</nav>
+		</div>
+	}
+}

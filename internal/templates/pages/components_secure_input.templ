@@ -1,0 +1,606 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureInput() {
+	@templates.Layout("secure-input Component", "Showcase and documentation for the secure-input web component") {
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-input&gt;</h1>
+					<p class="component-hero-description">
+						A security-hardened text input supporting all HTML5 input types. Provides automatic XSS
+						prevention, type-specific validation, autocomplete control, and per-field audit logging.
+						Security tier determines strictness of enforcement and what gets recorded.
+					</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-input/secure-input.js">
+</script>` }</code></pre>
+					</div>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-input
+						label="Email Address"
+						name="hero-email"
+						type="email"
+						placeholder="you@example.com"
+						security-tier="sensitive"
+						required
+					></secure-input>
+					<secure-input
+						label="Full Name"
+						name="hero-name"
+						type="text"
+						placeholder="Jane Smith"
+						security-tier="public"
+					></secure-input>
+					<secure-input
+						label="Password"
+						name="hero-password"
+						type="password"
+						placeholder="Enter a strong password"
+						security-tier="critical"
+						required
+					></secure-input>
+				</div>
+			</section>
+
+			<!-- All Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="text"</span></div>
+						<div class="config-demo">
+							<secure-input label="Text" name="cfg-text" type="text" placeholder="Plain text" security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  type="text"
+  label="Text"
+  name="field"
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="email"</span></div>
+						<div class="config-demo">
+							<secure-input label="Email" name="cfg-email" type="email" placeholder="user@example.com" security-tier="sensitive"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  type="email"
+  label="Email"
+  name="email"
+  security-tier="sensitive">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="password"</span></div>
+						<div class="config-demo">
+							<secure-input label="Password" name="cfg-pw" type="password" placeholder="Password" security-tier="critical"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  type="password"
+  label="Password"
+  name="password"
+  security-tier="critical">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="tel"</span></div>
+						<div class="config-demo">
+							<secure-input label="Phone" name="cfg-tel" type="tel" placeholder="+1 555 000 0000" security-tier="sensitive"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  type="tel"
+  label="Phone"
+  name="phone"
+  security-tier="sensitive">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="url"</span></div>
+						<div class="config-demo">
+							<secure-input label="Website" name="cfg-url" type="url" placeholder="https://example.com" security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  type="url"
+  label="Website"
+  name="website"
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="number"</span></div>
+						<div class="config-demo">
+							<secure-input label="Quantity" name="cfg-num" type="number" min="1" max="100" security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  type="number"
+  label="Quantity"
+  name="quantity"
+  min="1" max="100"
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-demo">
+							<secure-input label="Public field" name="cfg-tier-pub" type="text" security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  security-tier="public"
+  label="Public field"
+  name="field">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
+						<div class="config-demo">
+							<secure-input label="Authenticated field" name="cfg-tier-auth" type="text" security-tier="authenticated"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  security-tier="authenticated"
+  label="Authenticated field"
+  name="field">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
+						<div class="config-demo">
+							<secure-input label="Sensitive field" name="cfg-tier-sens" type="text" security-tier="sensitive"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  security-tier="sensitive"
+  label="Sensitive field"
+  name="field">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
+						<div class="config-demo">
+							<secure-input label="Critical field" name="cfg-tier-crit" type="text" security-tier="critical"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  security-tier="critical"
+  label="Critical field"
+  name="field">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-demo">
+							<secure-input label="Required field" name="cfg-req" type="text" required security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  label="Required field"
+  name="field"
+  required
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">disabled</span></div>
+						<div class="config-demo">
+							<secure-input label="Disabled field" name="cfg-dis" type="text" disabled security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  label="Disabled field"
+  name="field"
+  disabled
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">readonly</span></div>
+						<div class="config-demo">
+							<secure-input label="Read-only field" name="cfg-ro" type="text" readonly security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  label="Read-only field"
+  name="field"
+  readonly
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">minlength / maxlength</span></div>
+						<div class="config-demo">
+							<secure-input label="Username" name="cfg-len" type="text" minlength="3" maxlength="20" placeholder="3–20 characters" security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  label="Username"
+  name="username"
+  minlength="3"
+  maxlength="20"
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">pattern</span></div>
+						<div class="config-demo">
+							<secure-input label="Product Code" name="cfg-pat" type="text" pattern="[A-Z]{3}-[0-9]{4}" placeholder="ABC-1234" security-tier="public"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  label="Product Code"
+  name="code"
+  pattern="[A-Z]{3}-[0-9]{4}"
+  placeholder="ABC-1234"
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Security Features</h2>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Feature</th>
+							<th><span class="tier-badge tier-badge--public">Public</span></th>
+							<th><span class="tier-badge tier-badge--authenticated">Authenticated</span></th>
+							<th><span class="tier-badge tier-badge--sensitive">Sensitive</span></th>
+							<th><span class="tier-badge tier-badge--critical">Critical</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Input sanitization</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>XSS prevention</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Autocomplete control</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Audit logging</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Rate limiting</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Pattern enforcement</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro">Secure-UI uses CSS custom properties. Override at <code>:root</code>, per-component, or per-instance.</p>
+				<table class="css-vars-table">
+					<thead>
+						<tr>
+							<th>Variable</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>--secure-ui-input-height</td>
+							<td>2.5rem</td>
+							<td>Input element height</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-padding-x</td>
+							<td>0.75rem</td>
+							<td>Horizontal padding</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-padding-y</td>
+							<td>0.5rem</td>
+							<td>Vertical padding</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-font-size</td>
+							<td>0.9375rem</td>
+							<td>Font size inside input</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-width</td>
+							<td>1px</td>
+							<td>Border width</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-radius</td>
+							<td>6px</td>
+							<td>Corner radius</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-bg</td>
+							<td>var(--secure-ui-color-bg-primary)</td>
+							<td>Input background color</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-color</td>
+							<td>var(--secure-ui-color-border)</td>
+							<td>Default border color</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-color-hover</td>
+							<td>var(--secure-ui-color-primary)</td>
+							<td>Border color on hover</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-color-focus</td>
+							<td>var(--secure-ui-color-primary)</td>
+							<td>Border color on focus</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-text-color</td>
+							<td>var(--secure-ui-color-text-primary)</td>
+							<td>Input text color</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-placeholder-color</td>
+							<td>var(--secure-ui-color-text-secondary)</td>
+							<td>Placeholder text color</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-disabled-bg</td>
+							<td>var(--secure-ui-color-bg-secondary)</td>
+							<td>Background when disabled</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="theme-demo-card">
+					<div class="theme-demo-card-header">Themed Example</div>
+					<div class="theme-demo-card-code">
+						<pre><code class="language-css">{ `.my-form secure-input {
+  --secure-ui-input-border-radius: 2px;
+  --secure-ui-input-border-color: #6366f1;
+  --secure-ui-input-border-color-focus: #818cf8;
+  --secure-ui-input-height: 3rem;
+}` }</code></pre>
+					</div>
+					<div class="theme-demo-card-preview">
+						<secure-input
+							label="Themed Input"
+							name="themed-input"
+							type="text"
+							placeholder="Custom styled"
+							security-tier="public"
+							style="--secure-ui-input-border-radius: 2px; --secure-ui-input-border-color: #6366f1; --secure-ui-input-border-color-focus: #818cf8; --secure-ui-input-height: 3rem;"
+						></secure-input>
+					</div>
+				</div>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Web Components work natively in all frameworks. No wrappers, no adapters.</p>
+				<div class="framework-tabs">
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<!DOCTYPE html>
+<html>
+<head>
+  <script type="module"
+    src="/components/secure-input/secure-input.js">
+  </script>
+</head>
+<body>
+  <secure-input
+    type="email"
+    label="Email"
+    name="email"
+    security-tier="sensitive"
+    required>
+  </secure-input>
+</body>
+</html>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect } from 'react';
+
+// Extend JSX types for custom element
+declare global {
+  namespace JSX {
+    interface IntrinsicElements {
+      'secure-input': React.DetailedHTMLProps<
+        React.HTMLAttributes<HTMLElement> & {
+          label?: string;
+          name?: string;
+          type?: string;
+          'security-tier'?: string;
+          required?: boolean;
+        },
+        HTMLElement
+      >;
+    }
+  }
+}
+
+export function EmailField() {
+  useEffect(() => {
+    import('/components/secure-input/secure-input.js');
+  }, []);
+
+  return (
+    <secure-input
+      type="email"
+      label="Email"
+      name="email"
+      security-tier="sensitive"
+      required
+    />
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Vue 3</span>
+							<span class="framework-tab-lang">vue</span>
+						</div>
+						<pre><code class="language-markup">{ `<template>
+  <secure-input
+    type="email"
+    label="Email"
+    :name="fieldName"
+    security-tier="sensitive"
+    required
+  />
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+
+const fieldName = 'email';
+
+onMounted(() => {
+  import('/components/secure-input/secure-input.js');
+});
+</script>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Angular</span>
+							<span class="framework-tab-lang">typescript</span>
+						</div>
+						<pre><code class="language-typescript">{ "import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-email-field',\n  template: `\n    <secure-input\n      type=\"email\"\n      label=\"Email\"\n      name=\"email\"\n      security-tier=\"sensitive\"\n      required>\n    </secure-input>\n  `,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n})\nexport class EmailFieldComponent implements OnInit {\n  ngOnInit() {\n    import('/components/secure-input/secure-input.js');\n  }\n}" }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Svelte</span>
+							<span class="framework-tab-lang">svelte</span>
+						</div>
+						<pre><code class="language-markup">{ `<script>
+  import { onMount } from 'svelte';
+
+  onMount(() => {
+    import('/components/secure-input/secure-input.js');
+  });
+</script>
+
+<secure-input
+  type="email"
+  label="Email"
+  name="email"
+  security-tier="sensitive"
+  required>
+</secure-input>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ EmailField(name string, required bool) {
+  <secure-input
+    type="email"
+    label="Email Address"
+    name={ name }
+    security-tier="sensitive"
+    if required {
+      required
+    }
+  ></secure-input>
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">All Components</span>
+				</a>
+				<a href="/components/secure-select" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">Next</span>
+					<span class="component-nav-name">&lt;secure-select&gt;</span>
+				</a>
+			</nav>
+		</div>
+	}
+}

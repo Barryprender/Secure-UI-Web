@@ -1,0 +1,478 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureDatetime() {
+	@templates.Layout("secure-datetime Component", "Showcase and documentation for the secure-datetime web component") {
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-datetime&gt;</h1>
+					<p class="component-hero-description">
+						A date and time picker with automatic input sanitization, configurable min/max range
+						enforcement, and timezone normalization to UTC before submission. Supports all five
+						date and time input subtypes with consistent security behavior across each.
+					</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-datetime/secure-datetime.js">
+</script>` }</code></pre>
+					</div>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-datetime
+						label="Appointment Date"
+						name="hero-date"
+						type="date"
+						min="2025-01-01"
+						security-tier="public"
+					></secure-datetime>
+					<secure-datetime
+						label="Meeting Time"
+						name="hero-time"
+						type="time"
+						security-tier="public"
+					></secure-datetime>
+					<secure-datetime
+						label="Event DateTime"
+						name="hero-dt"
+						type="datetime-local"
+						security-tier="authenticated"
+					></secure-datetime>
+				</div>
+			</section>
+
+			<!-- All Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="date"</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Date" name="cfg-dt-date" type="date" security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  type="date"
+  label="Date"
+  name="date"
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="time"</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Time" name="cfg-dt-time" type="time" security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  type="time"
+  label="Time"
+  name="time"
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="datetime-local"</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Date and Time" name="cfg-dt-dtl" type="datetime-local" security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  type="datetime-local"
+  label="Date and Time"
+  name="datetime"
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="month"</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Month" name="cfg-dt-month" type="month" security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  type="month"
+  label="Month"
+  name="month"
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">type="week"</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Week" name="cfg-dt-week" type="week" security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  type="week"
+  label="Week"
+  name="week"
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Authenticated date" name="cfg-dt-auth" type="date" security-tier="authenticated"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  security-tier="authenticated"
+  label="Authenticated date"
+  type="date"
+  name="date">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Sensitive date" name="cfg-dt-sens" type="date" security-tier="sensitive"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  security-tier="sensitive"
+  label="Sensitive date"
+  type="date"
+  name="date">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Required date" name="cfg-dt-req" type="date" required security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  label="Required date"
+  name="date"
+  type="date"
+  required
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">disabled</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Disabled date" name="cfg-dt-dis" type="date" disabled security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  label="Disabled date"
+  name="date"
+  type="date"
+  disabled
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">min / max</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Date range" name="cfg-dt-range" type="date" min="2025-01-01" max="2025-12-31" security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-datetime
+  label="Date range"
+  name="date"
+  type="date"
+  min="2025-01-01"
+  max="2025-12-31"
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">step</span></div>
+						<div class="config-demo">
+							<secure-datetime label="Time (30 min steps)" name="cfg-dt-step" type="time" step="1800" security-tier="public"></secure-datetime>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<!-- step in seconds (1800 = 30 min) -->
+<secure-datetime
+  label="Time (30 min steps)"
+  name="time"
+  type="time"
+  step="1800"
+  security-tier="public">
+</secure-datetime>` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Security Features</h2>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Feature</th>
+							<th><span class="tier-badge tier-badge--public">Public</span></th>
+							<th><span class="tier-badge tier-badge--authenticated">Authenticated</span></th>
+							<th><span class="tier-badge tier-badge--sensitive">Sensitive</span></th>
+							<th><span class="tier-badge tier-badge--critical">Critical</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Input sanitization</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Range enforcement</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Timezone handling</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Audit logging</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro">Secure-UI uses CSS custom properties. Override at <code>:root</code>, per-component, or per-instance. The <code>secure-datetime</code> component inherits all <code>--secure-ui-input-*</code> variables.</p>
+				<table class="css-vars-table">
+					<thead>
+						<tr>
+							<th>Variable</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>--secure-ui-input-height</td>
+							<td>2.5rem</td>
+							<td>Input height (shared with secure-input)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-padding-x</td>
+							<td>0.75rem</td>
+							<td>Horizontal padding (shared)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-radius</td>
+							<td>6px</td>
+							<td>Corner radius (shared)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-color</td>
+							<td>var(--secure-ui-color-border)</td>
+							<td>Border color (shared)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-color-focus</td>
+							<td>var(--secure-ui-color-primary)</td>
+							<td>Focus border color (shared)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-bg</td>
+							<td>var(--secure-ui-color-bg-primary)</td>
+							<td>Background color (shared)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-text-color</td>
+							<td>var(--secure-ui-color-text-primary)</td>
+							<td>Text color (shared)</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="theme-demo-card">
+					<div class="theme-demo-card-header">Themed Example</div>
+					<div class="theme-demo-card-code">
+						<pre><code class="language-css">{ `secure-datetime {
+  --secure-ui-input-border-radius: 0;
+  --secure-ui-input-border-color: #7c3aed;
+  --secure-ui-input-border-color-focus: #a78bfa;
+  --secure-ui-input-height: 3rem;
+}` }</code></pre>
+					</div>
+					<div class="theme-demo-card-preview">
+						<secure-datetime
+							label="Themed Date Picker"
+							name="themed-datetime"
+							type="date"
+							security-tier="public"
+							style="--secure-ui-input-border-radius: 0; --secure-ui-input-border-color: #7c3aed; --secure-ui-input-border-color-focus: #a78bfa; --secure-ui-input-height: 3rem;"
+						></secure-datetime>
+					</div>
+				</div>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Web Components work natively in all frameworks. No wrappers, no adapters.</p>
+				<div class="framework-tabs">
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-datetime/secure-datetime.js">
+</script>
+
+<secure-datetime
+  label="Appointment"
+  name="appointment"
+  type="datetime-local"
+  min="2025-01-01T00:00"
+  max="2025-12-31T23:59"
+  security-tier="authenticated"
+  required>
+</secure-datetime>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect } from 'react';
+
+export function AppointmentPicker() {
+  useEffect(() => {
+    import('/components/secure-datetime/secure-datetime.js');
+  }, []);
+
+  return (
+    <secure-datetime
+      label="Appointment"
+      name="appointment"
+      type="datetime-local"
+      min="2025-01-01T00:00"
+      security-tier="authenticated"
+      required
+    />
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Vue 3</span>
+							<span class="framework-tab-lang">vue</span>
+						</div>
+						<pre><code class="language-markup">{ `<template>
+  <secure-datetime
+    label="Appointment"
+    name="appointment"
+    type="datetime-local"
+    :min="minDate"
+    security-tier="authenticated"
+    required>
+  </secure-datetime>
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+const minDate = '2025-01-01T00:00';
+onMounted(() => import('/components/secure-datetime/secure-datetime.js'));
+</script>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Angular</span>
+							<span class="framework-tab-lang">typescript</span>
+						</div>
+						<pre><code class="language-typescript">{ "import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-appointment-picker',\n  template: `\n    <secure-datetime\n      label=\"Appointment\"\n      name=\"appointment\"\n      type=\"datetime-local\"\n      min=\"2025-01-01T00:00\"\n      security-tier=\"authenticated\"\n      required>\n    </secure-datetime>\n  `,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n})\nexport class AppointmentPickerComponent implements OnInit {\n  ngOnInit() {\n    import('/components/secure-datetime/secure-datetime.js');\n  }\n}" }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Svelte</span>
+							<span class="framework-tab-lang">svelte</span>
+						</div>
+						<pre><code class="language-markup">{ `<script>
+  import { onMount } from 'svelte';
+  onMount(() => import('/components/secure-datetime/secure-datetime.js'));
+</script>
+
+<secure-datetime
+  label="Appointment"
+  name="appointment"
+  type="datetime-local"
+  min="2025-01-01T00:00"
+  security-tier="authenticated"
+  required>
+</secure-datetime>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ AppointmentPicker(min, max string) {
+  <secure-datetime
+    label="Appointment"
+    name="appointment"
+    type="datetime-local"
+    min={ min }
+    max={ max }
+    security-tier="authenticated"
+    required>
+  </secure-datetime>
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components/secure-file-upload" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">&lt;secure-file-upload&gt;</span>
+				</a>
+				<a href="/components/secure-table" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">Next</span>
+					<span class="component-nav-name">&lt;secure-table&gt;</span>
+				</a>
+			</nav>
+		</div>
+	}
+}

@@ -1,0 +1,483 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureTextarea() {
+	@templates.Layout("secure-textarea Component", "Showcase and documentation for the secure-textarea web component") {
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-textarea&gt;</h1>
+					<p class="component-hero-description">
+						A multi-line text area with automatic content sanitization on every keystroke and paste
+						event. HTML entities are encoded, script tags are stripped, and length limits are
+						enforced before the value is available to consuming code.
+					</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-textarea/secure-textarea.js">
+</script>` }</code></pre>
+					</div>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-textarea
+						label="Message"
+						name="hero-message"
+						rows="4"
+						placeholder="Enter your message..."
+						security-tier="public"
+					></secure-textarea>
+					<secure-textarea
+						label="Private Notes"
+						name="hero-notes"
+						rows="3"
+						placeholder="Internal notes..."
+						security-tier="sensitive"
+					></secure-textarea>
+				</div>
+			</section>
+
+			<!-- All Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Public textarea" name="cfg-ta-pub" rows="3" security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="Public textarea"
+  name="field"
+  rows="3"
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Authenticated textarea" name="cfg-ta-auth" rows="3" security-tier="authenticated"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  security-tier="authenticated"
+  label="Authenticated textarea"
+  name="field"
+  rows="3">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Sensitive textarea" name="cfg-ta-sens" rows="3" security-tier="sensitive"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  security-tier="sensitive"
+  label="Sensitive textarea"
+  name="field"
+  rows="3">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Critical textarea" name="cfg-ta-crit" rows="3" security-tier="critical"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  security-tier="critical"
+  label="Critical textarea"
+  name="field"
+  rows="3">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Required field" name="cfg-ta-req" rows="3" required security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="Required field"
+  name="field"
+  rows="3"
+  required
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">disabled</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Disabled textarea" name="cfg-ta-dis" rows="3" disabled security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="Disabled textarea"
+  name="field"
+  rows="3"
+  disabled
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">readonly</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Read-only textarea" name="cfg-ta-ro" rows="3" readonly security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="Read-only textarea"
+  name="field"
+  rows="3"
+  readonly
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">rows</span></div>
+						<div class="config-demo">
+							<secure-textarea label="8 rows" name="cfg-ta-rows" rows="8" security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="8 rows"
+  name="field"
+  rows="8"
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">minlength / maxlength</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Bio" name="cfg-ta-len" rows="3" minlength="20" maxlength="500" placeholder="At least 20 characters" security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="Bio"
+  name="bio"
+  rows="3"
+  minlength="20"
+  maxlength="500"
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">resize="none"</span></div>
+						<div class="config-demo">
+							<secure-textarea label="No resize" name="cfg-ta-rn" rows="3" resize="none" security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="No resize"
+  name="field"
+  rows="3"
+  resize="none"
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">resize="vertical"</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Vertical resize" name="cfg-ta-rv" rows="3" resize="vertical" security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="Vertical resize"
+  name="field"
+  rows="3"
+  resize="vertical"
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">resize="both"</span></div>
+						<div class="config-demo">
+							<secure-textarea label="Both resize" name="cfg-ta-rb" rows="3" resize="both" security-tier="public"></secure-textarea>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-textarea
+  label="Both resize"
+  name="field"
+  rows="3"
+  resize="both"
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Security Features</h2>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Feature</th>
+							<th><span class="tier-badge tier-badge--public">Public</span></th>
+							<th><span class="tier-badge tier-badge--authenticated">Authenticated</span></th>
+							<th><span class="tier-badge tier-badge--sensitive">Sensitive</span></th>
+							<th><span class="tier-badge tier-badge--critical">Critical</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Content sanitization</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Length enforcement</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Paste sanitization</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Audit logging</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro">Secure-UI uses CSS custom properties. Override at <code>:root</code>, per-component, or per-instance.</p>
+				<table class="css-vars-table">
+					<thead>
+						<tr>
+							<th>Variable</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>--secure-ui-textarea-min-height</td>
+							<td>6rem</td>
+							<td>Minimum textarea height</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-textarea-padding</td>
+							<td>0.5rem 0.75rem</td>
+							<td>Inner padding</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-color</td>
+							<td>var(--secure-ui-color-border)</td>
+							<td>Border color (shared with input)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-border-color-focus</td>
+							<td>var(--secure-ui-color-primary)</td>
+							<td>Focus border color (shared)</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-input-text-color</td>
+							<td>var(--secure-ui-color-text-primary)</td>
+							<td>Text color (shared)</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="theme-demo-card">
+					<div class="theme-demo-card-header">Themed Example</div>
+					<div class="theme-demo-card-code">
+						<pre><code class="language-css">{ `secure-textarea {
+  --secure-ui-textarea-min-height: 10rem;
+  --secure-ui-input-border-color: #d97706;
+  --secure-ui-input-border-color-focus: #f59e0b;
+}` }</code></pre>
+					</div>
+					<div class="theme-demo-card-preview">
+						<secure-textarea
+							label="Themed Textarea"
+							name="themed-textarea"
+							rows="4"
+							security-tier="public"
+							style="--secure-ui-input-border-color: #d97706; --secure-ui-input-border-color-focus: #f59e0b;"
+						></secure-textarea>
+					</div>
+				</div>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Web Components work natively in all frameworks. No wrappers, no adapters.</p>
+				<div class="framework-tabs">
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<!DOCTYPE html>
+<html>
+<head>
+  <script type="module"
+    src="/components/secure-textarea/secure-textarea.js">
+  </script>
+</head>
+<body>
+  <secure-textarea
+    label="Message"
+    name="message"
+    rows="5"
+    maxlength="1000"
+    security-tier="public"
+    required>
+  </secure-textarea>
+</body>
+</html>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect } from 'react';
+
+export function MessageField() {
+  useEffect(() => {
+    import('/components/secure-textarea/secure-textarea.js');
+  }, []);
+
+  return (
+    <secure-textarea
+      label="Message"
+      name="message"
+      rows="5"
+      maxlength="1000"
+      security-tier="public"
+      required
+    />
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Vue 3</span>
+							<span class="framework-tab-lang">vue</span>
+						</div>
+						<pre><code class="language-markup">{ `<template>
+  <secure-textarea
+    label="Message"
+    name="message"
+    :rows="rows"
+    maxlength="1000"
+    security-tier="public"
+    required>
+  </secure-textarea>
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+const rows = 5;
+onMounted(() => import('/components/secure-textarea/secure-textarea.js'));
+</script>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Angular</span>
+							<span class="framework-tab-lang">typescript</span>
+						</div>
+						<pre><code class="language-typescript">{ "import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-message-field',\n  template: `\n    <secure-textarea\n      label=\"Message\"\n      name=\"message\"\n      rows=\"5\"\n      maxlength=\"1000\"\n      security-tier=\"public\"\n      required>\n    </secure-textarea>\n  `,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n})\nexport class MessageFieldComponent implements OnInit {\n  ngOnInit() {\n    import('/components/secure-textarea/secure-textarea.js');\n  }\n}" }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Svelte</span>
+							<span class="framework-tab-lang">svelte</span>
+						</div>
+						<pre><code class="language-markup">{ `<script>
+  import { onMount } from 'svelte';
+  onMount(() => import('/components/secure-textarea/secure-textarea.js'));
+</script>
+
+<secure-textarea
+  label="Message"
+  name="message"
+  rows="5"
+  maxlength="1000"
+  security-tier="public"
+  required>
+</secure-textarea>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ MessageField(maxLen string) {
+  <secure-textarea
+    label="Message"
+    name="message"
+    rows="5"
+    maxlength={ maxLen }
+    security-tier="public"
+    required>
+  </secure-textarea>
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components/secure-select" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">&lt;secure-select&gt;</span>
+				</a>
+				<a href="/components/secure-form" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">Next</span>
+					<span class="component-nav-name">&lt;secure-form&gt;</span>
+				</a>
+			</nav>
+		</div>
+	}
+}

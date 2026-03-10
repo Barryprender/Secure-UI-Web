@@ -1,0 +1,152 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentsIndex() {
+	@templates.Layout("Components", "Secure-UI web components — framework-agnostic, security-first custom elements") {
+		<div class="components-index-page">
+			<header class="components-index-header">
+				<h1>Components</h1>
+				<p>
+					Secure-UI provides seven security-hardened web components built on the Custom Elements standard.
+					They work in any framework — or with no framework at all. Drop them into HTML, React, Vue, Angular,
+					Svelte, or any server-rendered template.
+				</p>
+			</header>
+
+			<div class="components-grid">
+				<a href="/components/secure-input" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="2" y="6" width="16" height="8" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+							<path d="M6 10h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-input&gt;</span>
+					<p class="component-card-desc">Security-hardened text input with XSS prevention, type validation, and audit logging.</p>
+					<ul class="component-card-features">
+						<li>All HTML5 input types</li>
+						<li>Security tier enforcement</li>
+						<li>Pattern and length validation</li>
+					</ul>
+				</a>
+
+				<a href="/components/secure-select" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="2" y="5" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+							<path d="M13 10l-3 3-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-select&gt;</span>
+					<p class="component-card-desc">Dropdown select with option injection prevention and value allowlist enforcement.</p>
+					<ul class="component-card-features">
+						<li>Option injection prevention</li>
+						<li>Value allowlist enforcement</li>
+						<li>Multiple selection support</li>
+					</ul>
+				</a>
+
+				<a href="/components/secure-textarea" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="2" y="3" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+							<path d="M6 7h8M6 10h8M6 13h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-textarea&gt;</span>
+					<p class="component-card-desc">Multi-line text area with content sanitization and paste attack prevention.</p>
+					<ul class="component-card-features">
+						<li>Content sanitization on input</li>
+						<li>Paste sanitization</li>
+						<li>Length enforcement</li>
+					</ul>
+				</a>
+
+				<a href="/components/secure-form" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+							<path d="M6 7h8M6 10h8M6 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+							<circle cx="15" cy="13" r="2" fill="currentColor"></circle>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-form&gt;</span>
+					<p class="component-card-desc">Form wrapper with automatic CSRF token injection and submission audit logging.</p>
+					<ul class="component-card-features">
+						<li>CSRF token injection</li>
+						<li>Form action enforcement</li>
+						<li>Field coordination</li>
+					</ul>
+				</a>
+
+				<a href="/components/secure-file-upload" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<path d="M10 13V5M7 8l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+							<path d="M4 14v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-file-upload&gt;</span>
+					<p class="component-card-desc">File upload with MIME type validation, magic number verification, and size enforcement.</p>
+					<ul class="component-card-features">
+						<li>MIME type validation</li>
+						<li>Magic number verification</li>
+						<li>Scan hook integration</li>
+					</ul>
+				</a>
+
+				<a href="/components/secure-datetime" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+							<path d="M7 2v4M13 2v4M3 9h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-datetime&gt;</span>
+					<p class="component-card-desc">Date and time picker with input sanitization, range enforcement, and timezone handling.</p>
+					<ul class="component-card-features">
+						<li>Range enforcement (min/max)</li>
+						<li>Timezone normalization</li>
+						<li>All date/time subtypes</li>
+					</ul>
+				</a>
+
+				<a href="/components/secure-table" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="2" y="3" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+							<path d="M2 8h16M7 8v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-table&gt;</span>
+					<p class="component-card-desc">Data table with XSS-safe rendering, sort/filter sanitization, and column injection prevention.</p>
+					<ul class="component-card-features">
+						<li>XSS-safe data rendering</li>
+						<li>Sortable and filterable</li>
+						<li>Pagination support</li>
+					</ul>
+				</a>
+			</div>
+
+			<section class="framework-agnostic-section">
+				<h2>Framework Agnostic</h2>
+				<p>
+					Secure-UI components are built on the W3C Custom Elements specification. They are first-class
+					HTML elements — no virtual DOM, no framework runtime, no build step required. Import the module
+					once and every component self-registers.
+				</p>
+				<p>
+					Because they are real HTML elements, they compose naturally with React JSX, Vue templates,
+					Angular component markup, Svelte, or plain server-rendered HTML. Binding attributes, listening
+					to events, and applying CSS works exactly the same way as with native elements.
+				</p>
+				<p>
+					Security properties are enforced regardless of which framework renders the surrounding page.
+					The security tier, CSRF handling, and audit logging operate inside the component shadow DOM
+					and cannot be bypassed by the host application.
+				</p>
+			</section>
+		</div>
+	}
+}

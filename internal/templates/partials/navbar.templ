@@ -7,7 +7,12 @@ templ Navbar(isLoggedIn bool) {
 		<div class="container">
 			<nav class="nav-content">
 				<a href="/" class="nav-logo">
-					<span class="nav-logo-icon">🛡️</span>
+					<span class="nav-logo-icon">
+						<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<path d="M12 2L3 6v6c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V6L12 2z" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+							<path d="M8.5 12.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+						</svg>
+					</span>
 					<span class="nav-logo-text">Secure-UI</span>
 				</a>
 
@@ -17,6 +22,21 @@ templ Navbar(isLoggedIn bool) {
 					<li><a href="/dashboard" class="nav-link">Dashboard</a></li>
 					<li><a href="/table" class="nav-link">Table</a></li>
 					<li><a href="/registration" class="nav-link">Registration</a></li>
+					<li class="nav-dropdown">
+						<button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
+							Components
+							<span class="nav-dropdown-arrow" aria-hidden="true"></span>
+						</button>
+						<div class="nav-dropdown-panel" role="menu">
+							<a href="/components/secure-input" class="nav-dropdown-link" role="menuitem">secure-input</a>
+							<a href="/components/secure-select" class="nav-dropdown-link" role="menuitem">secure-select</a>
+							<a href="/components/secure-textarea" class="nav-dropdown-link" role="menuitem">secure-textarea</a>
+							<a href="/components/secure-form" class="nav-dropdown-link" role="menuitem">secure-form</a>
+							<a href="/components/secure-file-upload" class="nav-dropdown-link" role="menuitem">secure-file-upload</a>
+							<a href="/components/secure-datetime" class="nav-dropdown-link" role="menuitem">secure-datetime</a>
+							<a href="/components/secure-table" class="nav-dropdown-link" role="menuitem">secure-table</a>
+						</div>
+					</li>
 					<li><a href="/documentation" class="nav-link">Docs</a></li>
 				</ul>
 

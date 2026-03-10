@@ -7,6 +7,7 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
+	"strings"
 	"time"
 
 	"secure-ui-showcase-go/internal/database"
@@ -106,6 +107,7 @@ func main() {
 	mux.Handle("/forms", optAuth(http.HandlerFunc(h.Forms)))
 	mux.Handle("/documentation", optAuth(http.HandlerFunc(h.Documentation)))
 	mux.Handle("/documentation/", optAuth(http.HandlerFunc(h.Documentation)))
+	mux.Handle("/components", optAuth(http.HandlerFunc(h.Components)))
 	mux.Handle("/registration", optAuth(http.HandlerFunc(h.Registration)))
 
 	// --- Auth routes ---
@@ -203,13 +205,26 @@ func main() {
 	fs := http.FileServer(http.Dir(staticDir))
 	mux.Handle("/static/", http.StripPrefix("/static/", middleware.MIMETypeWrapper(fs)))
 
-	// Serve web components from submodule (production) or sibling folder (dev)
+	// Serve web components from submodule (production) or sibling folder (dev).
+	// The /components/ subtree serves both showcase pages and static JS files.
+	// Showcase pages (no file extension) are handled by the Components handler;
+	// file requests (with a file extension) are served by the static file server.
 	componentsDir := filepath.Join(".", "secure-ui-components", "dist")
 	if _, err := os.Stat(componentsDir); os.IsNotExist(err) {
 		componentsDir = filepath.Join("..", "secure-ui-components", "dist")
 	}
 	componentFS := http.FileServer(http.Dir(componentsDir))
-	mux.Handle("/components/", http.StripPrefix("/components/", middleware.MIMETypeWrapper(componentFS)))
+	strippedComponentFS := http.StripPrefix("/components/", middleware.MIMETypeWrapper(componentFS))
+	mux.Handle("/components/", optAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		// If the path contains a dot in the final segment it is a file request.
+		path := r.URL.Path
+		base := path[strings.LastIndex(path, "/")+1:]
+		if strings.Contains(base, ".") {
+			strippedComponentFS.ServeHTTP(w, r)
+			return
+		}
+		h.Components(w, r)
+	})))
 
 	// Apply middleware chain
 	// Order matters: Security headers -> Layout CSRF -> Rate limiting -> Routes

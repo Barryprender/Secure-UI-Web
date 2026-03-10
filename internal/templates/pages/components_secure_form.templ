@@ -1,0 +1,409 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureForm() {
+	@templates.Layout("secure-form Component", "Showcase and documentation for the secure-form web component") {
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-form&gt;</h1>
+					<p class="component-hero-description">
+						A form wrapper that automatically injects CSRF tokens, enforces form action URLs,
+						coordinates security tiers across all child components, and logs every submission
+						attempt to the audit trail.
+					</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-form/secure-form.js">
+</script>` }</code></pre>
+					</div>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
+						<secure-input label="Name" name="demo-name" type="text" security-tier="sensitive" required></secure-input>
+						<secure-input label="Email" name="demo-email" type="email" security-tier="sensitive" required></secure-input>
+						<button type="submit" class="btn btn-sm btn-accent" style="margin-top: 0.5rem;">Submit</button>
+					</secure-form>
+				</div>
+			</section>
+
+			<!-- All Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">method="POST"</span></div>
+						<div class="config-demo">
+							<secure-form action="/api/forms/submit" method="POST" security-tier="public">
+								<secure-input label="Name" name="cfg-form-post-name" type="text" security-tier="public"></secure-input>
+							</secure-form>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-form
+  action="/submit"
+  method="POST"
+  security-tier="public">
+  <!-- fields here -->
+</secure-form>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">method="GET"</span></div>
+						<div class="config-demo">
+							<secure-form action="/search" method="GET" security-tier="public">
+								<secure-input label="Search" name="cfg-form-get-q" type="text" security-tier="public"></secure-input>
+							</secure-form>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-form
+  action="/search"
+  method="GET"
+  security-tier="public">
+  <!-- fields here -->
+</secure-form>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-demo">
+							<secure-form action="/api/forms/submit" method="POST" security-tier="public">
+								<secure-input label="Comment" name="cfg-form-pub" type="text" security-tier="public"></secure-input>
+							</secure-form>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-form
+  action="/submit"
+  method="POST"
+  security-tier="public">
+  <secure-input name="comment"
+    security-tier="public">
+  </secure-input>
+</secure-form>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
+						<div class="config-demo">
+							<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
+								<secure-input label="Email" name="cfg-form-sens" type="email" security-tier="sensitive"></secure-input>
+							</secure-form>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-form
+  action="/submit"
+  method="POST"
+  security-tier="sensitive">
+  <secure-input name="email"
+    type="email"
+    security-tier="sensitive">
+  </secure-input>
+</secure-form>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">autocomplete="off"</span></div>
+						<div class="config-demo">
+							<secure-form action="/api/forms/submit" method="POST" autocomplete="off" security-tier="sensitive">
+								<secure-input label="Field" name="cfg-form-ac" type="text" security-tier="sensitive"></secure-input>
+							</secure-form>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-form
+  action="/submit"
+  method="POST"
+  autocomplete="off"
+  security-tier="sensitive">
+  <!-- fields here -->
+</secure-form>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">novalidate</span></div>
+						<div class="config-demo">
+							<secure-form action="/api/forms/submit" method="POST" novalidate security-tier="public">
+								<secure-input label="Field" name="cfg-form-nv" type="text" security-tier="public"></secure-input>
+							</secure-form>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-form
+  action="/submit"
+  method="POST"
+  novalidate
+  security-tier="public">
+  <!-- fields here -->
+</secure-form>` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Security Features</h2>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Feature</th>
+							<th><span class="tier-badge tier-badge--public">Public</span></th>
+							<th><span class="tier-badge tier-badge--authenticated">Authenticated</span></th>
+							<th><span class="tier-badge tier-badge--sensitive">Sensitive</span></th>
+							<th><span class="tier-badge tier-badge--critical">Critical</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>CSRF token injection</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Form action enforcement</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Submission audit</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Field coordination</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro">Secure-UI uses CSS custom properties. Override at <code>:root</code>, per-component, or per-instance.</p>
+				<table class="css-vars-table">
+					<thead>
+						<tr>
+							<th>Variable</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>--secure-ui-form-gap</td>
+							<td>1rem</td>
+							<td>Gap between form fields</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-form-label-margin-bottom</td>
+							<td>0.375rem</td>
+							<td>Space between label and input</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-form-error-margin-top</td>
+							<td>0.25rem</td>
+							<td>Space above error messages</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="theme-demo-card">
+					<div class="theme-demo-card-header">Themed Example</div>
+					<div class="theme-demo-card-code">
+						<pre><code class="language-css">{ `secure-form {
+  --secure-ui-form-gap: 1.5rem;
+  --secure-ui-form-label-margin-bottom: 0.5rem;
+}` }</code></pre>
+					</div>
+					<div class="theme-demo-card-preview">
+						<secure-form
+							action="/api/forms/submit"
+							method="POST"
+							security-tier="public"
+							style="--secure-ui-form-gap: 1.5rem;"
+						>
+							<secure-input label="First Name" name="themed-form-fn" type="text" security-tier="public"></secure-input>
+							<secure-input label="Last Name" name="themed-form-ln" type="text" security-tier="public"></secure-input>
+						</secure-form>
+					</div>
+				</div>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Web Components work natively in all frameworks. No wrappers, no adapters.</p>
+				<div class="framework-tabs">
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-form/secure-form.js">
+</script>
+
+<secure-form
+  action="/login"
+  method="POST"
+  security-tier="sensitive">
+  <secure-input
+    type="email"
+    label="Email"
+    name="email"
+    security-tier="sensitive"
+    required>
+  </secure-input>
+  <secure-input
+    type="password"
+    label="Password"
+    name="password"
+    security-tier="critical"
+    required>
+  </secure-input>
+  <button type="submit">Sign In</button>
+</secure-form>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect } from 'react';
+
+export function LoginForm() {
+  useEffect(() => {
+    import('/components/secure-form/secure-form.js');
+    import('/components/secure-input/secure-input.js');
+  }, []);
+
+  return (
+    <secure-form action="/login" method="POST" security-tier="sensitive">
+      <secure-input type="email" label="Email" name="email"
+        security-tier="sensitive" required />
+      <secure-input type="password" label="Password" name="password"
+        security-tier="critical" required />
+      <button type="submit">Sign In</button>
+    </secure-form>
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Vue 3</span>
+							<span class="framework-tab-lang">vue</span>
+						</div>
+						<pre><code class="language-markup">{ `<template>
+  <secure-form action="/login" method="POST" security-tier="sensitive">
+    <secure-input type="email" label="Email" name="email"
+      security-tier="sensitive" required />
+    <secure-input type="password" label="Password" name="password"
+      security-tier="critical" required />
+    <button type="submit">Sign In</button>
+  </secure-form>
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+onMounted(async () => {
+  await import('/components/secure-form/secure-form.js');
+  await import('/components/secure-input/secure-input.js');
+});
+</script>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Angular</span>
+							<span class="framework-tab-lang">typescript</span>
+						</div>
+						<pre><code class="language-typescript">{ "import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-login-form',\n  template: `\n    <secure-form action=\"/login\" method=\"POST\" security-tier=\"sensitive\">\n      <secure-input type=\"email\" label=\"Email\" name=\"email\"\n        security-tier=\"sensitive\" required>\n      </secure-input>\n      <secure-input type=\"password\" label=\"Password\" name=\"password\"\n        security-tier=\"critical\" required>\n      </secure-input>\n      <button type=\"submit\">Sign In</button>\n    </secure-form>\n  `,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n})\nexport class LoginFormComponent implements OnInit {\n  ngOnInit() {\n    import('/components/secure-form/secure-form.js');\n    import('/components/secure-input/secure-input.js');\n  }\n}" }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Svelte</span>
+							<span class="framework-tab-lang">svelte</span>
+						</div>
+						<pre><code class="language-markup">{ `<script>
+  import { onMount } from 'svelte';
+  onMount(async () => {
+    await import('/components/secure-form/secure-form.js');
+    await import('/components/secure-input/secure-input.js');
+  });
+</script>
+
+<secure-form action="/login" method="POST" security-tier="sensitive">
+  <secure-input type="email" label="Email" name="email"
+    security-tier="sensitive" required>
+  </secure-input>
+  <secure-input type="password" label="Password" name="password"
+    security-tier="critical" required>
+  </secure-input>
+  <button type="submit">Sign In</button>
+</secure-form>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ LoginForm(action string) {
+  <secure-form
+    action={ action }
+    method="POST"
+    security-tier="sensitive">
+    <secure-input
+      type="email"
+      label="Email"
+      name="email"
+      security-tier="sensitive"
+      required>
+    </secure-input>
+    <secure-input
+      type="password"
+      label="Password"
+      name="password"
+      security-tier="critical"
+      required>
+    </secure-input>
+    <button type="submit">Sign In</button>
+  </secure-form>
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components/secure-textarea" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">&lt;secure-textarea&gt;</span>
+				</a>
+				<a href="/components/secure-file-upload" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">Next</span>
+					<span class="component-nav-name">&lt;secure-file-upload&gt;</span>
+				</a>
+			</nav>
+		</div>
+	}
+}

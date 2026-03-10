@@ -1,0 +1,422 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureFileUpload() {
+	@templates.Layout("secure-file-upload Component", "Showcase and documentation for the secure-file-upload web component") {
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-file-upload&gt;</h1>
+					<p class="component-hero-description">A file upload component that validates MIME types against declared accept lists, verifies magic numbers in the file header, enforces size limits, and provides hooks for server-side scanning integration. All validation runs before the file is transmitted.</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-file-upload/secure-file-upload.js">
+</script>` }</code></pre>
+					</div>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-file-upload
+						label="Profile Photo"
+						name="hero-photo"
+						accept="image/*"
+						max-size="5242880"
+						security-tier="authenticated"
+					></secure-file-upload>
+					<secure-file-upload
+						label="Document"
+						name="hero-doc"
+						accept=".pdf,.doc,.docx"
+						security-tier="sensitive"
+					></secure-file-upload>
+				</div>
+			</section>
+
+			<!-- All Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Public upload" name="cfg-fu-pub" security-tier="public"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  label="Public upload"
+  name="file"
+  security-tier="public">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Authenticated upload" name="cfg-fu-auth" security-tier="authenticated"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  security-tier="authenticated"
+  label="Authenticated upload"
+  name="file">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Sensitive upload" name="cfg-fu-sens" security-tier="sensitive"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  security-tier="sensitive"
+  label="Sensitive upload"
+  name="file">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Critical upload" name="cfg-fu-crit" security-tier="critical"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  security-tier="critical"
+  label="Critical upload"
+  name="file">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">accept images</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Images only" name="cfg-fu-img" accept="image/*" security-tier="public"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  label="Images only"
+  name="image"
+  accept="image/*"
+  security-tier="public">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">accept documents</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Documents" name="cfg-fu-doc" accept=".pdf,.doc,.docx" security-tier="sensitive"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  label="Documents"
+  name="document"
+  accept=".pdf,.doc,.docx"
+  security-tier="sensitive">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">multiple</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Multiple files" name="cfg-fu-multi" multiple security-tier="public"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  label="Multiple files"
+  name="files"
+  multiple
+  security-tier="public">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">max-size</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Max 2MB" name="cfg-fu-size" max-size="2097152" security-tier="public"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<!-- max-size in bytes (2MB = 2097152) -->
+<secure-file-upload
+  label="Max 2MB"
+  name="file"
+  max-size="2097152"
+  security-tier="public">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-demo">
+							<secure-file-upload label="Required upload" name="cfg-fu-req" required security-tier="public"></secure-file-upload>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-file-upload
+  label="Required upload"
+  name="file"
+  required
+  security-tier="public">
+</secure-file-upload>` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Security Features</h2>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Feature</th>
+							<th><span class="tier-badge tier-badge--public">Public</span></th>
+							<th><span class="tier-badge tier-badge--authenticated">Authenticated</span></th>
+							<th><span class="tier-badge tier-badge--sensitive">Sensitive</span></th>
+							<th><span class="tier-badge tier-badge--critical">Critical</span></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>MIME type validation</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Magic number verification</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Size enforcement</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Scan hook integration</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Audit logging</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro">Secure-UI uses CSS custom properties. Override at <code>:root</code>, per-component, or per-instance.</p>
+				<table class="css-vars-table">
+					<thead>
+						<tr>
+							<th>Variable</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>--secure-ui-upload-border-style</td>
+							<td>dashed</td>
+							<td>Drop zone border style</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-upload-border-width</td>
+							<td>2px</td>
+							<td>Drop zone border width</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-upload-padding</td>
+							<td>2rem</td>
+							<td>Drop zone inner padding</td>
+						</tr>
+						<tr>
+							<td>--secure-ui-upload-border-radius</td>
+							<td>8px</td>
+							<td>Drop zone corner radius</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="theme-demo-card">
+					<div class="theme-demo-card-header">Themed Example</div>
+					<div class="theme-demo-card-code">
+						<pre><code class="language-css">{ `secure-file-upload {
+  --secure-ui-upload-border-style: solid;
+  --secure-ui-upload-border-width: 1px;
+  --secure-ui-upload-border-radius: 16px;
+  --secure-ui-upload-padding: 3rem;
+}` }</code></pre>
+					</div>
+					<div class="theme-demo-card-preview">
+						<secure-file-upload
+							label="Themed Upload"
+							name="themed-upload"
+							accept="image/*"
+							security-tier="public"
+							style="--secure-ui-upload-border-style: solid; --secure-ui-upload-border-radius: 16px;"
+						></secure-file-upload>
+					</div>
+				</div>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Web Components work natively in all frameworks. No wrappers, no adapters.</p>
+				<div class="framework-tabs">
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-file-upload/secure-file-upload.js">
+</script>
+
+<secure-file-upload
+  label="Upload Document"
+  name="document"
+  accept=".pdf,.doc,.docx"
+  max-size="10485760"
+  security-tier="sensitive"
+  required>
+</secure-file-upload>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect } from 'react';
+
+export function DocumentUpload() {
+  useEffect(() => {
+    import('/components/secure-file-upload/secure-file-upload.js');
+  }, []);
+
+  return (
+    <secure-file-upload
+      label="Upload Document"
+      name="document"
+      accept=".pdf,.doc,.docx"
+      max-size="10485760"
+      security-tier="sensitive"
+      required
+    />
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Vue 3</span>
+							<span class="framework-tab-lang">vue</span>
+						</div>
+						<pre><code class="language-markup">{ `<template>
+  <secure-file-upload
+    label="Upload Document"
+    name="document"
+    accept=".pdf,.doc,.docx"
+    max-size="10485760"
+    security-tier="sensitive"
+    required>
+  </secure-file-upload>
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+onMounted(() =>
+  import('/components/secure-file-upload/secure-file-upload.js')
+);
+</script>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Angular</span>
+							<span class="framework-tab-lang">typescript</span>
+						</div>
+						<pre><code class="language-typescript">{ "import { Component, CUSTOM_ELEMENTS_SCHEMA, OnInit } from '@angular/core';\n\n@Component({\n  selector: 'app-document-upload',\n  template: `\n    <secure-file-upload\n      label=\"Upload Document\"\n      name=\"document\"\n      accept=\".pdf,.doc,.docx\"\n      max-size=\"10485760\"\n      security-tier=\"sensitive\"\n      required>\n    </secure-file-upload>\n  `,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n})\nexport class DocumentUploadComponent implements OnInit {\n  ngOnInit() {\n    import('/components/secure-file-upload/secure-file-upload.js');\n  }\n}" }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Svelte</span>
+							<span class="framework-tab-lang">svelte</span>
+						</div>
+						<pre><code class="language-markup">{ `<script>
+  import { onMount } from 'svelte';
+  onMount(() =>
+    import('/components/secure-file-upload/secure-file-upload.js')
+  );
+</script>
+
+<secure-file-upload
+  label="Upload Document"
+  name="document"
+  accept=".pdf,.doc,.docx"
+  max-size="10485760"
+  security-tier="sensitive"
+  required>
+</secure-file-upload>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ DocumentUpload(maxSize string) {
+  <secure-file-upload
+    label="Upload Document"
+    name="document"
+    accept=".pdf,.doc,.docx"
+    max-size={ maxSize }
+    security-tier="sensitive"
+    required>
+  </secure-file-upload>
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components/secure-form" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">&lt;secure-form&gt;</span>
+				</a>
+				<a href="/components/secure-datetime" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">Next</span>
+					<span class="component-nav-name">&lt;secure-datetime&gt;</span>
+				</a>
+			</nav>
+		</div>
+	}
+}
