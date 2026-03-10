@@ -90,7 +90,7 @@
 
 .configs-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: 1fr;
   gap: var(--space-lg, 1.5rem);
 }
 
@@ -588,10 +588,6 @@
 
   .component-hero h1 {
     font-size: 1.5rem;
-  }
-
-  .configs-grid {
-    grid-template-columns: 1fr;
   }
 
   .components-grid {
