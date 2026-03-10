@@ -23,19 +23,16 @@ templ Navbar(isLoggedIn bool) {
 					<li><a href="/table" class="nav-link">Table</a></li>
 					<li><a href="/registration" class="nav-link">Registration</a></li>
 					<li class="nav-dropdown">
-						<button class="nav-dropdown-trigger" aria-haspopup="true" aria-expanded="false">
-							Components
-							<span class="nav-dropdown-arrow" aria-hidden="true"></span>
-						</button>
-						<div class="nav-dropdown-panel" role="menu">
-							<a href="/components/secure-input" class="nav-dropdown-link" role="menuitem">secure-input</a>
-							<a href="/components/secure-select" class="nav-dropdown-link" role="menuitem">secure-select</a>
-							<a href="/components/secure-textarea" class="nav-dropdown-link" role="menuitem">secure-textarea</a>
-							<a href="/components/secure-form" class="nav-dropdown-link" role="menuitem">secure-form</a>
-							<a href="/components/secure-file-upload" class="nav-dropdown-link" role="menuitem">secure-file-upload</a>
-							<a href="/components/secure-datetime" class="nav-dropdown-link" role="menuitem">secure-datetime</a>
-							<a href="/components/secure-table" class="nav-dropdown-link" role="menuitem">secure-table</a>
-						</div>
+						<a href="/components" class="nav-link">Components</a>
+						<ul class="nav-dropdown-menu">
+							<li><a href="/components/secure-input" class="nav-dropdown-link">secure-input</a></li>
+							<li><a href="/components/secure-select" class="nav-dropdown-link">secure-select</a></li>
+							<li><a href="/components/secure-textarea" class="nav-dropdown-link">secure-textarea</a></li>
+							<li><a href="/components/secure-form" class="nav-dropdown-link">secure-form</a></li>
+							<li><a href="/components/secure-file-upload" class="nav-dropdown-link">secure-file-upload</a></li>
+							<li><a href="/components/secure-datetime" class="nav-dropdown-link">secure-datetime</a></li>
+							<li><a href="/components/secure-table" class="nav-dropdown-link">secure-table</a></li>
+						</ul>
 					</li>
 					<li><a href="/documentation" class="nav-link">Docs</a></li>
 				</ul>

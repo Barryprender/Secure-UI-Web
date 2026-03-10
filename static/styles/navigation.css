@@ -188,80 +188,58 @@
   }
 }
 
-/* Dropdown Navigation */
+/* Dropdown Navigation — pure CSS, nested ul pattern */
 .nav-dropdown {
   position: relative;
 }
 
-.nav-dropdown-trigger {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  font-size: 0.9375rem;
-  cursor: pointer;
-  background: none;
-  border: none;
-  font-family: inherit;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-  line-height: 1.5;
-}
-
-.nav-dropdown-trigger:hover,
-.nav-dropdown-trigger:focus-visible {
-  color: var(--accent-primary);
-  background: rgba(16, 185, 129, 0.08);
-  outline: none;
-}
-
-.nav-dropdown-trigger:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
-}
-
-.nav-dropdown-arrow {
+/* Chevron indicator via ::after on the trigger link */
+.nav-dropdown > .nav-link::after {
+  content: "";
   display: inline-block;
+  margin-left: 0.35em;
   width: 0;
   height: 0;
   border-left: 4px solid transparent;
   border-right: 4px solid transparent;
   border-top: 5px solid currentColor;
+  vertical-align: middle;
   transition: transform 0.2s ease;
-  flex-shrink: 0;
 }
 
-.nav-dropdown-panel {
+.nav-dropdown:hover > .nav-link::after,
+.nav-dropdown:focus-within > .nav-link::after {
+  transform: rotate(180deg);
+}
+
+/* The submenu */
+.nav-dropdown-menu {
+  list-style: none;
+  margin: 0;
+  padding: var(--space-xs) 0;
   position: absolute;
-  top: calc(100% + var(--space-xs));
+  top: calc(100% + 4px);
   left: 0;
   z-index: var(--secure-ui-z-dropdown, 200);
   background: var(--bg-primary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg, 0 8px 24px rgba(0, 0, 0, 0.16));
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
   min-width: 200px;
-  padding: var(--space-xs) 0;
+  /* Hidden by default */
+  visibility: hidden;
   opacity: 0;
   transform: translateY(-6px);
-  pointer-events: none;
-  transition: opacity 0.18s ease, transform 0.18s ease;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
 }
 
-.nav-dropdown:hover .nav-dropdown-panel,
-.nav-dropdown:focus-within .nav-dropdown-panel {
+/* Show on hover or when any child has focus */
+.nav-dropdown:hover > .nav-dropdown-menu,
+.nav-dropdown:focus-within > .nav-dropdown-menu {
+  visibility: visible;
   opacity: 1;
   transform: translateY(0);
-  pointer-events: auto;
-}
-
-.nav-dropdown:hover .nav-dropdown-arrow,
-.nav-dropdown:focus-within .nav-dropdown-arrow {
-  transform: rotate(180deg);
+  transition-delay: 0s;
 }
 
 .nav-dropdown-link {
@@ -272,33 +250,38 @@
   font-size: 0.9rem;
   font-weight: 500;
   white-space: nowrap;
-  transition: all 0.15s ease;
+  transition: color 0.15s ease, background 0.15s ease;
 }
 
-.nav-dropdown-link:hover,
-.nav-dropdown-link:focus-visible {
+.nav-dropdown-link:hover {
   color: var(--accent-primary);
   background: rgba(16, 185, 129, 0.08);
   text-decoration: none;
-  outline: none;
 }
 
 .nav-dropdown-link:focus-visible {
+  color: var(--accent-primary);
+  background: rgba(16, 185, 129, 0.08);
   outline: 2px solid var(--accent-primary);
   outline-offset: -2px;
 }
 
-/* Mobile: dropdown becomes flat inline list */
+/* Mobile: flat inline list, always visible */
 @media (max-width: 768px) {
   .nav-dropdown {
     width: 100%;
   }
 
-  .nav-dropdown-panel {
+  .nav-dropdown > .nav-link::after {
+    display: none;
+  }
+
+  .nav-dropdown-menu {
     position: static;
+    visibility: visible;
     opacity: 1;
     transform: none;
-    pointer-events: auto;
+    transition: none;
     box-shadow: none;
     border: none;
     border-radius: 0;
@@ -309,10 +292,6 @@
     background: transparent;
   }
 
-  .nav-dropdown-trigger {
-    display: none;
-  }
-
   .nav-dropdown-link {
     padding: var(--space-xs);
     font-size: 0.875rem;
@@ -320,9 +299,8 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .nav-dropdown-trigger,
-  .nav-dropdown-arrow,
-  .nav-dropdown-panel,
+  .nav-dropdown > .nav-link::after,
+  .nav-dropdown-menu,
   .nav-dropdown-link {
     transition: none;
   }
