@@ -7,6 +7,8 @@ import (
 	"net/mail"
 	"strings"
 	"time"
+
+	"github.com/microcosm-cc/bluemonday"
 )
 
 // ValidationError represents a field validation error
@@ -258,23 +260,8 @@ func Sanitize(input string) string {
 	return input
 }
 
-// SanitizeHTML removes HTML tags (basic XSS prevention)
+// SanitizeHTML strips all HTML tags and unsafe content using bluemonday.
+// Uses the StrictPolicy which allows no HTML — safe for plain text fields.
 func SanitizeHTML(input string) string {
-	var b strings.Builder
-	b.Grow(len(input))
-	inTag := false
-	for _, r := range input {
-		if r == '<' {
-			inTag = true
-			continue
-		}
-		if r == '>' {
-			inTag = false
-			continue
-		}
-		if !inTag {
-			b.WriteRune(r)
-		}
-	}
-	return b.String()
+	return bluemonday.StrictPolicy().Sanitize(input)
 }

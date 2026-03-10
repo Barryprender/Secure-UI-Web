@@ -65,7 +65,7 @@ func main() {
 	behindProxy := os.Getenv("BEHIND_PROXY") == "true"
 	rateLimiter := middleware.NewRateLimiter(ctx, 100, 1*time.Minute, behindProxy)
 	countryService := services.NewCountryService(24 * time.Hour) // Cache for 24 hours
-	authService := services.NewAuthService(userDB, sessionDB, loginAttemptDB)
+	authService := services.NewAuthService(userDB, sessionDB, loginAttemptDB, 0, 0)
 
 	// Create handlers with dependencies injected
 	h := handlers.NewHandlers(userDB, csrfStore, countryService, authService, secureCookie)

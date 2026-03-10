@@ -229,8 +229,12 @@ func (h *Handlers) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	writeSuccess(w, http.StatusOK, "User deleted successfully", nil)
 }
 
-// CreateUserFromForm handles HTML form submission to create a user
+// CreateUserFromForm handles HTML form submission to create a user (requires authentication)
 func (h *Handlers) CreateUserFromForm(w http.ResponseWriter, r *http.Request) {
+	if requireAuth(w, r) == nil {
+		return
+	}
+
 	// Parse form data
 	if err := r.ParseForm(); err != nil {
 		http.Error(w, "Unable to parse form", http.StatusBadRequest)

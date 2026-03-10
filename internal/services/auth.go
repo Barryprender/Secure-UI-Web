@@ -21,29 +21,46 @@ var (
 )
 
 const (
-	bcryptCost       = 12
-	sessionDuration  = 24 * time.Hour
-	lockoutThreshold = 5
-	lockoutWindow    = 15 * time.Minute
+	bcryptCost      = 12
+	sessionDuration = 24 * time.Hour
+
+	// DefaultLockoutThreshold is the number of consecutive failures before lockout.
+	DefaultLockoutThreshold = 5
+	// DefaultLockoutWindow is the time window for counting failures.
+	DefaultLockoutWindow = 15 * time.Minute
 )
 
 // AuthService handles authentication, registration, and session management
 type AuthService struct {
-	UserDB         *models.UserDatabase
-	SessionDB      *models.SessionDatabase
-	LoginAttemptDB *models.LoginAttemptDatabase
+	UserDB            *models.UserDatabase
+	SessionDB         *models.SessionDatabase
+	LoginAttemptDB    *models.LoginAttemptDatabase
+	lockoutThreshold  int
+	lockoutWindow     time.Duration
 }
 
-// NewAuthService creates a new AuthService with the given dependencies
+// NewAuthService creates a new AuthService with the given dependencies.
+// lockoutThreshold and lockoutWindow control account lockout behaviour;
+// pass 0 values to use the package defaults.
 func NewAuthService(
 	userDB *models.UserDatabase,
 	sessionDB *models.SessionDatabase,
 	loginAttemptDB *models.LoginAttemptDatabase,
+	lockoutThreshold int,
+	lockoutWindow time.Duration,
 ) *AuthService {
+	if lockoutThreshold <= 0 {
+		lockoutThreshold = DefaultLockoutThreshold
+	}
+	if lockoutWindow <= 0 {
+		lockoutWindow = DefaultLockoutWindow
+	}
 	return &AuthService{
-		UserDB:         userDB,
-		SessionDB:      sessionDB,
-		LoginAttemptDB: loginAttemptDB,
+		UserDB:           userDB,
+		SessionDB:        sessionDB,
+		LoginAttemptDB:   loginAttemptDB,
+		lockoutThreshold: lockoutThreshold,
+		lockoutWindow:    lockoutWindow,
 	}
 }
 
@@ -64,11 +81,11 @@ func (s *AuthService) VerifyPassword(hash, password string) bool {
 
 // IsAccountLocked checks if an account has exceeded the failure threshold
 func (s *AuthService) IsAccountLocked(email string) (bool, error) {
-	count, err := s.LoginAttemptDB.CountRecentFailures(email, lockoutWindow)
+	count, err := s.LoginAttemptDB.CountRecentFailures(email, s.lockoutWindow)
 	if err != nil {
 		return false, err
 	}
-	return count >= lockoutThreshold, nil
+	return count >= s.lockoutThreshold, nil
 }
 
 // Login authenticates a user and creates a session
@@ -137,6 +154,7 @@ func (s *AuthService) Login(email, password, ip, userAgent string) (string, erro
 	}
 
 	if err := s.SessionDB.Create(session); err != nil {
+		log.Printf("Session creation failed after successful auth: id=%d email=%s ip=%s err=%v", user.ID, email, ip, err)
 		return "", fmt.Errorf("failed to create session: %w", err)
 	}
 

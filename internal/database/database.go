@@ -210,7 +210,7 @@ func SeedSampleData(db *sql.DB) error {
 		return fmt.Errorf("failed to commit transaction: %w", err)
 	}
 
-	log.Printf("Seeded %d sample users (password: password123)", len(sampleUsers))
+	log.Printf("Seeded %d sample users", len(sampleUsers))
 
 	return nil
 }

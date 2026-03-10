@@ -84,7 +84,12 @@ func (h *Handlers) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 	v.Required("email", email, "Email").Email("email", email, "Email")
 	v.Required("password", password, "Password")
 	if !v.Result().IsValid() {
-		csrfToken, _ := h.generateCSRFToken()
+		csrfToken, err := h.generateCSRFToken()
+		if err != nil {
+			log.Printf("failed to generate CSRF token: %v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 		pages.Login(csrfToken, "Please fill in all fields correctly.").Render(r.Context(), w)
 		return
 	}
@@ -100,7 +105,12 @@ func (h *Handlers) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 			errMsg = "Account temporarily locked due to too many failed attempts. Please try again later."
 		}
 
-		csrfToken, _ := h.generateCSRFToken()
+		csrfToken, csrfErr := h.generateCSRFToken()
+		if csrfErr != nil {
+			log.Printf("failed to generate CSRF token: %v", csrfErr)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 		pages.Login(csrfToken, errMsg).Render(r.Context(), w)
 		return
 	}
@@ -227,7 +237,12 @@ func (h *Handlers) ChangePassword(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !v.Result().IsValid() {
-		csrfToken, _ := h.generateCSRFToken()
+		csrfToken, err := h.generateCSRFToken()
+		if err != nil {
+			log.Printf("failed to generate CSRF token: %v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 		pages.Profile(user, csrfToken, "Please correct the errors below.").Render(r.Context(), w)
 		return
 	}
@@ -239,7 +254,12 @@ func (h *Handlers) ChangePassword(w http.ResponseWriter, r *http.Request) {
 		if err == services.ErrInvalidCredentials {
 			errMsg = "Current password is incorrect."
 		}
-		csrfToken, _ := h.generateCSRFToken()
+		csrfToken, csrfErr := h.generateCSRFToken()
+		if csrfErr != nil {
+			log.Printf("failed to generate CSRF token: %v", csrfErr)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
 		pages.Profile(user, csrfToken, errMsg).Render(r.Context(), w)
 		return
 	}

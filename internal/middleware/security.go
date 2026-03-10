@@ -48,7 +48,8 @@ func (s *CSRFTokenStore) GenerateToken() (string, error) {
 	return token, nil
 }
 
-// ValidateToken checks if a token is valid and not expired
+// ValidateToken checks if a token is valid and not expired without consuming it.
+// Prefer ConsumeToken for form/API validation to prevent replay attacks.
 func (s *CSRFTokenStore) ValidateToken(token string) bool {
 	s.mu.Lock()
 	defer s.mu.Unlock()
@@ -64,6 +65,22 @@ func (s *CSRFTokenStore) ValidateToken(token string) bool {
 	}
 
 	return true
+}
+
+// ConsumeToken atomically validates and deletes a token.
+// Use this for form/API submissions to prevent replay attacks.
+func (s *CSRFTokenStore) ConsumeToken(token string) bool {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
+	expiry, exists := s.tokens[token]
+	if !exists {
+		return false
+	}
+
+	delete(s.tokens, token)
+
+	return !time.Now().After(expiry)
 }
 
 // DeleteToken removes a token after use
@@ -227,7 +244,10 @@ func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 	}
 }
 
-// RateLimiter implements simple in-memory rate limiting
+// RateLimiter implements simple in-memory rate limiting.
+// The requests map grows at most one entry per unique IP per window.
+// The cleanup goroutine (every 1 minute) evicts IPs with no recent requests,
+// bounding memory to O(active unique IPs within the current window).
 type RateLimiter struct {
 	requests     map[string][]time.Time
 	mu           sync.Mutex
@@ -391,13 +411,11 @@ func CSRF(store *CSRFTokenStore) func(http.Handler) http.Handler {
 					token = r.FormValue("csrf_token")
 				}
 
-				if token == "" || !store.ValidateToken(token) {
+				if token == "" || !store.ConsumeToken(token) {
 					http.Error(w, "Invalid or missing CSRF token", http.StatusForbidden)
 					return
 				}
 
-				// Delete token after use to prevent replay attacks
-				store.DeleteToken(token)
 			}
 
 			next.ServeHTTP(w, r)
