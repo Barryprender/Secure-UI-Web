@@ -3,7 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureSelect() {
-	@templates.Layout("secure-select Component", "Showcase and documentation for the secure-select web component") {
+	@templates.Layout("secure-select Component", "Live demos for secure-select: static and dynamic options, AJAX loading, security tiers, XSS-safe dropdowns, CSS custom properties, and framework examples.") {
+		@templates.ComponentPageJsonLDScript("secure-select")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">
@@ -19,6 +20,7 @@ templ ComponentSecureSelect() {
   src="/components/secure-select/secure-select.js">
 </script>` }</code></pre>
 					</div>
+					<a href="/documentation/secure-select" class="component-hero-docs-link">View API Reference &#8594;</a>
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>

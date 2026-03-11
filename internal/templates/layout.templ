@@ -38,6 +38,32 @@ templ Head(title string, description string) {
 		if description != "" {
 			<meta name="description" content={ description }/>
 		}
+		<!-- Canonical URL -->
+		if canonicalURL := middleware.CanonicalURLFromContext(ctx); canonicalURL != "" {
+			<link rel="canonical" href={ canonicalURL }/>
+		}
+		<!-- Open Graph -->
+		<meta property="og:site_name" content="Secure-UI"/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:title" content={ title + " - Secure-UI" }/>
+		if description != "" {
+			<meta property="og:description" content={ description }/>
+		}
+		if canonicalURL := middleware.CanonicalURLFromContext(ctx); canonicalURL != "" {
+			<meta property="og:url" content={ canonicalURL }/>
+		}
+		if siteURL := middleware.SiteBaseURLFromContext(ctx); siteURL != "" {
+			<meta property="og:image" content={ siteURL + "/static/og-image.png" }/>
+		}
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image"/>
+		<meta name="twitter:title" content={ title + " - Secure-UI" }/>
+		if description != "" {
+			<meta name="twitter:description" content={ description }/>
+		}
+		if siteURL := middleware.SiteBaseURLFromContext(ctx); siteURL != "" {
+			<meta name="twitter:image" content={ siteURL + "/static/og-image.png" }/>
+		}
 		<!-- Favicon - multiple formats for maximum compatibility -->
 		<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
 		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>

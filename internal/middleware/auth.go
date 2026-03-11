@@ -57,6 +57,8 @@ func RequireAuth(authService *services.AuthService, secureCookie bool) func(http
 				return
 			}
 
+			// Prevent search engines from indexing auth-required pages.
+			w.Header().Set("X-Robots-Tag", "noindex, follow")
 			ctx := context.WithValue(r.Context(), userContextKey{}, user)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})

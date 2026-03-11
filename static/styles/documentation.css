@@ -357,6 +357,13 @@
   font-weight: 500;
 }
 
+.docs-breadcrumb-demo {
+  margin-left: auto;
+  color: var(--accent-primary) !important;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 /* Component Header */
 .docs-component-header {
   display: flex;

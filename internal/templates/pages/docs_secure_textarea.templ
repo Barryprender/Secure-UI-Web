@@ -3,12 +3,14 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureTextarea() {
-	@templates.Layout("secure-textarea", "Documentation for the secure-textarea web component") {
+	@templates.Layout("secure-textarea Docs", "API reference for secure-textarea: XSS-safe multi-line input, character limits, rate limiting, security tiers, CSS custom properties, and JavaScript API.") {
+		@templates.DocsPageJsonLDScript("secure-textarea", "XSS-safe multi-line text input with character limits, rate limiting, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
 				<a href="/documentation">Documentation</a>
 				<span class="docs-breadcrumb-separator">/</span>
 				<span class="docs-breadcrumb-current">secure-textarea</span>
+				<a href="/components/secure-textarea" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
 			</nav>
 
 			<header class="docs-component-header">

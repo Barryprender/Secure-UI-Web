@@ -192,6 +192,10 @@ func main() {
 	))
 
 
+	// SEO routes — no auth, no CSRF, served directly
+	mux.HandleFunc("/robots.txt", h.RobotsTxt)
+	mux.HandleFunc("/sitemap.xml", h.Sitemap)
+
 	// Favicon route - direct handler with caching
 	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "image/x-icon")
@@ -227,10 +231,12 @@ func main() {
 	})))
 
 	// Apply middleware chain
-	// Order matters: Security headers -> Layout CSRF -> Rate limiting -> Routes
+	// Order matters: Security headers -> Site URL -> Layout CSRF -> Rate limiting -> Routes
 	handler := middleware.SecurityHeadersWithHSTS(secureCookie)(
-		middleware.InjectLayoutCSRF(csrfStore)(
-			middleware.RateLimit(rateLimiter, h.RenderErrorPage)(mux),
+		middleware.InjectSiteURL(secureCookie)(
+			middleware.InjectLayoutCSRF(csrfStore)(
+				middleware.RateLimit(rateLimiter, h.RenderErrorPage)(mux),
+			),
 		),
 	)
 

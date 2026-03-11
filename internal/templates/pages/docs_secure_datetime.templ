@@ -3,12 +3,14 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureDatetime() {
-	@templates.Layout("secure-datetime", "Documentation for the secure-datetime web component") {
+	@templates.Layout("secure-datetime Docs", "API reference for secure-datetime: date/time input, format validation, range constraints, security tiers, CSS custom properties, and JavaScript API.") {
+		@templates.DocsPageJsonLDScript("secure-datetime", "Date and time input with format validation, range constraints, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
 				<a href="/documentation">Documentation</a>
 				<span class="docs-breadcrumb-separator">/</span>
 				<span class="docs-breadcrumb-current">secure-datetime</span>
+				<a href="/components/secure-datetime" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
 			</nav>
 
 			<header class="docs-component-header">

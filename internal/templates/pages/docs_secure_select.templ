@@ -3,12 +3,14 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureSelect() {
-	@templates.Layout("secure-select", "Documentation for the secure-select web component") {
+	@templates.Layout("secure-select Docs", "API reference for secure-select: XSS-safe dropdown, dynamic options, AJAX loading, security tiers, CSS custom properties, and JavaScript API.") {
+		@templates.DocsPageJsonLDScript("secure-select", "XSS-safe dropdown component with dynamic options, AJAX loading, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
 				<a href="/documentation">Documentation</a>
 				<span class="docs-breadcrumb-separator">/</span>
 				<span class="docs-breadcrumb-current">secure-select</span>
+				<a href="/components/secure-select" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
 			</nav>
 
 			<header class="docs-component-header">

@@ -3,7 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentsIndex() {
-	@templates.Layout("Components", "Secure-UI web components — framework-agnostic, security-first custom elements") {
+	@templates.Layout("Components", "Interactive showcase for all Secure-UI web components. Live demos, configuration options, security features, and integration examples for every component.") {
+		@templates.ComponentsIndexJsonLDScript()
 		<div class="components-index-page">
 			<header class="components-index-header">
 				<h1>Components</h1>

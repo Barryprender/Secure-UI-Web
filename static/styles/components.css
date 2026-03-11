@@ -58,6 +58,19 @@
   word-break: break-all;
 }
 
+.component-hero-docs-link {
+  display: inline-block;
+  margin-top: var(--space-sm, 0.75rem);
+  font-size: 0.875rem;
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.component-hero-docs-link:hover {
+  text-decoration: underline;
+}
+
 .component-hero-demo {
   display: flex;
   flex-direction: column;

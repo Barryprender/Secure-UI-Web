@@ -3,12 +3,14 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureInput() {
-	@templates.Layout("secure-input", "Documentation for the secure-input web component") {
+	@templates.Layout("secure-input Docs", "API reference for secure-input: XSS sanitization, input types, rate limiting, validation rules, security tiers, CSS custom properties, and JavaScript API.") {
+		@templates.DocsPageJsonLDScript("secure-input", "XSS-safe text input with built-in validation, rate limiting, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
 				<a href="/documentation">Documentation</a>
 				<span class="docs-breadcrumb-separator">/</span>
 				<span class="docs-breadcrumb-current">secure-input</span>
+				<a href="/components/secure-input" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
 			</nav>
 
 			<header class="docs-component-header">

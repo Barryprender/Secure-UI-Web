@@ -3,7 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureFileUpload() {
-	@templates.Layout("secure-file-upload Component", "Showcase and documentation for the secure-file-upload web component") {
+	@templates.Layout("secure-file-upload Component", "Live demos for secure-file-upload: drag-and-drop, MIME type filtering, file size limits, security tier configurations, and framework integration examples.") {
+		@templates.ComponentPageJsonLDScript("secure-file-upload")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">
@@ -15,6 +16,7 @@ templ ComponentSecureFileUpload() {
   src="/components/secure-file-upload/secure-file-upload.js">
 </script>` }</code></pre>
 					</div>
+					<a href="/documentation/secure-file-upload" class="component-hero-docs-link">View API Reference &#8594;</a>
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>

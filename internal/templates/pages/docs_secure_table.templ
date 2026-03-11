@@ -3,12 +3,14 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureTable() {
-	@templates.Layout("secure-table", "Documentation for the secure-table web component") {
+	@templates.Layout("secure-table Docs", "API reference for secure-table: server-rendered data table, sorting, filtering, pagination, column security tiers, action buttons, and JavaScript API.") {
+		@templates.DocsPageJsonLDScript("secure-table", "Server-rendered data table with sorting, filtering, pagination, and column security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
 				<a href="/documentation">Documentation</a>
 				<span class="docs-breadcrumb-separator">/</span>
 				<span class="docs-breadcrumb-current">secure-table</span>
+				<a href="/components/secure-table" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
 			</nav>
 
 			<header class="docs-component-header">

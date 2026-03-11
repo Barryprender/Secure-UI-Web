@@ -3,7 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureInput() {
-	@templates.Layout("secure-input Component", "Showcase and documentation for the secure-input web component") {
+	@templates.Layout("secure-input Component", "Live demos for secure-input: input types, security tiers, XSS prevention, validation, CSS custom properties, and framework integration examples.") {
+		@templates.ComponentPageJsonLDScript("secure-input")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">
@@ -19,6 +20,7 @@ templ ComponentSecureInput() {
   src="/components/secure-input/secure-input.js">
 </script>` }</code></pre>
 					</div>
+					<a href="/documentation/secure-input" class="component-hero-docs-link">View API Reference &#8594;</a>
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>

@@ -3,7 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureTextarea() {
-	@templates.Layout("secure-textarea Component", "Showcase and documentation for the secure-textarea web component") {
+	@templates.Layout("secure-textarea Component", "Live demos for secure-textarea: character limits, resize modes, security tiers, XSS prevention, CSS custom properties, and framework integration examples.") {
+		@templates.ComponentPageJsonLDScript("secure-textarea")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">
@@ -19,6 +20,7 @@ templ ComponentSecureTextarea() {
   src="/components/secure-textarea/secure-textarea.js">
 </script>` }</code></pre>
 					</div>
+					<a href="/documentation/secure-textarea" class="component-hero-docs-link">View API Reference &#8594;</a>
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>

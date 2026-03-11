@@ -3,7 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ Documentation() {
-	@templates.Layout("Documentation", "Complete documentation for Secure-UI web components") {
+	@templates.Layout("Documentation", "API reference for all Secure-UI web components. Covers security tiers, CSP compliance, Shadow DOM styles, CSS custom properties, and framework integration guides.") {
+		@templates.DocsIndexJsonLDScript()
 		<div class="docs-container">
 			<header class="docs-header">
 				<h1 class="docs-title">Documentation</h1>

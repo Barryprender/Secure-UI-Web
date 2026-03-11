@@ -3,8 +3,9 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ Home() {
-	@templates.Layout("Home", "Build secure web applications with confidence. Zero dependencies, built-in security by default.") {
-<!-- Hero Section -->
+	@templates.Layout("Security-First Web Components", "Zero-dependency web components with built-in XSS protection, rate limiting, CSRF defence, and CSP-safe Shadow DOM. Security-first, works with any framework.") {
+		@templates.HomeJsonLDScript()
+		<!-- Hero Section -->
 <section class="hero-section">
 	<div class="container">
 		<div class="hero-content">

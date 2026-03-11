@@ -3,7 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureForm() {
-	@templates.Layout("secure-form Component", "Showcase and documentation for the secure-form web component") {
+	@templates.Layout("secure-form Component", "Live demos for secure-form: CSRF protection, submission handling, rate limiting, validation, security tier configurations, and framework integration examples.") {
+		@templates.ComponentPageJsonLDScript("secure-form")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">
@@ -19,6 +20,7 @@ templ ComponentSecureForm() {
   src="/components/secure-form/secure-form.js">
 </script>` }</code></pre>
 					</div>
+					<a href="/documentation/secure-form" class="component-hero-docs-link">View API Reference &#8594;</a>
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>

@@ -1,0 +1,35 @@
+package templates
+
+import "secure-ui-showcase-go/internal/middleware"
+
+// JsonLD renders a JSON-LD structured data script tag.
+// The json argument must be a valid JSON string. It is rendered raw (no HTML escaping)
+// since it is a data block, not executable script, and is CSP-safe without a nonce.
+templ JsonLD(json string) {
+	<script type="application/ld+json">@templ.Raw(json)</script>
+}
+
+// HomeJsonLDScript renders Organization + SoftwareApplication JSON-LD for the home page.
+templ HomeJsonLDScript() {
+	@JsonLD(HomeJsonLD(middleware.SiteBaseURLFromContext(ctx)))
+}
+
+// DocsIndexJsonLDScript renders WebPage JSON-LD for the documentation index.
+templ DocsIndexJsonLDScript() {
+	@JsonLD(DocsIndexJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx)))
+}
+
+// ComponentsIndexJsonLDScript renders WebPage JSON-LD for the components index.
+templ ComponentsIndexJsonLDScript() {
+	@JsonLD(ComponentsIndexJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx)))
+}
+
+// DocsPageJsonLDScript renders TechArticle + BreadcrumbList JSON-LD for a component docs page.
+templ DocsPageJsonLDScript(componentName string, description string) {
+	@JsonLD(DocsPageJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx), componentName, description))
+}
+
+// ComponentPageJsonLDScript renders BreadcrumbList JSON-LD for a component showcase page.
+templ ComponentPageJsonLDScript(componentName string) {
+	@JsonLD(ComponentPageJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx), componentName))
+}

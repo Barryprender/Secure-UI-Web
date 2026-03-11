@@ -115,6 +115,46 @@ func (s *CSRFTokenStore) cleanupExpiredTokens(ctx context.Context) {
 // nonceKey is a private type for the CSP nonce context key.
 type nonceKey struct{}
 
+// siteBaseURLKey is a private type for the site base URL context key.
+type siteBaseURLKey struct{}
+
+// canonicalURLKey is a private type for the canonical page URL context key.
+type canonicalURLKey struct{}
+
+// SiteBaseURLFromContext extracts the site base URL (scheme://host) from the request context.
+func SiteBaseURLFromContext(ctx context.Context) string {
+	if u, ok := ctx.Value(siteBaseURLKey{}).(string); ok {
+		return u
+	}
+	return ""
+}
+
+// CanonicalURLFromContext extracts the canonical page URL from the request context.
+func CanonicalURLFromContext(ctx context.Context) string {
+	if u, ok := ctx.Value(canonicalURLKey{}).(string); ok {
+		return u
+	}
+	return ""
+}
+
+// InjectSiteURL derives the site base URL and canonical page URL from the request
+// and stores both in the context for use by templates.
+func InjectSiteURL(httpsMode bool) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			scheme := "http"
+			if httpsMode || r.TLS != nil || r.Header.Get("X-Forwarded-Proto") == "https" {
+				scheme = "https"
+			}
+			baseURL := scheme + "://" + r.Host
+			canonicalURL := baseURL + r.URL.Path
+			ctx := context.WithValue(r.Context(), siteBaseURLKey{}, baseURL)
+			ctx = context.WithValue(ctx, canonicalURLKey{}, canonicalURL)
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
+}
+
 // NonceFromContext extracts the CSP nonce from the request context.
 func NonceFromContext(ctx context.Context) string {
 	if nonce, ok := ctx.Value(nonceKey{}).(string); ok {
@@ -167,15 +207,35 @@ var mimeTypes = map[string]string{
 	".map":  "application/json",
 }
 
+// staticCacheMaxAge maps file extensions to Cache-Control max-age values.
+// Fonts and images are immutable in practice; CSS/JS may change between deploys.
+var staticCacheMaxAge = map[string]string{
+	".css":   "public, max-age=86400",    // 1 day
+	".js":    "public, max-age=86400",    // 1 day
+	".mjs":   "public, max-age=86400",    // 1 day
+	".png":   "public, max-age=31536000", // 1 year
+	".svg":   "public, max-age=31536000", // 1 year
+	".ico":   "public, max-age=31536000", // 1 year
+	".woff":  "public, max-age=31536000", // 1 year
+	".woff2": "public, max-age=31536000", // 1 year
+}
+
 // MIMETypeWrapper wraps an http.Handler and sets the correct Content-Type
-// header based on file extension before delegating to the inner handler.
-// This ensures correct MIME types regardless of the host OS MIME database.
+// and Cache-Control headers based on file extension before delegating to the
+// inner handler. This ensures correct MIME types regardless of the host OS
+// MIME database, and appropriate caching for static assets.
 func MIMETypeWrapper(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		path := r.URL.Path
 		for ext, mime := range mimeTypes {
 			if strings.HasSuffix(path, ext) {
 				w.Header().Set("Content-Type", mime)
+				break
+			}
+		}
+		for ext, cc := range staticCacheMaxAge {
+			if strings.HasSuffix(path, ext) {
+				w.Header().Set("Cache-Control", cc)
 				break
 			}
 		}

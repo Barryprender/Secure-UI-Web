@@ -3,12 +3,14 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureForm() {
-	@templates.Layout("secure-form", "Documentation for the secure-form web component") {
+	@templates.Layout("secure-form Docs", "API reference for secure-form: CSRF-protected form wrapper, submission handling, rate limiting, field validation, security tiers, and JavaScript API.") {
+		@templates.DocsPageJsonLDScript("secure-form", "CSRF-protected form wrapper with submission handling, rate limiting, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
 				<a href="/documentation">Documentation</a>
 				<span class="docs-breadcrumb-separator">/</span>
 				<span class="docs-breadcrumb-current">secure-form</span>
+				<a href="/components/secure-form" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
 			</nav>
 
 			<header class="docs-component-header">
