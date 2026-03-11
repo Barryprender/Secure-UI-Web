@@ -653,3 +653,62 @@
     font-size: 0.75rem;
   }
 }
+
+/* ── Demo customization classes (replaces inline style= attributes) ── */
+
+/* secure-input demo: custom tokens */
+.demo-input-custom {
+  --secure-ui-input-border-radius: 2px;
+  --secure-ui-input-border-color: #6366f1;
+  --secure-ui-input-border-color-focus: #818cf8;
+  --secure-ui-input-height: 3rem;
+}
+
+/* secure-datetime demo: custom tokens */
+.demo-datetime-custom {
+  --secure-ui-input-border-radius: 0;
+  --secure-ui-input-border-color: #7c3aed;
+  --secure-ui-input-border-color-focus: #a78bfa;
+  --secure-ui-input-height: 3rem;
+}
+
+/* secure-textarea demo: custom tokens */
+.demo-textarea-custom {
+  --secure-ui-input-border-color: #d97706;
+  --secure-ui-input-border-color-focus: #f59e0b;
+}
+
+/* secure-select demo: custom tokens */
+.demo-select-custom {
+  --secure-ui-select-height: 3rem;
+}
+
+/* secure-file-upload demo: custom tokens */
+.demo-upload-custom {
+  --secure-ui-upload-border-style: solid;
+  --secure-ui-upload-border-radius: 16px;
+}
+
+/* secure-form demo: custom tokens */
+.demo-form-custom {
+  --secure-ui-form-gap: 1.5rem;
+}
+
+/* secure-table demo: custom tokens */
+.demo-table-custom {
+  --secure-ui-table-header-bg: rgba(99, 102, 241, 0.15);
+  --secure-ui-table-border-color: rgba(99, 102, 241, 0.3);
+  --secure-ui-table-row-hover: rgba(99, 102, 241, 0.05);
+}
+
+/* secure-form submit button spacing */
+.btn-mt-sm {
+  margin-top: 0.5rem;
+}
+
+/* docs layout: vertical flex stack */
+.flex-col-gap-sm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}

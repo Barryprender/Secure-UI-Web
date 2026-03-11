@@ -27,7 +27,7 @@ templ ComponentSecureForm() {
 					<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
 						<secure-input label="Name" name="demo-name" type="text" security-tier="sensitive" required></secure-input>
 						<secure-input label="Email" name="demo-email" type="email" security-tier="sensitive" required></secure-input>
-						<button type="submit" class="btn btn-sm btn-accent" style="margin-top: 0.5rem;">Submit</button>
+						<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
 					</secure-form>
 				</div>
 			</section>
@@ -238,7 +238,7 @@ templ ComponentSecureForm() {
 							action="/api/forms/submit"
 							method="POST"
 							security-tier="public"
-							style="--secure-ui-form-gap: 1.5rem;"
+							class="demo-form-custom"
 						>
 							<secure-input label="First Name" name="themed-form-fn" type="text" security-tier="public"></secure-input>
 							<secure-input label="Last Name" name="themed-form-ln" type="text" security-tier="public"></secure-input>
