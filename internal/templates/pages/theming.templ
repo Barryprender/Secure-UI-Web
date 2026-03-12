@@ -1,0 +1,401 @@
+package pages
+
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
+
+templ Theming() {
+	@templates.Layout("Theming Guide", "Five built-in theme presets and a complete CSS custom property system. Override tokens globally, per component, or per instance. Supports dark mode and scoped theming.") {
+		<!-- Hero -->
+		<section class="theming-hero">
+			<div class="container">
+				<div class="theming-hero-content">
+					<span class="theming-hero-eyebrow">CSS Custom Properties</span>
+					<h1 class="theming-hero-title">Theming Guide</h1>
+					<p class="theming-hero-description">
+						Secure-UI uses CSS custom properties as design tokens. Override them globally,
+						per component, or per instance — no build step, no configuration files.
+					</p>
+				</div>
+			</div>
+		</section>
+
+		<!-- Preset Themes + Live Demo -->
+		<section class="theming-section">
+			<div class="container">
+				<div class="theming-section-header">
+					<h2 class="theming-section-title">Preset Themes</h2>
+					<p class="theming-section-description">
+						Click a preset to preview it live. Copy the CSS override block into your stylesheet to apply it.
+					</p>
+				</div>
+
+				<div class="theming-presets-grid" id="theming-presets-grid">
+					<div class="theming-preset-card theming-preset-card--active" data-preset="default" tabindex="0" role="button" aria-pressed="true">
+						<div class="theming-preset-swatches">
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+						</div>
+						<div class="theming-preset-name">Default</div>
+						<div class="theming-preset-desc">Light background, emerald accent</div>
+					</div>
+
+					<div class="theming-preset-card" data-preset="dark" tabindex="0" role="button" aria-pressed="false">
+						<div class="theming-preset-swatches">
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+						</div>
+						<div class="theming-preset-name">Dark</div>
+						<div class="theming-preset-desc">Near-black background, indigo accent</div>
+					</div>
+
+					<div class="theming-preset-card" data-preset="ocean" tabindex="0" role="button" aria-pressed="false">
+						<div class="theming-preset-swatches">
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+						</div>
+						<div class="theming-preset-name">Ocean</div>
+						<div class="theming-preset-desc">Sky-blue tones, light cool palette</div>
+					</div>
+
+					<div class="theming-preset-card" data-preset="forest" tabindex="0" role="button" aria-pressed="false">
+						<div class="theming-preset-swatches">
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+						</div>
+						<div class="theming-preset-name">Forest</div>
+						<div class="theming-preset-desc">Soft green background, forest tones</div>
+					</div>
+
+					<div class="theming-preset-card" data-preset="enterprise" tabindex="0" role="button" aria-pressed="false">
+						<div class="theming-preset-swatches">
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+							<span class="theming-preset-swatch"></span>
+						</div>
+						<div class="theming-preset-name">Enterprise</div>
+						<div class="theming-preset-desc">Corporate blue, clean neutral base</div>
+					</div>
+				</div>
+
+				<!-- Live form demo -->
+				<div class="theming-live-demo" id="theming-live-demo">
+					<div class="theming-live-demo-header">
+						<span class="theming-live-demo-title">Live Preview</span>
+						<span class="theming-live-demo-badge" id="theming-active-label">Default</span>
+					</div>
+					<div class="theming-demo-form">
+						<div class="theming-demo-field">
+							<label class="theming-demo-label" for="td-name">Full name</label>
+							<input class="theming-demo-input" id="td-name" type="text" value="Alice Johnson" readonly/>
+						</div>
+						<div class="theming-demo-field">
+							<label class="theming-demo-label" for="td-email">Email</label>
+							<input class="theming-demo-input" id="td-email" type="email" value="alice@example.com" readonly/>
+						</div>
+						<div class="theming-demo-field">
+							<label class="theming-demo-label" for="td-role">Role</label>
+							<select class="theming-demo-input theming-demo-select" id="td-role">
+								<option>Administrator</option>
+								<option>Editor</option>
+								<option>Viewer</option>
+							</select>
+						</div>
+						<div class="theming-demo-field">
+							<label class="theming-demo-label" for="td-tier">Security tier</label>
+							<select class="theming-demo-input theming-demo-select" id="td-tier">
+								<option>Sensitive</option>
+								<option>Critical</option>
+								<option>Authenticated</option>
+							</select>
+						</div>
+						<div class="theming-demo-actions theming-demo-field--full">
+							<button class="theming-demo-btn theming-demo-btn--primary">Save Changes</button>
+							<button class="theming-demo-btn theming-demo-btn--secondary">Cancel</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Token Reference -->
+		<section class="theming-section theming-section-alt">
+			<div class="container">
+				<div class="theming-section-header">
+					<h2 class="theming-section-title">Token Reference</h2>
+					<p class="theming-section-description">
+						Site-level tokens control the overall palette. Component tokens (<code>--secure-ui-*</code>) inherit from them automatically.
+					</p>
+				</div>
+
+				<table class="theming-token-table">
+					<thead>
+						<tr>
+							<th>Token</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>--accent-primary</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--accent-primary"></span>
+									#10b981
+								</div>
+							</td>
+							<td>Primary brand / action colour</td>
+						</tr>
+						<tr>
+							<td><code>--accent-secondary</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--accent-secondary"></span>
+									#059669
+								</div>
+							</td>
+							<td>Hover / darker accent variant</td>
+						</tr>
+						<tr>
+							<td><code>--accent-glow</code></td>
+							<td>rgba(16,185,129,0.15)</td>
+							<td>Focus rings and glow effects</td>
+						</tr>
+						<tr>
+							<td><code>--bg-primary</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--bg-primary"></span>
+									#ffffff
+								</div>
+							</td>
+							<td>Main page background</td>
+						</tr>
+						<tr>
+							<td><code>--bg-secondary</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--bg-secondary"></span>
+									#f8f9fa
+								</div>
+							</td>
+							<td>Cards, panels, alternate rows</td>
+						</tr>
+						<tr>
+							<td><code>--bg-elevated</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--bg-elevated"></span>
+									#ffffff
+								</div>
+							</td>
+							<td>Dropdowns, tooltips, modals</td>
+						</tr>
+						<tr>
+							<td><code>--text-primary</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--text-primary"></span>
+									#1a1a2e
+								</div>
+							</td>
+							<td>Headings and body copy</td>
+						</tr>
+						<tr>
+							<td><code>--text-secondary</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--text-secondary"></span>
+									#4a5568
+								</div>
+							</td>
+							<td>Labels, captions, helper text</td>
+						</tr>
+						<tr>
+							<td><code>--border-subtle</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--border-subtle"></span>
+									#e2e8f0
+								</div>
+							</td>
+							<td>Card borders, dividers</td>
+						</tr>
+						<tr>
+							<td><code>--border-medium</code></td>
+							<td>
+								<div class="theming-token-swatch-cell">
+									<span class="theming-token-swatch-dot swatch--border-medium"></span>
+									#cbd5e1
+								</div>
+							</td>
+							<td>Hover border state</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</section>
+
+		<!-- Code Examples -->
+		<section class="theming-section">
+			<div class="container">
+				<div class="theming-section-header">
+					<h2 class="theming-section-title">Applying a Theme</h2>
+					<p class="theming-section-description">
+						Override tokens at any scope: the full page, a single component, or a single element.
+					</p>
+				</div>
+
+				<div class="theming-code-grid">
+					<div class="theming-code-block">
+						<div class="theming-code-header">
+							<span class="theming-code-title">Global override</span>
+							<span class="theming-code-lang">css</span>
+						</div>
+						<pre><code class="language-css">{ `/* Apply a dark theme globally */
+:root {
+  --accent-primary: #6366f1;
+  --accent-secondary: #4f46e5;
+  --accent-glow: rgba(99, 102, 241, 0.2);
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #121218;
+  --bg-elevated: #1c1c28;
+  --text-primary: #f0f4ff;
+  --text-secondary: #94a3b8;
+  --border-subtle: rgba(255,255,255,0.08);
+}` }</code></pre>
+					</div>
+
+					<div class="theming-code-block">
+						<div class="theming-code-header">
+							<span class="theming-code-title">Scoped override</span>
+							<span class="theming-code-lang">css</span>
+						</div>
+						<pre><code class="language-css">{ `/* Override just one component instance */
+.payment-section secure-input {
+  --secure-ui-input-border-color: #ef4444;
+  --secure-ui-input-border-color-focus: #dc2626;
+}
+
+/* Or target the host element directly */
+secure-form.checkout-form {
+  --secure-ui-form-gap: 1.5rem;
+}` }</code></pre>
+					</div>
+
+					<div class="theming-code-block">
+						<div class="theming-code-header">
+							<span class="theming-code-title">Dark mode (automatic)</span>
+							<span class="theming-code-lang">css</span>
+						</div>
+						<pre><code class="language-css">{ `/* Responds to OS preference automatically */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #121218;
+    --text-primary: #f0f4ff;
+    --text-secondary: #94a3b8;
+    --border-subtle: rgba(255,255,255,0.08);
+  }
+}` }</code></pre>
+					</div>
+
+					<div class="theming-code-block">
+						<div class="theming-code-header">
+							<span class="theming-code-title">Component token override</span>
+							<span class="theming-code-lang">css</span>
+						</div>
+						<pre><code class="language-css">{ `/* Target secure-ui component tokens directly.
+   These live inside the Shadow DOM but are
+   inherited from the outer scope via CSS
+   custom property inheritance. */
+:root {
+  --secure-ui-input-border-radius: 0.75rem;
+  --secure-ui-input-height: 3rem;
+  --secure-ui-form-gap: 1.5rem;
+  --secure-ui-color-primary: #6366f1;
+}` }</code></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+const presets = {
+  default: {
+    '--accent-primary': '#10b981', '--accent-secondary': '#059669',
+    '--accent-glow': 'rgba(16,185,129,0.15)', '--bg-primary': '#ffffff',
+    '--bg-secondary': '#f8f9fa', '--bg-elevated': '#ffffff',
+    '--text-primary': '#1a1a2e', '--text-secondary': '#4a5568',
+    '--border-subtle': '#e2e8f0', '--border-medium': '#cbd5e1',
+  },
+  dark: {
+    '--accent-primary': '#6366f1', '--accent-secondary': '#4f46e5',
+    '--accent-glow': 'rgba(99,102,241,0.2)', '--bg-primary': '#0a0a0f',
+    '--bg-secondary': '#121218', '--bg-elevated': '#1c1c28',
+    '--text-primary': '#f0f4ff', '--text-secondary': '#94a3b8',
+    '--border-subtle': 'rgba(255,255,255,0.08)', '--border-medium': 'rgba(255,255,255,0.12)',
+  },
+  ocean: {
+    '--accent-primary': '#0284c7', '--accent-secondary': '#0369a1',
+    '--accent-glow': 'rgba(2,132,199,0.15)', '--bg-primary': '#f0f9ff',
+    '--bg-secondary': '#e0f2fe', '--bg-elevated': '#ffffff',
+    '--text-primary': '#0c4a6e', '--text-secondary': '#0369a1',
+    '--border-subtle': '#bae6fd', '--border-medium': '#7dd3fc',
+  },
+  forest: {
+    '--accent-primary': '#16a34a', '--accent-secondary': '#15803d',
+    '--accent-glow': 'rgba(22,163,74,0.15)', '--bg-primary': '#f0fdf4',
+    '--bg-secondary': '#dcfce7', '--bg-elevated': '#ffffff',
+    '--text-primary': '#14532d', '--text-secondary': '#166534',
+    '--border-subtle': '#bbf7d0', '--border-medium': '#86efac',
+  },
+  enterprise: {
+    '--accent-primary': '#2563eb', '--accent-secondary': '#1d4ed8',
+    '--accent-glow': 'rgba(37,99,235,0.12)', '--bg-primary': '#ffffff',
+    '--bg-secondary': '#f8fafc', '--bg-elevated': '#ffffff',
+    '--text-primary': '#0f172a', '--text-secondary': '#475569',
+    '--border-subtle': '#e2e8f0', '--border-medium': '#cbd5e1',
+  },
+};
+
+const names = { default:'Default', dark:'Dark', ocean:'Ocean', forest:'Forest', enterprise:'Enterprise' };
+
+const demo = document.getElementById('theming-live-demo');
+const label = document.getElementById('theming-active-label');
+const cards = document.querySelectorAll('.theming-preset-card');
+
+function applyPreset(name) {
+  const t = presets[name];
+  if (!t || !demo) return;
+  for (const [key, val] of Object.entries(t)) {
+    demo.style.setProperty(key, val);
+  }
+  if (label) label.textContent = names[name] ?? name;
+}
+
+cards.forEach(card => {
+  const handler = () => {
+    cards.forEach(c => {
+      c.classList.remove('theming-preset-card--active');
+      c.setAttribute('aria-pressed', 'false');
+    });
+    card.classList.add('theming-preset-card--active');
+    card.setAttribute('aria-pressed', 'true');
+    applyPreset(card.dataset.preset ?? 'default');
+  };
+  card.addEventListener('click', handler);
+  card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); } });
+});
+
+// Apply default on load
+applyPreset('default');
+		</script>
+	}
+}

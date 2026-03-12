@@ -109,6 +109,7 @@ func main() {
 	mux.Handle("/documentation/", optAuth(http.HandlerFunc(h.Documentation)))
 	mux.Handle("/components", optAuth(http.HandlerFunc(h.Components)))
 	mux.Handle("/registration", optAuth(http.HandlerFunc(h.Registration)))
+	mux.Handle("/theming", optAuth(http.HandlerFunc(h.Theming)))
 
 	// --- Auth routes ---
 	mux.Handle("/login", middleware.CSRF(csrfStore)(optAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
@@ -252,6 +253,7 @@ func main() {
 	log.Println("   GET  /dashboard     - Dashboard (auth required)")
 	log.Println("   GET  /table         - Table demo (auth required)")
 	log.Println("   GET  /registration  - Registration form")
+	log.Println("   GET  /theming       - Theming guide")
 	log.Println("   GET  /profile       - User profile (auth required)")
 	log.Println("")
 	log.Println("Auth Routes:")

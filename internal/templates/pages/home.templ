@@ -1,6 +1,9 @@
 package pages
 
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ Home() {
 	@templates.Layout("Security-First Web Components", "Zero-dependency web components with built-in XSS protection, rate limiting, CSRF defence, and CSP-safe Shadow DOM. Security-first, works with any framework.") {
@@ -380,53 +383,157 @@ func HandleForm(w http.ResponseWriter, r *http.Request) {
 		<div class="section-header">
 			<h2 class="section-title">Complete Theming Control</h2>
 			<p class="section-description">
-				Customize every aspect of your UI with CSS variables. Full design system included.
+				CSS custom properties as design tokens. Override globally, per component, or per instance. Five built-in presets — or build your own.
 			</p>
 		</div>
 
-		<div class="theme-demo">
-			<div class="theme-variables">
-				<div class="theme-variable">
-					<span class="theme-variable-label">--accent-primary</span>
-					<div class="theme-variable-preview theme-preview-accent"></div>
-				</div>
-
-				<div class="theme-variable">
-					<span class="theme-variable-label">--bg-primary</span>
-					<div class="theme-variable-preview theme-preview-bg"></div>
-				</div>
-
-				<div class="theme-variable">
-					<span class="theme-variable-label">--text-primary</span>
-					<div class="theme-variable-preview theme-preview-text"></div>
-				</div>
-
-				<div class="theme-variable">
-					<span class="theme-variable-label">--border-subtle</span>
-					<div class="theme-variable-preview theme-preview-border"></div>
-				</div>
+		<div class="home-theme-showcase">
+			<div class="home-theme-tabs" role="tablist" aria-label="Theme presets">
+				<button class="home-theme-tab" data-theme="default" role="tab" aria-selected="true">
+					<span class="home-theme-tab-dot"></span>
+					Default
+				</button>
+				<button class="home-theme-tab" data-theme="dark" role="tab" aria-selected="false">
+					<span class="home-theme-tab-dot"></span>
+					Dark
+				</button>
+				<button class="home-theme-tab" data-theme="ocean" role="tab" aria-selected="false">
+					<span class="home-theme-tab-dot"></span>
+					Ocean
+				</button>
+				<button class="home-theme-tab" data-theme="forest" role="tab" aria-selected="false">
+					<span class="home-theme-tab-dot"></span>
+					Forest
+				</button>
+				<button class="home-theme-tab" data-theme="enterprise" role="tab" aria-selected="false">
+					<span class="home-theme-tab-dot"></span>
+					Enterprise
+				</button>
 			</div>
 
-			<button class="theme-preview-button">
-				Preview Button
-			</button>
-
-			<div class="code-example mt-xl">
-				<div class="code-header">
-					<span class="code-title">Custom Theme</span>
+			<div class="home-theme-preview" id="home-theme-preview" aria-live="polite">
+				<div class="home-theme-preview-left">
+					<div class="home-theme-preview-card">
+						<div class="home-theme-preview-card-header">
+							<span class="home-theme-preview-logo">Secure-UI</span>
+							<span class="home-theme-preview-badge">v2.0</span>
+						</div>
+						<div class="home-theme-preview-field">
+							<div class="home-theme-preview-label">Email address</div>
+							<div class="home-theme-preview-input">
+								<span>alice@example.com</span>
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+							</div>
+						</div>
+						<div class="home-theme-preview-field">
+							<div class="home-theme-preview-label">Security tier</div>
+							<div class="home-theme-preview-input home-theme-preview-input--select">
+								<span>Sensitive</span>
+							</div>
+						</div>
+						<button class="home-theme-preview-btn">Submit Securely</button>
+					</div>
 				</div>
-				<div class="code-content">
-					<pre><code class="language-css">{ `:root {
-    --accent-primary: #10b981;
-    --bg-primary: #000000;
-    --text-primary: #ffffff;
-    --border-subtle: rgba(255, 255, 255, 0.1);
-}` }</code></pre>
+				<div class="home-theme-preview-right">
+					<div class="home-theme-preview-tokens">
+						<div class="home-theme-token-row">
+							<span class="home-theme-token-label">--accent-primary</span>
+							<span class="home-theme-token-swatch home-theme-swatch-accent"></span>
+						</div>
+						<div class="home-theme-token-row">
+							<span class="home-theme-token-label">--bg-primary</span>
+							<span class="home-theme-token-swatch home-theme-swatch-bg"></span>
+						</div>
+						<div class="home-theme-token-row">
+							<span class="home-theme-token-label">--text-primary</span>
+							<span class="home-theme-token-swatch home-theme-swatch-text"></span>
+						</div>
+					</div>
+					<div class="home-theme-preview-code">
+						<div class="home-theme-preview-code-title">Theme override</div>
+						<pre class="home-theme-preview-code-block" id="home-theme-code-display">/* Default theme */</pre>
+					</div>
 				</div>
 			</div>
 		</div>
+
+		<div class="home-theming-cta">
+			<a href="/theming" class="btn btn-secondary">Explore full theming guide &#8594;</a>
+		</div>
 	</div>
 </section>
+
+<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+const themes = {
+  default: {
+    '--accent-primary': '#10b981', '--accent-secondary': '#059669',
+    '--accent-glow': 'rgba(16,185,129,0.15)', '--bg-primary': '#ffffff',
+    '--bg-secondary': '#f8f9fa', '--bg-elevated': '#ffffff',
+    '--text-primary': '#1a1a2e', '--text-secondary': '#4a5568',
+    '--border-subtle': '#e2e8f0', '--border-medium': '#cbd5e1',
+    label: '/* Default theme — no overrides needed */',
+  },
+  dark: {
+    '--accent-primary': '#6366f1', '--accent-secondary': '#4f46e5',
+    '--accent-glow': 'rgba(99,102,241,0.2)', '--bg-primary': '#0a0a0f',
+    '--bg-secondary': '#121218', '--bg-elevated': '#1c1c28',
+    '--text-primary': '#f0f4ff', '--text-secondary': '#94a3b8',
+    '--border-subtle': 'rgba(255,255,255,0.08)', '--border-medium': 'rgba(255,255,255,0.12)',
+    label: ':root {\n  --accent-primary: #6366f1;\n  --bg-primary: #0a0a0f;\n  --text-primary: #f0f4ff;\n}',
+  },
+  ocean: {
+    '--accent-primary': '#0284c7', '--accent-secondary': '#0369a1',
+    '--accent-glow': 'rgba(2,132,199,0.15)', '--bg-primary': '#f0f9ff',
+    '--bg-secondary': '#e0f2fe', '--bg-elevated': '#ffffff',
+    '--text-primary': '#0c4a6e', '--text-secondary': '#0369a1',
+    '--border-subtle': '#bae6fd', '--border-medium': '#7dd3fc',
+    label: ':root {\n  --accent-primary: #0284c7;\n  --bg-primary: #f0f9ff;\n  --text-primary: #0c4a6e;\n}',
+  },
+  forest: {
+    '--accent-primary': '#16a34a', '--accent-secondary': '#15803d',
+    '--accent-glow': 'rgba(22,163,74,0.15)', '--bg-primary': '#f0fdf4',
+    '--bg-secondary': '#dcfce7', '--bg-elevated': '#ffffff',
+    '--text-primary': '#14532d', '--text-secondary': '#166534',
+    '--border-subtle': '#bbf7d0', '--border-medium': '#86efac',
+    label: ':root {\n  --accent-primary: #16a34a;\n  --bg-primary: #f0fdf4;\n  --text-primary: #14532d;\n}',
+  },
+  enterprise: {
+    '--accent-primary': '#2563eb', '--accent-secondary': '#1d4ed8',
+    '--accent-glow': 'rgba(37,99,235,0.12)', '--bg-primary': '#ffffff',
+    '--bg-secondary': '#f8fafc', '--bg-elevated': '#ffffff',
+    '--text-primary': '#0f172a', '--text-secondary': '#475569',
+    '--border-subtle': '#e2e8f0', '--border-medium': '#cbd5e1',
+    label: ':root {\n  --accent-primary: #2563eb;\n  --text-primary: #0f172a;\n}',
+  },
+};
+
+const preview = document.getElementById('home-theme-preview');
+const codeDisplay = document.getElementById('home-theme-code-display');
+const tabs = document.querySelectorAll('.home-theme-tab');
+
+function applyTheme(name) {
+  const t = themes[name];
+  if (!t || !preview) return;
+  for (const [key, val] of Object.entries(t)) {
+    if (key.startsWith('--')) preview.style.setProperty(key, val);
+  }
+  if (codeDisplay) codeDisplay.textContent = t.label;
+}
+
+tabs.forEach(tab => {
+  tab.addEventListener('click', () => {
+    tabs.forEach(t => { t.classList.remove('home-theme-tab--active'); t.setAttribute('aria-selected', 'false'); });
+    tab.classList.add('home-theme-tab--active');
+    tab.setAttribute('aria-selected', 'true');
+    applyTheme(tab.dataset.theme ?? 'default');
+  });
+});
+
+if (tabs.length > 0) {
+  tabs[0].classList.add('home-theme-tab--active');
+  applyTheme('default');
+}
+</script>
 
 <!-- Progressive Enhancement Section -->
 <section class="no-js-section">
