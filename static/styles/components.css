@@ -255,6 +255,7 @@
 
 /* Theming Section */
 .theming-section {
+  padding-inline: var(--space-md);
   margin-bottom: var(--space-xl, 2rem);
 }
 

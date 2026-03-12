@@ -398,7 +398,7 @@
    ============================================ */
 
 .theming-section {
-    padding: var(--space-3xl) 0;
+    padding: var(--space-lg) 0;
     background: var(--bg-secondary);
 }
 
