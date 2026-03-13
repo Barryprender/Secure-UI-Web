@@ -34,7 +34,7 @@ templ Table(users []*models.User, csrfToken string) {
 							security-tier="authenticated"
 						>
 							<!-- Server-rendered table with slot attribute for progressive enhancement dfsdf-->
-							<table slot="table" class="secure-table"> 
+							<table slot="table" class="secure-table">
 								<thead>
 									<tr>
 										<th data-key="id" data-sortable="true">ID</th>
@@ -53,11 +53,12 @@ templ Table(users []*models.User, csrfToken string) {
 											<td data-key="name">{ user.FirstName } { user.LastName }</td>
 											<td data-key="email">{ user.Email }</td>
 											<td data-key="role">
-												if user.Role == "admin" {
+												switch user.Role {
+												case "admin":
 													<span class="badge badge-critical">admin</span>
-												} else if user.Role == "moderator" {
+												case "moderator":
 													<span class="badge badge-authenticated">moderator</span>
-												} else {
+												default:
 													<span class="badge badge-secondary">{ user.Role }</span>
 												}
 											</td>
