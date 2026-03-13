@@ -34,6 +34,10 @@ func (h *Handlers) Documentation(w http.ResponseWriter, r *http.Request) {
 		pages.DocsSecureDatetime().Render(r.Context(), w)
 	case "secure-table":
 		pages.DocsSecureTable().Render(r.Context(), w)
+	case "secure-card":
+		pages.DocsSecureCard().Render(r.Context(), w)
+	case "secure-telemetry-provider":
+		pages.DocsSecureTelemetryProvider().Render(r.Context(), w)
 	default:
 		http.NotFound(w, r)
 	}

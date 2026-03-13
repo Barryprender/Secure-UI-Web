@@ -54,6 +54,7 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 		{"/documentation/secure-datetime", "0.8", "weekly"},
 		{"/documentation/secure-table", "0.8", "weekly"},
 		{"/theming", "0.8", "monthly"},
+		{"/telemetry", "0.9", "monthly"},
 		{"/components", "0.9", "weekly"},
 		{"/components/secure-input", "0.8", "weekly"},
 		{"/components/secure-textarea", "0.8", "weekly"},
@@ -62,6 +63,10 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 		{"/components/secure-file-upload", "0.8", "weekly"},
 		{"/components/secure-datetime", "0.8", "weekly"},
 		{"/components/secure-table", "0.8", "weekly"},
+		{"/components/secure-card", "0.8", "weekly"},
+		{"/components/secure-telemetry-provider", "0.8", "weekly"},
+		{"/documentation/secure-card", "0.8", "weekly"},
+		{"/documentation/secure-telemetry-provider", "0.8", "weekly"},
 	}
 
 	w.Header().Set("Content-Type", "application/xml; charset=utf-8")

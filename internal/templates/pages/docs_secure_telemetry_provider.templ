@@ -1,0 +1,260 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureTelemetryProvider() {
+	@templates.Layout("secure-telemetry-provider Docs", "API reference for secure-telemetry-provider: bot detection, DOM tampering, HMAC-SHA-256 signed envelopes, environmental signals, and server-side verification.") {
+		@templates.DocsPageJsonLDScript("secure-telemetry-provider", "Environmental signal collector that attaches HMAC-signed bot-detection data to form submissions.")
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-telemetry-provider</span>
+				<a href="/components/secure-telemetry-provider" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128270;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-telemetry-provider&gt;</h1>
+					<p class="docs-component-description">
+						Wraps a <code>&lt;secure-form&gt;</code> to collect environmental security signals and
+						attach a HMAC-SHA-256 signed envelope to every submission. Raises the cost of automated
+						attacks without blocking legitimate users.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#signals">Signals</a></li>
+					<li><a href="#signing">Signing</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+					<li><a href="#server-verification">Server Verification</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					Place <code>&lt;secure-telemetry-provider&gt;</code> as a wrapper around any
+					<code>&lt;secure-form&gt;</code>. On submission, it intercepts the
+					<code>secure-form-submit</code> event, snapshots all environmental signals,
+					signs them with HMAC-SHA-256, and attaches the envelope to <code>detail.telemetry._env</code>
+					before the event completes its bubbling path to your handler.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Basic usage</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-telemetry-provider signing-key="YOUR_SECRET">
+  <secure-form action="/submit" method="POST"
+    security-tier="sensitive">
+    <secure-input type="email" label="Email"
+      name="email" security-tier="sensitive"
+      required>
+    </secure-input>
+    <button type="submit">Submit</button>
+  </secure-form>
+</secure-telemetry-provider>` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="signals" class="docs-section">
+				<h2 class="docs-section-title">Environmental Signals</h2>
+				<p class="docs-text">A point-in-time snapshot of all signals collected since <code>connectedCallback()</code>.</p>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Signal</th>
+							<th>Type</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>webdriverDetected</code></td>
+							<td>boolean</td>
+							<td><code>navigator.webdriver</code> present and truthy</td>
+						</tr>
+						<tr>
+							<td><code>headlessDetected</code></td>
+							<td>boolean</td>
+							<td>User-agent contains <code>HeadlessChrome</code> or <code>Headless</code></td>
+						</tr>
+						<tr>
+							<td><code>domMutationDetected</code></td>
+							<td>boolean</td>
+							<td>DOM elements were injected dynamically after page load</td>
+						</tr>
+						<tr>
+							<td><code>injectedScriptCount</code></td>
+							<td>number</td>
+							<td>Count of <code>&lt;script&gt;</code> elements added after initial snapshot</td>
+						</tr>
+						<tr>
+							<td><code>devtoolsOpen</code></td>
+							<td>boolean</td>
+							<td>Window outer/inner size delta &gt;160px (devtools panel heuristic)</td>
+						</tr>
+						<tr>
+							<td><code>suspiciousScreenSize</code></td>
+							<td>boolean</td>
+							<td>Screen dimensions are zero or both under 100px</td>
+						</tr>
+						<tr>
+							<td><code>pointerType</code></td>
+							<td>'mouse' | 'touch' | 'pen' | 'none'</td>
+							<td>Input device type from first <code>pointerdown</code> event</td>
+						</tr>
+						<tr>
+							<td><code>mouseMovementDetected</code></td>
+							<td>boolean</td>
+							<td>At least one <code>mousemove</code> event received</td>
+						</tr>
+						<tr>
+							<td><code>keyboardActivityDetected</code></td>
+							<td>boolean</td>
+							<td>At least one <code>keydown</code> event received</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="signing" class="docs-section">
+				<h2 class="docs-section-title">Signing</h2>
+				<p class="docs-text">
+					When a <code>signing-key</code> attribute is provided, signals are signed with
+					HMAC-SHA-256 via the Web Crypto API (<code>SubtleCrypto</code>).
+					In non-secure contexts (<code>http://</code>), <code>SubtleCrypto</code> is unavailable
+					and the signature will be an empty string — treat such envelopes with reduced trust.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Signed envelope shape</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `interface SignedTelemetryEnvelope {
+  nonce: string;                 // 32-char random hex
+  issuedAt: string;              // ISO 8601 timestamp
+  environment: EnvironmentalSignals;
+  signature: string;             // HMAC-SHA-256 hex
+                                 // (empty on http://)
+}` }</code></pre>
+					</div>
+				</div>
+
+				<p class="docs-text">
+					The signed payload is: <code>nonce + "." + issuedAt + "." + JSON(environment)</code>.
+					The same key must be available server-side to verify the signature.
+				</p>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>signing-key</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>HMAC-SHA-256 symmetric key. Must match the server-side verification key.</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">collectSignals(): EnvironmentalSignals</div>
+					<div class="docs-method-description">Returns a point-in-time snapshot of all environmental signals</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getEnvironmentalSignals(): EnvironmentalSignals</div>
+					<div class="docs-method-description">Alias for <code>collectSignals()</code></div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">sign(signals: EnvironmentalSignals): Promise&lt;SignedTelemetryEnvelope&gt;</div>
+					<div class="docs-method-description">Signs a signals snapshot and returns the full envelope. Called automatically on form submission.</div>
+				</div>
+			</section>
+
+			<section id="server-verification" class="docs-section">
+				<h2 class="docs-section-title">Server Verification</h2>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Go verification example</span>
+						<span class="docs-code-language">Go</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-go">{ `import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+    "encoding/json"
+    "fmt"
+    "time"
+)
+
+type EnvironmentalSignals struct {
+    WebdriverDetected      bool   ` + "`json:\"webdriverDetected\"`" + `
+    HeadlessDetected       bool   ` + "`json:\"headlessDetected\"`" + `
+    DomMutationDetected    bool   ` + "`json:\"domMutationDetected\"`" + `
+    InjectedScriptCount    int    ` + "`json:\"injectedScriptCount\"`" + `
+    DevtoolsOpen           bool   ` + "`json:\"devtoolsOpen\"`" + `
+    SuspiciousScreenSize   bool   ` + "`json:\"suspiciousScreenSize\"`" + `
+    PointerType            string ` + "`json:\"pointerType\"`" + `
+    MouseMovementDetected  bool   ` + "`json:\"mouseMovementDetected\"`" + `
+    KeyboardActivityDetected bool  ` + "`json:\"keyboardActivityDetected\"`" + `
+}
+
+type TelemetryEnvelope struct {
+    Nonce       string               ` + "`json:\"nonce\"`" + `
+    IssuedAt    time.Time            ` + "`json:\"issuedAt\"`" + `
+    Environment EnvironmentalSignals ` + "`json:\"environment\"`" + `
+    Signature   string               ` + "`json:\"signature\"`" + `
+}
+
+func VerifyTelemetry(env TelemetryEnvelope, key []byte) bool {
+    envJSON, err := json.Marshal(env.Environment)
+    if err != nil {
+        return false
+    }
+    payload := fmt.Sprintf("%s.%s.%s",
+        env.Nonce,
+        env.IssuedAt.UTC().Format(time.RFC3339),
+        string(envJSON),
+    )
+    mac := hmac.New(sha256.New, key)
+    mac.Write([]byte(payload))
+    expected := hex.EncodeToString(mac.Sum(nil))
+    return hmac.Equal(
+        []byte(expected),
+        []byte(env.Signature),
+    )
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+		</div>
+	}
+}

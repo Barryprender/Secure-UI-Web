@@ -9,7 +9,7 @@ templ ComponentsIndex() {
 			<header class="components-index-header">
 				<h1>Components</h1>
 				<p>
-					Secure-UI provides seven security-hardened web components built on the Custom Elements standard.
+					Secure-UI provides nine security-hardened web components built on the Custom Elements standard.
 					They work in any framework — or with no framework at all. Drop them into HTML, React, Vue, Angular,
 					Svelte, or any server-rendered template.
 				</p>
@@ -126,6 +126,39 @@ templ ComponentsIndex() {
 						<li>XSS-safe data rendering</li>
 						<li>Sortable and filterable</li>
 						<li>Pagination support</li>
+					</ul>
+				</a>
+				<a href="/components/secure-card" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
+							<path d="M2 8h16" stroke="currentColor" stroke-width="1.5"></path>
+							<path d="M5 12h3M10 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-card&gt;</span>
+					<p class="component-card-desc">Payment card input with Luhn validation, 3D preview, card type detection, and PAN/CVC protection.</p>
+					<ul class="component-card-features">
+						<li>Full PAN never exposed</li>
+						<li>Luhn + card type validation</li>
+						<li>Animated 3D card preview</li>
+					</ul>
+				</a>
+
+				<a href="/components/secure-telemetry-provider" class="component-card">
+					<div class="component-card-icon">
+						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+							<circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"></circle>
+							<path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+							<path d="M4 4l2 2M16 4l-2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
+						</svg>
+					</div>
+					<span class="component-card-tag">&lt;secure-telemetry-provider&gt;</span>
+					<p class="component-card-desc">Wraps a form to collect bot-detection signals and attach a HMAC-signed envelope to every submission.</p>
+					<ul class="component-card-features">
+						<li>Headless / webdriver detection</li>
+						<li>HMAC-SHA-256 signed signals</li>
+						<li>DOM tampering detection</li>
 					</ul>
 				</a>
 			</div>

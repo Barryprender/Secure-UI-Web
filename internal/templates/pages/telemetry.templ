@@ -1,0 +1,606 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ TelemetryPage() {
+	@templates.Layout("Behavioral Intelligence", "Own your bot detection. secure-telemetry-provider collects HMAC-signed behavioral signals on every form submission — no third-party SDKs, no per-transaction fees, no user friction.") {
+		<!-- Hero -->
+		<section class="telemetry-hero">
+			<div class="container">
+				<div class="telemetry-hero-inner">
+					<div class="telemetry-hero-content">
+						<span class="telemetry-hero-badge">Built-in Behavioral Intelligence</span>
+						<h1>Bot Detection Without<br/>the Vendor Tax</h1>
+						<p class="telemetry-hero-desc">
+							Own your fraud signals. <code>&lt;secure-telemetry-provider&gt;</code> wraps any
+							<code>&lt;secure-form&gt;</code> and attaches a cryptographically-signed behavioral
+							envelope to every submission. No third-party SDKs. No CAPTCHA friction.
+							No per-transaction pricing. Just raw signals your backend can act on.
+						</p>
+						<div class="telemetry-hero-actions">
+							<a href="/components/secure-telemetry-provider" class="btn btn-primary">Component Docs</a>
+							<a href="/documentation/secure-telemetry-provider" class="btn btn-secondary">API Reference</a>
+						</div>
+					</div>
+					<div class="telemetry-hero-terminal" aria-hidden="true">
+						<div class="telemetry-terminal-bar">
+							<div class="telemetry-terminal-dots">
+								<span></span><span></span><span></span>
+							</div>
+							<span class="telemetry-terminal-title">secure-telemetry-provider — signal envelope</span>
+						</div>
+						<pre class="telemetry-terminal-body"><code>{ `// Environmental signals — collected at submit
+webdriverDetected:        false,
+headlessDetected:         false,
+domMutationDetected:      false,
+injectedScriptCount:      0,
+devtoolsOpen:             false,
+suspiciousScreenSize:     false,
+pointerType:              "mouse",
+mouseMovementDetected:    true,
+keyboardActivityDetected: true,
+
+// HMAC-SHA-256 signed envelope
+nonce:     "a3f8b2c1d4e5f607...",
+issuedAt:  "2026-03-12T14:32:07Z",
+signature: "7c2bef09a1d3c8f2..."` }</code></pre>
+						<div class="telemetry-terminal-verdict">
+							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+								<path d="m9 12 2 2 4-4"></path>
+							</svg>
+							VERDICT: ALLOW — risk score 0 / 100
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- The Problem -->
+		<section class="telemetry-problem">
+			<div class="container">
+				<span class="telemetry-section-badge">The Problem</span>
+				<h2 class="telemetry-section-title">Existing Solutions Make the Wrong Trade-offs</h2>
+				<p class="telemetry-section-desc">
+					Enterprise bot detection is dominated by expensive SaaS platforms that add friction,
+					share your users' data with third parties, and give you a black-box score you can't audit.
+				</p>
+				<div class="telemetry-problem-grid">
+					<div class="telemetry-problem-card">
+						<div class="telemetry-problem-card-icon">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+								<path d="M2 17l10 5 10-5"></path>
+								<path d="M2 12l10 5 10-5"></path>
+							</svg>
+						</div>
+						<h3>Vendor Lock-in and Cost</h3>
+						<p>
+							Arkose Labs, reCAPTCHA Enterprise, and DataDome charge per-transaction or per-session.
+							At scale that cost becomes significant. Switching vendors means re-integrating your entire
+							fraud stack.
+						</p>
+					</div>
+					<div class="telemetry-problem-card">
+						<div class="telemetry-problem-card-icon">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<circle cx="12" cy="12" r="10"></circle>
+								<line x1="12" y1="8" x2="12" y2="12"></line>
+								<line x1="12" y1="16" x2="12.01" y2="16"></line>
+							</svg>
+						</div>
+						<h3>Third-party Data Sharing</h3>
+						<p>
+							Every CAPTCHA call ships your users' behavioral data to an external server outside
+							your control. That raises GDPR/CCPA exposure and creates a data relationship you
+							didn't explicitly design.
+						</p>
+					</div>
+					<div class="telemetry-problem-card">
+						<div class="telemetry-problem-card-icon">
+							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+								<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+							</svg>
+						</div>
+						<h3>Black-box Scoring</h3>
+						<p>
+							You receive a pass/fail verdict you cannot inspect or appeal. When the vendor changes
+							their model, your false positive rate changes without warning and you have no recourse
+							beyond contacting support.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- How it works -->
+		<section class="telemetry-how">
+			<div class="container">
+				<span class="telemetry-section-badge">How It Works</span>
+				<h2 class="telemetry-section-title">Three Steps, Zero Third Parties</h2>
+				<p class="telemetry-section-desc">
+					Every signal is collected inside the browser, signed locally with SubtleCrypto,
+					and verified server-side with a shared key. No external calls. No latency. No cost per submission.
+				</p>
+				<div class="telemetry-steps">
+					<div class="telemetry-step">
+						<div class="telemetry-step-num">1</div>
+						<h3>Collect</h3>
+						<p>
+							From the moment the page loads, the provider monitors automation flags,
+							DOM mutations, injected scripts, and user interaction patterns.
+						</p>
+						<div class="telemetry-step-detail">
+							navigator.webdriver<br/>
+							MutationObserver (script injection)<br/>
+							mousemove / keydown / pointerdown
+						</div>
+					</div>
+					<div class="telemetry-step">
+						<div class="telemetry-step-num">2</div>
+						<h3>Sign</h3>
+						<p>
+							On form submit, signals are bundled with a nonce and timestamp then signed
+							with HMAC-SHA-256 via the Web Crypto API. The signature prevents casual forgery.
+						</p>
+						<div class="telemetry-step-detail">
+							payload = nonce + issuedAt + signals<br/>
+							sig = HMAC-SHA-256(key, payload)<br/>
+							envelope &#8594; event.detail._env
+						</div>
+					</div>
+					<div class="telemetry-step">
+						<div class="telemetry-step-num">3</div>
+						<h3>Verify</h3>
+						<p>
+							Your backend re-computes the HMAC using the shared key. A valid signature
+							means the envelope was not tampered with. You own the risk decision logic.
+						</p>
+						<div class="telemetry-step-detail">
+							HMAC verify(key, payload, sig)<br/>
+							riskScore(signals) &#8594; allow / challenge / reject<br/>
+							your rules, your thresholds
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Signal Reference -->
+		<section class="telemetry-signals">
+			<div class="container">
+				<span class="telemetry-section-badge">Signal Reference</span>
+				<h2 class="telemetry-section-title">Nine Behavioral Signals</h2>
+				<p class="telemetry-section-desc">
+					All signals are heuristic. A sufficiently motivated attacker can spoof them.
+					The value is raising the cost and effort of scripted attacks, not providing
+					cryptographic proof of humanity.
+				</p>
+				<div class="telemetry-signals-table-wrap">
+					<table class="telemetry-signals-table">
+						<thead>
+							<tr>
+								<th>Signal</th>
+								<th>Type</th>
+								<th>Description</th>
+								<th>Risk if true</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><code>webdriverDetected</code></td>
+								<td>boolean</td>
+								<td><code>navigator.webdriver === true</code> — set by Selenium, Playwright, Puppeteer</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--critical">Critical</span></td>
+							</tr>
+							<tr>
+								<td><code>headlessDetected</code></td>
+								<td>boolean</td>
+								<td>HeadlessChrome user-agent string or missing Chrome APIs in a Chrome UA context</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--critical">Critical</span></td>
+							</tr>
+							<tr>
+								<td><code>domMutationDetected</code></td>
+								<td>boolean</td>
+								<td>Script tags were added to the DOM after page load via MutationObserver</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--high">High</span></td>
+							</tr>
+							<tr>
+								<td><code>injectedScriptCount</code></td>
+								<td>number</td>
+								<td>Count of script elements injected after initial page parse</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--high">High</span></td>
+							</tr>
+							<tr>
+								<td><code>suspiciousScreenSize</code></td>
+								<td>boolean</td>
+								<td>Screen dimensions are zero or less than 100 &#215; 100 px — typical of headless configs</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--high">High</span></td>
+							</tr>
+							<tr>
+								<td><code>devtoolsOpen</code></td>
+								<td>boolean</td>
+								<td>Outer/inner window dimension gap &gt; 160 px — heuristic for open DevTools panel</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--medium">Medium</span></td>
+							</tr>
+							<tr>
+								<td><code>pointerType</code></td>
+								<td>"mouse" | "touch" | "pen" | "none"</td>
+								<td>Pointer type recorded from first <code>pointerdown</code> event; <code>none</code> = no pointer interaction</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--medium">Medium</span></td>
+							</tr>
+							<tr>
+								<td><code>mouseMovementDetected</code></td>
+								<td>boolean</td>
+								<td>At least one <code>mousemove</code> event recorded since page load</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--low">Low alone</span></td>
+							</tr>
+							<tr>
+								<td><code>keyboardActivityDetected</code></td>
+								<td>boolean</td>
+								<td>At least one <code>keydown</code> event recorded since page load</td>
+								<td><span class="telemetry-risk-badge telemetry-risk-badge--low">Low alone</span></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<!-- Risk scoring -->
+		<section class="telemetry-scoring">
+			<div class="container">
+				<span class="telemetry-section-badge">Backend Integration</span>
+				<h2 class="telemetry-section-title">Your Rules, Your Thresholds</h2>
+				<p class="telemetry-section-desc">
+					The component delivers signed signals. What you do with them is entirely up to you.
+					Here are three common patterns.
+				</p>
+				<div class="telemetry-scoring-grid">
+					<div class="telemetry-scoring-patterns">
+						<div class="telemetry-pattern telemetry-pattern--reject">
+							<div class="telemetry-pattern-header">
+								<span class="telemetry-pattern-label">Hard Reject</span>
+							</div>
+							<p>
+								<code>webdriverDetected</code> or <code>headlessDetected</code> are near-certain
+								automation signals. Reject immediately — no CAPTCHA, no challenge, no retry.
+							</p>
+						</div>
+						<div class="telemetry-pattern telemetry-pattern--challenge">
+							<div class="telemetry-pattern-header">
+								<span class="telemetry-pattern-label">Step-up Challenge</span>
+							</div>
+							<p>
+								Two or more suspicious signals (no mouse movement, no keyboard, unusual screen,
+								injected scripts) — trigger an additional verification step or hold for manual review.
+							</p>
+						</div>
+						<div class="telemetry-pattern telemetry-pattern--allow">
+							<div class="telemetry-pattern-header">
+								<span class="telemetry-pattern-label">Risk Score Threshold</span>
+							</div>
+							<p>
+								Assign weights to each signal and compute a composite score. Route high-risk
+								submissions to a fraud review queue while allowing low-risk submissions straight through.
+							</p>
+						</div>
+					</div>
+					<div class="telemetry-scoring-code">
+						<div class="telemetry-scoring-code-header">risk.go — example scoring function</div>
+						<pre><code class="language-go">{ `type RiskDecision int
+
+const (
+    Allow     RiskDecision = iota
+    Challenge              // step-up verification
+    Reject                 // hard block
+)
+
+func Score(env EnvironmentalSignals) (int, RiskDecision) {
+    score := 0
+
+    // Automation — near-certain signals
+    if env.WebdriverDetected  { score += 50 }
+    if env.HeadlessDetected   { score += 40 }
+
+    // Suspicious environment
+    if env.SuspiciousScreenSize { score += 30 }
+
+    // DOM tampering
+    if env.InjectedScriptCount > 0 {
+        score += env.InjectedScriptCount * 10
+    }
+
+    // No human interaction
+    if !env.MouseMovementDetected &&
+       !env.KeyboardActivityDetected {
+        score += 20
+    }
+
+    // Investigative intent (low weight alone)
+    if env.DevtoolsOpen { score += 5 }
+
+    switch {
+    case score >= 50:
+        return score, Reject
+    case score >= 20:
+        return score, Challenge
+    default:
+        return score, Allow
+    }
+}` }</code></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Comparison -->
+		<section class="telemetry-compare">
+			<div class="container">
+				<span class="telemetry-section-badge">Competitive Positioning</span>
+				<h2 class="telemetry-section-title">How We Compare</h2>
+				<p class="telemetry-section-desc">
+					Secure-UI gives you the signal layer. You supply the decision logic.
+					No black box. No vendor relationship. No recurring cost.
+				</p>
+				<div class="telemetry-compare-table-wrap">
+					<table class="telemetry-compare-table">
+						<thead>
+							<tr>
+								<th>Capability</th>
+								<th class="telemetry-compare-col--ours">Secure-UI</th>
+								<th>Arkose Labs</th>
+								<th>reCAPTCHA Enterprise</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Bot / automation detection</td>
+								<td class="telemetry-compare-col--ours">&#10003; Heuristic signals</td>
+								<td class="telemetry-compare-neutral">&#10003; ML model</td>
+								<td class="telemetry-compare-neutral">&#10003; ML model</td>
+							</tr>
+							<tr>
+								<td>User friction (CAPTCHA)</td>
+								<td class="telemetry-compare-col--ours telemetry-compare-yes">None</td>
+								<td class="telemetry-compare-no">Interactive challenges</td>
+								<td class="telemetry-compare-no">Checkbox / image select</td>
+							</tr>
+							<tr>
+								<td>Third-party data sharing</td>
+								<td class="telemetry-compare-col--ours telemetry-compare-yes">None — self-hosted</td>
+								<td class="telemetry-compare-no">Vendor servers</td>
+								<td class="telemetry-compare-no">Google servers</td>
+							</tr>
+							<tr>
+								<td>Per-transaction cost</td>
+								<td class="telemetry-compare-col--ours telemetry-compare-yes">Zero</td>
+								<td class="telemetry-compare-no">Enterprise pricing</td>
+								<td class="telemetry-compare-no">Volume pricing</td>
+							</tr>
+							<tr>
+								<td>Open, inspectable signals</td>
+								<td class="telemetry-compare-col--ours telemetry-compare-yes">Full access</td>
+								<td class="telemetry-compare-no">Opaque score only</td>
+								<td class="telemetry-compare-no">Opaque score only</td>
+							</tr>
+							<tr>
+								<td>Custom risk logic</td>
+								<td class="telemetry-compare-col--ours telemetry-compare-yes">Complete control</td>
+								<td class="telemetry-compare-no">Vendor-managed rules</td>
+								<td class="telemetry-compare-no">Limited tuning</td>
+							</tr>
+							<tr>
+								<td>Tamper-evident signals</td>
+								<td class="telemetry-compare-col--ours">&#10003; HMAC-SHA-256</td>
+								<td class="telemetry-compare-neutral">&#10003; Signed token</td>
+								<td class="telemetry-compare-neutral">&#10003; Signed token</td>
+							</tr>
+							<tr>
+								<td>Zero runtime dependencies</td>
+								<td class="telemetry-compare-col--ours telemetry-compare-yes">&#10003;</td>
+								<td class="telemetry-compare-no">External SDK required</td>
+								<td class="telemetry-compare-no">External SDK required</td>
+							</tr>
+							<tr>
+								<td>Privacy regulation risk</td>
+								<td class="telemetry-compare-col--ours telemetry-compare-yes">Minimal — no PII</td>
+								<td class="telemetry-compare-no">Third-party processing</td>
+								<td class="telemetry-compare-no">Third-party processing</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</section>
+
+		<!-- Server verification -->
+		<section class="telemetry-verify">
+			<div class="container">
+				<span class="telemetry-section-badge">Server Verification</span>
+				<h2 class="telemetry-section-title">Verify in Any Language</h2>
+				<p class="telemetry-section-desc">
+					HMAC-SHA-256 is a standard primitive available in every major language.
+					Verification is three lines of logic.
+				</p>
+				<div class="telemetry-verify-grid">
+					<div class="telemetry-verify-points">
+						<div class="telemetry-verify-point">
+							<div class="telemetry-verify-point-icon">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+									<path d="m9 12 2 2 4-4"></path>
+								</svg>
+							</div>
+							<div class="telemetry-verify-point-body">
+								<h4>Reconstruct the payload</h4>
+								<p>
+									Re-assemble <code>nonce + "." + issuedAt + "." + JSON(signals)</code>
+									using the values from the submitted envelope.
+								</p>
+							</div>
+						</div>
+						<div class="telemetry-verify-point">
+							<div class="telemetry-verify-point-icon">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<rect x="2" y="2" width="20" height="8" rx="2"></rect>
+									<rect x="2" y="14" width="20" height="8" rx="2"></rect>
+									<line x1="6" y1="6" x2="6.01" y2="6"></line>
+									<line x1="6" y1="18" x2="6.01" y2="18"></line>
+								</svg>
+							</div>
+							<div class="telemetry-verify-point-body">
+								<h4>Verify the signature</h4>
+								<p>
+									Compute <code>HMAC-SHA-256(key, payload)</code> server-side.
+									Compare using a constant-time equality function to prevent timing attacks.
+								</p>
+							</div>
+						</div>
+						<div class="telemetry-verify-point">
+							<div class="telemetry-verify-point-icon">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+								</svg>
+							</div>
+							<div class="telemetry-verify-point-body">
+								<h4>Score and decide</h4>
+								<p>
+									Apply your risk scoring logic to the verified signals.
+									Reject, challenge, or allow based on your threat model and tolerance for false positives.
+								</p>
+							</div>
+						</div>
+						<div class="telemetry-verify-point">
+							<div class="telemetry-verify-point-icon">
+								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+									<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+									<line x1="12" y1="9" x2="12" y2="13"></line>
+									<line x1="12" y1="17" x2="12.01" y2="17"></line>
+								</svg>
+							</div>
+							<div class="telemetry-verify-point-body">
+								<h4>Treat empty signatures as lower trust</h4>
+								<p>
+									On HTTP (non-secure context), SubtleCrypto is unavailable and the signature
+									will be an empty string. Treat unsigned submissions as untrusted rather than rejected.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="telemetry-scoring-code">
+						<div class="telemetry-scoring-code-header">verify.go — Go server verification</div>
+						<pre><code class="language-go">{ `package telemetry
+
+import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "encoding/hex"
+    "encoding/json"
+    "fmt"
+)
+
+type Envelope struct {
+    Nonce       string             `+"`"+`json:"nonce"`+"`"+`
+    IssuedAt    string             `+"`"+`json:"issuedAt"`+"`"+`
+    Environment EnvironmentalSignals `+"`"+`json:"environment"`+"`"+`
+    Signature   string             `+"`"+`json:"signature"`+"`"+`
+}
+
+type EnvironmentalSignals struct {
+    WebdriverDetected       bool   `+"`"+`json:"webdriverDetected"`+"`"+`
+    HeadlessDetected        bool   `+"`"+`json:"headlessDetected"`+"`"+`
+    DomMutationDetected     bool   `+"`"+`json:"domMutationDetected"`+"`"+`
+    InjectedScriptCount     int    `+"`"+`json:"injectedScriptCount"`+"`"+`
+    DevtoolsOpen            bool   `+"`"+`json:"devtoolsOpen"`+"`"+`
+    SuspiciousScreenSize    bool   `+"`"+`json:"suspiciousScreenSize"`+"`"+`
+    PointerType             string `+"`"+`json:"pointerType"`+"`"+`
+    MouseMovementDetected   bool   `+"`"+`json:"mouseMovementDetected"`+"`"+`
+    KeyboardActivityDetected bool  `+"`"+`json:"keyboardActivityDetected"`+"`"+`
+}
+
+// Verify checks the HMAC-SHA-256 signature on the envelope.
+// Returns ErrInvalidSignature if the signature does not match.
+func Verify(env Envelope, signingKey string) error {
+    if env.Signature == "" {
+        return fmt.Errorf("unsigned envelope — treat as low trust")
+    }
+
+    signalsJSON, err := json.Marshal(env.Environment)
+    if err != nil {
+        return fmt.Errorf("marshal signals: %w", err)
+    }
+
+    payload := env.Nonce + "." + env.IssuedAt + "." +
+        string(signalsJSON)
+
+    mac := hmac.New(sha256.New, []byte(signingKey))
+    mac.Write([]byte(payload))
+    expected := hex.EncodeToString(mac.Sum(nil))
+
+    if !hmac.Equal([]byte(expected), []byte(env.Signature)) {
+        return fmt.Errorf("signature mismatch")
+    }
+    return nil
+}` }</code></pre>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- Privacy -->
+		<section class="telemetry-privacy">
+			<div class="container">
+				<span class="telemetry-section-badge">Privacy by Design</span>
+				<h2 class="telemetry-section-title">What Is — and Is Not — Collected</h2>
+				<p class="telemetry-section-desc">
+					The provider collects only behavioral metadata. No keystroke content, no form values,
+					no PII, and no device identifiers are ever included in the envelope.
+				</p>
+				<div class="telemetry-privacy-grid">
+					<div class="telemetry-privacy-card telemetry-privacy-card--collected">
+						<h3>Collected (behavioral metadata)</h3>
+						<ul class="telemetry-privacy-list">
+							<li>Whether any mouse movement occurred (boolean)</li>
+							<li>Whether any keyboard activity occurred (boolean)</li>
+							<li>Pointer type on first interaction (mouse / touch / pen / none)</li>
+							<li>Whether automation flags are present in the browser</li>
+							<li>Whether DevTools appears open (window size heuristic)</li>
+							<li>Whether the screen dimensions look suspicious</li>
+							<li>Count of script tags injected after page load</li>
+						</ul>
+					</div>
+					<div class="telemetry-privacy-card telemetry-privacy-card--not">
+						<h3>Never collected</h3>
+						<ul class="telemetry-privacy-list">
+							<li>Keystroke content or timing sequences</li>
+							<li>Any form field values or input data</li>
+							<li>IP address or geolocation</li>
+							<li>Canvas fingerprint or WebGL hash</li>
+							<li>Installed fonts, plugins, or extensions</li>
+							<li>Device identifiers (IMEI, MAC, etc.)</li>
+							<li>Any data transmitted to third-party servers</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- CTA -->
+		<section class="telemetry-cta">
+			<div class="container">
+				<h2>Start Collecting Signals Today</h2>
+				<p>
+					Drop <code>&lt;secure-telemetry-provider&gt;</code> around any <code>&lt;secure-form&gt;</code>.
+					No configuration required. Signing key is optional but recommended for production.
+				</p>
+				<div class="telemetry-cta-actions">
+					<a href="/components/secure-telemetry-provider" class="btn btn-primary">Component Showcase</a>
+					<a href="/documentation/secure-telemetry-provider" class="btn btn-secondary">API Reference</a>
+					<a href="/forms" class="btn btn-secondary">Live Demo</a>
+				</div>
+			</div>
+		</section>
+	}
+}

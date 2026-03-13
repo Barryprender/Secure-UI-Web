@@ -10,3 +10,8 @@ import (
 func (h *Handlers) Theming(w http.ResponseWriter, r *http.Request) {
 	pages.Theming().Render(r.Context(), w)
 }
+
+// TelemetryPage renders the behavioral intelligence / telemetry philosophy page.
+func (h *Handlers) TelemetryPage(w http.ResponseWriter, r *http.Request) {
+	pages.TelemetryPage().Render(r.Context(), w)
+}

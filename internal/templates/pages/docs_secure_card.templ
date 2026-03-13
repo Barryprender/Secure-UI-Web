@@ -1,0 +1,257 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsSecureCard() {
+	@templates.Layout("secure-card Docs", "API reference for secure-card: Luhn validation, card type detection, PAN masking, CVC protection, 3D flip preview, CSS custom properties, and JavaScript API.") {
+		@templates.DocsPageJsonLDScript("secure-card", "Payment card input with Luhn validation, 3D preview, PAN masking, and CRITICAL-tier security enforcement.")
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">secure-card</span>
+				<a href="/components/secure-card" class="docs-breadcrumb-demo">Live Demo &#8594;</a>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">&#128179;</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">&lt;secure-card&gt;</h1>
+					<p class="docs-component-description">
+						Payment card input with Luhn validation, card type detection, animated 3D preview,
+						full PAN masking on blur, and CVC protection. Security tier locked to CRITICAL.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#overview">Overview</a></li>
+					<li><a href="#security-model">Security Model</a></li>
+					<li><a href="#card-types">Card Types</a></li>
+					<li><a href="#api-reference">API Reference</a></li>
+				</ul>
+			</nav>
+
+			<section id="overview" class="docs-section">
+				<h2 class="docs-section-title">Overview</h2>
+				<p class="docs-text">
+					The <code>&lt;secure-card&gt;</code> component provides a PCI-aware payment card input.
+					It enforces Luhn validation, detects card network from the PAN prefix, adjusts CVC length
+					rules per network, and masks the card number to the last 4 digits on blur.
+					The full PAN and CVC are never exposed outside the Shadow DOM.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Basic usage</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<secure-form action="/checkout" method="POST"
+  security-tier="critical">
+  <secure-card
+    name="payment"
+    label="Payment Details"
+    show-name
+    required>
+  </secure-card>
+  <button type="submit">Pay Now</button>
+</secure-form>` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo</div>
+					<secure-card name="docs-demo-card" label="Card Details" show-name></secure-card>
+				</div>
+			</section>
+
+			<section id="security-model" class="docs-section">
+				<h2 class="docs-section-title">Security Model</h2>
+				<p class="docs-text">
+					Security tier is immutably fixed to <strong>CRITICAL</strong> regardless of any
+					<code>security-tier</code> attribute. The following guarantees are always enforced:
+				</p>
+				<ul class="docs-text" style="margin-left:1.5rem;line-height:2">
+					<li>Full PAN never in custom events, hidden inputs, or audit logs — only <code>last4</code></li>
+					<li>CVC never in custom events, hidden inputs, or audit logs</li>
+					<li>CVC field uses <code>type="password"</code> — browser hides the value</li>
+					<li>Card number masked to <code>•••• •••• •••• 1234</code> on blur</li>
+					<li>All sensitive state cleared in <code>disconnectedCallback()</code></li>
+					<li>Autocomplete disabled on all fields</li>
+					<li>Rate limited to 5 attempts per minute</li>
+				</ul>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">secure-card event detail</span>
+						<span class="docs-code-language">JS</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-javascript">{ `card.addEventListener('secure-card', (e) => {
+  const {
+    name,        // field name attribute
+    cardType,    // 'visa' | 'mastercard' | 'amex' | ...
+    last4,       // last 4 digits (safe to log)
+    expiryMonth, // 'MM'
+    expiryYear,  // 'YY'
+    cardholderName,
+    valid,       // all fields pass validation
+    tier,        // always 'critical'
+  } = e.detail;
+
+  // full PAN and CVC intentionally absent
+});` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="card-types" class="docs-section">
+				<h2 class="docs-section-title">Card Types</h2>
+				<p class="docs-text">Card type is detected from the PAN prefix as the user types. CVC length and PAN length rules adjust automatically.</p>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Type</th>
+							<th>Prefixes</th>
+							<th>PAN length</th>
+							<th>CVC digits</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td><code>visa</code></td><td>4</td><td>13, 16, 19</td><td>3</td></tr>
+						<tr><td><code>mastercard</code></td><td>51–55, 2221–2720</td><td>16</td><td>3</td></tr>
+						<tr><td><code>amex</code></td><td>34, 37</td><td>15</td><td>4</td></tr>
+						<tr><td><code>discover</code></td><td>6011, 65xx</td><td>16</td><td>3</td></tr>
+						<tr><td><code>diners</code></td><td>300–305, 36, 38</td><td>14</td><td>3</td></tr>
+						<tr><td><code>jcb</code></td><td>2131, 1800, 35xxx</td><td>16</td><td>3</td></tr>
+						<tr><td><code>unknown</code></td><td>—</td><td>16</td><td>3</td></tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="api-reference" class="docs-section">
+				<h2 class="docs-section-title">API Reference</h2>
+
+				<h3 class="docs-section-subtitle">Attributes</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Attribute</th>
+							<th>Type</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>name</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Base name for hidden form inputs (<code>name</code>, <code>name-expiry</code>, <code>name-holder</code>)</td>
+						</tr>
+						<tr>
+							<td><code>label</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Legend text displayed above the fields</td>
+						</tr>
+						<tr>
+							<td><code>show-name</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Show the optional cardholder name field</td>
+						</tr>
+						<tr>
+							<td><code>required</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>All fields must be filled and valid</td>
+						</tr>
+						<tr>
+							<td><code>disabled</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Disable all input fields</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">Properties</h3>
+				<div class="docs-property-list">
+					<div class="docs-property">
+						<span class="docs-property-name">valid</span>
+						<span class="docs-property-type">boolean</span>
+						<span class="docs-property-description">True when all visible fields pass validation</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">cardType</span>
+						<span class="docs-property-type">'visa' | 'mastercard' | 'amex' | 'discover' | 'diners' | 'jcb' | 'unknown'</span>
+						<span class="docs-property-description">Detected card network</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">last4</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">Last 4 digits of the card number (safe to display)</span>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">getCardData(): &#123; number, expiry, cvc, name &#125; | null</div>
+					<div class="docs-method-description">Returns raw card data for tokenization via a payment SDK. Returns null if the form is not valid. Use only to pass data to a client-side tokenizer — never send raw card data to your own server.</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">reset(): void</div>
+					<div class="docs-method-description">Clears all fields and resets validation state</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
+					<div class="docs-method-description">Returns interaction audit log. PAN and CVC are never included.</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getFieldTelemetry(): FieldTelemetry</div>
+					<div class="docs-method-description">Returns aggregate behavioral signals (dwell, velocity, corrections, paste detection) across all four card inputs</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Events</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Event</th>
+							<th>Detail</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>secure-card</code></td>
+							<td><pre><code class="language-js">{` name, cardType, last4, expiryMonth, expiryYear, cardholderName, valid, tier `}</code></pre></td>
+							<td>Fired on any field change. Full PAN and CVC intentionally absent.</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="docs-section-subtitle">CSS Custom Properties</h3>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Property</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td><code>--secure-card-width</code></td><td>340px</td><td>3D card preview width</td></tr>
+						<tr><td><code>--secure-card-radius</code></td><td>16px</td><td>Card border radius</td></tr>
+						<tr><td><code>--secure-card-font</code></td><td>'Courier New', monospace</td><td>Card number font</td></tr>
+						<tr><td><code>--secure-card-gradient</code></td><td>linear-gradient(135deg, #1e2a4a, #2d4a8a)</td><td>Default card face gradient</td></tr>
+						<tr><td><code>--secure-card-transition</code></td><td>transform 0.6s …</td><td>3D flip animation</td></tr>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	}
+}

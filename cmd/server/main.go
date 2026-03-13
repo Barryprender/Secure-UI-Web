@@ -110,6 +110,7 @@ func main() {
 	mux.Handle("/components", optAuth(http.HandlerFunc(h.Components)))
 	mux.Handle("/registration", optAuth(http.HandlerFunc(h.Registration)))
 	mux.Handle("/theming", optAuth(http.HandlerFunc(h.Theming)))
+	mux.Handle("/telemetry", optAuth(http.HandlerFunc(h.TelemetryPage)))
 
 	// --- Auth routes ---
 	mux.Handle("/login", middleware.CSRF(csrfStore)(optAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {

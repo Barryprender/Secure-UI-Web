@@ -1,0 +1,321 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureCard() {
+	@templates.Layout("secure-card Component", "Live demos for secure-card: 3D card preview, Luhn validation, card type detection, PAN masking, CVC protection, security tier enforcement, and framework examples.") {
+		@templates.ComponentPageJsonLDScript("secure-card")
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-card&gt;</h1>
+					<p class="component-hero-description">
+						A payment card input with a live 3D card preview, automatic card type detection,
+						Luhn validation, and full PAN masking. Security tier is locked to CRITICAL — the
+						full card number and CVC are never exposed in events, form submissions, or audit logs.
+					</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-card/secure-card.js">
+</script>` }</code></pre>
+					</div>
+					<a href="/documentation/secure-card" class="component-hero-docs-link">View API Reference &#8594;</a>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-card
+						name="payment"
+						label="Payment Details"
+						show-name
+						required
+					></secure-card>
+				</div>
+			</section>
+
+			<!-- Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">Default (card + expiry + CVC)</span></div>
+						<div class="config-demo">
+							<secure-card name="cfg-card-basic"></secure-card>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-card
+  name="payment">
+</secure-card>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">show-name (cardholder name field)</span></div>
+						<div class="config-demo">
+							<secure-card name="cfg-card-name" show-name></secure-card>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-card
+  name="payment"
+  show-name>
+</secure-card>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-demo">
+							<secure-card name="cfg-card-req" required></secure-card>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-card
+  name="payment"
+  required>
+</secure-card>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">label</span></div>
+						<div class="config-demo">
+							<secure-card name="cfg-card-label" label="Billing Card"></secure-card>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-card
+  name="payment"
+  label="Billing Card">
+</secure-card>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">disabled</span></div>
+						<div class="config-demo">
+							<secure-card name="cfg-card-dis" disabled></secure-card>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-card
+  name="payment"
+  disabled>
+</secure-card>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">Inside secure-form</span></div>
+						<div class="config-demo">
+							<secure-form action="/api/forms/submit" method="POST" security-tier="critical">
+								<secure-card name="cfg-card-form" label="Card Details" required></secure-card>
+								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Pay Now</button>
+							</secure-form>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-form
+  action="/checkout"
+  method="POST"
+  security-tier="critical">
+  <secure-card
+    name="payment"
+    label="Card Details"
+    required>
+  </secure-card>
+  <button type="submit">Pay Now</button>
+</secure-form>` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Security Features</h2>
+				<p class="security-callout">Security tier is fixed at CRITICAL and cannot be changed. All protections below are always active.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Protection</th>
+							<th>Detail</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>PAN never exposed</td>
+							<td>Full card number absent from events, hidden inputs, and audit logs — only <code>last4</code> is shared</td>
+						</tr>
+						<tr>
+							<td>CVC never exposed</td>
+							<td>CVC absent from events and hidden inputs; masked with <code>type="password"</code> in the DOM</td>
+						</tr>
+						<tr>
+							<td>Luhn validation</td>
+							<td>Client-side Luhn check on every keystroke — invalid PANs are rejected before submission</td>
+						</tr>
+						<tr>
+							<td>Card type detection</td>
+							<td>Visa, Mastercard, Amex, Discover, Diners, JCB — expiry and CVC length rules adjust per network</td>
+						</tr>
+						<tr>
+							<td>PAN masking on blur</td>
+							<td>Card number masked to <code>•••• •••• •••• 1234</code> when the user leaves the field</td>
+						</tr>
+						<tr>
+							<td>No autocomplete</td>
+							<td>All fields set <code>autocomplete="off"</code> — browser autofill is disabled for card data</td>
+						</tr>
+						<tr>
+							<td>Rate limiting</td>
+							<td>5 attempts per minute — brute-force card guessing throttled client-side</td>
+						</tr>
+						<tr>
+							<td>Full audit logging</td>
+							<td>All interactions recorded via <code>getAuditLog()</code> without capturing raw PAN or CVC</td>
+						</tr>
+						<tr>
+							<td>Memory wiped on detach</td>
+							<td>All sensitive state cleared in <code>disconnectedCallback()</code></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro">Override CSS custom properties at <code>:root</code>, per-component, or per-instance.</p>
+				<table class="css-vars-table">
+					<thead>
+						<tr>
+							<th>Variable</th>
+							<th>Default</th>
+							<th>Description</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>--secure-card-width</td>
+							<td>340px</td>
+							<td>Width of the 3D card preview</td>
+						</tr>
+						<tr>
+							<td>--secure-card-radius</td>
+							<td>16px</td>
+							<td>Border radius of the card preview</td>
+						</tr>
+						<tr>
+							<td>--secure-card-font</td>
+							<td>'Courier New', monospace</td>
+							<td>Font for card number digits</td>
+						</tr>
+						<tr>
+							<td>--secure-card-gradient</td>
+							<td>linear-gradient(135deg, #1e2a4a, #2d4a8a)</td>
+							<td>Card face background (overridden per card type)</td>
+						</tr>
+						<tr>
+							<td>--secure-card-transition</td>
+							<td>transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)</td>
+							<td>3D flip animation timing</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Web Components work natively in all frameworks. No wrappers, no adapters.</p>
+				<div class="framework-tabs">
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-card/secure-card.js">
+</script>
+<script type="module"
+  src="/components/secure-form/secure-form.js">
+</script>
+
+<secure-form action="/checkout" method="POST"
+  security-tier="critical">
+  <secure-card
+    name="payment"
+    label="Payment Details"
+    show-name
+    required>
+  </secure-card>
+  <button type="submit">Pay Now</button>
+</secure-form>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect, useRef } from 'react';
+
+export function CheckoutForm() {
+  const cardRef = useRef(null);
+
+  useEffect(() => {
+    import('/components/secure-card/secure-card.js');
+    import('/components/secure-form/secure-form.js');
+
+    const el = cardRef.current;
+    el?.addEventListener('secure-card', (e) => {
+      console.log('card type:', e.detail.cardType);
+      console.log('last4:', e.detail.last4);
+      // full PAN never in detail
+    });
+  }, []);
+
+  return (
+    <secure-form action="/checkout" method="POST"
+      security-tier="critical">
+      <secure-card ref={cardRef}
+        name="payment" show-name required />
+      <button type="submit">Pay Now</button>
+    </secure-form>
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ CheckoutForm(action string) {
+  <secure-form
+    action={ action }
+    method="POST"
+    security-tier="critical">
+    <secure-card
+      name="payment"
+      label="Payment Details"
+      show-name
+      required>
+    </secure-card>
+    <button type="submit">Pay Now</button>
+  </secure-form>
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components/secure-table" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">&lt;secure-table&gt;</span>
+				</a>
+				<a href="/components/secure-telemetry-provider" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">Next</span>
+					<span class="component-nav-name">&lt;secure-telemetry-provider&gt;</span>
+				</a>
+			</nav>
+		</div>
+	}
+}

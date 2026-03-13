@@ -17,18 +17,19 @@ templ Home() {
 			</div>
 
 			<h1 class="hero-title">
-				Build Secure Web Apps<br />
-				Without Compromise
+				Security-First Components<br />
+				With Built-in Behavioral Intelligence
 			</h1>
 
 			<p class="hero-description">
-				A security-first web component library with built-in protection against XSS, CSRF,
-				and common web vulnerabilities. Zero dependencies, progressive enhancement, graceful degradation without JavaScript.
+				Nine security-hardened web components with XSS prevention, CSRF protection, and HMAC-signed
+				behavioral telemetry. Own your bot detection — no third-party SDKs, no CAPTCHA friction,
+				no per-transaction fees. Zero dependencies, works with any framework.
 			</p>
 
 			<div class="hero-cta">
 				<a href="/documentation" class="btn btn-primary">Get Started</a>
-				<a href="/forms" class="btn btn-secondary">View Examples</a>
+				<a href="/telemetry" class="btn btn-secondary">Behavioral Intelligence</a>
 			</div>
 		</div>
 	</div>
@@ -44,13 +45,18 @@ templ Home() {
 			</div>
 
 			<div class="stat-card">
-				<div class="stat-value">Server</div>
-				<div class="stat-label">Authoritative</div>
+				<div class="stat-value">HMAC</div>
+				<div class="stat-label">Signed Telemetry</div>
+			</div>
+
+			<div class="stat-card">
+				<div class="stat-value">9</div>
+				<div class="stat-label">Behavioral Signals</div>
 			</div>
 
 			<div class="stat-card">
 				<div class="stat-value">Built-in</div>
-				<div class="stat-label">Security</div>
+				<div class="stat-label">Bot Detection</div>
 			</div>
 		</div>
 	</div>
@@ -341,36 +347,228 @@ templ Home() {
 		<div class="section-header">
 			<h2 class="section-title">Security Without Complexity</h2>
 			<p class="section-description">
-				Simple code that's automatically secure. No complex security configurations needed.
+				One tag. No configuration. Secure by default. Secure-UI components are native HTML elements —
+				they work in every framework, or with no framework at all.
 			</p>
 		</div>
 
-		<div class="code-comparison">
+		<!-- Three principles -->
+		<div class="swc-principles">
+			<div class="swc-principle">
+				<div class="swc-principle-icon">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<polyline points="16 18 22 12 16 6"></polyline>
+						<polyline points="8 6 2 12 8 18"></polyline>
+					</svg>
+				</div>
+				<h3>One script tag</h3>
+				<p>Import once. Every component self-registers. No build step, no bundler config, no peer dependencies to reconcile.</p>
+			</div>
+			<div class="swc-principle">
+				<div class="swc-principle-icon">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<rect x="2" y="3" width="20" height="14" rx="2"></rect>
+						<path d="M8 21h8M12 17v4"></path>
+					</svg>
+				</div>
+				<h3>Framework agnostic</h3>
+				<p>Built on the W3C Custom Elements standard. They are real HTML elements — React, Vue, Angular, Svelte, and server-rendered HTML all treat them identically.</p>
+			</div>
+			<div class="swc-principle">
+				<div class="swc-principle-icon">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+						<path d="m9 12 2 2 4-4"></path>
+					</svg>
+				</div>
+				<h3>Secure by default</h3>
+				<p>CSRF injection, XSS sanitization, input validation, and audit logging are active from the first render. No flags to set, no middleware to wire.</p>
+			</div>
+			<div class="swc-principle">
+				<div class="swc-principle-icon">
+					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<circle cx="12" cy="12" r="3"></circle>
+						<path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>
+					</svg>
+				</div>
+				<h3>Progressive enhancement</h3>
+				<p>Server renders native HTML fallbacks. The component upgrades on connect — forms submit correctly with or without JavaScript.</p>
+			</div>
+		</div>
+
+		<!-- Code comparison: component + server -->
+		<div class="code-comparison swc-code-comparison">
 			<div class="code-example">
 				<div class="code-header">
-					<span class="code-title">Secure Form Handler</span>
-					<span class="badge badge-primary">Built-in Protection</span>
+					<span class="code-title">Component markup</span>
+					<span class="badge badge-primary">Any framework</span>
 				</div>
 				<div class="code-content">
-					<pre><code class="language-go">{ `// CSRF validation handled by middleware
-func HandleForm(w http.ResponseWriter, r *http.Request) {
-    if err := r.ParseForm(); err != nil {
-        http.Error(w, "Bad Request", 400)
-        return
-    }
+					<pre><code class="language-markup">{ `<!-- HTML — works identically in React, Vue,
+     Angular, Svelte, or Go templates -->
 
-    // Sanitize and validate server-side
-    email := validation.Sanitize(r.FormValue("email"))
+<secure-form action="/register" method="POST">
+
+  <secure-input
+    name="email"
+    type="email"
+    label="Email address"
+    security-tier="sensitive"
+    required>
+  </secure-input>
+
+  <secure-input
+    name="password"
+    type="password"
+    label="Password"
+    security-tier="critical"
+    required>
+  </secure-input>
+
+  <secure-submit-button>
+    Create account
+  </secure-submit-button>
+
+</secure-form>
+
+<!-- CSRF token injected automatically.
+     XSS prevention active on every field.
+     Audit log available via getAuditLog(). -->` }</code></pre>
+				</div>
+			</div>
+			<div class="code-example">
+				<div class="code-header">
+					<span class="code-title">Server handler</span>
+					<span class="badge badge-primary">Go example</span>
+				</div>
+				<div class="code-content">
+					<pre><code class="language-go">{ `// CSRF already validated by middleware.
+// No manual token handling required.
+func (h *Handlers) Register(
+    w http.ResponseWriter,
+    r *http.Request,
+) {
+    email := validation.Sanitize(
+        r.FormValue("email"),
+    )
+    password := r.FormValue("password")
 
     v := validation.New()
     v.Required("email", email, "Email").
-        Email("email", email, "Email")
+        Email("email", email, "Email").
+        Required("password", password, "Password").
+        MinLength("password", password, 8, "Password")
 
     if !v.Result().IsValid() {
-        renderError(w, v.Result().Errors)
+        // Re-render form with errors.
+        // Component preserves field values.
+        renderWithErrors(w, r, v.Result())
         return
     }
+
+    // Components sanitized client-side too,
+    // but server-side is the security boundary.
+    h.auth.Register(r.Context(), email, password)
 }` }</code></pre>
+				</div>
+			</div>
+		</div>
+
+		<!-- Framework compatibility strip -->
+		<div class="swc-frameworks">
+			<p class="swc-frameworks-label">Works in every environment</p>
+			<div class="swc-frameworks-grid">
+				<span class="swc-framework-badge">Vanilla HTML</span>
+				<span class="swc-framework-badge">React</span>
+				<span class="swc-framework-badge">Vue</span>
+				<span class="swc-framework-badge">Angular</span>
+				<span class="swc-framework-badge">Svelte</span>
+				<span class="swc-framework-badge">Next.js</span>
+				<span class="swc-framework-badge">Nuxt</span>
+				<span class="swc-framework-badge">Go / Templ</span>
+				<span class="swc-framework-badge">Django</span>
+				<span class="swc-framework-badge">Rails</span>
+				<span class="swc-framework-badge">Laravel</span>
+				<span class="swc-framework-badge">Any SSR</span>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Behavioral Intelligence Section -->
+<section class="home-telemetry-section">
+	<div class="container">
+		<div class="home-telemetry-inner">
+			<div class="home-telemetry-content">
+				<span class="home-telemetry-badge">Built-in Behavioral Intelligence</span>
+				<h2>Bot Detection Without<br/>the Vendor Tax</h2>
+				<p>
+					<code>&lt;secure-telemetry-provider&gt;</code> collects HMAC-signed behavioral signals
+					on every form submission. No third-party SDKs. No CAPTCHA friction.
+					No per-transaction fees. Raw signals your backend owns and controls.
+				</p>
+				<ul class="home-telemetry-differentiators">
+					<li>Webdriver, headless browser, and DevTools detection</li>
+					<li>DOM mutation and script injection monitoring</li>
+					<li>Mouse, keyboard, and pointer-type activity signals</li>
+					<li>HMAC-SHA-256 signed — forgery raises the cost of attack</li>
+					<li>All data stays on your servers — zero third-party sharing</li>
+				</ul>
+				<a href="/telemetry" class="btn btn-primary">See how it works</a>
+			</div>
+			<div class="home-telemetry-panel" aria-hidden="true">
+				<div class="home-telemetry-panel-header">
+					<span class="home-telemetry-panel-dot"></span>
+					<span class="home-telemetry-panel-live">LIVE</span>
+					Environmental Signals
+				</div>
+				<div class="home-telemetry-signals">
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">webdriverDetected</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">headlessDetected</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">domMutationDetected</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">injectedScriptCount</span>
+						<span class="home-telemetry-signal-value">0</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">suspiciousScreenSize</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">pointerType</span>
+						<span class="home-telemetry-signal-value">"mouse"</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">mouseMovementDetected</span>
+						<span class="home-telemetry-signal-value">true</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">keyboardActivityDetected</span>
+						<span class="home-telemetry-signal-value">true</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+				</div>
+				<div class="home-telemetry-envelope">
+					<div class="home-telemetry-envelope-label">HMAC-SHA-256 signed envelope</div>
+					<pre>{ `{ nonce: "a3f8b2c1...",
+  issuedAt: "2026-03-12T14:32:07Z",
+  signature: "7c2bef09a1d3..." }` }</pre>
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,260 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ ComponentSecureTelemetryProvider() {
+	@templates.Layout("secure-telemetry-provider Component", "Live demos for secure-telemetry-provider: bot detection, DOM tampering detection, HMAC-signed signals, devtools detection, and server-side verification examples.") {
+		@templates.ComponentPageJsonLDScript("secure-telemetry-provider")
+		<div class="component-page">
+			<!-- Hero -->
+			<section class="component-hero">
+				<div class="component-hero-content">
+					<h1>&lt;secure-telemetry-provider&gt;</h1>
+					<p class="component-hero-description">
+						A wrapper component that collects environmental security signals — bot indicators,
+						DOM tampering, devtools status, and user interaction patterns — and attaches a
+						HMAC-SHA-256 signed envelope to every form submission. Raises the cost of automated
+						attacks without blocking real users.
+					</p>
+					<div class="component-hero-install">
+						<pre><code class="language-markup">{ `<script type="module"
+  src="/components/secure-telemetry-provider/secure-telemetry-provider.js">
+</script>` }</code></pre>
+					</div>
+					<a href="/documentation/secure-telemetry-provider" class="component-hero-docs-link">View API Reference &#8594;</a>
+				</div>
+				<div class="component-hero-demo">
+					<div class="component-hero-demo-label">Live Demo</div>
+					<secure-telemetry-provider signing-key="demo-key-replace-in-prod">
+						<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
+							<secure-input label="Email" name="tp-demo-email" type="email" security-tier="sensitive" required></secure-input>
+							<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit with Telemetry</button>
+						</secure-form>
+					</secure-telemetry-provider>
+				</div>
+			</section>
+
+			<!-- Configurations -->
+			<section class="configs-section">
+				<h2 class="configs-section-title">Configurations</h2>
+				<div class="configs-grid">
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">Basic wrapper</span></div>
+						<div class="config-demo">
+							<secure-telemetry-provider signing-key="demo-key">
+								<secure-form action="/api/forms/submit" method="POST" security-tier="public">
+									<secure-input label="Name" name="cfg-tp-name" type="text" security-tier="public"></secure-input>
+								</secure-form>
+							</secure-telemetry-provider>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-telemetry-provider
+  signing-key="your-hmac-key">
+  <secure-form action="/submit"
+    method="POST">
+    <!-- fields here -->
+  </secure-form>
+</secure-telemetry-provider>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">JS: read signals manually</span></div>
+						<div class="config-demo">
+							<secure-telemetry-provider id="cfg-tp-manual" signing-key="demo-key">
+								<secure-form action="/api/forms/submit" method="POST" security-tier="authenticated">
+									<secure-input label="Username" name="cfg-tp-user" type="text" security-tier="authenticated"></secure-input>
+								</secure-form>
+							</secure-telemetry-provider>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-javascript">{ `const provider = document.querySelector(
+  'secure-telemetry-provider'
+);
+
+// Point-in-time snapshot
+const signals = provider.collectSignals();
+console.log(signals.webdriverDetected);
+console.log(signals.mouseMovementDetected);
+
+// Signed envelope
+const envelope = await provider.sign(signals);
+console.log(envelope.signature);` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card">
+						<div class="config-card-header"><span class="config-label">With secure-card</span></div>
+						<div class="config-demo">
+							<secure-telemetry-provider signing-key="demo-key">
+								<secure-form action="/api/forms/submit" method="POST" security-tier="critical">
+									<secure-card name="cfg-tp-card" label="Card" required></secure-card>
+									<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Pay</button>
+								</secure-form>
+							</secure-telemetry-provider>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-telemetry-provider
+  signing-key="your-hmac-key">
+  <secure-form action="/checkout"
+    method="POST"
+    security-tier="critical">
+    <secure-card name="payment"
+      required>
+    </secure-card>
+    <button type="submit">Pay</button>
+  </secure-form>
+</secure-telemetry-provider>` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- Security Features -->
+			<section class="security-section">
+				<h2 class="security-section-title">Signals Collected</h2>
+				<p class="security-callout">All signals are heuristic. They raise the cost of automated attacks — not a guarantee of detection. Always validate server-side.</p>
+				<table class="security-matrix">
+					<thead>
+						<tr>
+							<th>Signal</th>
+							<th>How detected</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>webdriverDetected</code></td>
+							<td><code>navigator.webdriver</code> present and truthy</td>
+						</tr>
+						<tr>
+							<td><code>headlessDetected</code></td>
+							<td>User-agent contains <code>HeadlessChrome</code> or <code>Headless</code></td>
+						</tr>
+						<tr>
+							<td><code>domMutationDetected</code></td>
+							<td><code>MutationObserver</code> on <code>document.documentElement</code> — detects dynamically injected elements</td>
+						</tr>
+						<tr>
+							<td><code>injectedScriptCount</code></td>
+							<td>Count of <code>&lt;script&gt;</code> elements added after page load</td>
+						</tr>
+						<tr>
+							<td><code>devtoolsOpen</code></td>
+							<td>Window outer/inner size delta heuristic (&gt;160px suggests devtools panel)</td>
+						</tr>
+						<tr>
+							<td><code>suspiciousScreenSize</code></td>
+							<td>Screen width or height is 0, or both dimensions under 100px</td>
+						</tr>
+						<tr>
+							<td><code>pointerType</code></td>
+							<td>First <code>pointerdown</code> event's <code>pointerType</code>: mouse / touch / pen / none</td>
+						</tr>
+						<tr>
+							<td><code>mouseMovementDetected</code></td>
+							<td>At least one <code>mousemove</code> event received</td>
+						</tr>
+						<tr>
+							<td><code>keyboardActivityDetected</code></td>
+							<td>At least one <code>keydown</code> event received</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<!-- Framework Examples -->
+			<section class="framework-section">
+				<h2 class="framework-section-title">Framework Examples</h2>
+				<p class="framework-section-subtitle">Wrap any <code>&lt;secure-form&gt;</code> with the telemetry provider. The signed envelope is automatically injected into the submission event.</p>
+				<div class="framework-tabs">
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Plain HTML</span>
+							<span class="framework-tab-lang">html</span>
+						</div>
+						<pre><code class="language-markup">{ `<secure-telemetry-provider signing-key="SECRET">
+  <secure-form action="/login" method="POST"
+    security-tier="sensitive">
+    <secure-input type="email" label="Email"
+      name="email" security-tier="sensitive"
+      required>
+    </secure-input>
+    <secure-input type="password" label="Password"
+      name="password" security-tier="critical"
+      required>
+    </secure-input>
+    <button type="submit">Sign In</button>
+  </secure-form>
+</secure-telemetry-provider>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Server-side verification (Go)</span>
+							<span class="framework-tab-lang">go</span>
+						</div>
+						<pre><code class="language-go">{ `// The signed envelope arrives in the POST body
+// as JSON in the _telemetry field.
+
+type TelemetryEnvelope struct {
+    Nonce       string              ` + "`json:\"nonce\"`" + `
+    IssuedAt    time.Time           ` + "`json:\"issuedAt\"`" + `
+    Environment EnvironmentalSignals ` + "`json:\"environment\"`" + `
+    Signature   string              ` + "`json:\"signature\"`" + `
+}
+
+func verifyTelemetry(env TelemetryEnvelope, key []byte) bool {
+    mac := hmac.New(sha256.New, key)
+    payload := fmt.Sprintf("%s.%s.%s",
+        env.Nonce,
+        env.IssuedAt.Format(time.RFC3339),
+        mustJSON(env.Environment),
+    )
+    mac.Write([]byte(payload))
+    expected := hex.EncodeToString(mac.Sum(nil))
+    return hmac.Equal(
+        []byte(expected),
+        []byte(env.Signature),
+    )
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ LoginForm(action string) {
+  <secure-telemetry-provider signing-key="SECRET">
+    <secure-form
+      action={ action }
+      method="POST"
+      security-tier="sensitive">
+      <secure-input
+        type="email" label="Email"
+        name="email"
+        security-tier="sensitive" required>
+      </secure-input>
+      <secure-input
+        type="password" label="Password"
+        name="password"
+        security-tier="critical" required>
+      </secure-input>
+      <button type="submit">Sign In</button>
+    </secure-form>
+  </secure-telemetry-provider>
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<!-- Component Navigation -->
+			<nav class="component-nav" aria-label="Component pages">
+				<a href="/components/secure-card" class="component-nav-link component-nav-link--prev">
+					<span class="component-nav-direction">Previous</span>
+					<span class="component-nav-name">&lt;secure-card&gt;</span>
+				</a>
+			</nav>
+		</div>
+	}
+}

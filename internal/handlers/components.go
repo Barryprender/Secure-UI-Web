@@ -32,6 +32,10 @@ func (h *Handlers) Components(w http.ResponseWriter, r *http.Request) {
 		pages.ComponentSecureDatetime().Render(r.Context(), w)
 	case "secure-table":
 		pages.ComponentSecureTable().Render(r.Context(), w)
+	case "secure-card":
+		pages.ComponentSecureCard().Render(r.Context(), w)
+	case "secure-telemetry-provider":
+		pages.ComponentSecureTelemetryProvider().Render(r.Context(), w)
 	default:
 		http.NotFound(w, r)
 	}
