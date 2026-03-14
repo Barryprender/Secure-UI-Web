@@ -1,7 +1,6 @@
 package handlers
 
 import (
-	"context"
 	"log"
 	"net/http"
 
@@ -20,19 +19,31 @@ func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
 	pages.Home().Render(r.Context(), w)
 }
 
-// Forms renders the form components demo page
+// Forms renders the form components demo page.
+// Each demo form gets its own CSRF token so tokens are not shared — the store
+// uses ConsumeToken (atomic validate+delete), so a single shared token would
+// be exhausted by the first submission.
 func (h *Handlers) Forms(w http.ResponseWriter, r *http.Request) {
-	csrfToken, err := h.generateCSRFToken()
+	loginToken, err := h.generateCSRFToken()
+	if err != nil {
+		log.Printf("failed to generate CSRF token: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	subscribeToken, err := h.generateCSRFToken()
+	if err != nil {
+		log.Printf("failed to generate CSRF token: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+	paymentToken, err := h.generateCSRFToken()
 	if err != nil {
 		log.Printf("failed to generate CSRF token: %v", err)
 		http.Error(w, "Internal server error", http.StatusInternalServerError)
 		return
 	}
 
-	// Add CSRF token to context for template
-	ctx := context.WithValue(r.Context(), CSRFTokenKey, csrfToken)
-
-	pages.FormsPage(csrfToken).Render(ctx, w)
+	pages.FormsPage(loginToken, subscribeToken, paymentToken).Render(r.Context(), w)
 }
 
 // Dashboard renders the dashboard page

@@ -159,6 +159,13 @@ func main() {
 	apiMux.HandleFunc("/api/countries", h.GetCountries)
 	apiMux.HandleFunc("/api/forms/submit", h.SubmitFormHandler)
 
+	// Demo form endpoints — live demos on /forms page
+	apiMux.HandleFunc("/api/demo/login", h.DemoLoginHandler)
+	apiMux.HandleFunc("/api/demo/subscribe", h.DemoSubscribeHandler)
+	apiMux.HandleFunc("/api/demo/payment", h.DemoPaymentHandler)
+	// Issues a fresh CSRF token for demo form re-submission (tokens are single-use)
+	apiMux.HandleFunc("/api/demo/csrf-token", h.GetDemoCSRFToken)
+
 	// GET /api/users — public read (visitors may view)
 	// POST /api/users — requires auth
 	apiMux.HandleFunc("/api/users", func(w http.ResponseWriter, r *http.Request) {

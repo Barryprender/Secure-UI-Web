@@ -3,129 +3,239 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
-templ FormsPage(csrfToken string) {
-	@templates.Layout("Form Components Demo", "Live demos of Secure-UI form components: secure-input, secure-textarea, secure-select, and secure-form. XSS-safe with built-in validation and audit logging.") {
+templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
+	@templates.Layout("Live Form Demos", "Live interactive demos of Secure-UI form components: login, subscription, and payment forms with real-time telemetry display.") {
 		<section class="py-3xl">
 			<div class="container">
+				<!-- Hero -->
 				<div class="section-header">
-					<h1 class="section-title">Form Components</h1>
+					<div class="forms-demo-eyebrow">
+						<span class="forms-demo-eyebrow-dot"></span>
+						Live Demos
+					</div>
+					<h1 class="section-title">Form Demos</h1>
 					<p class="section-description">
-						Interactive demonstration of all secure form components with CSRF protection and progressive enhancement
+						Submit any form below to see the live server response and real-time behavioral
+						telemetry captured by the Secure-UI components.
 					</p>
 				</div>
 
-				<div class="card card-narrow">
-					<div class="form-header">
-						<h2>User Registration Form</h2>
-						<p>Demonstration of all secure-ui form components with security tier indicators</p>
+				<!-- ── Demo 1: Login ──────────────────────────────────────── -->
+				<article class="demo-section" id="demo-login">
+					<div class="demo-section-header">
+						<span class="demo-section-badge demo-section-badge--auth">Authentication</span>
+						<h2 class="demo-section-title">Login Form</h2>
+						<p class="demo-section-desc">
+							Email + password with sensitive and critical security tiers. CSRF-protected,
+							JSON submission via <code class="inline-code">secure-form</code>.
+						</p>
 					</div>
-
-					@components.SecureFormWrapper("POST", "/api/forms/submit", csrfToken, "authenticated", "") {
-						<!-- Text Input Examples -->
-						<div class="form-section">
-							<h3>Text Inputs</h3>
-
-							@components.SecureInputField("Full Name", "name", "text", "John Doe", "public", "mb-lg", true)
-
-							@components.SecureInputField("Email Address", "email", "email", "john@example.com", "sensitive", "mb-lg", true)
-
-							@components.SecureInputField("Phone Number", "phone", "tel", "+1 (555) 123-4567", "sensitive", "mb-lg", false)
-
-							@components.SecureInputField("Password", "password", "password", "Enter a strong password", "critical", "mb-lg", true)
-
-							@components.SecureInputField("Website URL", "website", "url", "https://example.com", "public", "mb-lg", false)
-
-							@components.SecureInputFieldNumber("Age", "age", "25", "public", "mb-lg", "18", "120", false)
+					<div class="demo-layout">
+						<div class="demo-form-col">
+							<div class="card">
+								<div class="form-header">
+									<h3>Sign In</h3>
+									<p>Try submitting with invalid data to see server-side validation.</p>
+								</div>
+								<secure-form
+									id="demo-login-form"
+									method="POST"
+									action="/api/demo/login"
+									csrf-token={ csrfLogin }
+									csrf-header-name="X-CSRF-Token"
+									security-tier="sensitive"
+									enhance
+								>
+									<form method="POST" action="/api/demo/login" novalidate>
+										<input type="hidden" name="csrf_token" value={ csrfLogin }/>
+										@components.SecureInputField("Email Address", "email", "email", "user@example.com", "authenticated", "mb-lg", true)
+										@components.SecureInputField("Password", "password", "password", "Minimum 8 characters", "critical", "mb-lg", true)
+										<div class="form-submit">
+											<button type="submit" class="btn btn-primary w-full">Sign In</button>
+										</div>
+									</form>
+								</secure-form>
+							</div>
 						</div>
-
-						<!-- Textarea Example -->
-						<div class="form-section">
-							<h3>Textarea</h3>
-
-							@components.SecureTextareaField("Biography", "bio", "Tell us about yourself...", "public", "mb-lg", 4, false)
-
-							@components.SecureTextareaField("Private Notes", "notes", "Personal notes (encrypted)", "critical", "mb-lg", 3, false)
+						<div class="demo-response-col">
+							<div class="demo-response-panel" id="demo-login-form-response" aria-live="polite" aria-label="Login form server response">
+								<div class="demo-response-header">
+									<span class="demo-response-dot"></span>
+									<span class="demo-response-title">Server Response</span>
+									<code class="demo-response-endpoint">POST /api/demo/login</code>
+								</div>
+								<div class="demo-response-body">
+									<p class="demo-response-placeholder">Submit the form to see the live server response</p>
+								</div>
+							</div>
 						</div>
+					</div>
+				</article>
 
-						<!-- Select Dropdown Example -->
-						<div class="form-section">
-							<h3>Select Dropdown</h3>
-
-							@components.SecureSelectField("Country", "country", "public", "mb-lg", true) {
-								<option value="">Loading countries...</option>
-								<option value="us">United States</option>
-								<option value="gb">United Kingdom</option>
-								<option value="ca">Canada</option>
-								<option value="au">Australia</option>
-								<option value="de">Germany</option>
-							}
-
-							@components.SecureSelectField("Account Type", "account_type", "authenticated", "mb-lg", true) {
-								<option value="">Choose account type</option>
-								<option value="free">Free (Public)</option>
-								<option value="pro">Professional</option>
-								<option value="enterprise">Enterprise</option>
-							}
-
-							@components.SecureSelectField("Privacy Level", "privacy", "critical", "mb-lg", false) {
-								<option value="public">Public Profile</option>
-								<option value="friends">Friends Only</option>
-								<option value="private" selected>Private</option>
-							}
+				<!-- ── Demo 2: Subscription ───────────────────────────────── -->
+				<article class="demo-section" id="demo-subscribe">
+					<div class="demo-section-header">
+						<span class="demo-section-badge demo-section-badge--public">Sign Up</span>
+						<h2 class="demo-section-title">Subscription Form</h2>
+						<p class="demo-section-desc">
+							Mixed security tiers: public name and plan, sensitive email.
+							Select options are validated server-side against an allowlist.
+						</p>
+					</div>
+					<div class="demo-layout">
+						<div class="demo-form-col">
+							<div class="card">
+								<div class="form-header">
+									<h3>Start Your Free Trial</h3>
+									<p>14-day free trial, no credit card required for this demo.</p>
+								</div>
+								<secure-form
+									id="demo-subscribe-form"
+									method="POST"
+									action="/api/demo/subscribe"
+									csrf-token={ csrfSubscribe }
+									csrf-header-name="X-CSRF-Token"
+									security-tier="public"
+									enhance
+								>
+									<form method="POST" action="/api/demo/subscribe" novalidate>
+										<input type="hidden" name="csrf_token" value={ csrfSubscribe }/>
+										@components.SecureInputField("Full Name", "name", "text", "Jane Smith", "public", "mb-lg", true)
+										@components.SecureInputField("Email Address", "email", "email", "jane@example.com", "authenticated", "mb-lg", true)
+										<secure-select
+											label="Plan"
+											name="plan"
+											security-tier="public"
+											class="mb-lg"
+											required
+										>
+											<option value="">Choose a plan</option>
+											<option value="starter">Starter — Free for 14 days</option>
+											<option value="pro">Pro — $12/month</option>
+											<option value="enterprise">Enterprise — Contact sales</option>
+										</secure-select>
+										<div class="form-submit">
+											<button type="submit" class="btn btn-primary w-full">Start Free Trial</button>
+										</div>
+									</form>
+								</secure-form>
+							</div>
 						</div>
-
-						<!-- Date/Time Inputs -->
-						<div class="form-section">
-							<h3>Date &amp; Time</h3>
-
-							@components.SecureDateTimeField("Date of Birth", "dob", "date", "sensitive", "mb-lg", true)
-
-							@components.SecureDateTimeField("Appointment Time", "appointment", "datetime-local", "authenticated", "mb-lg", false)
-
-							@components.SecureDateTimeField("Preferred Contact Time", "contact_time", "time", "public", "mb-lg", false)
+						<div class="demo-response-col">
+							<div class="demo-response-panel" id="demo-subscribe-form-response" aria-live="polite" aria-label="Subscription form server response">
+								<div class="demo-response-header">
+									<span class="demo-response-dot"></span>
+									<span class="demo-response-title">Server Response</span>
+									<code class="demo-response-endpoint">POST /api/demo/subscribe</code>
+								</div>
+								<div class="demo-response-body">
+									<p class="demo-response-placeholder">Submit the form to see the live server response</p>
+								</div>
+							</div>
 						</div>
+					</div>
+				</article>
 
-						<!-- File Upload -->
-						<div class="form-section">
-							<h3>File Upload</h3>
-
-							@components.SecureFileUploadField("Profile Picture", "avatar", "image/*", "5242880", "authenticated", "mb-lg", false)
-
-							@components.SecureFileUploadField("Resume / CV", "resume", ".pdf,.doc,.docx", "10485760", "sensitive", "mb-lg", false)
-
-							@components.SecureFileUploadField("Identity Document (Encrypted)", "id_document", ".pdf,image/*", "5242880", "critical", "mb-lg", false)
+				<!-- ── Demo 3: Payment / Credit Card ─────────────────────── -->
+				<article class="demo-section" id="demo-payment">
+					<div class="demo-section-header">
+						<span class="demo-section-badge demo-section-badge--critical">Critical Tier</span>
+						<h2 class="demo-section-title">Payment Form</h2>
+						<p class="demo-section-desc">
+							The <code class="inline-code">secure-card</code> component renders card number,
+							expiry, and CVC in a locked Shadow DOM. Full PAN is never transmitted — only
+							<code class="inline-code">last4</code> and <code class="inline-code">card_type</code>
+							reach the server. In production, use <code class="inline-code">getCardData()</code>
+							to pass raw data directly to your payment SDK.
+						</p>
+					</div>
+					<div class="demo-layout">
+						<div class="demo-form-col">
+							<div class="card">
+								<div class="form-header">
+									<h3>Card Details</h3>
+									<p>Use test number <strong>4242 4242 4242 4242</strong>, any future expiry, any CVC.</p>
+								</div>
+								<secure-form
+									id="demo-payment-form"
+									method="POST"
+									action="/api/demo/payment"
+									csrf-token={ csrfPayment }
+									csrf-header-name="X-CSRF-Token"
+									security-tier="critical"
+									enhance
+								>
+									<form method="POST" action="/api/demo/payment" novalidate>
+										<input type="hidden" name="csrf_token" value={ csrfPayment }/>
+										<div class="form-section">
+											<secure-card name="card" class="mb-lg"></secure-card>
+										</div>
+										<div class="form-section">
+											<h4 class="demo-billing-heading">Billing Address</h4>
+											@components.SecureInputField("Full Name on Card", "cardholder_name", "text", "Jane Smith", "sensitive", "mb-lg", true)
+											@components.SecureInputField("Address Line", "billing_address", "text", "123 Main Street", "public", "mb-lg", true)
+											<div class="demo-field-row">
+												@components.SecureInputField("City", "billing_city", "text", "London", "public", "mb-lg", true)
+												@components.SecureInputField("Postcode", "billing_postcode", "text", "EC1A 1BB", "public", "mb-lg", true)
+											</div>
+										</div>
+										<div class="form-submit">
+											<button type="submit" class="btn btn-primary w-full">Pay Now (Demo)</button>
+										</div>
+									</form>
+								</secure-form>
+							</div>
 						</div>
-
-						<!-- Submit Button -->
-						<div class="form-submit">
-							<button type="submit" class="btn btn-primary w-full">
-								Submit Registration Form
-							</button>
+						<div class="demo-response-col">
+							<div class="demo-response-panel" id="demo-payment-form-response" aria-live="polite" aria-label="Payment form server response">
+								<div class="demo-response-header">
+									<span class="demo-response-dot"></span>
+									<span class="demo-response-title">Server Response</span>
+									<code class="demo-response-endpoint">POST /api/demo/payment</code>
+								</div>
+								<div class="demo-response-body">
+									<p class="demo-response-placeholder">Submit the form to see the live server response</p>
+								</div>
+							</div>
+							<div class="demo-pci-note">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+								PCI note: Full PAN and CVC are isolated in Shadow DOM and never reach the server.
+								The <code>getCardData()</code> method is reserved for payment SDK tokenisation only.
+							</div>
 						</div>
-					}
-				</div>
+					</div>
+				</article>
 
-				<!-- Component Information -->
-				<div class="card security-info card-narrow mt-3xl">
-					<h3>Security Tiers Explained</h3>
-					<ul>
-						<li>
-							<strong>Public:</strong> <span>Standard security, visible data</span>
-						</li>
-						<li>
-							<strong>Authenticated:</strong> <span>Requires authentication, moderate protection</span>
-						</li>
-						<li>
-							<strong>Sensitive:</strong> <span>PII data, masked display, enhanced validation</span>
-						</li>
-						<li>
-							<strong>Critical:</strong> <span>Highest security, encrypted, full masking</span>
-						</li>
-					</ul>
-				</div>
+				<!-- ── Live Telemetry Panel ───────────────────────────────── -->
+				<section class="demo-telemetry-section" id="demo-telemetry" aria-labelledby="demo-telemetry-heading">
+					<div class="demo-telemetry-section-header">
+						<div>
+							<div class="demo-telemetry-badge">
+								<span class="demo-telemetry-badge-dot"></span>
+								Live
+							</div>
+							<h2 id="demo-telemetry-heading" class="demo-telemetry-title">Behavioral Telemetry</h2>
+							<p class="demo-telemetry-desc">
+								Every form submission captures behavioral signals from
+								<code class="inline-code">secure-form</code>. Risk scoring detects
+								scripted fills, inhuman speed, and bot-like patterns without tracking users.
+							</p>
+						</div>
+					</div>
+					<div class="demo-telemetry-terminal">
+						<div class="demo-telemetry-terminal-bar">
+							<span class="demo-telemetry-terminal-dot demo-telemetry-terminal-dot--red"></span>
+							<span class="demo-telemetry-terminal-dot demo-telemetry-terminal-dot--yellow"></span>
+							<span class="demo-telemetry-terminal-dot demo-telemetry-terminal-dot--green"></span>
+							<span class="demo-telemetry-terminal-label">telemetry · secure-ui</span>
+						</div>
+						<div id="demo-telemetry-content" class="demo-telemetry-content">
+							<p class="demo-tel-empty-state">Submit any form above to see live behavioral telemetry</p>
+						</div>
+					</div>
+				</section>
 
-				<!-- Load countries from API -->
-				<script src="/static/js/country-loader.js" defer></script>
+				<script src="/static/js/forms-demo.js" defer></script>
 			</div>
 		</section>
 	}
