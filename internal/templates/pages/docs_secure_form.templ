@@ -188,6 +188,24 @@ form.addEventListener('secure-form-success', (e) => {
 							<td><code>false</code></td>
 							<td>Disable client-side validation</td>
 						</tr>
+						<tr>
+							<td><code>enhance</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Enable JS fetch submission with JSON payload and telemetry. Without this attribute the form submits natively.</td>
+						</tr>
+						<tr>
+							<td><code>csrf-header-name</code></td>
+							<td>string</td>
+							<td><code>"X-CSRF-Token"</code></td>
+							<td>HTTP header name used to send the CSRF token (enhance mode only)</td>
+						</tr>
+						<tr>
+							<td><code>csrf-field-name</code></td>
+							<td>string</td>
+							<td><code>"csrf_token"</code></td>
+							<td>Hidden input field name for CSRF token in native submit fallback</td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -226,13 +244,13 @@ form.addEventListener('secure-form-success', (e) => {
 					<tbody>
 						<tr>
 							<td><code>secure-form-submit</code></td>
-							<td><code>{ ` data, csrfToken ` }</code></td>
-							<td>Fired before submission (cancelable)</td>
+							<td><code>{ ` formData, formElement, telemetry, preventDefault ` }</code></td>
+							<td>Fired before submission (cancelable via <code>event.preventDefault()</code>)</td>
 						</tr>
 						<tr>
 							<td><code>secure-form-success</code></td>
-							<td><code>{ ` response ` }</code></td>
-							<td>Fired after successful submission</td>
+							<td><code>{ ` formData, response, telemetry ` }</code></td>
+							<td>Fired after successful 2xx submission</td>
 						</tr>
 					</tbody>
 				</table>
@@ -308,9 +326,9 @@ form.addEventListener('secure-form-submit', async (e) => {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'X-CSRF-Token': e.detail.csrfToken
+      'X-CSRF-Token': form.getAttribute('csrf-token')
     },
-    body: JSON.stringify(e.detail.data)
+    body: JSON.stringify(e.detail.formData)
   });
 
   if (response.ok) {
