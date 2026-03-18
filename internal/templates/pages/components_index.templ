@@ -1,27 +1,50 @@
 package pages
 
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ ComponentsIndex() {
 	@templates.Layout("Components", "Interactive showcase for all Secure-UI web components. Live demos, configuration options, security features, and integration examples for every component.") {
 		@templates.ComponentsIndexJsonLDScript()
 		<div class="components-index-page">
-			<header class="components-index-header">
-				<h1>Components</h1>
-				<p>
-					Secure-UI provides nine security-hardened web components built on the Custom Elements standard.
-					They work in any framework — or with no framework at all. Drop them into HTML, React, Vue, Angular,
-					Svelte, or any server-rendered template.
+			<!-- Hero -->
+			<header class="ci-hero">
+				<span class="ci-eyebrow">Web Component Library</span>
+				<h1 class="ci-title">Nine components.<br/>Zero trust.</h1>
+				<p class="ci-subtitle">
+					Security-hardened Custom Elements with XSS prevention, CSRF protection,
+					and audit logging on by default. Any framework. Any stack.
 				</p>
+				<div class="ci-stats">
+					<div class="ci-stat">
+						<span class="ci-stat-num" data-target="9">9</span>
+						<span class="ci-stat-label">Components</span>
+					</div>
+					<div class="ci-stat">
+						<span class="ci-stat-num" data-target="4">4</span>
+						<span class="ci-stat-label">Security Tiers</span>
+					</div>
+					<div class="ci-stat">
+						<span class="ci-stat-num">0</span>
+						<span class="ci-stat-label">Dependencies</span>
+					</div>
+					<div class="ci-stat">
+						<span class="ci-stat-badge">Framework Agnostic</span>
+					</div>
+				</div>
 			</header>
 
-			<div class="components-grid">
-				<a href="/components/secure-input" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<rect x="2" y="6" width="16" height="8" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<path d="M6 10h8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-						</svg>
+			<!-- Component grid -->
+			<div class="components-grid" id="ci-grid">
+				<!-- secure-input -->
+				<a href="/components/secure-input" class="component-card" data-ci-index="0">
+					<div class="card-preview card-preview--input" aria-hidden="true">
+						<div class="cp-label">Email address</div>
+						<div class="cp-input-field">
+							<span class="cp-input-text">alice@example.com</span><span class="cp-cursor"></span>
+						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-input&gt;</span>
 					<p class="component-card-desc">Security-hardened text input with XSS prevention, type validation, and audit logging.</p>
@@ -32,12 +55,17 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<a href="/components/secure-select" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<rect x="2" y="5" width="16" height="10" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<path d="M13 10l-3 3-3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-						</svg>
+				<!-- secure-select -->
+				<a href="/components/secure-select" class="component-card" data-ci-index="1">
+					<div class="card-preview card-preview--select" aria-hidden="true">
+						<div class="cp-select-trigger">
+							<span>Administrator</span>
+							<span class="cp-chevron">&#8250;</span>
+						</div>
+						<div class="cp-select-dropdown">
+							<div class="cp-select-option">Editor</div>
+							<div class="cp-select-option cp-select-option--2">Viewer</div>
+						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-select&gt;</span>
 					<p class="component-card-desc">Dropdown select with option injection prevention and value allowlist enforcement.</p>
@@ -48,12 +76,16 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<a href="/components/secure-textarea" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<rect x="2" y="3" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<path d="M6 7h8M6 10h8M6 13h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-						</svg>
+				<!-- secure-textarea -->
+				<a href="/components/secure-textarea" class="component-card" data-ci-index="2">
+					<div class="card-preview card-preview--textarea" aria-hidden="true">
+						<div class="cp-ta-box">
+							<div class="cp-ta-line cp-ta-line--1"></div>
+							<div class="cp-ta-line cp-ta-line--2"></div>
+							<div class="cp-ta-line cp-ta-line--3"></div>
+							<div class="cp-ta-line cp-ta-line--4"></div>
+						</div>
+						<div class="cp-ta-count">142 / 500</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-textarea&gt;</span>
 					<p class="component-card-desc">Multi-line text area with content sanitization and paste attack prevention.</p>
@@ -64,13 +96,21 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<a href="/components/secure-form" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<rect x="2" y="2" width="16" height="16" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<path d="M6 7h8M6 10h8M6 13h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-							<circle cx="15" cy="13" r="2" fill="currentColor"></circle>
-						</svg>
+				<!-- secure-form -->
+				<a href="/components/secure-form" class="component-card" data-ci-index="3">
+					<div class="card-preview card-preview--form" aria-hidden="true">
+						<div class="cp-step cp-step--1">
+							<span class="cp-step-icon"></span>
+							<span>CSRF token injected</span>
+						</div>
+						<div class="cp-step cp-step--2">
+							<span class="cp-step-icon"></span>
+							<span>Fields validated</span>
+						</div>
+						<div class="cp-step cp-step--3">
+							<span class="cp-step-icon"></span>
+							<span>Submission logged</span>
+						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-form&gt;</span>
 					<p class="component-card-desc">Form wrapper with automatic CSRF token injection and submission audit logging.</p>
@@ -81,12 +121,17 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<a href="/components/secure-file-upload" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<path d="M10 13V5M7 8l3-3 3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-							<path d="M4 14v1a2 2 0 002 2h8a2 2 0 002-2v-1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-						</svg>
+				<!-- secure-file-upload -->
+				<a href="/components/secure-file-upload" class="component-card" data-ci-index="4">
+					<div class="card-preview card-preview--upload" aria-hidden="true">
+						<div class="cp-upload-filename">
+							<span class="cp-upload-arrow">&#8593;</span>
+							report.pdf
+						</div>
+						<div class="cp-progress-track">
+							<div class="cp-progress-fill"></div>
+						</div>
+						<div class="cp-upload-meta">MIME &middot; SIZE &middot; MAGIC</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-file-upload&gt;</span>
 					<p class="component-card-desc">File upload with MIME type validation, magic number verification, and size enforcement.</p>
@@ -97,12 +142,20 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<a href="/components/secure-datetime" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<rect x="3" y="4" width="14" height="13" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<path d="M7 2v4M13 2v4M3 9h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-						</svg>
+				<!-- secure-datetime -->
+				<a href="/components/secure-datetime" class="component-card" data-ci-index="5">
+					<div class="card-preview card-preview--datetime" aria-hidden="true">
+						<div class="cp-dt-header">March 2026</div>
+						<div class="cp-dt-grid">
+							<span class="cp-dt-cell">3</span>
+							<span class="cp-dt-cell">10</span>
+							<span class="cp-dt-cell">17</span>
+							<span class="cp-dt-cell">24</span>
+							<span class="cp-dt-cell">4</span>
+							<span class="cp-dt-cell">11</span>
+							<span class="cp-dt-cell cp-dt-cell--pulse">18</span>
+							<span class="cp-dt-cell">25</span>
+						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-datetime&gt;</span>
 					<p class="component-card-desc">Date and time picker with input sanitization, range enforcement, and timezone handling.</p>
@@ -113,12 +166,21 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<a href="/components/secure-table" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<rect x="2" y="3" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<path d="M2 8h16M7 8v9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-						</svg>
+				<!-- secure-table -->
+				<a href="/components/secure-table" class="component-card" data-ci-index="6">
+					<div class="card-preview card-preview--table" aria-hidden="true">
+						<div class="cp-tbl-head">
+							<span>Name</span><span>Role</span><span>&#9679;</span>
+						</div>
+						<div class="cp-tbl-row cp-tbl-row--1">
+							<span>Alice</span><span>Admin</span><span class="cp-dot cp-dot--green"></span>
+						</div>
+						<div class="cp-tbl-row cp-tbl-row--2">
+							<span>Bob</span><span>User</span><span class="cp-dot cp-dot--green"></span>
+						</div>
+						<div class="cp-tbl-row cp-tbl-row--3">
+							<span>Carol</span><span>Editor</span><span class="cp-dot cp-dot--amber"></span>
+						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-table&gt;</span>
 					<p class="component-card-desc">Data table with XSS-safe rendering, sort/filter sanitization, and column injection prevention.</p>
@@ -128,13 +190,21 @@ templ ComponentsIndex() {
 						<li>Pagination support</li>
 					</ul>
 				</a>
-				<a href="/components/secure-card" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.5"></rect>
-							<path d="M2 8h16" stroke="currentColor" stroke-width="1.5"></path>
-							<path d="M5 12h3M10 12h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-						</svg>
+
+				<!-- secure-card -->
+				<a href="/components/secure-card" class="component-card" data-ci-index="7">
+					<div class="card-preview card-preview--payment" aria-hidden="true">
+						<div class="cp-payment-scene">
+							<div class="cp-payment-front">
+								<div class="cp-payment-chip"></div>
+								<div class="cp-payment-number">&#8226;&#8226;&#8226;&#8226; &#8226;&#8226;&#8226;&#8226; &#8226;&#8226;&#8226;&#8226; 4242</div>
+								<div class="cp-payment-name">ALICE JOHNSON</div>
+							</div>
+							<div class="cp-payment-back">
+								<div class="cp-payment-stripe"></div>
+								<div class="cp-payment-cvv"><span>CVV</span> &#8226;&#8226;&#8226;</div>
+							</div>
+						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-card&gt;</span>
 					<p class="component-card-desc">Payment card input with Luhn validation, 3D preview, card type detection, and PAN/CVC protection.</p>
@@ -145,13 +215,27 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<a href="/components/secure-telemetry-provider" class="component-card">
-					<div class="component-card-icon">
-						<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-							<circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="1.5"></circle>
-							<path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-							<path d="M4 4l2 2M16 4l-2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-						</svg>
+				<!-- secure-telemetry-provider -->
+				<a href="/components/secure-telemetry-provider" class="component-card" data-ci-index="8">
+					<div class="card-preview card-preview--telemetry" aria-hidden="true">
+						<div class="cp-tel-grid">
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+						</div>
+						<div class="cp-tel-badge">HMAC-SHA-256</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-telemetry-provider&gt;</span>
 					<p class="component-card-desc">Wraps a form to collect bot-detection signals and attach a HMAC-signed envelope to every submission.</p>
@@ -163,24 +247,66 @@ templ ComponentsIndex() {
 				</a>
 			</div>
 
-			<section class="framework-agnostic-section">
-				<h2>Framework Agnostic</h2>
-				<p>
-					Secure-UI components are built on the W3C Custom Elements specification. They are first-class
-					HTML elements — no virtual DOM, no framework runtime, no build step required. Import the module
-					once and every component self-registers.
-				</p>
-				<p>
-					Because they are real HTML elements, they compose naturally with React JSX, Vue templates,
-					Angular component markup, Svelte, or plain server-rendered HTML. Binding attributes, listening
-					to events, and applying CSS works exactly the same way as with native elements.
-				</p>
-				<p>
-					Security properties are enforced regardless of which framework renders the surrounding page.
-					The security tier, CSRF handling, and audit logging operate inside the component shadow DOM
-					and cannot be bypassed by the host application.
-				</p>
+			<!-- Framework section -->
+			<section class="ci-framework">
+				<div class="ci-framework-inner">
+					<h2 class="ci-framework-title">Works everywhere.</h2>
+					<p class="ci-framework-desc">
+						Built on the W3C Custom Elements v1 specification — real HTML elements with no virtual DOM,
+						no framework runtime, no build step. Security enforcement lives inside the Shadow DOM
+						and cannot be bypassed by the host application.
+					</p>
+					<div class="ci-framework-tags">
+						<span class="ci-fw-tag">HTML</span>
+						<span class="ci-fw-tag">React</span>
+						<span class="ci-fw-tag">Vue</span>
+						<span class="ci-fw-tag">Angular</span>
+						<span class="ci-fw-tag">Svelte</span>
+						<span class="ci-fw-tag ci-fw-tag--accent">Go Templ</span>
+					</div>
+				</div>
 			</section>
+
+			<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Counter animation (9 components, 4 tiers)
+if (!reduceMotion) {
+  document.querySelectorAll('.ci-stat-num[data-target]').forEach(el => {
+    const target = parseInt(el.dataset.target, 10);
+    if (target === 0) return;
+    el.textContent = '0';
+    const duration = 900;
+    const start = performance.now();
+    const easeOut = t => 1 - Math.pow(1 - t, 3);
+    const tick = now => {
+      const p = Math.min((now - start) / duration, 1);
+      el.textContent = Math.round(easeOut(p) * target);
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = target;
+    };
+    setTimeout(() => requestAnimationFrame(tick), 300);
+  });
+}
+
+// Card entrance stagger via IntersectionObserver
+const grid = document.getElementById('ci-grid');
+if (grid) {
+  if (reduceMotion) {
+    grid.querySelectorAll('.component-card').forEach(c => c.classList.add('ci-card-visible'));
+  } else {
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const idx = parseInt(entry.target.dataset.ciIndex ?? '0', 10);
+        setTimeout(() => entry.target.classList.add('ci-card-visible'), idx * 60);
+        obs.unobserve(entry.target);
+      });
+    }, { threshold: 0.06, rootMargin: '0px 0px -32px 0px' });
+    grid.querySelectorAll('.component-card').forEach(c => obs.observe(c));
+  }
+}
+			</script>
 		</div>
 	}
 }

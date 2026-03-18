@@ -17,6 +17,46 @@
 .hero-description { animation: fadeSlideUp 0.65s var(--ease-out-expo) 0.18s both; }
 .hero-cta         { animation: fadeSlideUp 0.6s var(--ease-out-expo) 0.28s both; }
 
+/* ── Scramble decode chars ──────────────────────────────────── */
+.sc-char {
+    display: inline-block;
+    color: var(--accent-primary);
+    transition: color 0.12s ease;
+}
+
+.sc-char.sc-settled {
+    color: inherit;
+}
+
+/* ── Stats strip sweep ──────────────────────────────────────── */
+@property --hp-sweep {
+    syntax: '<percentage>';
+    initial-value: -2%;
+    inherits: false;
+}
+
+.stats-strip { position: relative; overflow: hidden; }
+
+.stats-strip.sweep-active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent                                                       calc(var(--hp-sweep) - 3%),
+        color-mix(in oklch, var(--accent-primary) 30%, transparent)      var(--hp-sweep),
+        transparent                                                       calc(var(--hp-sweep) + 3%)
+    );
+    pointer-events: none;
+    z-index: 1;
+    animation: hp-sweep-run 1.2s var(--ease-out-expo, cubic-bezier(0.16,1,0.3,1)) both;
+}
+
+@keyframes hp-sweep-run {
+    from { --hp-sweep: -2%;  }
+    to   { --hp-sweep: 102%; }
+}
+
 /* Hero dot — single ripple after page entrance completes */
 @keyframes dotPulse {
     0%   { box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent-primary) 50%, transparent); }
@@ -425,6 +465,41 @@
 
 .feature-icon svg {
     flex-shrink: 0;
+}
+
+/* ── Feature card 3D entrance ───────────────────────────────── */
+.features-grid {
+    perspective: 900px;
+    perspective-origin: center 40%;
+}
+
+/* Override generic .reveal for feature cards with a tilt-in */
+.features-grid .feature-card.reveal {
+    opacity: 0;
+    transform: translateY(24px) rotateX(10deg) scale(0.96);
+    transform-origin: top center;
+    transition:
+        opacity   0.55s var(--ease-out-quart),
+        transform 0.55s var(--ease-out-quart);
+    transition-delay: var(--reveal-delay, 0ms);
+}
+
+.features-grid .feature-card.reveal.is-visible {
+    opacity: 1;
+    transform: none;
+}
+
+/* Icon pop — fires after the card's own transition delay + 200ms */
+@keyframes fc-icon-pop {
+    0%   { transform: scale(0.5);  opacity: 0;   }
+    65%  { transform: scale(1.2);  opacity: 1;   }
+    100% { transform: scale(1);    opacity: 1;   }
+}
+
+.features-grid .feature-card.is-visible .feature-icon {
+    animation: fc-icon-pop 0.42s var(--ease-out-quart)
+        calc(var(--reveal-delay, 0ms) + 0.22s)
+        both;
 }
 
 .feature-title {
@@ -1221,5 +1296,17 @@
 
     .feature-card {
         padding: var(--space-lg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sc-char { transition: none; }
+    .stats-strip.sweep-active::before { display: none; }
+    .features-grid .feature-card.reveal {
+        transform: none;
+        transition: opacity 0.3s ease;
+    }
+    .features-grid .feature-card.is-visible .feature-icon {
+        animation: none;
     }
 }

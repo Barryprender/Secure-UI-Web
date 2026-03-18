@@ -17,7 +17,7 @@ templ Home() {
 				Zero dependencies
 			</p>
 
-			<h1 class="hero-title">
+			<h1 class="hero-title" id="hero-title">
 				Security-hardened<br/>
 				components.<br/>
 				<em>One tag. No config.</em>
@@ -28,7 +28,7 @@ templ Home() {
 				component by default. Works with any framework or server-rendered HTML.
 			</p>
 
-			<div class="hero-cta">
+			<div class="hero-cta" id="hero-cta">
 				<a href="/components" class="btn btn-primary">Explore components</a>
 				<a href="/documentation" class="btn btn-secondary">Get started</a>
 			</div>
@@ -39,7 +39,7 @@ templ Home() {
 <!-- Stats Strip -->
 <section class="stats-strip" aria-label="Key facts">
 	<div class="container">
-		<div class="stats-list" data-reveal-stagger>
+		<div class="stats-list">
 			<div class="stats-item">
 				<strong>Zero</strong>
 				<span>runtime dependencies</span>
@@ -660,6 +660,100 @@ func (h *Handlers) Register(
 </section>
 
 <script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+// ── Hero decode sequence ──────────────────────────────────────
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+if (!reduceMotion) {
+  const titleEl = document.getElementById('hero-title');
+  const ctaEl   = document.getElementById('hero-cta');
+  const descEl  = document.querySelector('.hero-description');
+  const stripEl = document.querySelector('.stats-strip');
+
+  const GLYPHS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&0123456789';
+  const SEGMENTS = [
+    { text: 'Security-hardened', tag: 'span' },
+    { text: 'components.',       tag: 'span' },
+    { text: 'One tag. No config.', tag: 'em'  },
+  ];
+
+  if (titleEl) {
+    // Suppress CSS entrance before it fires
+    titleEl.style.animation = 'none'; titleEl.style.opacity = '0';
+    if (descEl) { descEl.style.animation = 'none'; descEl.style.opacity = '0'; }
+    if (ctaEl)  { ctaEl.style.animation = 'none';  ctaEl.style.opacity = '0'; ctaEl.style.transform = 'translateY(8px)'; }
+
+    // Screen-reader text via aria-label during scramble
+    titleEl.setAttribute('aria-label', SEGMENTS.map(s => s.text).join(' '));
+    titleEl.innerHTML = '';
+
+    // Build DOM segments + char spans
+    const allChars = [];
+    SEGMENTS.forEach(({ text, tag }, si) => {
+      if (si > 0) titleEl.appendChild(document.createElement('br'));
+      const el = document.createElement(tag);
+      el.setAttribute('aria-hidden', 'true');
+      titleEl.appendChild(el);
+      [...text].forEach(ch => {
+        const span = document.createElement('span');
+        span.className = 'sc-char';
+        span.dataset.target = ch;
+        span.textContent = (ch === ' ' || ch === '\u00a0')
+          ? '\u00a0'
+          : GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+        el.appendChild(span);
+        if (ch !== ' ') allChars.push(span);
+      });
+    });
+
+    const TOTAL   = 820; // ms — full decode window
+    const OVERLAP = 0.55; // chars start resolving at 55% of TOTAL spread
+    let   startTs = -1;
+
+    requestAnimationFrame(function frame(now) {
+      if (startTs < 0) { startTs = now; titleEl.style.opacity = '1'; }
+      const elapsed = now - startTs;
+      let done = true;
+
+      allChars.forEach((span, i) => {
+        const pct      = i / (allChars.length - 1 || 1);
+        const settleAt = pct * TOTAL * OVERLAP + 320;
+        if (elapsed >= settleAt) {
+          if (!span.classList.contains('sc-settled')) {
+            span.textContent = span.dataset.target;
+            span.classList.add('sc-settled');
+          }
+        } else {
+          done = false;
+          span.textContent = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+        }
+      });
+
+      if (!done) { requestAnimationFrame(frame); return; }
+
+      // All chars settled
+      titleEl.removeAttribute('aria-label');
+      const easeStr = 'opacity 0.5s cubic-bezier(.25,1,.5,1), transform 0.5s cubic-bezier(.25,1,.5,1)';
+      setTimeout(() => {
+        if (descEl) {
+          descEl.style.transition = easeStr;
+          descEl.style.transform = 'translateY(8px)';
+          void descEl.offsetWidth;
+          setTimeout(() => { descEl.style.opacity = '1'; descEl.style.transform = 'none'; }, 16);
+        }
+        setTimeout(() => {
+          if (ctaEl) { ctaEl.style.transition = easeStr; ctaEl.style.opacity = '1'; ctaEl.style.transform = 'none'; }
+        }, 160);
+        setTimeout(() => {
+          if (stripEl) {
+            stripEl.classList.add('sweep-active');
+            stripEl.addEventListener('animationend', () => stripEl.classList.remove('sweep-active'), { once: true });
+          }
+        }, 340);
+      }, 160);
+    });
+  }
+}
+
 const themes = {
   default: {
     '--accent-primary': '#059669', '--accent-secondary': '#047857',
