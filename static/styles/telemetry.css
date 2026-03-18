@@ -11,8 +11,27 @@
 
 .home-telemetry-section {
     padding: var(--space-3xl) 0;
-    background: var(--bg-primary);
-    border-top: 1px solid var(--border-subtle);
+    background: #06090f;
+    border-top: 1px solid rgba(16, 185, 129, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Diagonal scan line texture */
+.home-telemetry-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 2px,
+        rgba(255, 255, 255, 0.012) 2px,
+        rgba(255, 255, 255, 0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 0;
 }
 
 .home-telemetry-inner {
@@ -20,6 +39,8 @@
     grid-template-columns: 1fr 1fr;
     gap: var(--space-2xl);
     align-items: center;
+    position: relative;
+    z-index: 1;
 }
 
 @media (max-width: 900px) {
@@ -34,13 +55,13 @@
     align-items: center;
     gap: 0.5rem;
     padding: 0.25rem 0.875rem;
-    background: rgba(16, 185, 129, 0.08);
-    color: var(--accent-primary);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: rgba(16, 185, 129, 0.12);
+    color: #34d399;
+    border: 1px solid rgba(52, 211, 153, 0.3);
     border-radius: 999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
     margin-bottom: var(--space-md);
 }
@@ -61,17 +82,18 @@
 }
 
 .home-telemetry-content h2 {
-    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
     font-weight: 700;
-    color: var(--text-primary);
-    line-height: 1.2;
-    letter-spacing: -0.02em;
+    color: #f0f6ff;
+    line-height: 1.15;
+    letter-spacing: -0.03em;
     margin-bottom: var(--space-md);
+    font-family: var(--font-display, var(--font-sans));
 }
 
 .home-telemetry-content > p {
     font-size: 1rem;
-    color: var(--text-secondary);
+    color: rgba(176, 196, 222, 0.7);
     line-height: 1.7;
     margin-bottom: var(--space-lg);
     max-width: 48ch;
@@ -91,7 +113,7 @@
     align-items: flex-start;
     gap: var(--space-xs);
     font-size: 0.9375rem;
-    color: var(--text-secondary);
+    color: rgba(176, 196, 222, 0.65);
     line-height: 1.5;
 }
 
@@ -105,33 +127,52 @@
 
 /* Signal terminal panel */
 .home-telemetry-panel {
-    background: #0a0a0f;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    background: #070a12;
+    border: 1px solid rgba(255, 255, 255, 0.09);
     border-radius: var(--radius-xl);
     overflow: hidden;
     font-family: var(--font-mono);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255,255,255,0.04);
+    box-shadow:
+        0 16px 48px rgba(0, 0, 0, 0.55),
+        0 0 0 1px rgba(255, 255, 255, 0.04),
+        inset 0 1px 0 rgba(255, 255, 255, 0.06);
 }
 
 .home-telemetry-panel-header {
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.75rem var(--space-sm);
-    background: rgba(255,255,255,0.04);
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    font-size: 0.72rem;
-    color: rgba(255,255,255,0.45);
-    letter-spacing: 0.06em;
+    padding: 0.625rem var(--space-sm);
+    background: rgba(255, 255, 255, 0.035);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 0.07em;
     text-transform: uppercase;
+    /* macOS traffic lights */
+    position: relative;
+}
+
+/* macOS-style window traffic lights */
+.home-telemetry-panel-header::before {
+    content: '';
+    display: block;
+    flex-shrink: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #ef4444;
+    box-shadow: 16px 0 0 #f59e0b, 32px 0 0 #22c55e;
+    margin-right: 2rem;
+    opacity: 0.7;
 }
 
 .home-telemetry-panel-dot {
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
     background: #22c55e;
-    box-shadow: 0 0 6px #22c55e;
+    box-shadow: 0 0 8px rgba(34, 197, 94, 0.8);
     animation: tel-pulse 2s ease-in-out infinite;
     flex-shrink: 0;
 }
@@ -139,6 +180,8 @@
 .home-telemetry-panel-live {
     color: #22c55e;
     font-weight: 700;
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
 }
 
 .home-telemetry-signals {

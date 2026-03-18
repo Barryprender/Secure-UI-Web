@@ -1,539 +1,466 @@
 /**
- * Navigation — desktop horizontal bar + mobile left-side drawer
- * Pure CSS toggle via hidden checkbox + sibling selectors
- * Mobile breakpoint: 972px
+ * Navigation
+ * Desktop: horizontal sticky bar with frosted glass
+ * Mobile:  left-side drawer via CSS checkbox toggle
+ * Breakpoint: 972px
  */
 
 /* ============================================================
-   Top bar
+   TOP BAR
    ============================================================ */
+
 .top-nav {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: var(--secure-ui-z-sticky, 100);
-  border-bottom: 1px solid var(--border-subtle);
-  /*
-   * No background or backdrop-filter on the element itself.
-   * backdrop-filter on an element creates a new containing block for all
-   * position:fixed descendants — which clips the mobile drawer to the
-   * 60px header height. Both are moved to ::before instead.
-   */
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 100;
+    border-bottom: 1px solid var(--border-subtle);
+    /* backdrop applied via ::before to avoid containing fixed descendants */
 }
 
 .top-nav::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  /*
-   * z-index: -1 paints this BEHIND .nav-content (non-positioned, auto z-index).
-   * Without it, ::before stacks above non-positioned children and backdrop-filter
-   * blurs the nav links along with everything else behind it.
-   */
-  z-index: -1;
-  background: color-mix(in srgb, var(--bg-primary) 92%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  pointer-events: none;
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: color-mix(in srgb, var(--bg-primary) 88%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    pointer-events: none;
 }
 
 .top-nav .container {
-  max-width: 1400px;
+    max-width: 1400px;
 }
 
 .top-nav .nav-content {
-  display: flex;
-  align-items: center;
-  gap: var(--space-md);
-  padding: var(--space-sm) 0;
-  height: 64px;
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+    height: 64px;
 }
 
 /* ============================================================
-   Logo
+   LOGO
    ============================================================ */
+
 .nav-logo {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  text-decoration: none;
-  color: var(--text-primary);
-  font-weight: 700;
-  font-size: 1.25rem;
-  flex-shrink: 0;
-  transition: color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+    flex-shrink: 0;
+    transition: color 0.15s ease;
 }
 
 .nav-logo:hover {
-  color: var(--accent-primary);
-  text-decoration: none;
+    color: var(--accent-primary);
+    text-decoration: none;
 }
 
 .nav-logo-icon {
-  display: flex;
-  align-items: center;
-}
-
-.nav-logo-text {
-  font-weight: 700;
-  letter-spacing: -0.01em;
+    display: flex;
+    align-items: center;
+    color: var(--accent-primary);
 }
 
 /* ============================================================
-   Checkbox — hidden, state-only
+   CHECKBOX TOGGLE (state only — no display)
    ============================================================ */
-.nav-toggle-input {
-  display: none;
-}
+
+.nav-toggle-input { display: none; }
 
 /* ============================================================
-   Hamburger toggle button — hidden on desktop
+   HAMBURGER — hidden on desktop
    ============================================================ */
-.nav-toggle-btn {
-  display: none;
-}
+
+.nav-toggle-btn { display: none; }
 
 /* ============================================================
-   Nav panel — inline flex row on desktop
+   NAV PANEL — inline row on desktop
    ============================================================ */
+
 .nav-panel {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
+    display: flex;
+    flex: 1;
+    flex-direction: row;
+    align-items: center;
 }
 
-/* Drawer header (brand + close button) — hidden on desktop */
-.nav-panel-header {
-  display: none;
-}
+.nav-panel-header { display: none; }
 
 /* ============================================================
-   Nav links list
+   NAV LINKS
    ============================================================ */
+
 .nav-links {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  list-style: none;
-  margin: 0;
-  padding: 0;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
 .nav-link {
-  display: inline-block;
-  color: var(--text-secondary);
-  text-decoration: none;
-  padding: var(--space-xs) var(--space-sm);
-  border-radius: var(--radius-md);
-  font-weight: 500;
-  font-size: 0.9375rem;
-  white-space: nowrap;
-  transition: color 0.2s ease, background 0.2s ease;
+    display: inline-block;
+    color: var(--text-secondary);
+    text-decoration: none;
+    padding: 0.4rem 0.75rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    transition: color 0.15s ease, background 0.15s ease;
 }
 
 .nav-link:hover {
-  color: var(--accent-primary);
-  background: rgba(16, 185, 129, 0.08);
-  text-decoration: none;
+    color: var(--text-primary);
+    background: var(--border-subtle);
+    text-decoration: none;
 }
 
 .nav-link:focus-visible {
-  outline: 2px solid var(--accent-primary);
-  outline-offset: 2px;
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
 }
 
 .nav-link.active {
-  color: var(--accent-primary);
-  background: rgba(16, 185, 129, 0.12);
+    color: var(--accent-primary);
+    background: rgba(16, 185, 129, 0.1);
 }
 
 /* ============================================================
-   Auth section — pushed to far right on desktop
+   AUTH ACTIONS — far right
    ============================================================ */
+
 .nav-auth {
-  display: flex;
-  align-items: center;
-  gap: var(--space-sm);
-  flex-shrink: 0;
-  margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    flex-shrink: 0;
+    margin-inline-start: auto;
 }
 
 .nav-logout-form {
-  display: inline;
-  margin: 0;
-  padding: 0;
+    display: inline;
+    margin: 0;
+    padding: 0;
 }
 
 /* ============================================================
-   Overlay — hidden on desktop
+   OVERLAY — hidden on desktop
    ============================================================ */
-.nav-overlay {
-  display: none;
-}
+
+.nav-overlay { display: none; }
 
 /* ============================================================
-   Dropdown — desktop hover / focus-within
-   Pure CSS nested ul pattern
+   DROPDOWN — hover / focus-within
    ============================================================ */
-.nav-dropdown {
-  position: relative;
-}
 
-/* Chevron via ::after — no extra element needed */
+.nav-dropdown { position: relative; }
+
 .nav-dropdown > .nav-link::after {
-  content: "";
-  display: inline-block;
-  margin-left: 0.35em;
-  width: 0;
-  height: 0;
-  border-left: 4px solid transparent;
-  border-right: 4px solid transparent;
-  border-top: 5px solid currentColor;
-  vertical-align: middle;
-  transition: transform 0.2s ease;
+    content: "";
+    display: inline-block;
+    margin-inline-start: 0.3em;
+    width: 0;
+    height: 0;
+    border-inline: 4px solid transparent;
+    border-block-start: 4px solid currentColor;
+    vertical-align: middle;
+    opacity: 0.6;
+    transition: transform 0.2s ease;
 }
 
 .nav-dropdown:hover > .nav-link::after,
 .nav-dropdown:focus-within > .nav-link::after {
-  transform: rotate(180deg);
+    transform: rotate(180deg);
 }
 
 .nav-dropdown-menu {
-  list-style: none;
-  margin: 0;
-  padding: var(--space-xs) 0;
-  position: absolute;
-  top: calc(100% + 4px);
-  left: 0;
-  z-index: var(--secure-ui-z-dropdown, 200);
-  background: var(--bg-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
-  min-width: 200px;
-  /* Hidden by default; visibility used so keyboard focus still works */
-  visibility: hidden;
-  opacity: 0;
-  transform: translateY(-6px);
-  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.18s;
+    list-style: none;
+    margin: 0;
+    padding: 0.375rem;
+    position: absolute;
+    inset-block-start: calc(100% + 6px);
+    inset-inline-start: 0;
+    z-index: 200;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-medium);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl), 0 0 0 1px var(--border-subtle);
+    min-width: 220px;
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+    transition: opacity 0.15s ease, transform 0.15s ease, visibility 0s linear 0.15s;
 }
 
 .nav-dropdown:hover > .nav-dropdown-menu,
 .nav-dropdown:focus-within > .nav-dropdown-menu {
-  visibility: visible;
-  opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0s;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    transition-delay: 0s;
 }
 
 .nav-dropdown-link {
-  display: block;
-  padding: var(--space-xs) var(--space-md, 1rem);
-  color: var(--text-secondary);
-  text-decoration: none;
-  font-size: 0.9rem;
-  font-weight: 500;
-  white-space: nowrap;
-  transition: color 0.15s ease, background 0.15s ease;
+    display: block;
+    padding: 0.45rem 0.75rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: var(--font-mono);
+    white-space: nowrap;
+    border-radius: var(--radius-md);
+    transition: color 0.12s ease, background 0.12s ease;
 }
 
 .nav-dropdown-link:hover {
-  color: var(--accent-primary);
-  background: rgba(16, 185, 129, 0.08);
-  text-decoration: none;
+    color: var(--accent-primary);
+    background: rgba(16, 185, 129, 0.08);
+    text-decoration: none;
 }
 
 .nav-dropdown-link:focus-visible {
-  color: var(--accent-primary);
-  background: rgba(16, 185, 129, 0.08);
-  outline: 2px solid var(--accent-primary);
-  outline-offset: -2px;
-}
-
-/* ============================================================
-   Main content offset
-   ============================================================ */
-.main-content {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  padding-top: 64px;
-}
-
-.main-content main {
-  flex: 1;
-}
-
-/* ============================================================
-   Buttons
-   ============================================================ */
-.btn-accent {
-  background: var(--accent-primary);
-  color: #fff;
-  border: none;
-  font-weight: 600;
-  border-radius: var(--radius-md);
-  transition: all 0.2s ease;
-}
-
-.btn-accent:hover {
-  background: var(--accent-secondary);
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-  color: #fff;
-  text-decoration: none;
-}
-
-/* ============================================================
-   MOBILE — left-side drawer (≤ 972px)
-   Checkbox hack: #nav-toggle:checked ~ sibling selectors
-   ============================================================ */
-@media (max-width: 972px) {
-  /* Prevent body scroll when drawer is open */
-  html:has(#nav-toggle:checked) {
-    overflow: hidden;
-  }
-
-  .top-nav .nav-content {
-    height: 60px;
-    gap: 0;
-  }
-
-  /* --- Hamburger button --- */
-  .nav-toggle-btn {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 5px;
-    /* 44×44 minimum tap target */
-    width: 44px;
-    height: 44px;
-    margin-left: auto;
-    flex-shrink: 0;
-    cursor: pointer;
-    color: var(--text-primary);
-    border-radius: var(--radius-md);
-    transition: color 0.2s ease, background 0.2s ease;
-  }
-
-  .nav-toggle-btn:hover {
     color: var(--accent-primary);
     background: rgba(16, 185, 129, 0.08);
-  }
-
-  .bar {
-    display: block;
-    width: 22px;
-    height: 2px;
-    background: currentColor;
-    border-radius: 2px;
-    transform-origin: center;
-    transition: transform 0.3s ease, opacity 0.2s ease;
-  }
-
-  /* Bars animate to × when drawer is open */
-  #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(1) {
-    transform: translateY(7px) rotate(45deg);
-  }
-
-  #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(2) {
-    opacity: 0;
-    transform: scaleX(0);
-  }
-
-  #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(3) {
-    transform: translateY(-7px) rotate(-45deg);
-  }
-
-  /* --- Nav panel: fixed left drawer --- */
-  .nav-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 280px;
-    max-width: 85vw;
-    height: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    flex: none;
-    z-index: 400;
-    background: var(--bg-primary);
-    border-right: 1px solid var(--border-subtle);
-    box-shadow: 4px 0 32px rgba(0, 0, 0, 0.2);
-    overflow-y: auto;
-    /* Slide out to the left by default */
-    transform: translateX(-100%);
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    padding-bottom: var(--space-md);
-  }
-
-  /* Slide in when checkbox is checked */
-  #nav-toggle:checked ~ .nav-panel {
-    transform: translateX(0);
-  }
-
-  /* --- Drawer header --- */
-  .nav-panel-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 var(--space-sm) 0 var(--space-md);
-    height: 60px;
-    border-bottom: 1px solid var(--border-subtle);
-    flex-shrink: 0;
-  }
-
-  .nav-panel-brand {
-    display: flex;
-    align-items: center;
-    gap: var(--space-xs);
-    font-weight: 700;
-    font-size: 1.125rem;
-    color: var(--text-primary);
-  }
-
-  .nav-panel-close {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    border-radius: var(--radius-md);
-    cursor: pointer;
-    color: var(--text-secondary);
-    flex-shrink: 0;
-    transition: color 0.15s ease, background 0.15s ease;
-  }
-
-  .nav-panel-close:hover {
-    color: var(--text-primary);
-    background: rgba(16, 185, 129, 0.08);
-  }
-
-  /* --- Nav links: vertical stack --- */
-  .nav-links {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    padding: var(--space-sm) 0;
-  }
-
-  .nav-links > li {
-    width: 100%;
-  }
-
-  .nav-link {
-    display: block;
-    padding: 0.7rem var(--space-md);
-    border-radius: 0;
-    font-size: 1rem;
-    white-space: normal;
-  }
-
-  /* --- Dropdown on mobile: always expanded, indented --- */
-  .nav-dropdown > .nav-link::after {
-    display: none;
-  }
-
-  .nav-dropdown-menu {
-    position: static;
-    visibility: visible;
-    opacity: 1;
-    transform: none;
-    transition: none;
-    box-shadow: none;
-    border: none;
-    border-radius: 0;
-    border-top: 1px solid var(--border-subtle);
-    padding: var(--space-xs) 0;
-    min-width: 0;
-    background: rgba(0, 0, 0, 0.03);
-  }
-
-  .nav-dropdown-link {
-    /* Double indent under the parent link */
-    padding: 0.5rem var(--space-md) 0.5rem calc(var(--space-md) * 2);
-    font-size: 0.9rem;
-    border-radius: 0;
-    white-space: normal;
-  }
-
-  /* --- Auth section: pinned to bottom of drawer --- */
-  .nav-auth {
-    margin-left: 0;
-    margin-top: auto;
-    padding: var(--space-md);
-    border-top: 1px solid var(--border-subtle);
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-sm);
-    flex-shrink: 0;
-  }
-
-  .nav-auth .nav-link {
-    display: block;
-    padding: 0.7rem var(--space-sm);
-    border-radius: var(--radius-md);
-    text-align: center;
-  }
-
-  .nav-auth .btn {
-    width: 100%;
-    text-align: center;
-    justify-content: center;
-    display: block;
-  }
-
-  .nav-logout-form {
-    display: block;
-    width: 100%;
-  }
-
-  .nav-logout-form .btn {
-    width: 100%;
-  }
-
-  /* --- Overlay: tap outside to close --- */
-  .nav-overlay {
-    display: block;
-    position: fixed;
-    inset: 0;
-    z-index: 399;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-
-  #nav-toggle:checked ~ .nav-overlay {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  /* Main content: matches shorter mobile bar */
-  .main-content {
-    padding-top: 60px;
-  }
+    outline: 2px solid var(--accent-primary);
+    outline-offset: -2px;
 }
 
 /* ============================================================
-   Reduced motion
+   MAIN CONTENT OFFSET (nav height)
    ============================================================ */
+
+.main-content {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-block-start: 64px;
+}
+
+.main-content main { flex: 1; }
+
+/* ============================================================
+   MOBILE — left drawer (≤ 972px)
+   ============================================================ */
+
+@media (max-width: 972px) {
+    html:has(#nav-toggle:checked) { overflow: hidden; }
+
+    .top-nav .nav-content {
+        height: 60px;
+        gap: 0;
+    }
+
+    /* Hamburger */
+    .nav-toggle-btn {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 5px;
+        width: 44px;
+        height: 44px;
+        margin-inline-start: auto;
+        flex-shrink: 0;
+        cursor: pointer;
+        color: var(--text-secondary);
+        border-radius: var(--radius-md);
+        transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .nav-toggle-btn:hover {
+        color: var(--text-primary);
+        background: var(--border-subtle);
+    }
+
+    .bar {
+        display: block;
+        width: 20px;
+        height: 1.5px;
+        background: currentColor;
+        border-radius: 2px;
+        transform-origin: center;
+        transition: transform 0.28s ease, opacity 0.18s ease;
+    }
+
+    #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(1) {
+        transform: translateY(6.5px) rotate(45deg);
+    }
+    #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(2) {
+        opacity: 0;
+        transform: scaleX(0);
+    }
+    #nav-toggle:checked ~ .nav-toggle-btn .bar:nth-child(3) {
+        transform: translateY(-6.5px) rotate(-45deg);
+    }
+
+    /* Drawer panel */
+    .nav-panel {
+        position: fixed;
+        inset-block: 0;
+        inset-inline-start: 0;
+        width: 280px;
+        max-width: 85vw;
+        flex-direction: column;
+        align-items: stretch;
+        flex: none;
+        z-index: 400;
+        background: var(--bg-secondary);
+        border-inline-end: 1px solid var(--border-subtle);
+        box-shadow: 4px 0 40px rgba(0, 0, 0, 0.5);
+        overflow-y: auto;
+        transform: translateX(-100%);
+        transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+        padding-bottom: var(--space-md);
+    }
+
+    #nav-toggle:checked ~ .nav-panel { transform: translateX(0); }
+
+    /* Drawer header */
+    .nav-panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 var(--space-sm) 0 var(--space-md);
+        height: 60px;
+        border-bottom: 1px solid var(--border-subtle);
+        flex-shrink: 0;
+    }
+
+    .nav-panel-brand {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 700;
+        font-size: 1rem;
+        color: var(--text-primary);
+    }
+
+    .nav-panel-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 44px;
+        height: 44px;
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        color: var(--text-secondary);
+        transition: color 0.15s ease, background 0.15s ease;
+    }
+
+    .nav-panel-close:hover {
+        color: var(--text-primary);
+        background: var(--border-subtle);
+    }
+
+    /* Links — vertical stack */
+    .nav-links {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: var(--space-xs) 0;
+    }
+
+    .nav-links > li { width: 100%; }
+
+    .nav-link {
+        display: block;
+        padding: 0.65rem var(--space-md);
+        border-radius: 0;
+        font-size: 0.9375rem;
+        white-space: normal;
+    }
+
+    /* Dropdown on mobile: always expanded */
+    .nav-dropdown > .nav-link::after { display: none; }
+
+    .nav-dropdown-menu {
+        position: static;
+        visibility: visible;
+        opacity: 1;
+        transform: none;
+        transition: none;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+        border-block-start: 1px solid var(--border-subtle);
+        padding: 0.25rem 0;
+        min-width: 0;
+        background: rgba(0, 0, 0, 0.15);
+    }
+
+    .nav-dropdown-link {
+        padding: 0.5rem var(--space-md) 0.5rem calc(var(--space-md) + 1rem);
+        font-size: 0.875rem;
+        border-radius: 0;
+        white-space: normal;
+        font-family: var(--font-mono);
+    }
+
+    /* Auth — pinned to drawer bottom */
+    .nav-auth {
+        margin-inline-start: 0;
+        margin-block-start: auto;
+        padding: var(--space-md);
+        border-top: 1px solid var(--border-subtle);
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--space-xs);
+    }
+
+    .nav-auth .nav-link {
+        display: block;
+        padding: 0.65rem var(--space-sm);
+        border-radius: var(--radius-md);
+        text-align: center;
+    }
+
+    .nav-auth .btn,
+    .nav-auth .btn-accent { width: 100%; justify-content: center; }
+
+    .nav-logout-form { display: block; width: 100%; }
+    .nav-logout-form .btn { width: 100%; }
+
+    /* Overlay */
+    .nav-overlay {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: 399;
+        background: rgba(0, 0, 0, 0.7);
+        backdrop-filter: blur(2px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.28s ease;
+    }
+
+    #nav-toggle:checked ~ .nav-overlay {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    .main-content { padding-block-start: 60px; }
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+
 @media (prefers-reduced-motion: reduce) {
-  .nav-logo,
-  .nav-link,
-  .btn-accent,
-  .nav-dropdown > .nav-link::after,
-  .nav-dropdown-menu,
-  .nav-dropdown-link,
-  .nav-toggle-btn,
-  .bar,
-  .nav-panel,
-  .nav-overlay,
-  .nav-panel-close {
-    transition: none;
-  }
+    .nav-logo, .nav-link, .btn-accent,
+    .nav-dropdown > .nav-link::after,
+    .nav-dropdown-menu, .nav-dropdown-link,
+    .nav-toggle-btn, .bar, .nav-panel,
+    .nav-overlay, .nav-panel-close {
+        transition: none;
+    }
 }

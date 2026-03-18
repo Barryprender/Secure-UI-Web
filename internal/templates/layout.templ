@@ -64,6 +64,10 @@ templ Head(title string, description string) {
 		if siteURL := middleware.SiteBaseURLFromContext(ctx); siteURL != "" {
 			<meta name="twitter:image" content={ siteURL + "/static/og-image.png" }/>
 		}
+		<!-- Fonts: Manrope (display) + IBM Plex Sans (body) + IBM Plex Mono (code) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com"/>
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
 		<!-- Favicon - multiple formats for maximum compatibility -->
 		<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
 		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
@@ -84,6 +88,7 @@ templ Head(title string, description string) {
 		<link rel="stylesheet" href="/static/styles/telemetry.css"/>
 		<link rel="stylesheet" href="/static/styles/prism.css"/>
 		<link rel="stylesheet" href="/static/styles/view-transitions.css"/>
+		<link rel="stylesheet" href="/static/styles/auth.css"/>
 		<link rel="stylesheet" href="/static/styles/no-js-fallback.css"/>
 
 		<!-- View Transitions — directional navigation (parser-blocking, must run before first render) -->

@@ -4,51 +4,118 @@ import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
 templ Registration(csrfToken string) {
-	@templates.Layout("Registration", "User registration form") {
-		<section class="py-3xl">
-			<div class="container">
-				<div class="section-header">
-					<h1 class="section-title">Registration</h1>
-					<p class="section-description">
-						Create a new account with secure form handling
+	@templates.Layout("Registration", "Create a new account") {
+		<div class="auth-page">
+			<!-- Brand Panel -->
+			<aside class="auth-brand" aria-hidden="true">
+				<div class="auth-brand-inner">
+					<a href="/" class="auth-brand-logo">
+						<span class="auth-brand-logo-icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+							</svg>
+						</span>
+						<span class="auth-brand-logo-text">Secure-UI</span>
+					</a>
+
+					<span class="auth-brand-eyebrow">Secure Registration</span>
+
+					<h2 class="auth-brand-heading">
+						Built for developers<br/>who <span>care about security</span>.
+					</h2>
+
+					<p class="auth-brand-desc">
+						Registration demonstrates server-side input validation,
+						constraint enforcement, and secure credential storage with
+						no client-side secrets.
 					</p>
-				</div>
 
-				<div class="card card-narrow-sm">
-					@components.SecureFormWrapper("POST", "/register", csrfToken, "critical", "registration-form") {
-						@components.SecureInputFieldWithLength("First Name", "first_name", "text", "", "authenticated", "", true, 1, 50)
+					<ul class="auth-brand-features">
+						<li>Server-side validation on every field</li>
+						<li>Password hashed with bcrypt — never stored in plain text</li>
+						<li>Input sanitised with bluemonday strict policy</li>
+						<li>CSRF token required on every form submission</li>
+						<li>Duplicate email detection without timing attacks</li>
+					</ul>
 
-						@components.SecureInputFieldWithLength("Last Name", "last_name", "text", "", "authenticated", "", true, 1, 50)
-
-						@components.SecureInputField("Email", "email", "email", "", "sensitive", "", true)
-
-						@components.SecureInputFieldWithLength("Password", "password", "password", "", "critical", "", true, 8, 0)
-
-						@components.SecureInputFieldWithLength("Confirm Password", "confirm_password", "password", "", "critical", "", true, 8, 0)
-
-						<div class="terms-row">
-							<input
-								type="checkbox"
-								id="terms"
-								name="terms"
-								required
-								class="terms-checkbox"
-							/>
-							<label for="terms" class="terms-label">
-								I agree to the Terms of Service and Privacy Policy
-							</label>
+					<div class="auth-brand-terminal">
+						<div class="auth-brand-terminal-bar">
+							<span class="auth-brand-terminal-dot"></span>
+							<span class="auth-brand-terminal-dot"></span>
+							<span class="auth-brand-terminal-dot"></span>
+							<span class="auth-brand-terminal-title">register.go</span>
 						</div>
-
-						<button type="submit" class="btn btn-primary w-full">
-							Create Account
-						</button>
-
-						<p class="signin-text">
-							Already have an account? <a href="/login">Sign in</a>
-						</p>
-					}
+						<div class="auth-brand-terminal-body">
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--dim"># validation pipeline</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ CSRF token verified</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ Input sanitised (bluemonday)</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ Email format valid</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ Password policy satisfied</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--accent">→ bcrypt.GenerateFromPassword…</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ User created — session started</span>
+						</div>
+					</div>
 				</div>
-			</div>
-		</section>
+			</aside>
+
+			<!-- Form Panel -->
+			<main class="auth-form-panel">
+				<div class="auth-form-inner">
+					<header class="auth-form-header">
+						<h1 class="auth-form-title">Create account</h1>
+						<p class="auth-form-subtitle">Try the secure registration flow with real-time validation.</p>
+					</header>
+
+					<div class="auth-form-body">
+						@components.SecureFormWrapper("POST", "/register", csrfToken, "critical", "registration-form") {
+							@components.SecureInputFieldWithLength("First Name", "first_name", "text", "", "authenticated", "", true, 1, 50)
+							@components.SecureInputFieldWithLength("Last Name", "last_name", "text", "", "authenticated", "", true, 1, 50)
+
+							@components.SecureInputField("Email", "email", "email", "", "sensitive", "", true)
+							@components.SecureInputFieldWithLength("Password", "password", "password", "", "critical", "", true, 8, 0)
+							@components.SecureInputFieldWithLength("Confirm Password", "confirm_password", "password", "", "critical", "", true, 8, 0)
+
+							<div class="terms-row">
+								<input
+									type="checkbox"
+									id="terms"
+									name="terms"
+									required
+									class="terms-checkbox"
+								/>
+								<label for="terms" class="terms-label">
+									I agree to the Terms of Service and Privacy Policy
+								</label>
+							</div>
+
+							<button type="submit" class="btn btn-primary w-full" style="margin-top: var(--space-xs);">
+								Create Account
+							</button>
+						}
+					</div>
+
+					<div class="auth-divider"></div>
+
+					<p class="auth-form-footer">
+						Already have an account? <a href="/login">Sign in</a>
+					</p>
+
+					<div class="auth-security-badges">
+						<span class="auth-security-badge">
+							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+							CSRF Protected
+						</span>
+						<span class="auth-security-badge">
+							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+							Validated
+						</span>
+						<span class="auth-security-badge">
+							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+							bcrypt Hashed
+						</span>
+					</div>
+				</div>
+			</main>
+		</div>
 	}
 }

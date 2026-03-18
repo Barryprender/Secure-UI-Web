@@ -5,37 +5,104 @@ import "secure-ui-showcase-go/internal/templates/components"
 
 templ Login(csrfToken string, errorMessage string) {
 	@templates.Layout("Login", "Sign in to your account") {
-		<section class="py-3xl">
-			<div class="container">
-				<div class="section-header">
-					<h1 class="section-title">Login</h1>
-					<p class="section-description">
-						Sign in to your account
-					</p>
-				</div>
+		<div class="auth-page">
+			<!-- Brand Panel -->
+			<aside class="auth-brand" aria-hidden="true">
+				<div class="auth-brand-inner">
+					<a href="/" class="auth-brand-logo">
+						<span class="auth-brand-logo-icon">
+							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+								<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+							</svg>
+						</span>
+						<span class="auth-brand-logo-text">Secure-UI</span>
+					</a>
 
-				<div class="card card-narrow-sm">
+					<span class="auth-brand-eyebrow">Secure Authentication</span>
+
+					<h2 class="auth-brand-heading">
+						Security by <span>design</span>,<br/>not by accident.
+					</h2>
+
+					<p class="auth-brand-desc">
+						This demo authenticates against a real session-based backend.
+						Every request is CSRF-protected and rate-limited.
+					</p>
+
+					<ul class="auth-brand-features">
+						<li>CSRF token validation on every form submit</li>
+						<li>bcrypt password hashing</li>
+						<li>Rate-limited login — brute-force protection</li>
+						<li>Secure session cookies (HttpOnly, SameSite)</li>
+						<li>Audit log on every authentication event</li>
+					</ul>
+
+					<div class="auth-brand-terminal">
+						<div class="auth-brand-terminal-bar">
+							<span class="auth-brand-terminal-dot"></span>
+							<span class="auth-brand-terminal-dot"></span>
+							<span class="auth-brand-terminal-dot"></span>
+							<span class="auth-brand-terminal-title">security.log</span>
+						</div>
+						<div class="auth-brand-terminal-body">
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--dim">$ tail -f /var/log/auth.log</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ CSRF token validated</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ Rate limit: 0 / 5 attempts</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--accent">→ bcrypt verify in progress…</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ Session created — SameSite=Lax</span>
+							<span class="auth-brand-terminal-line auth-brand-terminal-line--ok">✓ Audit event recorded</span>
+						</div>
+					</div>
+				</div>
+			</aside>
+
+			<!-- Form Panel -->
+			<main class="auth-form-panel">
+				<div class="auth-form-inner">
+					<header class="auth-form-header">
+						<h1 class="auth-form-title">Sign in</h1>
+						<p class="auth-form-subtitle">Access the secure-ui showcase and protected demos.</p>
+					</header>
+
 					if errorMessage != "" {
 						<div class="alert alert-danger" role="alert">
 							{ errorMessage }
 						</div>
 					}
 
-					@components.SecureFormWrapper("POST", "/login", csrfToken, "critical", "login-form") {
-						@components.SecureInputField("Email", "email", "email", "", "sensitive", "", true)
+					<div class="auth-form-body">
+						@components.SecureFormWrapper("POST", "/login", csrfToken, "critical", "login-form") {
+							@components.SecureInputField("Email", "email", "email", "", "sensitive", "", true)
+							@components.SecureInputFieldWithLength("Password", "password", "password", "", "critical", "", true, 8, 0)
 
-						@components.SecureInputFieldWithLength("Password", "password", "password", "", "critical", "", true, 8, 0)
+							<button type="submit" class="btn btn-primary w-full" style="margin-top: var(--space-xs);">
+								Sign In
+							</button>
+						}
+					</div>
 
-						<button type="submit" class="btn btn-primary w-full">
-							Sign In
-						</button>
+					<div class="auth-divider"></div>
 
-						<p class="signin-text">
-							Don't have an account? <a href="/register">Create one</a>
-						</p>
-					}
+					<p class="auth-form-footer">
+						Don't have an account? <a href="/register">Create one</a>
+					</p>
+
+					<div class="auth-security-badges">
+						<span class="auth-security-badge">
+							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+							CSRF Protected
+						</span>
+						<span class="auth-security-badge">
+							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+							Rate Limited
+						</span>
+						<span class="auth-security-badge">
+							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+							Audit Logged
+						</span>
+					</div>
 				</div>
-			</div>
-		</section>
+			</main>
+		</div>
 	}
 }

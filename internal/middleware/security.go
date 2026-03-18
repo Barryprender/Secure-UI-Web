@@ -268,10 +268,10 @@ func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 			// Content Security Policy — nonce-based, no unsafe-inline
 			csp := "default-src 'self'; " +
 				"script-src 'self' 'nonce-" + nonce + "'; " +
-				"style-src 'self' 'nonce-" + nonce + "'; " +
+				"style-src 'self' 'nonce-" + nonce + "' https://fonts.googleapis.com; " +
 				"img-src 'self' data:; " +
 				"connect-src 'self'; " +
-				"font-src 'self'; " +
+				"font-src 'self' https://fonts.gstatic.com; " +
 				"object-src 'none'; " +
 				"frame-ancestors 'none'; " +
 				"base-uri 'self'; " +

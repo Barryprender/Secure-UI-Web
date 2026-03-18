@@ -33,7 +33,7 @@
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-  font-family: monospace;
+  font-family: var(--font-mono);
   letter-spacing: -0.01em;
 }
 
@@ -137,8 +137,8 @@
 }
 
 .config-code {
-  padding: var(--space-sm, 0.75rem) var(--space-md, 1rem);
-  background: rgba(0, 0, 0, 0.2);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--bg-tertiary);
 }
 
 .config-code pre {
@@ -300,14 +300,14 @@
 }
 
 .css-vars-table td:first-child {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   color: var(--accent-primary);
   white-space: nowrap;
 }
 
 .css-vars-table td:nth-child(2) {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 0.8125rem;
   color: var(--text-secondary);
   white-space: nowrap;
@@ -333,9 +333,9 @@
 }
 
 .theme-demo-card-code {
-  padding: var(--space-md, 1rem);
+  padding: var(--space-md);
   border-bottom: 1px solid var(--border-subtle);
-  background: rgba(0, 0, 0, 0.2);
+  background: var(--bg-tertiary);
 }
 
 .theme-demo-card-code pre {
@@ -397,7 +397,7 @@
 .framework-tab-lang {
   font-size: 0.75rem;
   color: var(--text-secondary);
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 .framework-tab-panel pre {
@@ -458,7 +458,7 @@
 .component-nav-name {
   font-weight: 600;
   font-size: 0.9375rem;
-  font-family: monospace;
+  font-family: var(--font-mono);
 }
 
 /* Components Index */
@@ -532,7 +532,7 @@
 }
 
 .component-card-tag {
-  font-family: monospace;
+  font-family: var(--font-mono);
   font-size: 1rem;
   font-weight: 700;
   color: var(--accent-primary);

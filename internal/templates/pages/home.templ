@@ -12,51 +12,97 @@ templ Home() {
 <section class="hero-section">
 	<div class="container">
 		<div class="hero-content">
-			<div class="hero-badge">
-				<span class="badge badge-primary">Zero Dependencies</span>
-			</div>
+			<p class="hero-eyebrow">
+				<span class="hero-eyebrow-dot" aria-hidden="true"></span>
+				Zero dependencies
+			</p>
 
 			<h1 class="hero-title">
-				Security-First Components<br />
-				With Built-in Behavioral Intelligence
+				Security-hardened<br/>
+				components.<br/>
+				<em>One tag. No config.</em>
 			</h1>
 
 			<p class="hero-description">
-				Nine security-hardened web components with XSS prevention, CSRF protection, and HMAC-signed
-				behavioral telemetry. Own your bot detection — no third-party SDKs, no CAPTCHA friction,
-				no per-transaction fees. Zero dependencies, works with any framework.
+				Bot detection without the vendor tax. CSRF, XSS, and audit logging active on every
+				component by default. Works with any framework or server-rendered HTML.
 			</p>
 
 			<div class="hero-cta">
-				<a href="/documentation" class="btn btn-primary">Get Started</a>
-				<a href="/telemetry" class="btn btn-secondary">Behavioral Intelligence</a>
+				<a href="/components" class="btn btn-primary">Explore components</a>
+				<a href="/documentation" class="btn btn-secondary">Get started</a>
 			</div>
 		</div>
 	</div>
 </section>
 
-<!-- Stats Section -->
-<section class="stats-section">
+<!-- Stats Strip -->
+<section class="stats-strip" aria-label="Key facts">
 	<div class="container">
-		<div class="stats-grid">
-			<div class="stat-card">
-				<div class="stat-value">Zero</div>
-				<div class="stat-label">Dependencies</div>
+		<div class="stats-list" data-reveal-stagger>
+			<div class="stats-item">
+				<strong>Zero</strong>
+				<span>runtime dependencies</span>
+			</div>
+			<div class="stats-item">
+				<strong data-count-to="9">0</strong>
+				<span>behavioral signals</span>
+			</div>
+			<div class="stats-item">
+				<strong>HMAC</strong>
+				<span>signed telemetry</span>
+			</div>
+			<div class="stats-item">
+				<strong>A01–A10</strong>
+				<span>OWASP coverage mapped</span>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- Live Demo Section -->
+<section class="demo-section">
+	<div class="container">
+		<div class="demo-inner" data-reveal-stagger>
+			<div class="demo-content">
+				<p class="demo-label">Try it now</p>
+				<h2 class="demo-heading">Touch the components.<br/>See security in action.</h2>
+				<p class="demo-body">
+					These are live <code>&lt;secure-input&gt;</code> and <code>&lt;secure-form&gt;</code>
+					components. CSRF token injection, XSS sanitization, and audit logging are active.
+					Inspect the DOM — the Shadow DOM keeps the internal structure isolated.
+				</p>
+				<a href="/components" class="demo-link">
+					See all 9 components
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+				</a>
 			</div>
 
-			<div class="stat-card">
-				<div class="stat-value">HMAC</div>
-				<div class="stat-label">Signed Telemetry</div>
-			</div>
-
-			<div class="stat-card">
-				<div class="stat-value">9</div>
-				<div class="stat-label">Behavioral Signals</div>
-			</div>
-
-			<div class="stat-card">
-				<div class="stat-value">Built-in</div>
-				<div class="stat-label">Bot Detection</div>
+			<div class="demo-component-panel">
+				<div class="demo-component-panel-header">
+					<span class="demo-panel-title">secure-form + secure-input</span>
+					<span class="demo-panel-badge">Live</span>
+				</div>
+				<secure-form action="#" method="POST">
+					<secure-input
+						name="email"
+						type="email"
+						label="Email address"
+						security-tier="sensitive"
+						required>
+					</secure-input>
+					<secure-input
+						name="password"
+						type="password"
+						label="Password"
+						security-tier="critical"
+						min-length="8"
+						required>
+					</secure-input>
+					<div style="margin-top: 1rem;">
+						<button type="submit" class="btn btn-primary" style="width: 100%;">Submit securely</button>
+					</div>
+				</secure-form>
 			</div>
 		</div>
 	</div>
@@ -66,17 +112,18 @@ templ Home() {
 <section class="features-section">
 	<div class="container">
 		<div class="section-header">
-			<h2 class="section-title">Built-In Security Features</h2>
+			<p class="section-eyebrow">Built-in security</p>
+			<h2 class="section-title">Secure by default</h2>
 			<p class="section-description">
-				Comprehensive security protection enabled by default. Secure out of the box with sensible defaults.
+				Comprehensive protection enabled without configuration. Sensible, strict defaults — not the other way around.
 			</p>
 		</div>
 
-		<div class="features-grid">
-			<!-- CSRF Protection -->
+		<div class="features-grid" data-reveal-stagger>
+			<!-- CSRF Protection — blue: trust/auth boundary -->
 			<div class="feature-card">
-				<div class="feature-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<div class="feature-icon feature-icon--blue" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
 						<path d="m9 12 2 2 4-4"></path>
 					</svg>
@@ -92,10 +139,10 @@ templ Home() {
 				</ul>
 			</div>
 
-			<!-- Server-Side Validation -->
+			<!-- Layered Validation — amber: precision/two-layer caution -->
 			<div class="feature-card">
-				<div class="feature-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<div class="feature-icon feature-icon--amber" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
 						<rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
 						<line x1="6" y1="6" x2="6.01" y2="6"></line>
@@ -105,7 +152,7 @@ templ Home() {
 				</div>
 				<h3 class="feature-title">Layered Validation</h3>
 				<p class="feature-description">
-					Client-side validation for instant feedback, server-side validation as the security boundary. Defence in depth.
+					Client-side feedback, server-side authority. Defence in depth without the boilerplate.
 				</p>
 				<ul class="feature-list">
 					<li>Real-time client-side feedback</li>
@@ -114,10 +161,10 @@ templ Home() {
 				</ul>
 			</div>
 
-			<!-- Input Sanitization -->
+			<!-- Input Sanitization — green (default): cleaning/safe -->
 			<div class="feature-card">
-				<div class="feature-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<div class="feature-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<polyline points="16 18 22 12 16 6"></polyline>
 						<polyline points="8 6 2 12 8 18"></polyline>
 						<line x1="15" y1="4" x2="9" y2="20"></line>
@@ -125,7 +172,7 @@ templ Home() {
 				</div>
 				<h3 class="feature-title">Input Sanitization</h3>
 				<p class="feature-description">
-					Automatic sanitization of all user input. XSS prevention built into every component.
+					XSS prevention built into every component. Automatic encoding, script stripping, handler removal.
 				</p>
 				<ul class="feature-list">
 					<li>HTML entity encoding</li>
@@ -134,17 +181,17 @@ templ Home() {
 				</ul>
 			</div>
 
-			<!-- Secure Defaults -->
+			<!-- Secure Defaults — blue: configuration/trust -->
 			<div class="feature-card">
-				<div class="feature-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<div class="feature-icon feature-icon--blue" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
 						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
 					</svg>
 				</div>
 				<h3 class="feature-title">Secure Defaults</h3>
 				<p class="feature-description">
-					Security-first configuration out of the box. Strict CSP, secure headers, and safe cookies.
+					Strict CSP, secure headers, safe cookies, and closed Shadow DOM isolation — active from first render.
 				</p>
 				<ul class="feature-list">
 					<li>Strict Content Security Policy</li>
@@ -153,10 +200,10 @@ templ Home() {
 				</ul>
 			</div>
 
-			<!-- Single Source of Truth -->
+			<!-- Single Source of Truth — indigo: data/consistency -->
 			<div class="feature-card">
-				<div class="feature-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<div class="feature-icon feature-icon--indigo" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
 						<path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
 						<path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
@@ -173,10 +220,10 @@ templ Home() {
 				</ul>
 			</div>
 
-			<!-- Audit-Ready Logging -->
+			<!-- Audit-Ready Logging — teal: monitoring/recording -->
 			<div class="feature-card">
-				<div class="feature-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+				<div class="feature-icon feature-icon--teal" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
 						<rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
 						<line x1="8" y1="10" x2="16" y2="10"></line>
@@ -202,161 +249,111 @@ templ Home() {
 <section class="owasp-section">
 	<div class="container">
 		<div class="section-header">
+			<p class="section-eyebrow">Threat coverage</p>
 			<h2 class="section-title">OWASP Top 10:2021 Alignment</h2>
 			<p class="section-description">
-				Secure-UI components address key risks from the
-				<a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener" class="owasp-link">OWASP Top 10:2021</a>,
-				providing client-side defences that complement your server-side security.
+				Client-side defences that complement your server-side security, mapped against the
+				<a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener" class="owasp-link">OWASP Top 10:2021</a>.
 			</p>
 		</div>
 
-		<div class="owasp-grid">
-			<div class="owasp-card owasp-card--covered">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A01</span>
-					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
-				</div>
-				<h3 class="owasp-card-title">Broken Access Control</h3>
-				<p class="owasp-card-text">
-					Automatic CSRF token injection and validation via <code>&lt;secure-form&gt;</code>.
-					Immutable security tiers prevent runtime downgrade.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--partial">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A02</span>
-					<span class="owasp-coverage owasp-coverage--partial">Complementary</span>
-				</div>
-				<h3 class="owasp-card-title">Cryptographic Failures</h3>
-				<p class="owasp-card-text">
-					Disables autocomplete and browser caching for sensitive and critical tiers.
-					Cryptographic controls (TLS, hashing) require server-side implementation.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--covered">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A03</span>
-					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
-				</div>
-				<h3 class="owasp-card-title">Injection</h3>
-				<p class="owasp-card-text">
-					All input is sanitized via HTML entity encoding, script tag stripping,
-					and event handler removal. Closed Shadow DOM isolates component internals.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--covered">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A04</span>
-					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
-				</div>
-				<h3 class="owasp-card-title">Insecure Design</h3>
-				<p class="owasp-card-text">
-					Security-by-default architecture. Fail-secure defaults, four-tier security model,
-					and progressive enhancement ensure security without developer effort.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--covered">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A05</span>
-					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
-				</div>
-				<h3 class="owasp-card-title">Security Misconfiguration</h3>
-				<p class="owasp-card-text">
-					Defaults to CRITICAL tier (highest security). Provides CSP directives and
-					security header recommendations out of the box.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--covered">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A06</span>
-					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
-				</div>
-				<h3 class="owasp-card-title">Vulnerable and Outdated Components</h3>
-				<p class="owasp-card-text">
-					Zero runtime dependencies. No transitive supply chain risk.
-					The entire library is self-contained TypeScript.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--partial">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A07</span>
-					<span class="owasp-coverage owasp-coverage--partial">Complementary</span>
-				</div>
-				<h3 class="owasp-card-title">Identification and Authentication Failures</h3>
-				<p class="owasp-card-text">
-					Client-side rate limiting on sensitive and critical tiers throttles brute-force attempts.
-					Authentication logic requires server-side implementation.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--covered">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A08</span>
-					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
-				</div>
-				<h3 class="owasp-card-title">Software and Data Integrity Failures</h3>
-				<p class="owasp-card-text">
-					CSRF protection prevents cross-site request forgery. File upload scan hooks
-					validate file integrity. Closed Shadow DOM prevents DOM tampering.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--covered">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A09</span>
-					<span class="owasp-coverage owasp-coverage--direct">Addressed</span>
-				</div>
-				<h3 class="owasp-card-title">Security Logging and Monitoring Failures</h3>
-				<p class="owasp-card-text">
-					Every component records client-side security events via <code>getAuditLog()</code> and
-					<code>secure-audit</code> custom events. Tier-configurable logging detail.
-				</p>
-			</div>
-
-			<div class="owasp-card owasp-card--partial">
-				<div class="owasp-card-header">
-					<span class="owasp-id">A10</span>
-					<span class="owasp-coverage owasp-coverage--partial">Complementary</span>
-				</div>
-				<h3 class="owasp-card-title">Server-Side Request Forgery (SSRF)</h3>
-				<p class="owasp-card-text">
-					CSP <code>form-action 'self'</code> restricts form submissions to the same origin.
-					Components make no outbound requests. Server-side URL validation remains required.
-				</p>
-			</div>
+		<div class="owasp-table-wrapper" data-reveal-rows>
+			<table class="owasp-table">
+				<thead>
+					<tr>
+						<th>Risk</th>
+						<th>Title</th>
+						<th>Coverage</th>
+						<th>How Secure-UI helps</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr class="owasp-row--addressed">
+						<td class="owasp-table-id">A01</td>
+						<td class="owasp-table-title">Broken Access Control</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
+						<td class="owasp-table-how">Automatic CSRF token injection via <code>&lt;secure-form&gt;</code>. Immutable security tiers prevent runtime downgrade.</td>
+					</tr>
+					<tr class="owasp-row--complementary">
+						<td class="owasp-table-id">A02</td>
+						<td class="owasp-table-title">Cryptographic Failures</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--partial">Complementary</span></td>
+						<td class="owasp-table-how">Disables autocomplete and browser caching on sensitive and critical tiers. Cryptographic controls require server-side implementation.</td>
+					</tr>
+					<tr class="owasp-row--addressed">
+						<td class="owasp-table-id">A03</td>
+						<td class="owasp-table-title">Injection</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
+						<td class="owasp-table-how">All input sanitized via HTML entity encoding, script tag stripping, and event handler removal. Closed Shadow DOM isolates component internals.</td>
+					</tr>
+					<tr class="owasp-row--addressed">
+						<td class="owasp-table-id">A04</td>
+						<td class="owasp-table-title">Insecure Design</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
+						<td class="owasp-table-how">Security-by-default architecture. Fail-secure defaults, four-tier security model, and progressive enhancement ensure security without developer effort.</td>
+					</tr>
+					<tr class="owasp-row--addressed">
+						<td class="owasp-table-id">A05</td>
+						<td class="owasp-table-title">Security Misconfiguration</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
+						<td class="owasp-table-how">Defaults to CRITICAL tier. Provides CSP directives and security header recommendations out of the box.</td>
+					</tr>
+					<tr class="owasp-row--addressed">
+						<td class="owasp-table-id">A06</td>
+						<td class="owasp-table-title">Vulnerable and Outdated Components</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
+						<td class="owasp-table-how">Zero runtime dependencies. No transitive supply chain risk. The entire library is self-contained TypeScript.</td>
+					</tr>
+					<tr class="owasp-row--complementary">
+						<td class="owasp-table-id">A07</td>
+						<td class="owasp-table-title">Authentication Failures</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--partial">Complementary</span></td>
+						<td class="owasp-table-how">Client-side rate limiting on sensitive and critical tiers throttles brute-force attempts. Authentication logic requires server-side implementation.</td>
+					</tr>
+					<tr class="owasp-row--addressed">
+						<td class="owasp-table-id">A08</td>
+						<td class="owasp-table-title">Software and Data Integrity Failures</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
+						<td class="owasp-table-how">CSRF protection prevents cross-site request forgery. File upload scan hooks validate file integrity. Closed Shadow DOM prevents DOM tampering.</td>
+					</tr>
+					<tr class="owasp-row--addressed">
+						<td class="owasp-table-id">A09</td>
+						<td class="owasp-table-title">Security Logging Failures</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
+						<td class="owasp-table-how">Every component records client-side security events via <code>getAuditLog()</code> and <code>secure-audit</code> custom events. Tier-configurable logging detail.</td>
+					</tr>
+					<tr class="owasp-row--complementary">
+						<td class="owasp-table-id">A10</td>
+						<td class="owasp-table-title">Server-Side Request Forgery</td>
+						<td><span class="owasp-coverage-badge owasp-coverage-badge--partial">Complementary</span></td>
+						<td class="owasp-table-how">CSP <code>form-action 'self'</code> restricts form submissions to the same origin. Components make no outbound requests.</td>
+					</tr>
+				</tbody>
+			</table>
 		</div>
 
-		<div class="owasp-disclaimer">
-			<p>
-				Secure-UI provides client-side defences as part of a defence-in-depth strategy.
-				Server-side validation, authentication, and encryption remain essential.
-			</p>
-		</div>
+		<p class="owasp-disclaimer">
+			Secure-UI provides client-side defences as part of a defence-in-depth strategy. Server-side validation, authentication, and encryption remain essential.
+		</p>
 	</div>
 </section>
 
 <!-- Security Without Complexity Section -->
 <section class="code-section">
 	<div class="container">
-		<div class="section-header">
+		<div class="section-header section-header--compact">
+			<p class="section-eyebrow">Integration</p>
 			<h2 class="section-title">Security Without Complexity</h2>
 			<p class="section-description">
-				One tag. No configuration. Secure by default. Secure-UI components are native HTML elements —
-				they work in every framework, or with no framework at all.
+				One tag. No configuration. Secure by default. Native HTML elements — every framework, or no framework at all.
 			</p>
 		</div>
 
-		<!-- Three principles -->
-		<div class="swc-principles">
+		<!-- Four principles -->
+		<div class="swc-principles" data-reveal-stagger>
 			<div class="swc-principle">
-				<div class="swc-principle-icon">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<div class="swc-principle-icon" aria-hidden="true">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<polyline points="16 18 22 12 16 6"></polyline>
 						<polyline points="8 6 2 12 8 18"></polyline>
 					</svg>
@@ -365,28 +362,28 @@ templ Home() {
 				<p>Import once. Every component self-registers. No build step, no bundler config, no peer dependencies to reconcile.</p>
 			</div>
 			<div class="swc-principle">
-				<div class="swc-principle-icon">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<div class="swc-principle-icon" aria-hidden="true">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<rect x="2" y="3" width="20" height="14" rx="2"></rect>
 						<path d="M8 21h8M12 17v4"></path>
 					</svg>
 				</div>
 				<h3>Framework agnostic</h3>
-				<p>Built on the W3C Custom Elements standard. They are real HTML elements — React, Vue, Angular, Svelte, and server-rendered HTML all treat them identically.</p>
+				<p>Built on the W3C Custom Elements standard. React, Vue, Angular, Svelte, and server-rendered HTML all treat them identically.</p>
 			</div>
 			<div class="swc-principle">
-				<div class="swc-principle-icon">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<div class="swc-principle-icon" aria-hidden="true">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
 						<path d="m9 12 2 2 4-4"></path>
 					</svg>
 				</div>
 				<h3>Secure by default</h3>
-				<p>CSRF injection, XSS sanitization, input validation, and audit logging are active from the first render. No flags to set, no middleware to wire.</p>
+				<p>CSRF injection, XSS sanitization, input validation, and audit logging are active from the first render. No flags to set.</p>
 			</div>
 			<div class="swc-principle">
-				<div class="swc-principle-icon">
-					<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+				<div class="swc-principle-icon" aria-hidden="true">
+					<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<circle cx="12" cy="12" r="3"></circle>
 						<path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>
 					</svg>
@@ -396,7 +393,7 @@ templ Home() {
 			</div>
 		</div>
 
-		<!-- Code comparison: component + server -->
+		<!-- Code comparison -->
 		<div class="code-comparison swc-code-comparison">
 			<div class="code-example">
 				<div class="code-header">
@@ -404,7 +401,7 @@ templ Home() {
 					<span class="badge badge-primary">Any framework</span>
 				</div>
 				<div class="code-content">
-					<pre><code class="language-markup">{ `<!-- HTML — works identically in React, Vue,
+					<pre><code class="language-markup">{ `<!-- Works identically in React, Vue,
      Angular, Svelte, or Go templates -->
 
 <secure-form action="/register" method="POST">
@@ -474,7 +471,7 @@ func (h *Handlers) Register(
 			</div>
 		</div>
 
-		<!-- Framework compatibility strip -->
+		<!-- Framework strip — condensed -->
 		<div class="swc-frameworks">
 			<p class="swc-frameworks-label">Works in every environment</p>
 			<div class="swc-frameworks-grid">
@@ -498,10 +495,10 @@ func (h *Handlers) Register(
 <!-- Behavioral Intelligence Section -->
 <section class="home-telemetry-section">
 	<div class="container">
-		<div class="home-telemetry-inner">
+		<div class="home-telemetry-inner" data-reveal-stagger>
 			<div class="home-telemetry-content">
 				<span class="home-telemetry-badge">Built-in Behavioral Intelligence</span>
-				<h2>Bot Detection Without<br/>the Vendor Tax</h2>
+				<h2>Bot Detection Without<br/><em>the Vendor Tax</em></h2>
 				<p>
 					<code>&lt;secure-telemetry-provider&gt;</code> collects HMAC-signed behavioral signals
 					on every form submission. No third-party SDKs. No CAPTCHA friction.
@@ -555,19 +552,19 @@ func (h *Handlers) Register(
 					</div>
 					<div class="home-telemetry-signal home-telemetry-signal--pass">
 						<span class="home-telemetry-signal-name">mouseMovementDetected</span>
-						<span class="home-telemetry-signal-value">true</span>
+						<span class="home-telemetry-signal-value" data-live-signal="mouseMovementDetected">false</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
 					<div class="home-telemetry-signal home-telemetry-signal--pass">
 						<span class="home-telemetry-signal-name">keyboardActivityDetected</span>
-						<span class="home-telemetry-signal-value">true</span>
+						<span class="home-telemetry-signal-value" data-live-signal="keyboardActivityDetected">false</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
 				</div>
 				<div class="home-telemetry-envelope">
 					<div class="home-telemetry-envelope-label">HMAC-SHA-256 signed envelope</div>
 					<pre>{ `{ nonce: "a3f8b2c1...",
-  issuedAt: "2026-03-12T14:32:07Z",
+  issuedAt: "2026-03-17T14:32:07Z",
   signature: "7c2bef09a1d3..." }` }</pre>
 				</div>
 			</div>
@@ -578,14 +575,15 @@ func (h *Handlers) Register(
 <!-- Complete Theming Control Section -->
 <section class="theming-section">
 	<div class="container">
-		<div class="section-header">
+		<div class="section-header section-header--compact">
+			<p class="section-eyebrow">Theming</p>
 			<h2 class="section-title">Complete Theming Control</h2>
 			<p class="section-description">
 				CSS custom properties as design tokens. Override globally, per component, or per instance. Five built-in presets — or build your own.
 			</p>
 		</div>
 
-		<div class="home-theme-showcase">
+		<div class="home-theme-showcase reveal">
 			<div class="home-theme-tabs" role="tablist" aria-label="Theme presets">
 				<button class="home-theme-tab" data-theme="default" role="tab" aria-selected="true">
 					<span class="home-theme-tab-dot"></span>
@@ -664,16 +662,16 @@ func (h *Handlers) Register(
 <script type="module" nonce={ middleware.NonceFromContext(ctx) }>
 const themes = {
   default: {
-    '--accent-primary': '#10b981', '--accent-secondary': '#059669',
-    '--accent-glow': 'rgba(16,185,129,0.15)', '--bg-primary': '#ffffff',
-    '--bg-secondary': '#f8f9fa', '--bg-elevated': '#ffffff',
-    '--text-primary': '#1a1a2e', '--text-secondary': '#4a5568',
-    '--border-subtle': '#e2e8f0', '--border-medium': '#cbd5e1',
+    '--accent-primary': '#059669', '--accent-secondary': '#047857',
+    '--accent-glow': 'rgba(5,150,105,0.12)', '--bg-primary': 'oklch(97.5% 0.006 240)',
+    '--bg-secondary': 'oklch(95.5% 0.008 240)', '--bg-elevated': 'oklch(99% 0.003 240)',
+    '--text-primary': 'oklch(15% 0.025 240)', '--text-secondary': 'oklch(42% 0.030 240)',
+    '--border-subtle': 'oklch(88% 0.012 240)', '--border-medium': 'oklch(82% 0.016 240)',
     label: '/* Default theme — no overrides needed */',
   },
   dark: {
     '--accent-primary': '#6366f1', '--accent-secondary': '#4f46e5',
-    '--accent-glow': 'rgba(99,102,241,0.2)', '--bg-primary': '#0a0a0f',
+    '--accent-glow': 'rgba(99,102,241,0.15)', '--bg-primary': '#0a0a0f',
     '--bg-secondary': '#121218', '--bg-elevated': '#1c1c28',
     '--text-primary': '#f0f4ff', '--text-secondary': '#94a3b8',
     '--border-subtle': 'rgba(255,255,255,0.08)', '--border-medium': 'rgba(255,255,255,0.12)',
@@ -681,7 +679,7 @@ const themes = {
   },
   ocean: {
     '--accent-primary': '#0284c7', '--accent-secondary': '#0369a1',
-    '--accent-glow': 'rgba(2,132,199,0.15)', '--bg-primary': '#f0f9ff',
+    '--accent-glow': 'rgba(2,132,199,0.12)', '--bg-primary': '#f0f9ff',
     '--bg-secondary': '#e0f2fe', '--bg-elevated': '#ffffff',
     '--text-primary': '#0c4a6e', '--text-secondary': '#0369a1',
     '--border-subtle': '#bae6fd', '--border-medium': '#7dd3fc',
@@ -689,7 +687,7 @@ const themes = {
   },
   forest: {
     '--accent-primary': '#16a34a', '--accent-secondary': '#15803d',
-    '--accent-glow': 'rgba(22,163,74,0.15)', '--bg-primary': '#f0fdf4',
+    '--accent-glow': 'rgba(22,163,74,0.12)', '--bg-primary': '#f0fdf4',
     '--bg-secondary': '#dcfce7', '--bg-elevated': '#ffffff',
     '--text-primary': '#14532d', '--text-secondary': '#166534',
     '--border-subtle': '#bbf7d0', '--border-medium': '#86efac',
@@ -697,7 +695,7 @@ const themes = {
   },
   enterprise: {
     '--accent-primary': '#2563eb', '--accent-secondary': '#1d4ed8',
-    '--accent-glow': 'rgba(37,99,235,0.12)', '--bg-primary': '#ffffff',
+    '--accent-glow': 'rgba(37,99,235,0.10)', '--bg-primary': '#ffffff',
     '--bg-secondary': '#f8fafc', '--bg-elevated': '#ffffff',
     '--text-primary': '#0f172a', '--text-secondary': '#475569',
     '--border-subtle': '#e2e8f0', '--border-medium': '#cbd5e1',
@@ -731,63 +729,116 @@ if (tabs.length > 0) {
   tabs[0].classList.add('home-theme-tab--active');
   applyTheme('default');
 }
-</script>
 
-<!-- Progressive Enhancement Section -->
-<section class="no-js-section">
-	<div class="container">
-		<div class="section-header">
-			<h2 class="section-title">Progressive Enhancement</h2>
-			<p class="section-description">
-				Built on semantic HTML foundations. Full functionality with JavaScript, graceful fallback without it.
-			</p>
-		</div>
+// ── Developer console greeting ────────────────────────────────
+console.log(
+  '%c⬡ Secure-UI',
+  'color:#059669;font-size:18px;font-weight:800;letter-spacing:-0.02em;font-family:monospace'
+);
+console.log(
+  '%cSecurity-hardened web components\nZero runtime dependencies · CSP-safe Shadow DOM · HMAC-signed telemetry',
+  'color:#475569;font-size:12px;line-height:1.8;font-family:monospace'
+);
+console.log(
+  '%c→ /components%c   9 components, fully interactive\n%c→ /documentation%c   Integration in under 5 minutes',
+  'color:#059669;font-weight:600;font-size:12px;font-family:monospace',
+  'color:#94a3b8;font-size:12px;font-family:monospace',
+  'color:#059669;font-weight:600;font-size:12px;font-family:monospace',
+  'color:#94a3b8;font-size:12px;font-family:monospace'
+);
 
-		<div class="no-js-grid">
-			<div class="no-js-card">
-				<div class="no-js-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-						<polyline points="14 2 14 8 20 8"></polyline>
-						<line x1="16" y1="13" x2="8" y2="13"></line>
-						<line x1="16" y1="17" x2="8" y2="17"></line>
-						<polyline points="10 9 9 9 8 9"></polyline>
-					</svg>
-				</div>
-				<h3 class="no-js-title">Semantic Foundations</h3>
-				<p class="no-js-description">
-					Forms use native HTML elements as fallbacks. Server-side processing works with or without JavaScript.
-				</p>
-			</div>
-
-			<div class="no-js-card">
-				<div class="no-js-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<polyline points="16 18 22 12 16 6"></polyline>
-						<polyline points="8 6 2 12 8 18"></polyline>
-					</svg>
-				</div>
-				<h3 class="no-js-title">Progressive Enhancement</h3>
-				<p class="no-js-description">
-					Components enhance native HTML form elements. JavaScript adds validation, masking, and audit logging.
-				</p>
-			</div>
-
-			<div class="no-js-card">
-				<div class="no-js-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<circle cx="12" cy="12" r="10"></circle>
-						<line x1="12" y1="8" x2="12" y2="12"></line>
-						<line x1="12" y1="16" x2="12.01" y2="16"></line>
-					</svg>
-				</div>
-				<h3 class="no-js-title">Accessible by Default</h3>
-				<p class="no-js-description">
-					Native HTML fallbacks ensure accessibility and compatibility across all browsers and assistive technologies.
-				</p>
-			</div>
-		</div>
-	</div>
-</section>
+// ── Stat count-up ─────────────────────────────────────────────
+function countUp(el, target) {
+  const duration = 700;
+  const start = performance.now();
+  const step = (now) => {
+    const p = Math.min((now - start) / duration, 1);
+    const eased = 1 - Math.pow(1 - p, 3);
+    el.textContent = Math.round(eased * target).toString();
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
 }
+
+// ── Scroll reveal — respects prefers-reduced-motion ───────────
+if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        // Trigger count-up if this element contains a [data-count-to]
+        const countEl = e.target.querySelector('[data-count-to]');
+        if (countEl) countUp(countEl, parseInt(countEl.dataset.countTo, 10));
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -24px 0px' });
+
+  // Stagger children: JS sets --reveal-delay per child, adds .reveal, then observes
+  document.querySelectorAll('[data-reveal-stagger]').forEach(parent => {
+    Array.from(parent.children).forEach((child, i) => {
+      child.style.setProperty('--reveal-delay', `${i * 75}ms`);
+      child.classList.add('reveal');
+      io.observe(child);
+    });
+  });
+
+  // OWASP table: observe wrapper, CSS nth-child handles row stagger
+  document.querySelectorAll('[data-reveal-rows]').forEach(el => io.observe(el));
+
+  // Single .reveal elements added directly in HTML
+  document.querySelectorAll('.reveal:not([style])').forEach(el => io.observe(el));
+}
+
+// ── Code block copy buttons ───────────────────────────────────
+if (navigator.clipboard) {
+  document.querySelectorAll('.code-example').forEach(block => {
+    const header = block.querySelector('.code-header');
+    const code = block.querySelector('code');
+    if (!header || !code) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'code-copy-btn';
+    btn.textContent = 'Copy';
+    btn.setAttribute('aria-label', 'Copy code to clipboard');
+
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code.textContent ?? '');
+        btn.textContent = 'Copied ✓';
+        btn.classList.add('code-copy-btn--copied');
+        setTimeout(() => {
+          btn.textContent = 'Copy';
+          btn.classList.remove('code-copy-btn--copied');
+        }, 2000);
+      } catch { /* clipboard access denied */ }
+    });
+
+    header.appendChild(btn);
+  });
+}
+
+// ── Live telemetry signals — reflect visitor's actual behaviour ─
+{
+  const liveSignals = document.querySelectorAll('[data-live-signal]');
+  const signalMap = new Map();
+  liveSignals.forEach(el => signalMap.set(el.dataset.liveSignal, el));
+
+  function updateSignal(name, value) {
+    const el = signalMap.get(name);
+    if (!el || el.textContent === value) return;
+    el.textContent = value;
+    el.classList.remove('signal-updated');
+    void el.offsetWidth; // force reflow to restart animation
+    el.classList.add('signal-updated');
+  }
+
+  document.addEventListener('mousemove', () => updateSignal('mouseMovementDetected', 'true'),
+    { once: true, passive: true });
+
+  document.addEventListener('keydown', () => updateSignal('keyboardActivityDetected', 'true'),
+    { once: true, passive: true });
+}
+</script>
+	}
 }
