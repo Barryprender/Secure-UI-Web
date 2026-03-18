@@ -880,6 +880,22 @@ if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
   // OWASP table: observe wrapper, CSS nth-child handles row stagger
   document.querySelectorAll('[data-reveal-rows]').forEach(el => io.observe(el));
 
+  // Count-up elements not inside a stagger parent (e.g. stats strip)
+  document.querySelectorAll('[data-count-to]').forEach(el => {
+    if (!el.closest('[data-reveal-stagger]')) {
+      const wrapper = el.closest('.stats-item') ?? el;
+      const countIo = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if (e.isIntersecting) {
+            countUp(el, parseInt(el.dataset.countTo, 10));
+            countIo.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.5 });
+      countIo.observe(wrapper);
+    }
+  });
+
   // Single .reveal elements added directly in HTML
   document.querySelectorAll('.reveal:not([style])').forEach(el => io.observe(el));
 }
