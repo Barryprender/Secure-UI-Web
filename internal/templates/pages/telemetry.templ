@@ -1,6 +1,7 @@
 package pages
 
 import "secure-ui-showcase-go/internal/templates"
+import "secure-ui-showcase-go/internal/middleware"
 
 templ TelemetryPage() {
 	@templates.Layout("Behavioral Intelligence", "Own your bot detection. secure-telemetry-provider collects HMAC-signed behavioral signals on every form submission — no third-party SDKs, no per-transaction fees, no user friction.") {
@@ -9,7 +10,10 @@ templ TelemetryPage() {
 			<div class="container">
 				<div class="telemetry-hero-inner">
 					<div class="telemetry-hero-content">
-						<span class="telemetry-hero-badge">Built-in Behavioral Intelligence</span>
+						<span class="telemetry-hero-badge">
+						<span class="tel-badge-dot" aria-hidden="true"></span>
+						Built-in Behavioral Intelligence
+					</span>
 						<h1>Bot Detection Without<br/>the Vendor Tax</h1>
 						<p class="telemetry-hero-desc">
 							Own your fraud signals. <code>&lt;secure-telemetry-provider&gt;</code> wraps any
@@ -29,7 +33,7 @@ templ TelemetryPage() {
 							</div>
 							<span class="telemetry-terminal-title">secure-telemetry-provider — signal envelope</span>
 						</div>
-						<pre class="telemetry-terminal-body"><code>{ `// Environmental signals — collected at submit
+						<pre class="telemetry-terminal-body"><code id="tel-terminal-code" aria-label="Signal envelope output">{ `// Environmental signals — collected at submit
 webdriverDetected:        false,
 headlessDetected:         false,
 domMutationDetected:      false,
@@ -44,7 +48,7 @@ keyboardActivityDetected: true,
 nonce:     "a3f8b2c1d4e5f607...",
 issuedAt:  "2026-03-12T14:32:07Z",
 signature: "7c2bef09a1d3c8f2..."` }</code></pre>
-						<div class="telemetry-terminal-verdict">
+						<div id="tel-verdict" class="telemetry-terminal-verdict tel-verdict-hidden">
 							<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
 								<path d="m9 12 2 2 4-4"></path>
@@ -66,7 +70,7 @@ signature: "7c2bef09a1d3c8f2..."` }</code></pre>
 					share your users' data with third parties, and give you a black-box score you can't audit.
 				</p>
 				<div class="telemetry-problem-grid">
-					<div class="telemetry-problem-card">
+					<div class="telemetry-problem-card tel-reveal" data-delay="1">
 						<div class="telemetry-problem-card-icon">
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<path d="M12 2L2 7l10 5 10-5-10-5z"></path>
@@ -81,7 +85,7 @@ signature: "7c2bef09a1d3c8f2..."` }</code></pre>
 							fraud stack.
 						</p>
 					</div>
-					<div class="telemetry-problem-card">
+					<div class="telemetry-problem-card tel-reveal" data-delay="2">
 						<div class="telemetry-problem-card-icon">
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<circle cx="12" cy="12" r="10"></circle>
@@ -96,7 +100,7 @@ signature: "7c2bef09a1d3c8f2..."` }</code></pre>
 							didn't explicitly design.
 						</p>
 					</div>
-					<div class="telemetry-problem-card">
+					<div class="telemetry-problem-card tel-reveal" data-delay="3">
 						<div class="telemetry-problem-card-icon">
 							<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
 								<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
@@ -123,7 +127,7 @@ signature: "7c2bef09a1d3c8f2..."` }</code></pre>
 					Every signal is collected inside the browser, signed locally with SubtleCrypto,
 					and verified server-side with a shared key. No external calls. No latency. No cost per submission.
 				</p>
-				<div class="telemetry-steps">
+				<div class="telemetry-steps tel-reveal">
 					<div class="telemetry-step">
 						<div class="telemetry-step-num">1</div>
 						<h3>Collect</h3>
@@ -178,7 +182,7 @@ signature: "7c2bef09a1d3c8f2..."` }</code></pre>
 					cryptographic proof of humanity.
 				</p>
 				<div class="telemetry-signals-table-wrap">
-					<table class="telemetry-signals-table">
+					<table class="telemetry-signals-table" id="tel-signals-table">
 						<thead>
 							<tr>
 								<th>Signal</th>
@@ -258,7 +262,7 @@ signature: "7c2bef09a1d3c8f2..."` }</code></pre>
 					Here are three common patterns.
 				</p>
 				<div class="telemetry-scoring-grid">
-					<div class="telemetry-scoring-patterns">
+					<div class="telemetry-scoring-patterns tel-reveal">
 						<div class="telemetry-pattern telemetry-pattern--reject">
 							<div class="telemetry-pattern-header">
 								<span class="telemetry-pattern-label">Hard Reject</span>
@@ -344,7 +348,7 @@ func Score(env EnvironmentalSignals) (int, RiskDecision) {
 					Secure-UI gives you the signal layer. You supply the decision logic.
 					No black box. No vendor relationship. No recurring cost.
 				</p>
-				<div class="telemetry-compare-table-wrap">
+				<div class="telemetry-compare-table-wrap tel-reveal">
 					<table class="telemetry-compare-table">
 						<thead>
 							<tr>
@@ -425,7 +429,7 @@ func Score(env EnvironmentalSignals) (int, RiskDecision) {
 					Verification is three lines of logic.
 				</p>
 				<div class="telemetry-verify-grid">
-					<div class="telemetry-verify-points">
+					<div class="telemetry-verify-points tel-reveal">
 						<div class="telemetry-verify-point">
 							<div class="telemetry-verify-point-icon">
 								<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -559,7 +563,7 @@ func Verify(env Envelope, signingKey string) error {
 					no PII, and no device identifiers are ever included in the envelope.
 				</p>
 				<div class="telemetry-privacy-grid">
-					<div class="telemetry-privacy-card telemetry-privacy-card--collected">
+					<div class="telemetry-privacy-card telemetry-privacy-card--collected tel-reveal">
 						<h3>Collected (behavioral metadata)</h3>
 						<ul class="telemetry-privacy-list">
 							<li>Whether any mouse movement occurred (boolean)</li>
@@ -571,7 +575,7 @@ func Verify(env Envelope, signingKey string) error {
 							<li>Count of script tags injected after page load</li>
 						</ul>
 					</div>
-					<div class="telemetry-privacy-card telemetry-privacy-card--not">
+					<div class="telemetry-privacy-card telemetry-privacy-card--not tel-reveal" data-delay="2">
 						<h3>Never collected</h3>
 						<ul class="telemetry-privacy-list">
 							<li>Keystroke content or timing sequences</li>
@@ -588,7 +592,7 @@ func Verify(env Envelope, signingKey string) error {
 		</section>
 
 		<!-- CTA -->
-		<section class="telemetry-cta">
+		<section class="telemetry-cta tel-reveal">
 			<div class="container">
 				<h2>Start Collecting Signals Today</h2>
 				<p>
@@ -602,5 +606,88 @@ func Verify(env Envelope, signingKey string) error {
 				</div>
 			</div>
 		</section>
+
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+		(function () {
+			'use strict';
+
+			const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+			// ── 1. Typewriter for hero terminal ──────────────────────
+			const code = document.getElementById('tel-terminal-code');
+			const verdict = document.getElementById('tel-verdict');
+
+			if (code && !prefersReducedMotion) {
+				const raw = code.textContent;
+				code.textContent = '';
+
+				const cursor = document.createElement('span');
+				cursor.className = 'tel-cursor';
+				cursor.setAttribute('aria-hidden', 'true');
+				code.appendChild(cursor);
+
+				let i = 0;
+				function type() {
+					if (i >= raw.length) {
+						cursor.remove();
+						if (verdict) {
+							verdict.classList.remove('tel-verdict-hidden');
+							verdict.classList.add('tel-verdict-show');
+						}
+						return;
+					}
+					const end = Math.min(i + 2, raw.length);
+					cursor.before(document.createTextNode(raw.slice(i, end)));
+					i = end;
+					setTimeout(type, 13);
+				}
+				setTimeout(type, 750);
+			} else if (verdict) {
+				verdict.classList.remove('tel-verdict-hidden');
+			}
+
+			// ── 2. Scroll-triggered reveals ──────────────────────────
+			if (!('IntersectionObserver' in window)) {
+				document.querySelectorAll('.tel-reveal').forEach(function (el) {
+					el.classList.add('tel-revealed');
+				});
+				return;
+			}
+
+			const revealObs = new IntersectionObserver(function (entries) {
+				entries.forEach(function (entry) {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('tel-revealed');
+						revealObs.unobserve(entry.target);
+					}
+				});
+			}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+			document.querySelectorAll('.tel-reveal').forEach(function (el) {
+				revealObs.observe(el);
+			});
+
+			// ── 3. Signals table row stagger ─────────────────────────
+			const tbody = document.querySelector('#tel-signals-table tbody');
+			if (tbody) {
+				Array.from(tbody.querySelectorAll('tr')).forEach(function (row) {
+					row.classList.add('tel-table-row');
+				});
+
+				const tableObs = new IntersectionObserver(function (entries) {
+					entries.forEach(function (entry) {
+						if (entry.isIntersecting) {
+							Array.from(entry.target.querySelectorAll('.tel-table-row')).forEach(function (row, idx) {
+								setTimeout(function () { row.classList.add('tel-row-visible'); }, idx * 45);
+							});
+							tableObs.unobserve(entry.target);
+						}
+					});
+				}, { threshold: 0.08 });
+
+				tableObs.observe(tbody);
+			}
+		})();
+		</script>
 	}
 }

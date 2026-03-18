@@ -511,6 +511,13 @@
     height: 2px;
     background: linear-gradient(to right, var(--accent-primary), var(--accent-secondary));
     opacity: 0.25;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.8s var(--ease-out-expo) 0.25s;
+}
+
+.telemetry-steps.tel-revealed::before {
+    transform: scaleX(1);
 }
 
 @media (max-width: 768px) {
@@ -980,14 +987,289 @@
     justify-content: center;
 }
 
-/* Reduced motion */
+/* ── Animation keyframes ──────────────────────────────────────── */
+
+@keyframes tel-fade-up {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes tel-fade-left {
+    from { opacity: 0; transform: translateX(-28px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes tel-fade-right {
+    from { opacity: 0; transform: translateX(28px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes tel-cursor-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+@keyframes tel-verdict-in {
+    from { opacity: 0; transform: scale(0.95) translateY(6px); }
+    to   { opacity: 1; transform: scale(1)    translateY(0); }
+}
+
+@keyframes tel-step-pop {
+    0%   { opacity: 0; transform: scale(0.65); }
+    65%  { transform: scale(1.08); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes tel-icon-shake {
+    0%   { transform: translateX(0) rotate(0deg); }
+    20%  { transform: translateX(-3px) rotate(-4deg); }
+    40%  { transform: translateX(3px)  rotate(4deg); }
+    60%  { transform: translateX(-2px) rotate(-2deg); }
+    80%  { transform: translateX(2px)  rotate(1deg); }
+    100% { transform: translateX(0) rotate(0deg); }
+}
+
+@keyframes tel-scan-line {
+    from { top: -2px; opacity: 0; }
+    5%   { opacity: 1; }
+    92%  { opacity: 0.6; }
+    to   { top: 100%; opacity: 0; }
+}
+
+@keyframes tel-col-flash {
+    0%   { background: rgba(16, 185, 129, 0.18); }
+    100% { background: transparent; }
+}
+
+/* ── Hero entrance ────────────────────────────────────────────── */
+
+.telemetry-hero-content {
+    animation: tel-fade-left 0.65s var(--ease-out-expo) 0.05s both;
+}
+
+.telemetry-hero-terminal {
+    animation: tel-fade-right 0.7s var(--ease-out-expo) 0.2s both;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Periodic scan line on the hero terminal */
+.telemetry-hero-terminal::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent 0%, rgba(16, 185, 129, 0.35) 40%, rgba(16, 185, 129, 0.35) 60%, transparent 100%);
+    animation: tel-scan-line 5s linear 3.5s infinite;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Hero badge live dot */
+.telemetry-hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tel-badge-dot {
+    display: block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    animation: tel-pulse 2s ease-in-out infinite;
+    flex-shrink: 0;
+}
+
+/* ── Typewriter cursor ────────────────────────────────────────── */
+
+.tel-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 0.9em;
+    background: var(--accent-primary);
+    margin-left: 1px;
+    vertical-align: text-bottom;
+    animation: tel-cursor-blink 0.75s step-end infinite;
+}
+
+/* ── Verdict reveal ───────────────────────────────────────────── */
+
+.tel-verdict-hidden {
+    opacity: 0;
+    transform: scale(0.95) translateY(6px);
+    transition: none;
+}
+
+.tel-verdict-show {
+    animation: tel-verdict-in 0.4s var(--ease-out-quart) forwards;
+}
+
+/* ── Scroll reveal base ───────────────────────────────────────── */
+
+.tel-reveal {
+    opacity: 0;
+    transform: translateY(22px);
+    transition:
+        opacity  0.55s var(--ease-out-quart),
+        transform 0.55s var(--ease-out-quart);
+}
+
+.tel-reveal[data-delay="1"] { transition-delay: 0.10s; }
+.tel-reveal[data-delay="2"] { transition-delay: 0.20s; }
+.tel-reveal[data-delay="3"] { transition-delay: 0.30s; }
+
+.tel-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ── Step number pop ──────────────────────────────────────────── */
+
+.telemetry-steps.tel-revealed .telemetry-step:nth-child(1) .telemetry-step-num {
+    animation: tel-step-pop 0.45s var(--ease-out-expo) 0.15s both;
+}
+
+.telemetry-steps.tel-revealed .telemetry-step:nth-child(2) .telemetry-step-num {
+    animation: tel-step-pop 0.45s var(--ease-out-expo) 0.30s both;
+}
+
+.telemetry-steps.tel-revealed .telemetry-step:nth-child(3) .telemetry-step-num {
+    animation: tel-step-pop 0.45s var(--ease-out-expo) 0.45s both;
+}
+
+/* ── Problem card icon shake on hover ────────────────────────── */
+
+.telemetry-problem-card:hover .telemetry-problem-card-icon {
+    animation: tel-icon-shake 0.45s var(--ease-out-quart);
+}
+
+/* ── Scoring patterns slide in ───────────────────────────────── */
+
+.telemetry-scoring-patterns .telemetry-pattern {
+    opacity: 0;
+    transform: translateX(-18px);
+    transition:
+        opacity   0.45s var(--ease-out-quart),
+        transform 0.45s var(--ease-out-quart);
+}
+
+.telemetry-scoring-patterns.tel-revealed .telemetry-pattern:nth-child(1) {
+    opacity: 1; transform: translateX(0); transition-delay: 0.05s;
+}
+
+.telemetry-scoring-patterns.tel-revealed .telemetry-pattern:nth-child(2) {
+    opacity: 1; transform: translateX(0); transition-delay: 0.15s;
+}
+
+.telemetry-scoring-patterns.tel-revealed .telemetry-pattern:nth-child(3) {
+    opacity: 1; transform: translateX(0); transition-delay: 0.25s;
+}
+
+/* ── Verify points cascade ───────────────────────────────────── */
+
+.telemetry-verify-points .telemetry-verify-point {
+    opacity: 0;
+    transform: translateY(14px);
+    transition:
+        opacity   0.4s var(--ease-out-quart),
+        transform 0.4s var(--ease-out-quart);
+}
+
+.telemetry-verify-points.tel-revealed .telemetry-verify-point:nth-child(1) {
+    opacity: 1; transform: translateY(0); transition-delay: 0.00s;
+}
+
+.telemetry-verify-points.tel-revealed .telemetry-verify-point:nth-child(2) {
+    opacity: 1; transform: translateY(0); transition-delay: 0.10s;
+}
+
+.telemetry-verify-points.tel-revealed .telemetry-verify-point:nth-child(3) {
+    opacity: 1; transform: translateY(0); transition-delay: 0.20s;
+}
+
+.telemetry-verify-points.tel-revealed .telemetry-verify-point:nth-child(4) {
+    opacity: 1; transform: translateY(0); transition-delay: 0.30s;
+}
+
+/* ── Privacy list item stream ────────────────────────────────── */
+
+.telemetry-privacy-card .telemetry-privacy-list li {
+    opacity: 0;
+    transform: translateX(-10px);
+    transition:
+        opacity   0.35s var(--ease-out-quart),
+        transform 0.35s var(--ease-out-quart);
+}
+
+.telemetry-privacy-card.tel-revealed .telemetry-privacy-list li:nth-child(1) { opacity:1; transform:translateX(0); transition-delay:0.05s; }
+.telemetry-privacy-card.tel-revealed .telemetry-privacy-list li:nth-child(2) { opacity:1; transform:translateX(0); transition-delay:0.10s; }
+.telemetry-privacy-card.tel-revealed .telemetry-privacy-list li:nth-child(3) { opacity:1; transform:translateX(0); transition-delay:0.15s; }
+.telemetry-privacy-card.tel-revealed .telemetry-privacy-list li:nth-child(4) { opacity:1; transform:translateX(0); transition-delay:0.20s; }
+.telemetry-privacy-card.tel-revealed .telemetry-privacy-list li:nth-child(5) { opacity:1; transform:translateX(0); transition-delay:0.25s; }
+.telemetry-privacy-card.tel-revealed .telemetry-privacy-list li:nth-child(6) { opacity:1; transform:translateX(0); transition-delay:0.30s; }
+.telemetry-privacy-card.tel-revealed .telemetry-privacy-list li:nth-child(7) { opacity:1; transform:translateX(0); transition-delay:0.35s; }
+
+/* ── Comparison table Secure-UI column flash ─────────────────── */
+
+.telemetry-compare-table-wrap.tel-revealed .telemetry-compare-col--ours {
+    animation: tel-col-flash 1.2s var(--ease-out-quart) 0.35s both;
+}
+
+/* ── Signals table rows ──────────────────────────────────────── */
+
+.tel-table-row {
+    opacity: 0;
+    transform: translateX(-6px);
+    transition:
+        opacity   0.3s var(--ease-out-quart),
+        transform 0.3s var(--ease-out-quart);
+}
+
+.tel-table-row.tel-row-visible {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* ── Reduced motion overrides ────────────────────────────────── */
+
 @media (prefers-reduced-motion: reduce) {
     .home-telemetry-badge::before,
-    .home-telemetry-panel-dot {
-        animation: none;
+    .home-telemetry-panel-dot,
+    .tel-badge-dot,
+    .tel-cursor,
+    .telemetry-hero-terminal::after {
+        animation: none !important;
     }
+
+    .telemetry-hero-content,
+    .telemetry-hero-terminal {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+    }
+
+    .tel-reveal,
+    .tel-verdict-hidden,
+    .telemetry-scoring-patterns .telemetry-pattern,
+    .telemetry-verify-points .telemetry-verify-point,
+    .telemetry-privacy-card .telemetry-privacy-list li,
+    .tel-table-row {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
     .telemetry-step,
     .telemetry-problem-card {
         transition: none;
+    }
+
+    .telemetry-steps::before {
+        transform: scaleX(1) !important;
+        transition: none !important;
     }
 }

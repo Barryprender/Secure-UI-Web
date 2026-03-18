@@ -31,7 +31,7 @@ templ Theming() {
 					</p>
 				</div>
 
-				<div class="theming-presets-grid" id="theming-presets-grid">
+				<div class="theming-presets-grid theming-reveal" id="theming-presets-grid">
 					<div class="theming-preset-card theming-preset-card--active" data-preset="default" tabindex="0" role="button" aria-pressed="true">
 						<div class="theming-preset-swatches">
 							<span class="theming-preset-swatch"></span>
@@ -124,7 +124,7 @@ templ Theming() {
 		</section>
 
 		<!-- Token Reference -->
-		<section class="theming-section theming-section-alt">
+		<section class="theming-section theming-section-alt theming-reveal">
 			<div class="container">
 				<div class="theming-section-header">
 					<h2 class="theming-section-title">Token Reference</h2>
@@ -243,7 +243,7 @@ templ Theming() {
 		</section>
 
 		<!-- Code Examples -->
-		<section class="theming-section">
+		<section class="theming-section theming-reveal">
 			<div class="container">
 				<div class="theming-section-header">
 					<h2 class="theming-section-title">Applying a Theme</h2>
@@ -371,13 +371,42 @@ const demo = document.getElementById('theming-live-demo');
 const label = document.getElementById('theming-active-label');
 const cards = document.querySelectorAll('.theming-preset-card');
 
-function applyPreset(name) {
+function animateBadge(newText) {
+  if (!label) return;
+  label.classList.remove('th-badge-out', 'th-badge-in');
+  label.classList.add('th-badge-out');
+  const onOut = () => {
+    label.removeEventListener('animationend', onOut);
+    label.textContent = newText;
+    label.classList.remove('th-badge-out');
+    label.classList.add('th-badge-in');
+    const onIn = () => { label.removeEventListener('animationend', onIn); label.classList.remove('th-badge-in'); };
+    label.addEventListener('animationend', onIn, { once: true });
+  };
+  label.addEventListener('animationend', onOut, { once: true });
+}
+
+function flashDemo() {
+  if (!demo) return;
+  demo.classList.remove('theming-live-demo--flash');
+  void demo.offsetWidth; // reflow
+  demo.classList.add('theming-live-demo--flash');
+  const onEnd = () => { demo.removeEventListener('animationend', onEnd); demo.classList.remove('theming-live-demo--flash'); };
+  demo.addEventListener('animationend', onEnd, { once: true });
+}
+
+function applyPreset(name, animate) {
   const t = presets[name];
   if (!t || !demo) return;
   for (const [key, val] of Object.entries(t)) {
     demo.style.setProperty(key, val);
   }
-  if (label) label.textContent = names[name] ?? name;
+  if (animate) {
+    animateBadge(names[name] ?? name);
+    flashDemo();
+  } else if (label) {
+    label.textContent = names[name] ?? name;
+  }
 }
 
 cards.forEach(card => {
@@ -388,14 +417,26 @@ cards.forEach(card => {
     });
     card.classList.add('theming-preset-card--active');
     card.setAttribute('aria-pressed', 'true');
-    applyPreset(card.dataset.preset ?? 'default');
+    applyPreset(card.dataset.preset ?? 'default', true);
   };
   card.addEventListener('click', handler);
   card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); } });
 });
 
-// Apply default on load
-applyPreset('default');
+// Apply default on load (no animation)
+applyPreset('default', false);
+
+// Scroll reveal
+const revealObs = new IntersectionObserver((entries) => {
+  for (const entry of entries) {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('theming-revealed');
+      revealObs.unobserve(entry.target);
+    }
+  }
+}, { threshold: 0.12 });
+
+document.querySelectorAll('.theming-reveal').forEach(el => revealObs.observe(el));
 		</script>
 	}
 }

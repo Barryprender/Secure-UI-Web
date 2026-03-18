@@ -325,7 +325,7 @@
 
 /* Section shared */
 .theming-section {
-    padding: var(--space-lg) var(--space-md);
+    padding: var(--space-3xl) 0;
 }
 
 .theming-section-alt {
@@ -428,14 +428,22 @@
     border-radius: var(--radius-xl);
     padding: var(--space-lg);
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition:
+        transform      0.2s var(--ease-out-quart),
+        border-color   0.18s ease,
+        box-shadow     0.2s var(--ease-out-quart);
     text-align: left;
+    position: relative;
 }
 
 .theming-preset-card:hover {
     transform: translateY(-4px);
     border-color: var(--border-medium);
     box-shadow: var(--shadow-lg);
+}
+
+.theming-preset-card:active {
+    transform: translateY(-2px) scale(0.985);
 }
 
 .theming-preset-card--active {
@@ -798,11 +806,141 @@
     }
 }
 
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes th-fade-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes th-check-pop {
+    0%   { transform: scale(0) rotate(-45deg); opacity: 0; }
+    60%  { transform: scale(1.2) rotate(-45deg); opacity: 1; }
+    100% { transform: scale(1) rotate(-45deg); opacity: 1; }
+}
+
+@keyframes th-flash {
+    0%   { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-primary) 40%, transparent); }
+    50%  { box-shadow: 0 0 0 8px color-mix(in srgb, var(--accent-primary) 0%, transparent); }
+    100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent-primary) 0%, transparent); }
+}
+
+@keyframes th-badge-out {
+    from { opacity: 1; transform: translateY(0); }
+    to   { opacity: 0; transform: translateY(-6px); }
+}
+
+@keyframes th-badge-in {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Hero entrance ── */
+
+.theming-hero-eyebrow {
+    animation: th-fade-up 0.55s var(--ease-out-quart) 0.05s both;
+}
+
+.theming-hero-title {
+    font-family: var(--font-display);
+    animation: th-fade-up 0.6s var(--ease-out-quart) 0.15s both;
+}
+
+.theming-hero-description {
+    animation: th-fade-up 0.6s var(--ease-out-quart) 0.25s both;
+}
+
+/* ── Active card check mark ── */
+
+.theming-preset-card--active::after {
+    content: '';
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 10px;
+    height: 6px;
+    border-left: 2px solid var(--theming-preset-accent, var(--accent-primary));
+    border-bottom: 2px solid var(--theming-preset-accent, var(--accent-primary));
+    transform: rotate(-45deg);
+    animation: th-check-pop 0.25s var(--ease-out-quart) both;
+}
+
+/* ── Live demo flash on theme switch ── */
+
+.theming-live-demo--flash {
+    animation: th-flash 0.5s var(--ease-out-quart) both;
+}
+
+/* ── Badge text crossfade ── */
+
+.theming-live-demo-badge.th-badge-out { animation: th-badge-out 0.12s var(--ease-out-quart) both; }
+.theming-live-demo-badge.th-badge-in  { animation: th-badge-in  0.18s var(--ease-out-quart) both; }
+
+/* ── Scroll reveal ── */
+
+.theming-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition:
+        opacity  0.55s var(--ease-out-quart),
+        transform 0.55s var(--ease-out-quart);
+}
+
+.theming-reveal.theming-revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Preset cards stagger */
+.theming-presets-grid.theming-reveal .theming-preset-card {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+        opacity   0.45s var(--ease-out-quart),
+        transform 0.45s var(--ease-out-quart),
+        border-color 0.18s ease,
+        box-shadow   0.2s var(--ease-out-quart);
+}
+
+.theming-presets-grid.theming-revealed .theming-preset-card:nth-child(1) { opacity:1; transform:none; transition-delay: 0.00s; }
+.theming-presets-grid.theming-revealed .theming-preset-card:nth-child(2) { opacity:1; transform:none; transition-delay: 0.06s; }
+.theming-presets-grid.theming-revealed .theming-preset-card:nth-child(3) { opacity:1; transform:none; transition-delay: 0.12s; }
+.theming-presets-grid.theming-revealed .theming-preset-card:nth-child(4) { opacity:1; transform:none; transition-delay: 0.18s; }
+.theming-presets-grid.theming-revealed .theming-preset-card:nth-child(5) { opacity:1; transform:none; transition-delay: 0.24s; }
+
 @media (prefers-reduced-motion: reduce) {
     .home-theme-preview,
     .home-theme-preview *,
     .theming-live-demo,
     .theming-live-demo * {
         transition-duration: 0ms !important;
+    }
+
+    .theming-hero-eyebrow,
+    .theming-hero-title,
+    .theming-hero-description {
+        animation: none;
+    }
+
+    .theming-preset-card--active::after {
+        animation: none;
+    }
+
+    .theming-live-demo--flash {
+        animation: none;
+    }
+
+    .theming-live-demo-badge.th-badge-out,
+    .theming-live-demo-badge.th-badge-in {
+        animation: none;
+    }
+
+    .theming-reveal,
+    .theming-presets-grid.theming-reveal .theming-preset-card {
+        opacity: 1;
+        transform: none;
+        transition: none;
     }
 }

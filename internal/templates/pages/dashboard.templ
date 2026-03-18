@@ -51,7 +51,11 @@ templ Dashboard(users []*models.User, csrfToken string) {
 											<div class="user-card-email">{ user.Email }</div>
 											<div class="user-card-meta">
 												<span class="badge badge-secondary">{ user.Role }</span>
-												<span class="ml-sm">{ user.Status }</span>
+												if user.Status == "active" {
+													<span class="badge badge-active ml-sm">active</span>
+												} else {
+													<span class="badge badge-inactive ml-sm">{ user.Status }</span>
+												}
 											</div>
 										</div>
 										<form method="POST" action="/users/delete" class="d-inline">

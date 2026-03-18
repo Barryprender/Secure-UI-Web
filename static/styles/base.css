@@ -483,6 +483,33 @@ body {
     border-color: var(--border-subtle);
 }
 
+/* Status Badges */
+.badge-active {
+    background: rgba(5, 150, 105, 0.1);
+    color: #047857;
+    border-color: rgba(5, 150, 105, 0.25);
+}
+
+.badge-inactive {
+    background: rgba(107, 114, 128, 0.1);
+    color: #4b5563;
+    border-color: rgba(107, 114, 128, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    .badge-active {
+        background: rgba(16, 185, 129, 0.12);
+        color: #34d399;
+        border-color: rgba(52, 211, 153, 0.3);
+    }
+
+    .badge-inactive {
+        background: rgba(148, 163, 184, 0.1);
+        color: #94a3b8;
+        border-color: rgba(148, 163, 184, 0.2);
+    }
+}
+
 /* Security Tier Badges */
 .badge-public {
     background: rgba(148, 163, 184, 0.1);
@@ -710,6 +737,59 @@ a:hover {
 }
 
 /* ============================================================
+   PROFILE PAGE
+   ============================================================ */
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: var(--space-lg);
+    letter-spacing: -0.01em;
+}
+
+.profile-info {
+    display: grid;
+    gap: 0;
+    margin-bottom: var(--space-xl);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+}
+
+.profile-field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: var(--space-sm) var(--space-md);
+    border-bottom: 1px solid var(--border-subtle);
+    gap: var(--space-md);
+}
+
+.profile-field:last-child {
+    border-bottom: none;
+}
+
+.profile-field:nth-child(even) {
+    background: var(--bg-tertiary);
+}
+
+.profile-label {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+}
+
+.profile-value {
+    color: var(--text-primary);
+    font-size: 0.9375rem;
+    text-align: right;
+}
+
+/* ============================================================
    AUTH PAGES (Registration / Login)
    ============================================================ */
 
@@ -748,9 +828,17 @@ a:hover {
 }
 
 .alert-danger {
-    background: rgba(248, 113, 113, 0.1);
-    color: #fca5a5;
-    border-color: rgba(248, 113, 113, 0.25);
+    background: rgba(220, 38, 38, 0.08);
+    color: #b91c1c;
+    border-color: rgba(220, 38, 38, 0.2);
+}
+
+@media (prefers-color-scheme: dark) {
+    .alert-danger {
+        background: rgba(248, 113, 113, 0.1);
+        color: #fca5a5;
+        border-color: rgba(248, 113, 113, 0.25);
+    }
 }
 
 /* ============================================================

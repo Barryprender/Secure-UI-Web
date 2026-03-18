@@ -61,9 +61,17 @@
 }
 
 .docs-nav-card-icon {
-    font-size: 1.75rem;
-    margin-bottom: var(--space-xs);
-    line-height: 1;
+    width: 40px;
+    height: 40px;
+    background: rgba(16, 185, 129, 0.08);
+    border: 1px solid rgba(16, 185, 129, 0.18);
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent-primary);
+    margin-bottom: var(--space-sm);
+    flex-shrink: 0;
 }
 
 .docs-nav-card-title {

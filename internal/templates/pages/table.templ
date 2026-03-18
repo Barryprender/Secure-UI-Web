@@ -33,7 +33,7 @@ templ Table(users []*models.User, csrfToken string) {
 							page-size="10"
 							security-tier="authenticated"
 						>
-							<!-- Server-rendered table with slot attribute for progressive enhancement dfsdf-->
+							<!-- Server-rendered table with slot attribute for progressive enhancement -->
 							<table slot="table" class="secure-table">
 								<thead>
 									<tr>
@@ -62,7 +62,16 @@ templ Table(users []*models.User, csrfToken string) {
 													<span class="badge badge-secondary">{ user.Role }</span>
 												}
 											</td>
-											<td data-key="status">{ user.Status }</td>
+											<td data-key="status">
+												switch user.Status {
+												case "active":
+													<span class="badge badge-active">active</span>
+												case "inactive":
+													<span class="badge badge-inactive">inactive</span>
+												default:
+													<span class="badge badge-secondary">{ user.Status }</span>
+												}
+											</td>
 											<td data-key="created">{ user.CreatedAt.Format("2006-01-02") }</td>
 											<td data-key="actions">
 												<button
