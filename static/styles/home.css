@@ -425,7 +425,7 @@
 
 .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
     gap: var(--space-md);
 }
 
@@ -1296,6 +1296,49 @@
 
     .feature-card {
         padding: var(--space-lg);
+    }
+
+    /* OWASP table: stack columns on small screens */
+    .owasp-table thead { display: none; }
+
+    .owasp-table tbody,
+    .owasp-table tr,
+    .owasp-table td {
+        display: block;
+        width: 100%;
+    }
+
+    .owasp-table tr {
+        padding: var(--space-sm) 0;
+        border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .owasp-table tr:last-child { border-bottom: none; }
+
+    .owasp-table td {
+        padding: 0.25rem 1rem;
+        min-width: 0;
+    }
+
+    .owasp-table-title { white-space: normal; min-width: 0; }
+    .owasp-table-how   { min-width: 0; }
+
+    .owasp-row--addressed td:first-child,
+    .owasp-row--complementary td:first-child {
+        box-shadow: none;
+        border-left: 3px solid;
+        padding-left: calc(1rem - 3px);
+    }
+
+    .owasp-row--addressed td:first-child    { border-color: #059669; }
+    .owasp-row--complementary td:first-child { border-color: #b45309; }
+
+    /* section padding reduction */
+    .owasp-section,
+    .code-section,
+    .home-telemetry-section,
+    .theming-section {
+        padding-block: var(--space-xl);
     }
 }
 

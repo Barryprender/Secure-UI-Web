@@ -562,7 +562,7 @@
 
 .components-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: var(--space-lg, 1.5rem);
   margin-bottom: var(--space-2xl, 3rem);
 }
@@ -1352,6 +1352,30 @@
 
   .ci-title {
     font-size: 1.875rem;
+  }
+
+  .security-matrix-wrapper {
+    overflow-x: auto;
+  }
+
+  .card-preview {
+    font-size: clamp(0.6rem, 1.5vw, 0.75rem);
+  }
+}
+
+@media (max-width: 360px) {
+  .component-page,
+  .components-index-page {
+    padding: var(--space-md, 1rem) var(--space-sm, 0.5rem);
+  }
+
+  .ci-title {
+    font-size: 1.625rem;
+  }
+
+  .ci-hero-stats {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }
 

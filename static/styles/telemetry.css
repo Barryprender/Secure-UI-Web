@@ -1233,6 +1233,67 @@
     transform: translateX(0);
 }
 
+/* ── Responsive ──────────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+    .telemetry-hero {
+        padding: var(--space-2xl) 0;
+    }
+
+    .telemetry-hero h1 { font-size: 1.75rem; }
+
+    .telemetry-hero-desc { font-size: 0.9375rem; }
+
+    .telemetry-hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .telemetry-hero-actions .btn { width: 100%; }
+
+    .telemetry-problem,
+    .telemetry-signals,
+    .telemetry-scoring,
+    .telemetry-compare,
+    .telemetry-verify,
+    .telemetry-privacy,
+    .telemetry-cta {
+        padding-block: var(--space-2xl);
+    }
+
+    .home-telemetry-section {
+        padding-block: var(--space-xl);
+    }
+
+    /* Signals table: compress padding on small screens */
+    .telemetry-signals-table th,
+    .telemetry-signals-table td {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.8125rem;
+    }
+
+    .telemetry-compare-table th,
+    .telemetry-compare-table td {
+        padding: var(--space-xs) var(--space-sm);
+        font-size: 0.875rem;
+    }
+
+    .telemetry-pattern { padding: var(--space-md); }
+    .telemetry-step    { padding: var(--space-lg); }
+
+    .telemetry-privacy-card { padding: var(--space-lg); }
+
+    .telemetry-cta h2 { font-size: 1.5rem; }
+}
+
+@media (max-width: 360px) {
+    .telemetry-hero h1 { font-size: 1.5rem; }
+
+    .telemetry-section-title { font-size: 1.375rem; }
+
+    .home-telemetry-inner { gap: var(--space-lg); }
+}
+
 /* ── Reduced motion overrides ────────────────────────────────── */
 
 @media (prefers-reduced-motion: reduce) {

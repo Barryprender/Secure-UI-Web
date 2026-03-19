@@ -108,7 +108,7 @@
 }
 
 .auth-brand-heading {
-    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-size: clamp(1.375rem, 4vw, 2.5rem);
     font-weight: 700;
     color: #f0f6ff;
     line-height: 1.15;
@@ -353,6 +353,21 @@
 
     .auth-form-title {
         font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .auth-brand {
+        padding: var(--space-lg) var(--space-sm);
+    }
+
+    .auth-form-panel {
+        padding: var(--space-lg) var(--space-sm);
+    }
+
+    .auth-security-badges {
+        flex-direction: column;
+        gap: var(--space-xs);
     }
 }
 

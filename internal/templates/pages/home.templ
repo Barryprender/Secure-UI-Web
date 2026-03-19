@@ -1,6 +1,7 @@
 package pages
 
 import (
+	"secure-ui-showcase-go/internal/i18n"
 	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/templates"
 )
@@ -14,23 +15,20 @@ templ Home() {
 		<div class="hero-content">
 			<p class="hero-eyebrow">
 				<span class="hero-eyebrow-dot" aria-hidden="true"></span>
-				Zero dependencies
+				{ i18n.T(ctx, "home.hero.eyebrow") }
 			</p>
 
 			<h1 class="hero-title" id="hero-title">
-				Security-hardened<br/>
-				components.<br/>
-				<em>One tag. No config.</em>
+				<span>{ i18n.T(ctx, "home.hero.line1") }</span><br/>
+				<span>{ i18n.T(ctx, "home.hero.line2") }</span><br/>
+				<em>{ i18n.T(ctx, "home.hero.line3") }</em>
 			</h1>
 
-			<p class="hero-description">
-				Bot detection without the vendor tax. CSRF, XSS, and audit logging active on every
-				component by default. Works with any framework or server-rendered HTML.
-			</p>
+			<p class="hero-description">{ i18n.T(ctx, "home.hero.desc") }</p>
 
 			<div class="hero-cta" id="hero-cta">
-				<a href="/components" class="btn btn-primary">Explore components</a>
-				<a href="/documentation" class="btn btn-secondary">Get started</a>
+				<a href="/components" class="btn btn-primary">{ i18n.T(ctx, "home.hero.cta_explore") }</a>
+				<a href="/documentation" class="btn btn-secondary">{ i18n.T(ctx, "home.hero.cta_start") }</a>
 			</div>
 		</div>
 	</div>
@@ -42,19 +40,19 @@ templ Home() {
 		<div class="stats-list">
 			<div class="stats-item">
 				<strong>Zero</strong>
-				<span>runtime dependencies</span>
+				<span>{ i18n.T(ctx, "home.stats.deps") }</span>
 			</div>
 			<div class="stats-item">
 				<strong data-count-to="9">0</strong>
-				<span>behavioral signals</span>
+				<span>{ i18n.T(ctx, "home.stats.signals") }</span>
 			</div>
 			<div class="stats-item">
 				<strong>HMAC</strong>
-				<span>signed telemetry</span>
+				<span>{ i18n.T(ctx, "home.stats.signed") }</span>
 			</div>
 			<div class="stats-item">
 				<strong>A01–A10</strong>
-				<span>OWASP coverage mapped</span>
+				<span>{ i18n.T(ctx, "home.stats.owasp") }</span>
 			</div>
 		</div>
 	</div>
@@ -65,15 +63,11 @@ templ Home() {
 	<div class="container">
 		<div class="demo-inner" data-reveal-stagger>
 			<div class="demo-content">
-				<p class="demo-label">Try it now</p>
-				<h2 class="demo-heading">Touch the components.<br/>See security in action.</h2>
-				<p class="demo-body">
-					These are live <code>&lt;secure-input&gt;</code> and <code>&lt;secure-form&gt;</code>
-					components. CSRF token injection, XSS sanitization, and audit logging are active.
-					Inspect the DOM — the Shadow DOM keeps the internal structure isolated.
-				</p>
+				<p class="demo-label">{ i18n.T(ctx, "home.demo.label") }</p>
+				<h2 class="demo-heading">{ i18n.T(ctx, "home.demo.heading") }<br/>{ i18n.T(ctx, "home.demo.subheading") }</h2>
+				<p class="demo-body">{ i18n.T(ctx, "home.demo.body") }</p>
 				<a href="/components" class="demo-link">
-					See all 9 components
+					{ i18n.T(ctx, "home.demo.link") }
 					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
 				</a>
 			</div>
@@ -128,10 +122,8 @@ templ Home() {
 						<path d="m9 12 2 2 4-4"></path>
 					</svg>
 				</div>
-				<h3 class="feature-title">Automatic CSRF Protection</h3>
-				<p class="feature-description">
-					All forms automatically include CSRF tokens. No manual token management required.
-				</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.csrf.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.csrf.desc") }</p>
 				<ul class="feature-list">
 					<li>Per-request token generation</li>
 					<li>Automatic token validation</li>
@@ -150,10 +142,8 @@ templ Home() {
 						<path d="m15 11 2 2 4-4"></path>
 					</svg>
 				</div>
-				<h3 class="feature-title">Layered Validation</h3>
-				<p class="feature-description">
-					Client-side feedback, server-side authority. Defence in depth without the boilerplate.
-				</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.validation.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.validation.desc") }</p>
 				<ul class="feature-list">
 					<li>Real-time client-side feedback</li>
 					<li>Server-authoritative validation</li>
@@ -170,10 +160,8 @@ templ Home() {
 						<line x1="15" y1="4" x2="9" y2="20"></line>
 					</svg>
 				</div>
-				<h3 class="feature-title">Input Sanitization</h3>
-				<p class="feature-description">
-					XSS prevention built into every component. Automatic encoding, script stripping, handler removal.
-				</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.xss.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.xss.desc") }</p>
 				<ul class="feature-list">
 					<li>HTML entity encoding</li>
 					<li>Script tag stripping</li>
@@ -189,10 +177,8 @@ templ Home() {
 						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
 					</svg>
 				</div>
-				<h3 class="feature-title">Secure Defaults</h3>
-				<p class="feature-description">
-					Strict CSP, secure headers, safe cookies, and closed Shadow DOM isolation — active from first render.
-				</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.defaults.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.defaults.desc") }</p>
 				<ul class="feature-list">
 					<li>Strict Content Security Policy</li>
 					<li>Closed Shadow DOM isolation</li>
@@ -209,10 +195,8 @@ templ Home() {
 						<path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
 					</svg>
 				</div>
-				<h3 class="feature-title">Single Source of Truth</h3>
-				<p class="feature-description">
-					Server owns all persistent state and security decisions. Components manage only transient UI state.
-				</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.ssot.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.ssot.desc") }</p>
 				<ul class="feature-list">
 					<li>Server-authoritative data</li>
 					<li>No client-server state sync</li>
@@ -231,10 +215,8 @@ templ Home() {
 						<line x1="8" y1="18" x2="12" y2="18"></line>
 					</svg>
 				</div>
-				<h3 class="feature-title">Audit-Ready Logging</h3>
-				<p class="feature-description">
-					Client-side security event logging built into every component for compliance and monitoring.
-				</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.audit.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.audit.desc") }</p>
 				<ul class="feature-list">
 					<li>Component interaction events</li>
 					<li>Security tier violations</li>
@@ -249,10 +231,10 @@ templ Home() {
 <section class="owasp-section">
 	<div class="container">
 		<div class="section-header">
-			<p class="section-eyebrow">Threat coverage</p>
-			<h2 class="section-title">OWASP Top 10:2021 Alignment</h2>
+			<p class="section-eyebrow">{ i18n.T(ctx, "home.owasp.eyebrow") }</p>
+			<h2 class="section-title">{ i18n.T(ctx, "home.owasp.title") }</h2>
 			<p class="section-description">
-				Client-side defences that complement your server-side security, mapped against the
+				{ i18n.T(ctx, "home.owasp.desc") }
 				<a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener" class="owasp-link">OWASP Top 10:2021</a>.
 			</p>
 		</div>
@@ -332,9 +314,7 @@ templ Home() {
 			</table>
 		</div>
 
-		<p class="owasp-disclaimer">
-			Secure-UI provides client-side defences as part of a defence-in-depth strategy. Server-side validation, authentication, and encryption remain essential.
-		</p>
+		<p class="owasp-disclaimer">{ i18n.T(ctx, "home.owasp.disclaimer") }</p>
 	</div>
 </section>
 
@@ -342,11 +322,9 @@ templ Home() {
 <section class="code-section">
 	<div class="container">
 		<div class="section-header section-header--compact">
-			<p class="section-eyebrow">Integration</p>
-			<h2 class="section-title">Security Without Complexity</h2>
-			<p class="section-description">
-				One tag. No configuration. Secure by default. Native HTML elements — every framework, or no framework at all.
-			</p>
+			<p class="section-eyebrow">{ i18n.T(ctx, "home.code.eyebrow") }</p>
+			<h2 class="section-title">{ i18n.T(ctx, "home.code.title") }</h2>
+			<p class="section-description">{ i18n.T(ctx, "home.code.desc") }</p>
 		</div>
 
 		<!-- Four principles -->
@@ -358,8 +336,8 @@ templ Home() {
 						<polyline points="8 6 2 12 8 18"></polyline>
 					</svg>
 				</div>
-				<h3>One script tag</h3>
-				<p>Import once. Every component self-registers. No build step, no bundler config, no peer dependencies to reconcile.</p>
+				<h3>{ i18n.T(ctx, "home.swc.one_script.title") }</h3>
+				<p>{ i18n.T(ctx, "home.swc.one_script.desc") }</p>
 			</div>
 			<div class="swc-principle">
 				<div class="swc-principle-icon" aria-hidden="true">
@@ -368,8 +346,8 @@ templ Home() {
 						<path d="M8 21h8M12 17v4"></path>
 					</svg>
 				</div>
-				<h3>Framework agnostic</h3>
-				<p>Built on the W3C Custom Elements standard. React, Vue, Angular, Svelte, and server-rendered HTML all treat them identically.</p>
+				<h3>{ i18n.T(ctx, "home.swc.agnostic.title") }</h3>
+				<p>{ i18n.T(ctx, "home.swc.agnostic.desc") }</p>
 			</div>
 			<div class="swc-principle">
 				<div class="swc-principle-icon" aria-hidden="true">
@@ -378,8 +356,8 @@ templ Home() {
 						<path d="m9 12 2 2 4-4"></path>
 					</svg>
 				</div>
-				<h3>Secure by default</h3>
-				<p>CSRF injection, XSS sanitization, input validation, and audit logging are active from the first render. No flags to set.</p>
+				<h3>{ i18n.T(ctx, "home.swc.secure.title") }</h3>
+				<p>{ i18n.T(ctx, "home.swc.secure.desc") }</p>
 			</div>
 			<div class="swc-principle">
 				<div class="swc-principle-icon" aria-hidden="true">
@@ -388,8 +366,8 @@ templ Home() {
 						<path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path>
 					</svg>
 				</div>
-				<h3>Progressive enhancement</h3>
-				<p>Server renders native HTML fallbacks. The component upgrades on connect — forms submit correctly with or without JavaScript.</p>
+				<h3>{ i18n.T(ctx, "home.swc.progressive.title") }</h3>
+				<p>{ i18n.T(ctx, "home.swc.progressive.desc") }</p>
 			</div>
 		</div>
 
@@ -473,7 +451,7 @@ func (h *Handlers) Register(
 
 		<!-- Framework strip — condensed -->
 		<div class="swc-frameworks">
-			<p class="swc-frameworks-label">Works in every environment</p>
+			<p class="swc-frameworks-label">{ i18n.T(ctx, "home.swc.frameworks_label") }</p>
 			<div class="swc-frameworks-grid">
 				<span class="swc-framework-badge">Vanilla HTML</span>
 				<span class="swc-framework-badge">React</span>
@@ -497,13 +475,9 @@ func (h *Handlers) Register(
 	<div class="container">
 		<div class="home-telemetry-inner" data-reveal-stagger>
 			<div class="home-telemetry-content">
-				<span class="home-telemetry-badge">Built-in Behavioral Intelligence</span>
-				<h2>Bot Detection Without<br/><em>the Vendor Tax</em></h2>
-				<p>
-					<code>&lt;secure-telemetry-provider&gt;</code> collects HMAC-signed behavioral signals
-					on every form submission. No third-party SDKs. No CAPTCHA friction.
-					No per-transaction fees. Raw signals your backend owns and controls.
-				</p>
+				<span class="home-telemetry-badge">{ i18n.T(ctx, "home.tel.badge") }</span>
+				<h2>{ i18n.T(ctx, "home.tel.title") }<br/><em>{ i18n.T(ctx, "home.tel.title_em") }</em></h2>
+				<p>{ i18n.T(ctx, "home.tel.desc") }</p>
 				<ul class="home-telemetry-differentiators">
 					<li>Webdriver, headless browser, and DevTools detection</li>
 					<li>DOM mutation and script injection monitoring</li>
@@ -511,7 +485,7 @@ func (h *Handlers) Register(
 					<li>HMAC-SHA-256 signed — forgery raises the cost of attack</li>
 					<li>All data stays on your servers — zero third-party sharing</li>
 				</ul>
-				<a href="/telemetry" class="btn btn-primary">See how it works</a>
+				<a href="/telemetry" class="btn btn-primary">{ i18n.T(ctx, "home.tel.cta") }</a>
 			</div>
 			<div class="home-telemetry-panel" aria-hidden="true">
 				<div class="home-telemetry-panel-header">
@@ -576,11 +550,9 @@ func (h *Handlers) Register(
 <section class="theming-section">
 	<div class="container">
 		<div class="section-header section-header--compact">
-			<p class="section-eyebrow">Theming</p>
-			<h2 class="section-title">Complete Theming Control</h2>
-			<p class="section-description">
-				CSS custom properties as design tokens. Override globally, per component, or per instance. Five built-in presets — or build your own.
-			</p>
+			<p class="section-eyebrow">{ i18n.T(ctx, "home.theme.eyebrow") }</p>
+			<h2 class="section-title">{ i18n.T(ctx, "home.theme.title") }</h2>
+			<p class="section-description">{ i18n.T(ctx, "home.theme.desc") }</p>
 		</div>
 
 		<div class="home-theme-showcase reveal">
@@ -654,7 +626,7 @@ func (h *Handlers) Register(
 		</div>
 
 		<div class="home-theming-cta">
-			<a href="/theming" class="btn btn-secondary">Explore full theming guide &#8594;</a>
+			<a href="/theming" class="btn btn-secondary">{ i18n.T(ctx, "home.theme.cta") } →</a>
 		</div>
 	</div>
 </section>
@@ -670,11 +642,11 @@ if (!reduceMotion) {
   const stripEl = document.querySelector('.stats-strip');
 
   const GLYPHS   = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&0123456789';
-  const SEGMENTS = [
-    { text: 'Security-hardened', tag: 'span' },
-    { text: 'components.',       tag: 'span' },
-    { text: 'One tag. No config.', tag: 'em'  },
-  ];
+  // Read segments from DOM — language-agnostic
+  const SEGMENTS = [...titleEl.querySelectorAll('span, em')].map(el => ({
+    text: el.textContent,
+    tag: el.tagName.toLowerCase(),
+  }));
 
   if (titleEl) {
     // Suppress CSS entrance before it fires

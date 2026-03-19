@@ -1,5 +1,6 @@
 package pages
 
+import "secure-ui-showcase-go/internal/i18n"
 import "secure-ui-showcase-go/internal/templates"
 
 templ Documentation() {
@@ -7,20 +8,14 @@ templ Documentation() {
 		@templates.DocsIndexJsonLDScript()
 		<div class="docs-container">
 			<header class="docs-header">
-				<h1 class="docs-title">Documentation</h1>
-				<p class="docs-subtitle">
-					Complete reference for Secure-UI web components. Security-first form elements
-					with built-in validation, XSS prevention, and audit logging.
-				</p>
+				<h1 class="docs-title">{ i18n.T(ctx, "docs.title") }</h1>
+				<p class="docs-subtitle">{ i18n.T(ctx, "docs.subtitle") }</p>
 			</header>
 
 			<!-- Quick Start Section -->
 			<section class="docs-section">
-				<h2 class="docs-section-title">Quick Start</h2>
-				<p class="docs-text">
-					Add Secure-UI components to your project by importing the component library.
-					Components self-register and are immediately available for use.
-				</p>
+				<h2 class="docs-section-title">{ i18n.T(ctx, "docs.qs.title") }</h2>
+				<p class="docs-text">{ i18n.T(ctx, "docs.qs.desc") }</p>
 
 				<div class="docs-code-block">
 					<div class="docs-code-header">
@@ -79,48 +74,36 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 
 			<!-- Security Tiers Section -->
 			<section class="docs-section">
-				<h2 class="docs-section-title">Security Tiers</h2>
-				<p class="docs-text">
-					Every component supports four security tiers that control validation strictness,
-					visual indicators, and security features. Choose the appropriate tier based on
-					the sensitivity of the data being collected.
-				</p>
+				<h2 class="docs-section-title">{ i18n.T(ctx, "docs.tiers.title") }</h2>
+				<p class="docs-text">{ i18n.T(ctx, "docs.tiers.desc") }</p>
 
 				<div class="docs-tier-grid">
 					<div class="docs-tier-card docs-tier-card--public">
 						<div class="docs-tier-card-title">
 							<span class="docs-tier-badge docs-tier-badge--public">Public</span>
 						</div>
-						<div class="docs-tier-card-description">
-							Standard security for non-sensitive data. Basic validation, autocomplete allowed.
-						</div>
+						<div class="docs-tier-card-description">{ i18n.T(ctx, "docs.tier.public.desc") }</div>
 					</div>
 
 					<div class="docs-tier-card docs-tier-card--authenticated">
 						<div class="docs-tier-card-title">
 							<span class="docs-tier-badge docs-tier-badge--authenticated">Authenticated</span>
 						</div>
-						<div class="docs-tier-card-description">
-							For logged-in users. Enhanced validation, session-aware features.
-						</div>
+						<div class="docs-tier-card-description">{ i18n.T(ctx, "docs.tier.authenticated.desc") }</div>
 					</div>
 
 					<div class="docs-tier-card docs-tier-card--sensitive">
 						<div class="docs-tier-card-title">
 							<span class="docs-tier-badge docs-tier-badge--sensitive">Sensitive</span>
 						</div>
-						<div class="docs-tier-card-description">
-							PII and personal data. Masking, no autocomplete, rate limiting.
-						</div>
+						<div class="docs-tier-card-description">{ i18n.T(ctx, "docs.tier.sensitive.desc") }</div>
 					</div>
 
 					<div class="docs-tier-card docs-tier-card--critical">
 						<div class="docs-tier-card-title">
 							<span class="docs-tier-badge docs-tier-badge--critical">Critical</span>
 						</div>
-						<div class="docs-tier-card-description">
-							Passwords, financial data. Maximum security, full audit logging.
-						</div>
+						<div class="docs-tier-card-description">{ i18n.T(ctx, "docs.tier.critical.desc") }</div>
 					</div>
 				</div>
 
@@ -144,22 +127,17 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 
 			<!-- Components Section -->
 			<section class="docs-section">
-				<h2 class="docs-section-title">Components</h2>
-				<p class="docs-text">
-					Nine security-first web components. Each ships with XSS prevention, validation,
-					and audit logging enabled by default — security is opt-out, not opt-in.
-				</p>
+				<h2 class="docs-section-title">{ i18n.T(ctx, "docs.components.title") }</h2>
+				<p class="docs-text">{ i18n.T(ctx, "docs.components.desc") }</p>
 
-				<h3 class="docs-section-subtitle">Form Inputs</h3>
+				<h3 class="docs-section-subtitle">{ i18n.T(ctx, "docs.components.form_inputs") }</h3>
 				<nav class="docs-nav" aria-label="Form input components">
 					<a href="/documentation/secure-input" class="docs-nav-card">
 						<div class="docs-nav-card-icon">
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M8 12h8M12 9v6"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-input&gt;</div>
-						<div class="docs-nav-card-description">
-							Text, email, password, and number inputs with XSS prevention and per-tier validation rules.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.input.desc") }</div>
 					</a>
 
 					<a href="/documentation/secure-select" class="docs-nav-card">
@@ -167,9 +145,7 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M8 12h5"/><polyline points="15 10 17 12 15 14"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-select&gt;</div>
-						<div class="docs-nav-card-description">
-							Dropdown select with allowlist-only option validation and injection prevention.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.select.desc") }</div>
 					</a>
 
 					<a href="/documentation/secure-textarea" class="docs-nav-card">
@@ -177,9 +153,7 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-textarea&gt;</div>
-						<div class="docs-nav-card-description">
-							Multi-line text input with content sanitization, character limits, and live count.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.textarea.desc") }</div>
 					</a>
 
 					<a href="/documentation/secure-datetime" class="docs-nav-card">
@@ -187,9 +161,7 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-datetime&gt;</div>
-						<div class="docs-nav-card-description">
-							Date, time, and datetime-local inputs with timezone handling and range validation.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.datetime.desc") }</div>
 					</a>
 
 					<a href="/documentation/secure-file-upload" class="docs-nav-card">
@@ -197,9 +169,7 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-file-upload&gt;</div>
-						<div class="docs-nav-card-description">
-							File upload with MIME allowlist, size limits, magic-number verification, and scan hook.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.upload.desc") }</div>
 					</a>
 
 					<a href="/documentation/secure-card" class="docs-nav-card">
@@ -207,22 +177,18 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><path d="M6 15h2M12 15h4"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-card&gt;</div>
-						<div class="docs-nav-card-description">
-							Payment card input with Luhn validation, card type detection, PAN masking, and 3D flip preview. Tier locked to Critical.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.payment.desc") }</div>
 					</a>
 				</nav>
 
-				<h3 class="docs-section-subtitle">Orchestration</h3>
+				<h3 class="docs-section-subtitle">{ i18n.T(ctx, "docs.components.orchestration") }</h3>
 				<nav class="docs-nav" aria-label="Orchestration components">
 					<a href="/documentation/secure-form" class="docs-nav-card">
 						<div class="docs-nav-card-icon">
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-form&gt;</div>
-						<div class="docs-nav-card-description">
-							Form wrapper with automatic CSRF token injection, coordinated validation, and submission lifecycle events.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.form.desc") }</div>
 					</a>
 
 					<a href="/documentation/secure-telemetry-provider" class="docs-nav-card">
@@ -230,22 +196,18 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="M12 8v4M12 16h.01"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-telemetry-provider&gt;</div>
-						<div class="docs-nav-card-description">
-							Wraps a form to collect environmental signals and attach an HMAC-SHA-256 signed envelope to every submission.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.telemetry.desc") }</div>
 					</a>
 				</nav>
 
-				<h3 class="docs-section-subtitle">Display</h3>
+				<h3 class="docs-section-subtitle">{ i18n.T(ctx, "docs.components.display") }</h3>
 				<nav class="docs-nav" aria-label="Display components">
 					<a href="/documentation/secure-table" class="docs-nav-card">
 						<div class="docs-nav-card-icon">
 							<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18"/></svg>
 						</div>
 						<div class="docs-nav-card-title">&lt;secure-table&gt;</div>
-						<div class="docs-nav-card-description">
-							Data table with sorting, filtering, pagination, and XSS-safe cell rendering.
-						</div>
+						<div class="docs-nav-card-description">{ i18n.T(ctx, "docs.card.table.desc") }</div>
 					</a>
 				</nav>
 			</section>

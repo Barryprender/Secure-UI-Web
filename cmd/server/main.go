@@ -12,6 +12,7 @@ import (
 
 	"secure-ui-showcase-go/internal/database"
 	"secure-ui-showcase-go/internal/handlers"
+	"secure-ui-showcase-go/internal/i18n"
 	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/models"
 	"secure-ui-showcase-go/internal/services"
@@ -201,6 +202,9 @@ func main() {
 	))
 
 
+	// Language switcher — sets lang cookie and redirects; no CSRF needed
+	mux.HandleFunc("/lang", h.SetLanguage)
+
 	// SEO routes — no auth, no CSRF, served directly
 	mux.HandleFunc("/robots.txt", h.RobotsTxt)
 	mux.HandleFunc("/sitemap.xml", h.Sitemap)
@@ -240,11 +244,13 @@ func main() {
 	})))
 
 	// Apply middleware chain
-	// Order matters: Security headers -> Site URL -> Layout CSRF -> Rate limiting -> Routes
+	// Order matters: Security headers -> Site URL -> Layout CSRF -> Locale -> Rate limiting -> Routes
 	handler := middleware.SecurityHeadersWithHSTS(secureCookie)(
 		middleware.InjectSiteURL(secureCookie)(
 			middleware.InjectLayoutCSRF(csrfStore)(
-				middleware.RateLimit(rateLimiter, h.RenderErrorPage)(mux),
+				i18n.Middleware(
+					middleware.RateLimit(rateLimiter, h.RenderErrorPage)(mux),
+				),
 			),
 		),
 	)

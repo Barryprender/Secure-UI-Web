@@ -1,5 +1,7 @@
 package partials
 
+import "secure-ui-showcase-go/internal/i18n"
+
 templ Footer() {
 	<footer class="site-footer">
 		<div class="container">
@@ -7,21 +9,21 @@ templ Footer() {
 				<div class="footer-section">
 					<h3 class="footer-title">Secure-UI</h3>
 					<p class="footer-description">
-						Build secure web applications without compromise. Zero dependencies, 100% built-in security.
+						{ i18n.T(ctx, "footer.tagline") }
 					</p>
 				</div>
 
 				<div class="footer-section">
-					<h4 class="footer-heading">Resources</h4>
+					<h4 class="footer-heading">{ i18n.T(ctx, "footer.resources") }</h4>
 					<ul class="footer-links">
-						<li><a href="/documentation" class="footer-link">Documentation</a></li>
-						<li><a href="/forms" class="footer-link">Form Components</a></li>
-						<li><a href="/registration" class="footer-link">Registration Demo</a></li>
+						<li><a href="/documentation" class="footer-link">{ i18n.T(ctx, "footer.docs") }</a></li>
+						<li><a href="/forms" class="footer-link">{ i18n.T(ctx, "footer.forms") }</a></li>
+						<li><a href="/registration" class="footer-link">{ i18n.T(ctx, "footer.reg_demo") }</a></li>
 					</ul>
 				</div>
 
 				<div class="footer-section">
-					<h4 class="footer-heading">Community</h4>
+					<h4 class="footer-heading">{ i18n.T(ctx, "footer.community") }</h4>
 					<ul class="footer-links">
 						<li><a href="https://github.com/Barryprender/Secure-UI" class="footer-link" target="_blank" rel="noopener">GitHub</a></li>
 						<li><a href="https://www.npmjs.com/package/secure-ui-components" class="footer-link" target="_blank" rel="noopener">npm</a></li>
@@ -29,7 +31,7 @@ templ Footer() {
 				</div>
 
 				<div class="footer-section">
-					<h4 class="footer-heading">Legal</h4>
+					<h4 class="footer-heading">{ i18n.T(ctx, "footer.legal") }</h4>
 					<ul class="footer-links">
 						<li><a href="https://github.com/Barryprender/Secure-UI/blob/main/LICENSE" class="footer-link" target="_blank" rel="noopener">MIT License</a></li>
 					</ul>
@@ -38,7 +40,7 @@ templ Footer() {
 
 			<div class="footer-bottom">
 				<p class="footer-copyright">
-					&copy; 2025 Secure-UI. All rights reserved. Built with zero dependencies.
+					{ i18n.T(ctx, "footer.copyright") }
 				</p>
 			</div>
 		</div>

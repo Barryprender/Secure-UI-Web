@@ -1,6 +1,9 @@
 package partials
 
-import "secure-ui-showcase-go/internal/middleware"
+import (
+	"secure-ui-showcase-go/internal/i18n"
+	"secure-ui-showcase-go/internal/middleware"
+)
 
 templ Navbar(isLoggedIn bool) {
 	<header class="top-nav">
@@ -20,7 +23,7 @@ templ Navbar(isLoggedIn bool) {
 				<input type="checkbox" id="nav-toggle" class="nav-toggle-input" aria-hidden="true"/>
 
 				<!-- Hamburger button: visible on mobile only -->
-				<label for="nav-toggle" class="nav-toggle-btn" aria-label="Open navigation">
+				<label for="nav-toggle" class="nav-toggle-btn" aria-label={ i18n.T(ctx, "nav.open") }>
 					<span class="bar"></span>
 					<span class="bar"></span>
 					<span class="bar"></span>
@@ -31,7 +34,7 @@ templ Navbar(isLoggedIn bool) {
 					  Desktop — flex row, inline with logo
 					  Mobile  — fixed left drawer, slides in on toggle
 				-->
-				<nav class="nav-panel" aria-label="Main navigation">
+				<nav class="nav-panel" aria-label={ i18n.T(ctx, "nav.open") }>
 					<!-- Mobile drawer header (hidden on desktop) -->
 					<div class="nav-panel-header">
 						<span class="nav-panel-brand">
@@ -41,7 +44,7 @@ templ Navbar(isLoggedIn bool) {
 							</svg>
 							Secure-UI
 						</span>
-						<label for="nav-toggle" class="nav-panel-close" aria-label="Close navigation">
+						<label for="nav-toggle" class="nav-panel-close" aria-label={ i18n.T(ctx, "nav.close") }>
 							<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
 								<path d="M4 4l12 12M16 4L4 16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
 							</svg>
@@ -49,15 +52,15 @@ templ Navbar(isLoggedIn bool) {
 					</div>
 
 					<ul class="nav-links">
-						<li><a href="/" class="nav-link">Home</a></li>
-						<li><a href="/forms" class="nav-link">Forms</a></li>
+						<li><a href="/" class="nav-link">{ i18n.T(ctx, "nav.home") }</a></li>
+						<li><a href="/forms" class="nav-link">{ i18n.T(ctx, "nav.forms") }</a></li>
 						if isLoggedIn {
-							<li><a href="/dashboard" class="nav-link">Dashboard</a></li>
-							<li><a href="/table" class="nav-link">Table</a></li>
+							<li><a href="/dashboard" class="nav-link">{ i18n.T(ctx, "nav.dashboard") }</a></li>
+							<li><a href="/table" class="nav-link">{ i18n.T(ctx, "nav.table") }</a></li>
 						}
-						<li><a href="/registration" class="nav-link">Registration</a></li>
+						<li><a href="/registration" class="nav-link">{ i18n.T(ctx, "nav.registration") }</a></li>
 						<li class="nav-dropdown">
-							<a href="/components" class="nav-link">Components</a>
+							<a href="/components" class="nav-link">{ i18n.T(ctx, "nav.components") }</a>
 							<ul class="nav-dropdown-menu">
 								<li><a href="/components/secure-input" class="nav-dropdown-link">secure-input</a></li>
 								<li><a href="/components/secure-select" class="nav-dropdown-link">secure-select</a></li>
@@ -66,24 +69,35 @@ templ Navbar(isLoggedIn bool) {
 								<li><a href="/components/secure-file-upload" class="nav-dropdown-link">secure-file-upload</a></li>
 								<li><a href="/components/secure-datetime" class="nav-dropdown-link">secure-datetime</a></li>
 								<li><a href="/components/secure-table" class="nav-dropdown-link">secure-table</a></li>
-							<li><a href="/components/secure-card" class="nav-dropdown-link">secure-card</a></li>
-							<li><a href="/components/secure-telemetry-provider" class="nav-dropdown-link">secure-telemetry-provider</a></li>
+								<li><a href="/components/secure-card" class="nav-dropdown-link">secure-card</a></li>
+								<li><a href="/components/secure-telemetry-provider" class="nav-dropdown-link">secure-telemetry-provider</a></li>
 							</ul>
 						</li>
-						<li><a href="/documentation" class="nav-link">Docs</a></li>
-					<li><a href="/theming" class="nav-link">Theming</a></li>
-					<li><a href="/telemetry" class="nav-link">Telemetry</a></li>
+						<li><a href="/documentation" class="nav-link">{ i18n.T(ctx, "nav.docs") }</a></li>
+						<li><a href="/theming" class="nav-link">{ i18n.T(ctx, "nav.theming") }</a></li>
+						<li><a href="/telemetry" class="nav-link">{ i18n.T(ctx, "nav.telemetry") }</a></li>
 					</ul>
 
 					<div class="nav-auth">
+						<!-- Language switcher -->
+						<div class="lang-switcher" role="group" aria-label={ i18n.T(ctx, "lang.label") }>
+							for _, locale := range i18n.Supported {
+								<a
+									href={ templ.SafeURL("/lang?l=" + string(locale)) }
+									class={ "lang-btn", templ.KV("lang-btn--active", i18n.LocaleFromContext(ctx) == locale) }
+									hreflang={ string(locale) }
+								>{ i18n.Label[locale] }</a>
+							}
+						</div>
+
 						if isLoggedIn {
-							<a href="/profile" class="nav-link">Profile</a>
+							<a href="/profile" class="nav-link">{ i18n.T(ctx, "nav.profile") }</a>
 							<form method="POST" action="/logout" class="nav-logout-form">
 								<input type="hidden" name="csrf_token" value={ middleware.LayoutCSRFFromContext(ctx) }/>
-								<button type="submit" class="btn btn-sm btn-secondary">Logout</button>
+								<button type="submit" class="btn btn-sm btn-secondary">{ i18n.T(ctx, "nav.logout") }</button>
 							</form>
 						} else {
-							<a href="/login" class="btn btn-sm btn-accent">Sign In</a>
+							<a href="/login" class="btn btn-sm btn-accent">{ i18n.T(ctx, "nav.signin") }</a>
 						}
 					</div>
 				</nav>

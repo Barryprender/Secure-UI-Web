@@ -374,7 +374,8 @@
 
     .nav-link {
         display: block;
-        padding: 0.65rem var(--space-md);
+        padding: 0.75rem var(--space-md);
+        min-height: 44px;
         border-radius: 0;
         font-size: 0.9375rem;
         white-space: normal;
@@ -452,6 +453,47 @@
 }
 
 /* ============================================================
+   NARROW VIEWPORT (≤ 360px) — prevent nav panel overflow
+   ============================================================ */
+
+@media (max-width: 360px) {
+    .nav-panel {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* ============================================================
+   LANGUAGE SWITCHER
+   ============================================================ */
+
+.lang-switcher {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-sm);
+}
+
+.lang-btn {
+    padding: 0.2rem 0.45rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    font-family: var(--font-mono);
+    letter-spacing: 0.03em;
+    color: var(--text-secondary);
+    text-decoration: none;
+    border-radius: calc(var(--radius-sm) - 2px);
+    transition: color 0.15s ease, background 0.15s ease;
+    line-height: 1.4;
+}
+
+.lang-btn:hover { color: var(--text-primary); background: var(--bg-elevated); }
+.lang-btn--active { color: var(--accent-primary); background: color-mix(in oklch, var(--accent-primary) 10%, transparent); }
+
+/* ============================================================
    REDUCED MOTION
    ============================================================ */
 
@@ -460,7 +502,8 @@
     .nav-dropdown > .nav-link::after,
     .nav-dropdown-menu, .nav-dropdown-link,
     .nav-toggle-btn, .bar, .nav-panel,
-    .nav-overlay, .nav-panel-close {
+    .nav-overlay, .nav-panel-close,
+    .lang-btn {
         transition: none;
     }
 }

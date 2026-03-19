@@ -1,13 +1,14 @@
 package templates
 
 import (
+	"secure-ui-showcase-go/internal/i18n"
 	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/templates/partials"
 )
 
 templ Layout(title string, description string) {
 	<!DOCTYPE html>
-	<html lang="en">
+	<html lang={ string(i18n.LocaleFromContext(ctx)) }>
 		@Head(title, description)
 		<body>
 			@partials.Navbar(middleware.UserFromContext(ctx) != nil)

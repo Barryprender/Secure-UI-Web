@@ -1,6 +1,7 @@
 package pages
 
 import (
+	"secure-ui-showcase-go/internal/i18n"
 	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/templates"
 )
@@ -11,27 +12,24 @@ templ ComponentsIndex() {
 		<div class="components-index-page">
 			<!-- Hero -->
 			<header class="ci-hero">
-				<span class="ci-eyebrow">Web Component Library</span>
-				<h1 class="ci-title">Nine components.<br/>Zero trust.</h1>
-				<p class="ci-subtitle">
-					Security-hardened Custom Elements with XSS prevention, CSRF protection,
-					and audit logging on by default. Any framework. Any stack.
-				</p>
+				<span class="ci-eyebrow">{ i18n.T(ctx, "ci.eyebrow") }</span>
+				<h1 class="ci-title">{ i18n.T(ctx, "ci.title_line1") }<br/>{ i18n.T(ctx, "ci.title_line2") }</h1>
+				<p class="ci-subtitle">{ i18n.T(ctx, "ci.subtitle") }</p>
 				<div class="ci-stats">
 					<div class="ci-stat">
 						<span class="ci-stat-num" data-target="9">9</span>
-						<span class="ci-stat-label">Components</span>
+						<span class="ci-stat-label">{ i18n.T(ctx, "ci.stat.components") }</span>
 					</div>
 					<div class="ci-stat">
 						<span class="ci-stat-num" data-target="4">4</span>
-						<span class="ci-stat-label">Security Tiers</span>
+						<span class="ci-stat-label">{ i18n.T(ctx, "ci.stat.tiers") }</span>
 					</div>
 					<div class="ci-stat">
 						<span class="ci-stat-num">0</span>
-						<span class="ci-stat-label">Dependencies</span>
+						<span class="ci-stat-label">{ i18n.T(ctx, "ci.stat.deps") }</span>
 					</div>
 					<div class="ci-stat">
-						<span class="ci-stat-badge">Framework Agnostic</span>
+						<span class="ci-stat-badge">{ i18n.T(ctx, "ci.stat.badge") }</span>
 					</div>
 				</div>
 			</header>
@@ -47,7 +45,7 @@ templ ComponentsIndex() {
 						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-input&gt;</span>
-					<p class="component-card-desc">Security-hardened text input with XSS prevention, type validation, and audit logging.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.input.desc") }</p>
 					<ul class="component-card-features">
 						<li>All HTML5 input types</li>
 						<li>Security tier enforcement</li>
@@ -68,7 +66,7 @@ templ ComponentsIndex() {
 						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-select&gt;</span>
-					<p class="component-card-desc">Dropdown select with option injection prevention and value allowlist enforcement.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.select.desc") }</p>
 					<ul class="component-card-features">
 						<li>Option injection prevention</li>
 						<li>Value allowlist enforcement</li>
@@ -88,7 +86,7 @@ templ ComponentsIndex() {
 						<div class="cp-ta-count">142 / 500</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-textarea&gt;</span>
-					<p class="component-card-desc">Multi-line text area with content sanitization and paste attack prevention.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.textarea.desc") }</p>
 					<ul class="component-card-features">
 						<li>Content sanitization on input</li>
 						<li>Paste sanitization</li>
@@ -113,7 +111,7 @@ templ ComponentsIndex() {
 						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-form&gt;</span>
-					<p class="component-card-desc">Form wrapper with automatic CSRF token injection and submission audit logging.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.form.desc") }</p>
 					<ul class="component-card-features">
 						<li>CSRF token injection</li>
 						<li>Form action enforcement</li>
@@ -134,7 +132,7 @@ templ ComponentsIndex() {
 						<div class="cp-upload-meta">MIME &middot; SIZE &middot; MAGIC</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-file-upload&gt;</span>
-					<p class="component-card-desc">File upload with MIME type validation, magic number verification, and size enforcement.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.upload.desc") }</p>
 					<ul class="component-card-features">
 						<li>MIME type validation</li>
 						<li>Magic number verification</li>
@@ -158,7 +156,7 @@ templ ComponentsIndex() {
 						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-datetime&gt;</span>
-					<p class="component-card-desc">Date and time picker with input sanitization, range enforcement, and timezone handling.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.datetime.desc") }</p>
 					<ul class="component-card-features">
 						<li>Range enforcement (min/max)</li>
 						<li>Timezone normalization</li>
@@ -183,7 +181,7 @@ templ ComponentsIndex() {
 						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-table&gt;</span>
-					<p class="component-card-desc">Data table with XSS-safe rendering, sort/filter sanitization, and column injection prevention.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.table.desc") }</p>
 					<ul class="component-card-features">
 						<li>XSS-safe data rendering</li>
 						<li>Sortable and filterable</li>
@@ -207,7 +205,7 @@ templ ComponentsIndex() {
 						</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-card&gt;</span>
-					<p class="component-card-desc">Payment card input with Luhn validation, 3D preview, card type detection, and PAN/CVC protection.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.payment.desc") }</p>
 					<ul class="component-card-features">
 						<li>Full PAN never exposed</li>
 						<li>Luhn + card type validation</li>
@@ -238,7 +236,7 @@ templ ComponentsIndex() {
 						<div class="cp-tel-badge">HMAC-SHA-256</div>
 					</div>
 					<span class="component-card-tag">&lt;secure-telemetry-provider&gt;</span>
-					<p class="component-card-desc">Wraps a form to collect bot-detection signals and attach a HMAC-signed envelope to every submission.</p>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.telemetry.desc") }</p>
 					<ul class="component-card-features">
 						<li>Headless / webdriver detection</li>
 						<li>HMAC-SHA-256 signed signals</li>
@@ -250,12 +248,8 @@ templ ComponentsIndex() {
 			<!-- Framework section -->
 			<section class="ci-framework">
 				<div class="ci-framework-inner">
-					<h2 class="ci-framework-title">Works everywhere.</h2>
-					<p class="ci-framework-desc">
-						Built on the W3C Custom Elements v1 specification — real HTML elements with no virtual DOM,
-						no framework runtime, no build step. Security enforcement lives inside the Shadow DOM
-						and cannot be bypassed by the host application.
-					</p>
+					<h2 class="ci-framework-title">{ i18n.T(ctx, "ci.fw.title") }</h2>
+					<p class="ci-framework-desc">{ i18n.T(ctx, "ci.fw.desc") }</p>
 					<div class="ci-framework-tags">
 						<span class="ci-fw-tag">HTML</span>
 						<span class="ci-fw-tag">React</span>

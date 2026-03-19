@@ -280,9 +280,31 @@ secure-file-upload {
   align-items: stretch;
 }
 
+/* Grid children must be allowed to shrink below their content's intrinsic
+   minimum width — without this, secure-card's 340px card-scene forces the
+   grid column wider than the viewport on mobile. */
+.demo-form-col,
+.demo-response-col {
+  min-width: 0;
+  overflow: hidden;
+}
+
 @media (max-width: 900px) {
   .demo-layout {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Constrain secure-card visual width on narrow screens */
+@media (max-width: 480px) {
+  secure-card {
+    --secure-card-width: min(300px, 100%);
+  }
+}
+
+@media (max-width: 360px) {
+  secure-card {
+    --secure-card-width: min(260px, 100%);
   }
 }
 
@@ -772,6 +794,42 @@ secure-file-upload {
   background: transparent;
   border: none;
   padding: 0;
+}
+
+/* ── Responsive ───────────────────────────────────────────── */
+
+@media (max-width: 480px) {
+  .demo-section {
+    margin-bottom: var(--space-2xl);
+    padding-bottom: var(--space-2xl);
+  }
+
+  .demo-telemetry-section {
+    padding-top: var(--space-xl);
+    margin-top: var(--space-xl);
+  }
+
+  .security-info strong {
+    min-width: 0;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .security-info li {
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .form-section h3 { font-size: 1.125rem; }
+  .form-header h2  { font-size: 1.25rem; }
+}
+
+@media (max-width: 360px) {
+  .demo-layout {
+    gap: var(--space-md);
+  }
+
+  .demo-section-title { font-size: 1.25rem; }
 }
 
 /* ── Reduced motion ───────────────────────────────────────── */

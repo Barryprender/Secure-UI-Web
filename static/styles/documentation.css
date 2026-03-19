@@ -484,6 +484,16 @@
     .docs-api-table   { display: block; overflow-x: auto; }
 }
 
+@media (max-width: 480px) {
+    .docs-container   { padding: var(--space-md) var(--space-sm); }
+    .docs-title       { font-size: 1.5rem; }
+    .docs-subtitle    { font-size: 0.9375rem; }
+    .docs-section-title { font-size: 1.25rem; }
+    .docs-tier-card   { padding: var(--space-md); }
+    .docs-nav-card    { padding: var(--space-md); }
+    .docs-quick-start { padding: var(--space-md); }
+}
+
 @media (prefers-reduced-motion: reduce) {
     .docs-nav-card { transition: none; }
 }

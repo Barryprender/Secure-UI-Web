@@ -1,5 +1,6 @@
 package pages
 
+import "secure-ui-showcase-go/internal/i18n"
 import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
@@ -18,24 +19,18 @@ templ Registration(csrfToken string) {
 						<span class="auth-brand-logo-text">Secure-UI</span>
 					</a>
 
-					<span class="auth-brand-eyebrow">Secure Registration</span>
+					<span class="auth-brand-eyebrow">{ i18n.T(ctx, "reg.eyebrow") }</span>
 
-					<h2 class="auth-brand-heading">
-						Built for developers<br/>who <span>care about security</span>.
-					</h2>
+					<h2 class="auth-brand-heading">{ i18n.T(ctx, "reg.brand_heading") }</h2>
 
-					<p class="auth-brand-desc">
-						Registration demonstrates server-side input validation,
-						constraint enforcement, and secure credential storage with
-						no client-side secrets.
-					</p>
+					<p class="auth-brand-desc">{ i18n.T(ctx, "reg.brand_desc") }</p>
 
 					<ul class="auth-brand-features">
-						<li>Server-side validation on every field</li>
-						<li>Password hashed with bcrypt — never stored in plain text</li>
-						<li>Input sanitised with bluemonday strict policy</li>
-						<li>CSRF token required on every form submission</li>
-						<li>Duplicate email detection without timing attacks</li>
+						<li>{ i18n.T(ctx, "reg.feat1") }</li>
+						<li>{ i18n.T(ctx, "reg.feat2") }</li>
+						<li>{ i18n.T(ctx, "reg.feat3") }</li>
+						<li>{ i18n.T(ctx, "reg.feat4") }</li>
+						<li>{ i18n.T(ctx, "reg.feat5") }</li>
 					</ul>
 
 					<div class="auth-brand-terminal">
@@ -62,18 +57,18 @@ templ Registration(csrfToken string) {
 			<main class="auth-form-panel">
 				<div class="auth-form-inner">
 					<header class="auth-form-header">
-						<h1 class="auth-form-title">Create account</h1>
-						<p class="auth-form-subtitle">Try the secure registration flow with real-time validation.</p>
+						<h1 class="auth-form-title">{ i18n.T(ctx, "reg.title") }</h1>
+						<p class="auth-form-subtitle">{ i18n.T(ctx, "reg.subtitle") }</p>
 					</header>
 
 					<div class="auth-form-body">
 						@components.SecureFormWrapper("POST", "/register", csrfToken, "critical", "registration-form") {
-							@components.SecureInputFieldWithLength("First Name", "first_name", "text", "", "authenticated", "", true, 1, 50)
-							@components.SecureInputFieldWithLength("Last Name", "last_name", "text", "", "authenticated", "", true, 1, 50)
+							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.first_name"), "first_name", "text", "", "authenticated", "", true, 1, 50)
+							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.last_name"), "last_name", "text", "", "authenticated", "", true, 1, 50)
 
-							@components.SecureInputField("Email", "email", "email", "", "sensitive", "", true)
-							@components.SecureInputFieldWithLength("Password", "password", "password", "", "critical", "", true, 8, 0)
-							@components.SecureInputFieldWithLength("Confirm Password", "confirm_password", "password", "", "critical", "", true, 8, 0)
+							@components.SecureInputField(i18n.T(ctx, "reg.email"), "email", "email", "", "sensitive", "", true)
+							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.password"), "password", "password", "", "critical", "", true, 8, 0)
+							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.confirm"), "confirm_password", "password", "", "critical", "", true, 8, 0)
 
 							<div class="terms-row">
 								<input
@@ -84,34 +79,31 @@ templ Registration(csrfToken string) {
 									class="terms-checkbox"
 								/>
 								<label for="terms" class="terms-label">
-									I agree to the Terms of Service and Privacy Policy
-								</label>
+{ i18n.T(ctx, "reg.terms") }</label>
 							</div>
 
 							<button type="submit" class="btn btn-primary w-full" style="margin-top: var(--space-xs);">
-								Create Account
+									{ i18n.T(ctx, "reg.submit") }
 							</button>
 						}
 					</div>
 
 					<div class="auth-divider"></div>
 
-					<p class="auth-form-footer">
-						Already have an account? <a href="/login">Sign in</a>
-					</p>
+					<p class="auth-form-footer">{ i18n.T(ctx, "reg.have_account") } <a href="/login">{ i18n.T(ctx, "reg.signin") }</a></p>
 
 					<div class="auth-security-badges">
 						<span class="auth-security-badge">
 							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-							CSRF Protected
+							{ i18n.T(ctx, "reg.csrf") }
 						</span>
 						<span class="auth-security-badge">
 							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-							Validated
+							{ i18n.T(ctx, "reg.validated") }
 						</span>
 						<span class="auth-security-badge">
 							<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-							bcrypt Hashed
+							{ i18n.T(ctx, "reg.hashed") }
 						</span>
 					</div>
 				</div>
