@@ -20,6 +20,13 @@
   grid-template-columns: 1fr 1fr;
   gap: var(--space-xl, 2rem);
   align-items: start;
+  overflow: hidden; /* contain web component content within hero bounds */
+}
+
+/* Prevent grid children from exceeding their track width (min-width: auto default) */
+.component-hero-content,
+.component-hero-demo {
+  min-width: 0;
 }
 
 .component-hero-content {
@@ -1273,10 +1280,21 @@
 @media (max-width: 768px) {
   .component-hero {
     grid-template-columns: 1fr;
+    padding: var(--space-lg, 1.5rem);
+    gap: var(--space-lg, 1.5rem);
   }
 
   .component-hero h1 {
     font-size: 1.5rem;
+  }
+
+  .component-hero-description {
+    font-size: 1rem;
+  }
+
+  .component-hero-demo {
+    padding: var(--space-md, 1rem);
+    gap: var(--space-sm, 0.75rem);
   }
 
   .components-grid {
@@ -1330,12 +1348,39 @@
 }
 
 @media (max-width: 480px) {
+  .component-hero {
+    padding: var(--space-md, 1rem);
+    gap: var(--space-md, 1rem);
+    border-radius: var(--radius-md, 8px);
+  }
+
   .component-hero h1 {
-    font-size: 1.25rem;
+    font-size: 1.125rem;
+  }
+
+  .component-hero-description {
+    font-size: 0.9375rem;
+  }
+
+  .component-hero-install pre {
+    font-size: 0.75rem;
+  }
+
+  .component-hero-demo {
+    padding: var(--space-sm, 0.75rem);
+    gap: var(--space-xs, 0.5rem);
+  }
+
+  .component-hero-demo-label {
+    font-size: 0.6875rem;
   }
 
   .components-index-header h1 {
     font-size: 1.75rem;
+  }
+
+  .configs-section-title {
+    font-size: 1.25rem;
   }
 
   .css-vars-table {
@@ -1364,6 +1409,15 @@
 }
 
 @media (max-width: 360px) {
+  .component-hero {
+    padding: var(--space-sm, 0.75rem);
+    gap: var(--space-sm, 0.75rem);
+  }
+
+  .component-hero h1 {
+    font-size: 1rem;
+  }
+
   .component-page,
   .components-index-page {
     padding: var(--space-md, 1rem) var(--space-sm, 0.5rem);
