@@ -1,0 +1,29 @@
+# Git
+.git
+.gitmodules
+
+# Dev tooling
+.air.toml
+tmp/
+bin/
+
+# Test artifacts
+*.out
+*.test
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Runtime data (never bake DB into image)
+data/
+
+# Web components — sourced from npm in the Node build stage, not the local context
+secure-ui-components/
+node_modules/
+.npm-components/
+package-lock.json

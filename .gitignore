@@ -50,3 +50,9 @@ cookies.txt
 # Python cache
 __pycache__/
 *.pyc
+
+# Web components — populated from npm via `make components`, not committed
+secure-ui-components/
+node_modules/
+.npm-components/
+package-lock.json

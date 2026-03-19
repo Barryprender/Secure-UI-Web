@@ -1,4 +1,4 @@
-.PHONY: help install generate dev build run clean fmt test download-prism
+.PHONY: help install components generate dev build run clean fmt test download-prism
 
 # Default target
 help:
@@ -15,8 +15,8 @@ help:
 	@echo "  make download-prism - Download Prism.js syntax highlighting files"
 	@echo ""
 
-# Install dependencies and required tools
-install:
+# Install all dependencies (Go tools + web components)
+install: components
 	@echo "📦 Installing Go dependencies..."
 	go mod download
 	@echo "📦 Installing templ CLI..."
@@ -25,8 +25,18 @@ install:
 	go install github.com/cosmtrek/air@latest
 	@echo "✅ Installation complete!"
 	@echo ""
-	@echo "Make sure $(go env GOPATH)/bin is in your PATH"
+	@echo "Make sure $$(go env GOPATH)/bin is in your PATH"
 	@echo "Run 'make generate' to generate templ files"
+
+# Fetch web components from npm into secure-ui-components/dist/
+# Run this after cloning or when upgrading the package version in package.json
+components:
+	@echo "📦 Installing secure-ui-components from npm..."
+	@npm install --prefix .npm-components
+	@mkdir -p secure-ui-components/dist
+	@cp -r .npm-components/node_modules/secure-ui-components/dist/. secure-ui-components/dist/
+	@rm -rf .npm-components
+	@echo "✅ Components ready at secure-ui-components/dist/"
 
 # Generate templ templates to Go code
 generate:

@@ -1,0 +1,37 @@
+# fly.toml — Secure-UI Showcase
+# Replace the app name below, or run: flyctl launch --name your-chosen-name
+
+app            = 'secure-ui-showcase'
+primary_region = 'lhr'
+
+[build]
+  dockerfile = 'Dockerfile'
+
+[env]
+  PORT          = '8080'
+  DB_PATH       = '/app/data/secure-ui.db'
+  SECURE_COOKIE = 'true'
+  BEHIND_PROXY  = 'true'
+
+[http_service]
+  internal_port       = 8080
+  force_https         = true
+  auto_stop_machines  = 'stop'
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [http_service.concurrency]
+    type       = 'connections'
+    hard_limit = 25
+    soft_limit = 20
+
+[[vm]]
+  memory   = '256mb'
+  cpu_kind = 'shared'
+  cpus     = 1
+
+# Persistent volume for SQLite database
+# Create with: flyctl volumes create secure_ui_data --region lhr --size 1
+[[mounts]]
+  source      = 'secure_ui_data'
+  destination = '/app/data'
