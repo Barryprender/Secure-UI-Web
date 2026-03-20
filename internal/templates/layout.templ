@@ -43,6 +43,8 @@ templ Head(title string, description string) {
 		if canonicalURL := middleware.CanonicalURLFromContext(ctx); canonicalURL != "" {
 			<link rel="canonical" href={ canonicalURL }/>
 		}
+		<!-- LLMs.txt — machine-readable site summary for AI agents -->
+		<link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt"/>
 		<!-- Open Graph -->
 		<meta property="og:site_name" content="Secure-UI"/>
 		<meta property="og:type" content="website"/>

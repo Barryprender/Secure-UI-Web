@@ -209,6 +209,7 @@ func main() {
 	// SEO routes — no auth, no CSRF, served directly
 	mux.HandleFunc("/robots.txt", h.RobotsTxt)
 	mux.HandleFunc("/sitemap.xml", h.Sitemap)
+	mux.HandleFunc("/llms.txt", h.LLMsTxt)
 
 	// Favicon route - direct handler with caching
 	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {

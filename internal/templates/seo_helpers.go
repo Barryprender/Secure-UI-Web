@@ -5,7 +5,7 @@ import (
 	"fmt"
 )
 
-// HomeJsonLD returns JSON-LD for the home page: Organization + SoftwareApplication.
+// HomeJsonLD returns JSON-LD for the home page: Organization + SoftwareApplication + SoftwareSourceCode.
 func HomeJsonLD(siteURL string) string {
 	data := map[string]any{
 		"@context": "https://schema.org",
@@ -15,19 +15,55 @@ func HomeJsonLD(siteURL string) string {
 				"name":        "Secure-UI",
 				"url":         siteURL,
 				"description": "Security-first web component library with zero dependencies.",
+				"sameAs": []string{
+					"https://github.com/Barryprender/Secure-UI",
+					"https://www.npmjs.com/package/secure-ui-components",
+				},
 			},
 			{
 				"@type":               "SoftwareApplication",
 				"name":                "Secure-UI",
 				"applicationCategory": "DeveloperApplication",
-				"description":         "Zero-dependency web components with built-in XSS protection, CSRF defence, rate limiting, and CSP-safe Shadow DOM styling.",
+				"applicationSubCategory": "Web Component Library",
+				"description":         "Zero-dependency web components with built-in XSS protection, CSRF defence, behavioral bot detection, rate limiting, and CSP-safe Shadow DOM styling. Security tier declared per field; enforced automatically.",
 				"url":                 siteURL,
+				"downloadUrl":         "https://www.npmjs.com/package/secure-ui-components",
+				"installUrl":          "https://www.npmjs.com/package/secure-ui-components",
 				"offers": map[string]any{
 					"@type":         "Offer",
 					"price":         "0",
 					"priceCurrency": "USD",
 				},
 				"operatingSystem": "Any",
+				"keywords": []string{
+					"web components", "custom elements", "shadow dom", "security",
+					"xss protection", "csrf", "form security", "typescript",
+					"zero dependencies", "payment card", "pci", "behavioral telemetry",
+					"bot detection", "audit logging",
+				},
+				"featureList": []string{
+					"XSS sanitisation on all input components",
+					"CSRF token injection and validation",
+					"Behavioral bot detection and risk scoring",
+					"PCI-compliant payment card input with Luhn validation",
+					"Four security tiers: public, authenticated, sensitive, critical",
+					"Audit logging without capturing raw sensitive values",
+					"HMAC-SHA256 signed telemetry payloads",
+					"CSP-safe — no eval(), no unsafe-inline",
+					"Zero runtime dependencies",
+					"Progressive enhancement — works without JavaScript",
+				},
+				"programmingLanguage": "TypeScript",
+			},
+			{
+				"@type":           "SoftwareSourceCode",
+				"name":            "secure-ui-components",
+				"codeRepository":  "https://github.com/Barryprender/Secure-UI",
+				"programmingLanguage": []string{"TypeScript", "Go"},
+				"runtimePlatform": "Browser",
+				"license":         "https://github.com/Barryprender/Secure-UI/blob/main/LICENSE",
+				"description":     "Source code for the Secure-UI web component library. MIT licensed.",
+				"url":             siteURL,
 			},
 		},
 	}
