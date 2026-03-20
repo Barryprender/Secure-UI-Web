@@ -66,7 +66,7 @@ templ Registration(csrfToken string) {
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.first_name"), "first_name", "text", "", "authenticated", "", true, 1, 50)
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.last_name"), "last_name", "text", "", "authenticated", "", true, 1, 50)
 
-							@components.SecureInputField(i18n.T(ctx, "reg.email"), "email", "email", "", "sensitive", "", true)
+							@components.SecureInputField(i18n.T(ctx, "reg.email"), "email", "email", "", "authenticated", "", true)
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.password"), "password", "password", "", "critical", "", true, 8, 0)
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.confirm"), "confirm_password", "password", "", "critical", "", true, 8, 0)
 
