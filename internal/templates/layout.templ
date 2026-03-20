@@ -31,6 +31,20 @@ templ Layout(title string, description string) {
 	</html>
 }
 
+// LandingLayout is a full-bleed layout for standalone landing pages.
+// No navbar or footer — the page owns the entire viewport.
+templ LandingLayout(title string, description string) {
+	<!DOCTYPE html>
+	<html lang={ string(i18n.LocaleFromContext(ctx)) }>
+		@LandingHead(title, description)
+		<body>
+			<main>
+				{ children... }
+			</main>
+		</body>
+	</html>
+}
+
 templ Head(title string, description string) {
 	<head>
 		<meta charset="UTF-8"/>
@@ -102,5 +116,61 @@ templ Head(title string, description string) {
 			// Import all components - they self-register automatically
 			import '/components/index.js';
 		</script>
+	</head>
+}
+
+// LandingHead is a minimal <head> for standalone landing pages.
+// Loads only the fonts and CSS the landing page requires —
+// no site navigation, forms, documentation, or Prism stylesheets.
+templ LandingHead(title string, description string) {
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>{ title }</title>
+		if description != "" {
+			<meta name="description" content={ description }/>
+		}
+		<!-- Canonical URL -->
+		if canonicalURL := middleware.CanonicalURLFromContext(ctx); canonicalURL != "" {
+			<link rel="canonical" href={ canonicalURL }/>
+		}
+		<!-- LLMs.txt — machine-readable site summary for AI agents -->
+		<link rel="alternate" type="text/plain" href="/llms.txt" title="LLMs.txt"/>
+		<!-- Open Graph — landing page specific -->
+		<meta property="og:site_name" content="Secure-UI"/>
+		<meta property="og:type" content="website"/>
+		<meta property="og:title" content={ title }/>
+		if description != "" {
+			<meta property="og:description" content={ description }/>
+		}
+		if canonicalURL := middleware.CanonicalURLFromContext(ctx); canonicalURL != "" {
+			<meta property="og:url" content={ canonicalURL }/>
+		}
+		if siteURL := middleware.SiteBaseURLFromContext(ctx); siteURL != "" {
+			<meta property="og:image" content={ siteURL + "/static/og-telemetry.png" }/>
+		}
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary_large_image"/>
+		<meta name="twitter:title" content={ title }/>
+		if description != "" {
+			<meta name="twitter:description" content={ description }/>
+		}
+		if siteURL := middleware.SiteBaseURLFromContext(ctx); siteURL != "" {
+			<meta name="twitter:image" content={ siteURL + "/static/og-telemetry.png" }/>
+		}
+		<!-- Fonts: Manrope (display) + IBM Plex Sans (body) + IBM Plex Mono (code) -->
+		<link rel="preconnect" href="https://fonts.googleapis.com"/>
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
+		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
+		<!-- Favicon -->
+		<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
+		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
+		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png"/>
+		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
+
+		<!-- Landing page CSS only -->
+		<link rel="stylesheet" href="/static/styles/tokens.css"/>
+		<link rel="stylesheet" href="/static/styles/base.css"/>
+		<link rel="stylesheet" href="/static/styles/telemetry-pro.css"/>
 	</head>
 }

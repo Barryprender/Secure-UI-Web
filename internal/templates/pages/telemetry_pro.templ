@@ -1,0 +1,370 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ TelemetryPro() {
+	@templates.LandingLayout("Behavioral Intelligence — Secure-UI", "Own your bot detection. Zero vendor lock-in, zero CAPTCHA friction. HMAC-signed behavioral signals on every form submission, built into Secure-UI.") {
+		<div class="tp-page">
+
+			<!-- ── Hero ──────────────────────────────────────────── -->
+			<section class="tp-hero" aria-label="Behavioral Intelligence">
+				<canvas class="tp-canvas" id="tp-canvas" aria-hidden="true"></canvas>
+				<div class="tp-hero-noise" aria-hidden="true"></div>
+				<div class="container tp-hero-container">
+					<div class="tp-hero-inner">
+						<div class="tp-badge-wrap">
+							<span class="tp-badge-dot" aria-hidden="true"></span>
+							<span>Live Behavioral Intelligence</span>
+						</div>
+						<h1 class="tp-hero-title">
+							Bot Detection
+							<br/>
+							<em class="tp-hero-accent">Without the Vendor Tax</em>
+						</h1>
+						<p class="tp-hero-desc">
+							Own your fraud signals.
+							<code>&lt;secure-telemetry-provider&gt;</code> wraps any form and
+							attaches a cryptographically-signed behavioral envelope to every
+							submission. No third-party SDKs. No CAPTCHA friction.
+							No per-transaction pricing.
+						</p>
+						<div class="tp-hero-cta">
+							<a href="/documentation/secure-telemetry-provider" class="tp-btn tp-btn-primary">View API Docs</a>
+							<a href="/forms" class="tp-btn tp-btn-ghost">
+								Live Demo
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+							</a>
+						</div>
+						<div class="tp-hero-stats" aria-label="Key statistics">
+							<div class="tp-hero-stat">
+								<span class="tp-hero-stat-num">27</span>
+								<span class="tp-hero-stat-label">behavioral signals</span>
+							</div>
+							<div class="tp-hero-stat-div" aria-hidden="true"></div>
+							<div class="tp-hero-stat">
+								<span class="tp-hero-stat-num">0</span>
+								<span class="tp-hero-stat-label">vendor dependencies</span>
+							</div>
+							<div class="tp-hero-stat-div" aria-hidden="true"></div>
+							<div class="tp-hero-stat">
+								<span class="tp-hero-stat-num">SHA‑256</span>
+								<span class="tp-hero-stat-label">signed envelopes</span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="tp-scroll-hint" aria-hidden="true">
+					<svg class="tp-scroll-arrow" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+				</div>
+			</section>
+
+			<!-- ── Signals ───────────────────────────────────────── -->
+			<section class="tp-signals-section" aria-labelledby="tp-signals-heading">
+				<div class="container">
+					<div class="tp-section-label">27 behavioral signals</div>
+					<h2 id="tp-signals-heading" class="tp-section-title">
+						Every Submission<br/>Is a Fingerprint
+					</h2>
+					<p class="tp-section-desc">
+						Secure-UI captures timing, interaction patterns, and environmental markers
+						that distinguish humans from automated scripts — without asking users to
+						solve puzzles or accept cookies.
+					</p>
+
+					<div class="tp-waveform-wrap" aria-label="Live keystroke velocity simulation" role="img">
+						<div class="tp-waveform-header">
+							<span class="tp-waveform-dot" aria-hidden="true"></span>
+							<span class="tp-waveform-channel">KEYSTROKE VELOCITY</span>
+							<span class="tp-waveform-status" id="tp-wave-status">human pattern detected</span>
+							<span class="tp-waveform-time" id="tp-wave-time">00:00.000</span>
+						</div>
+						<svg class="tp-waveform-svg" id="tp-waveform" viewBox="0 0 800 100" preserveAspectRatio="none" aria-hidden="true">
+							<defs>
+								<linearGradient id="tp-wave-grad" x1="0" y1="0" x2="0" y2="1">
+									<stop offset="0%" stop-color="#34d399" stop-opacity="0.25"/>
+									<stop offset="100%" stop-color="#34d399" stop-opacity="0"/>
+								</linearGradient>
+								<filter id="tp-wave-glow" x="-5%" y="-20%" width="110%" height="140%">
+									<feGaussianBlur stdDeviation="1.5" result="blur"/>
+									<feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+								</filter>
+							</defs>
+							<path id="tp-wave-fill" d="" fill="url(#tp-wave-grad)"/>
+							<path id="tp-wave-line" d="" fill="none" stroke="#34d399" stroke-width="1.5" stroke-linejoin="round" filter="url(#tp-wave-glow)"/>
+						</svg>
+					</div>
+
+					<div class="tp-signals-grid">
+						<article class="tp-signal-card tp-reveal">
+							<div class="tp-signal-icon" aria-hidden="true">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg>
+							</div>
+							<h3>Keystroke Velocity</h3>
+							<p>Timing between keystrokes in milliseconds. Bots type uniformly; humans don't.</p>
+							<div class="tp-signal-chip">142ms avg · <span class="tp-ok">normal</span></div>
+						</article>
+						<article class="tp-signal-card tp-reveal">
+							<div class="tp-signal-icon" aria-hidden="true">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+							</div>
+							<h3>Dwell Time</h3>
+							<p>How long focus lingers on a field before interaction begins. Zero dwell is a red flag.</p>
+							<div class="tp-signal-chip">1.8s avg · <span class="tp-ok">normal</span></div>
+						</article>
+						<article class="tp-signal-card tp-reveal">
+							<div class="tp-signal-icon" aria-hidden="true">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+							</div>
+							<h3>Paste Detection</h3>
+							<p>Credential stuffing attacks flood paste events. Each is logged and scored against the pattern.</p>
+							<div class="tp-signal-chip tp-signal-chip--warn">paste detected · <span class="tp-warn">flagged</span></div>
+						</article>
+						<article class="tp-signal-card tp-reveal">
+							<div class="tp-signal-icon" aria-hidden="true">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+							</div>
+							<h3>Correction Rate</h3>
+							<p>Humans make typos and fix them. Scripts don't. Backspace-to-character ratio is a strong human signal.</p>
+							<div class="tp-signal-chip">3 corrections · <span class="tp-ok">human</span></div>
+						</article>
+						<article class="tp-signal-card tp-reveal">
+							<div class="tp-signal-icon" aria-hidden="true">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+							</div>
+							<h3>Autofill Detection</h3>
+							<p>Browser autofill vs manual entry vs injected values — each fills at distinctly different speeds.</p>
+							<div class="tp-signal-chip">autofill: <span class="tp-ok">false</span></div>
+						</article>
+						<article class="tp-signal-card tp-reveal">
+							<div class="tp-signal-icon" aria-hidden="true">
+								<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+							</div>
+							<h3>Environment Checks</h3>
+							<p>WebDriver presence, headless markers, injected scripts, and devtools state — verified silently at submission.</p>
+							<div class="tp-signal-chip">webdriver: <span class="tp-ok">false</span></div>
+						</article>
+					</div>
+				</div>
+			</section>
+
+			<!-- ── Risk Scoring ──────────────────────────────────── -->
+			<section class="tp-risk-section" aria-labelledby="tp-risk-heading">
+				<div class="container">
+					<div class="tp-risk-inner">
+						<div class="tp-risk-left">
+							<div class="tp-section-label">Composite scoring</div>
+							<h2 id="tp-risk-heading" class="tp-section-title">A Risk Score<br/>in Every Envelope</h2>
+							<p class="tp-section-desc">
+								Every submission gets a 0–100 composite risk score assembled from five
+								independent signal categories. Your backend decides what to do — allow,
+								flag for review, or block. No decisions imposed on you.
+							</p>
+							<div class="tp-score-rows" role="list">
+								<div class="tp-score-row tp-reveal-left" role="listitem">
+									<span class="tp-score-label">Bot markers</span>
+									<div class="tp-score-bar-wrap"><div class="tp-score-bar" data-pct="0"></div></div>
+									<span class="tp-score-val">0 / 20</span>
+								</div>
+								<div class="tp-score-row tp-reveal-left" role="listitem">
+									<span class="tp-score-label">Velocity anomaly</span>
+									<div class="tp-score-bar-wrap"><div class="tp-score-bar" data-pct="10"></div></div>
+									<span class="tp-score-val">2 / 20</span>
+								</div>
+								<div class="tp-score-row tp-reveal-left" role="listitem">
+									<span class="tp-score-label">Paste / inject</span>
+									<div class="tp-score-bar-wrap"><div class="tp-score-bar" data-pct="0"></div></div>
+									<span class="tp-score-val">0 / 20</span>
+								</div>
+								<div class="tp-score-row tp-reveal-left" role="listitem">
+									<span class="tp-score-label">Env anomaly</span>
+									<div class="tp-score-bar-wrap"><div class="tp-score-bar" data-pct="0"></div></div>
+									<span class="tp-score-val">0 / 20</span>
+								</div>
+								<div class="tp-score-row tp-reveal-left" role="listitem">
+									<span class="tp-score-label">Pattern score</span>
+									<div class="tp-score-bar-wrap"><div class="tp-score-bar" data-pct="30"></div></div>
+									<span class="tp-score-val">6 / 20</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="tp-risk-right" aria-live="polite" aria-label="Animated risk score demonstration">
+							<div class="tp-dial-wrap">
+								<svg class="tp-dial-svg" viewBox="0 0 240 240" aria-hidden="true">
+									<defs>
+										<filter id="tp-arc-glow" x="-20%" y="-20%" width="140%" height="140%">
+											<feGaussianBlur stdDeviation="4" result="blur"/>
+											<feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+										</filter>
+									</defs>
+									<circle class="tp-dial-track" cx="120" cy="120" r="96"/>
+									<circle class="tp-dial-arc" id="tp-dial-arc"
+										cx="120" cy="120" r="96"
+										stroke-dasharray="603"
+										stroke-dashoffset="554"
+										transform="rotate(-90 120 120)"
+										filter="url(#tp-arc-glow)"/>
+								</svg>
+								<div class="tp-dial-inner">
+									<div class="tp-dial-score" id="tp-dial-score">8</div>
+									<div class="tp-dial-unit">/ 100</div>
+									<div class="tp-dial-label">risk score</div>
+								</div>
+							</div>
+							<div class="tp-verdict" id="tp-verdict">
+								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+									<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+									<path d="m9 12 2 2 4-4"/>
+								</svg>
+								<span id="tp-verdict-text">VERDICT: ALLOW</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ── Zero Vendor ───────────────────────────────────── -->
+			<section class="tp-zero-section" aria-labelledby="tp-zero-heading">
+				<div class="tp-zero-grid-bg" aria-hidden="true">
+					<svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+						<defs>
+							<pattern id="tp-grid-pat" width="40" height="40" patternUnits="userSpaceOnUse">
+								<path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(52,211,153,0.06)" stroke-width="1"/>
+							</pattern>
+						</defs>
+						<rect width="100%" height="100%" fill="url(#tp-grid-pat)"/>
+					</svg>
+				</div>
+				<div class="container">
+					<div class="tp-section-label">No lock-in</div>
+					<h2 id="tp-zero-heading" class="tp-section-title">Cut the Vendors.<br/>Keep the Signals.</h2>
+					<div class="tp-zero-cards">
+						<div class="tp-zero-card tp-reveal">
+							<div class="tp-zero-num" aria-label="Zero CAPTCHAs">0</div>
+							<div class="tp-zero-name">CAPTCHAs</div>
+							<p>Detection is passive. Real users never see a puzzle. Bots never see it coming.</p>
+						</div>
+						<div class="tp-zero-card tp-reveal">
+							<div class="tp-zero-num" aria-label="Zero third-party SDKs">0</div>
+							<div class="tp-zero-name">Third-party SDKs</div>
+							<p>No external scripts. No vendor calls. Signals collected and signed entirely in-browser.</p>
+						</div>
+						<div class="tp-zero-card tp-reveal">
+							<div class="tp-zero-num" aria-label="Zero per-transaction fees">$0</div>
+							<div class="tp-zero-name">Per-transaction fees</div>
+							<p>MIT license. Scale to millions of submissions without watching the billing dashboard.</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ── HMAC Signing ──────────────────────────────────── -->
+			<section class="tp-hmac-section" aria-labelledby="tp-hmac-heading">
+				<div class="container">
+					<div class="tp-hmac-inner">
+						<div class="tp-hmac-content">
+							<div class="tp-section-label">Cryptographic integrity</div>
+							<h2 id="tp-hmac-heading" class="tp-section-title">Every Envelope<br/>is HMAC-Signed</h2>
+							<p class="tp-section-desc">
+								The telemetry payload is signed with HMAC-SHA256 using a key you provide.
+								Your backend verifies the signature before acting on the data — tampered
+								payloads are rejected automatically.
+							</p>
+							<ol class="tp-hmac-steps">
+								<li class="tp-hmac-step tp-reveal-left">
+									<span class="tp-step-num" aria-hidden="true">01</span>
+									<div>
+										<strong>Signals collected</strong>
+										<p>Behavioral data gathered silently during form interaction. Nothing visible to the user.</p>
+									</div>
+								</li>
+								<li class="tp-hmac-step tp-reveal-left">
+									<span class="tp-step-num" aria-hidden="true">02</span>
+									<div>
+										<strong>Envelope assembled</strong>
+										<p>Nonce + timestamp + all signals bundled into a structured JSON payload.</p>
+									</div>
+								</li>
+								<li class="tp-hmac-step tp-reveal-left">
+									<span class="tp-step-num" aria-hidden="true">03</span>
+									<div>
+										<strong>Signature computed</strong>
+										<p>HMAC-SHA256 signed via the Web Crypto API. Your key never leaves the server.</p>
+									</div>
+								</li>
+								<li class="tp-hmac-step tp-reveal-left">
+									<span class="tp-step-num" aria-hidden="true">04</span>
+									<div>
+										<strong>Backend verifies</strong>
+										<p>Your server rejects any payload whose signature doesn't match. No spoofing possible.</p>
+									</div>
+								</li>
+							</ol>
+						</div>
+
+						<div class="tp-hmac-code-panel">
+							<div class="tp-code-bar">
+								<span class="tp-code-dots" aria-hidden="true">
+									<i></i><i></i><i></i>
+								</span>
+								<span class="tp-code-title">telemetry-envelope.json</span>
+								<span class="tp-code-verified" id="tp-sig-badge">
+									<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
+									verified
+								</span>
+							</div>
+							<pre class="tp-code-pre"><code class="tp-code-body">{ `{
+  "nonce":     "a3f8b2c1d4e5f607",
+  "issuedAt":  "2026-03-20T14:32:07Z",
+  "riskScore": 8,
+  "fields": [
+    {
+      "fieldName":        "email",
+      "dwell":            1842,
+      "velocity":         3.2,
+      "corrections":      1,
+      "pasteDetected":    false,
+      "autofillDetected": false
+    }
+  ],
+  "environment": {
+    "webdriverDetected": false,
+    "headlessDetected":  false,
+    "mouseMovement":     true
+  },
+  "signature": "` }<span class="tp-sig-anim" id="tp-sig-text">7c2bef09a1d3c8f2...</span>{ `"
+}` }</code></pre>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<!-- ── CTA ───────────────────────────────────────────── -->
+			<section class="tp-cta-section" aria-labelledby="tp-cta-heading">
+				<canvas class="tp-cta-canvas" id="tp-cta-canvas" aria-hidden="true"></canvas>
+				<div class="tp-cta-noise" aria-hidden="true"></div>
+				<div class="container tp-cta-container">
+					<div class="tp-cta-inner">
+						<h2 id="tp-cta-heading" class="tp-cta-title">Ship It in One Tag</h2>
+						<p class="tp-cta-desc">
+							Drop <code>&lt;secure-telemetry-provider&gt;</code> around any
+							<code>&lt;secure-form&gt;</code>. Zero configuration.
+							Zero dependencies. Full cryptographic integrity.
+						</p>
+						<pre class="tp-cta-code"><code>{ `<secure-telemetry-provider signing-key="your-key">
+  <secure-form action="/submit" method="POST">
+    <!-- your fields -->
+  </secure-form>
+</secure-telemetry-provider>` }</code></pre>
+						<div class="tp-cta-actions">
+							<a href="/documentation/secure-telemetry-provider" class="tp-btn tp-btn-primary tp-btn-lg">Read the Docs</a>
+							<a href="/components/secure-telemetry-provider" class="tp-btn tp-btn-ghost tp-btn-lg">Live Demo</a>
+						</div>
+					</div>
+				</div>
+			</section>
+
+		</div>
+		<script src="/static/js/telemetry-pro.js" defer></script>
+	}
+}

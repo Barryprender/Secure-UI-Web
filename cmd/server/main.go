@@ -112,6 +112,7 @@ func main() {
 	mux.Handle("/registration", optAuth(http.HandlerFunc(h.Registration)))
 	mux.Handle("/theming", optAuth(http.HandlerFunc(h.Theming)))
 	mux.Handle("/telemetry", optAuth(http.HandlerFunc(h.TelemetryPage)))
+	mux.Handle("/telemetry-pro", optAuth(http.HandlerFunc(h.TelemetryPro)))
 	mux.HandleFunc("/cookies", h.CookiePolicy)
 
 	// --- Auth routes ---

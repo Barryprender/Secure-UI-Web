@@ -270,7 +270,7 @@ func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 				"script-src 'self' 'nonce-" + nonce + "'; " +
 				"style-src 'self' 'nonce-" + nonce + "' https://fonts.googleapis.com; " +
 				"img-src 'self' data:; " +
-				"connect-src 'self'; " +
+				"connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
 				"font-src 'self' https://fonts.gstatic.com; " +
 				"object-src 'none'; " +
 				"frame-ancestors 'none'; " +

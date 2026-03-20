@@ -20,3 +20,8 @@ func (h *Handlers) TelemetryPage(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) CookiePolicy(w http.ResponseWriter, r *http.Request) {
 	pages.CookiePolicy().Render(r.Context(), w)
 }
+
+// TelemetryPro renders the behavioral intelligence promotional landing page.
+func (h *Handlers) TelemetryPro(w http.ResponseWriter, r *http.Request) {
+	pages.TelemetryPro().Render(r.Context(), w)
+}
