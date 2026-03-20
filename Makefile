@@ -32,7 +32,9 @@ install: components
 # Run this after cloning or when upgrading the package version in package.json
 components:
 	@echo "📦 Installing secure-ui-components from npm..."
-	@npm install --prefix .npm-components
+	@mkdir -p .npm-components
+	@cp package.json .npm-components/
+	@npm install --prefix .npm-components --omit=dev
 	@mkdir -p secure-ui-components/dist
 	@cp -r .npm-components/node_modules/secure-ui-components/dist/. secure-ui-components/dist/
 	@rm -rf .npm-components
