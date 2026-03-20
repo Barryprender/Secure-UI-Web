@@ -156,6 +156,29 @@
   overflow-x: auto;
 }
 
+@media (min-width: 768px) {
+  .config-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+  }
+
+  .config-card-header {
+    grid-column: 1 / -1;
+  }
+
+  .config-demo {
+    border-bottom: none;
+    border-inline-end: 1px solid var(--border-subtle);
+  }
+
+  .config-code {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
 /* Security Matrix */
 .security-section {
   margin-bottom: var(--space-xl, 2rem);
@@ -1401,6 +1424,12 @@
 
   .security-matrix-wrapper {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .css-vars-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
   }
 
   .card-preview {

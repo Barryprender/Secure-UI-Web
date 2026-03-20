@@ -130,6 +130,7 @@ templ ComponentSecureCard() {
 			<section class="security-section">
 				<h2 class="security-section-title">Security Features</h2>
 				<p class="security-callout">Security tier is fixed at CRITICAL and cannot be changed. All protections below are always active.</p>
+				<div class="security-matrix-wrapper">
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -176,12 +177,14 @@ templ ComponentSecureCard() {
 						</tr>
 					</tbody>
 				</table>
+			</div>
 			</section>
 
 			<!-- Theming -->
 			<section class="theming-section">
 				<h2 class="theming-section-title">Theming</h2>
 				<p class="theming-intro">Override CSS custom properties at <code>:root</code>, per-component, or per-instance.</p>
+				<div class="css-vars-table-wrapper">
 				<table class="css-vars-table">
 					<thead>
 						<tr>
@@ -218,6 +221,7 @@ templ ComponentSecureCard() {
 						</tr>
 					</tbody>
 				</table>
+				</div>
 			</section>
 
 			<!-- Framework Examples -->
