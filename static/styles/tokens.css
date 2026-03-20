@@ -168,7 +168,7 @@
   /* Form Components */
   --secure-ui-form-gap: var(--secure-ui-space-4);
   --secure-ui-form-label-margin-bottom: var(--secure-ui-space-1);
-  --secure-ui-form-error-margin-top: var(--secure-ui-space-1);
+  --secure-ui-form-error-margin-top: 0;
 
   /* File Upload Components */
   --secure-ui-upload-border-style: dashed;
