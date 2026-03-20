@@ -208,7 +208,7 @@ function updateTelemetryPanel(telemetry, formId) {
         `<span class="demo-tel-risk-score demo-tel-risk-score--${escH(riskClass)}">${escH(String(score))} / 100 — ${escH(riskLabel)}</span>` +
       `</div>` +
       `<div class="demo-tel-risk-bar" role="progressbar" aria-valuenow="${escH(String(score))}" aria-valuemin="0" aria-valuemax="100">` +
-        `<div class="demo-tel-risk-fill demo-tel-risk-fill--${escH(riskClass)}" style="width:${escH(String(score))}%"></div>` +
+        `<div class="demo-tel-risk-fill demo-tel-risk-fill--${escH(riskClass)}"></div>` +
       `</div>` +
     `</div>` +
 
@@ -231,6 +231,9 @@ function updateTelemetryPanel(telemetry, formId) {
       `<summary>Raw JSON</summary>` +
       `<pre><code>${escH(JSON.stringify(telemetry, null, 2))}</code></pre>` +
     `</details>`;
+
+  const fill = content.querySelector('.demo-tel-risk-fill');
+  if (fill) fill.style.width = score + '%';
 }
 
 // ── Utilities ──────────────────────────────────────────────────────────────
