@@ -497,3 +497,145 @@
 @media (prefers-reduced-motion: reduce) {
     .docs-nav-card { transition: none; }
 }
+
+/* ── Cookie / Privacy Policy Page ─────────────────────────────────────────── */
+
+.policy-page {
+    padding: var(--space-3xl) 0;
+}
+
+.policy-header {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--space-lg);
+    margin-bottom: var(--space-3xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.policy-title {
+    font-size: clamp(2rem, 5vw, 2.75rem);
+    font-weight: 700;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+    font-family: var(--font-display);
+}
+
+.policy-updated {
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}
+
+.policy-content {
+    max-width: 720px;
+    margin-inline: auto;
+    padding-inline: var(--space-lg);
+}
+
+.policy-section {
+    margin-bottom: var(--space-2xl);
+}
+
+.policy-section h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+    padding-bottom: var(--space-xs);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.policy-section p {
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-md);
+}
+
+.policy-section p:last-child {
+    margin-bottom: 0;
+}
+
+.policy-section a {
+    color: var(--accent-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+}
+
+.policy-section a:hover {
+    color: var(--accent-hover, var(--accent-primary));
+}
+
+.policy-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.policy-list li {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    padding-inline-start: 1.25rem;
+    position: relative;
+}
+
+.policy-list li::before {
+    content: "–";
+    position: absolute;
+    inset-inline-start: 0;
+    color: var(--accent-primary);
+}
+
+.cookie-table-wrapper {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cookie-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+}
+
+.cookie-table th,
+.cookie-table td {
+    padding: var(--space-sm) var(--space-md);
+    text-align: start;
+    border-bottom: 1px solid var(--border-subtle);
+    vertical-align: top;
+}
+
+.cookie-table th {
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    background: var(--bg-secondary);
+    white-space: nowrap;
+}
+
+.cookie-table td {
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.cookie-table td:first-child {
+    white-space: nowrap;
+    color: var(--text-primary);
+}
+
+.cookie-table tr:last-child td {
+    border-bottom: none;
+}
+
+@media (max-width: 480px) {
+    .policy-header,
+    .policy-content {
+        padding-inline: var(--space-md);
+    }
+}

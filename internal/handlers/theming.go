@@ -15,3 +15,8 @@ func (h *Handlers) Theming(w http.ResponseWriter, r *http.Request) {
 func (h *Handlers) TelemetryPage(w http.ResponseWriter, r *http.Request) {
 	pages.TelemetryPage().Render(r.Context(), w)
 }
+
+// CookiePolicy renders the cookie policy page.
+func (h *Handlers) CookiePolicy(w http.ResponseWriter, r *http.Request) {
+	pages.CookiePolicy().Render(r.Context(), w)
+}

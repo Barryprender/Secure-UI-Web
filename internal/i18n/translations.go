@@ -29,6 +29,7 @@ var translations = map[string]map[Locale]string{
 	"footer.resources": {EN: "Resources", ES: "Recursos", FR: "Ressources", DE: "Ressourcen"},
 	"footer.community": {EN: "Community", ES: "Comunidad", FR: "Communauté", DE: "Community"},
 	"footer.legal":     {EN: "Legal", ES: "Legal", FR: "Légal", DE: "Rechtliches"},
+	"footer.cookies":   {EN: "Cookie Policy", ES: "Política de cookies", FR: "Politique de cookies", DE: "Cookie-Richtlinie"},
 	"footer.docs":      {EN: "Documentation", ES: "Documentación", FR: "Documentation", DE: "Dokumentation"},
 	"footer.forms":     {EN: "Form Components", ES: "Componentes de formulario", FR: "Composants de formulaire", DE: "Formularkomponenten"},
 	"footer.reg_demo":  {EN: "Registration Demo", ES: "Demo de registro", FR: "Démo d'inscription", DE: "Registrierungs-Demo"},

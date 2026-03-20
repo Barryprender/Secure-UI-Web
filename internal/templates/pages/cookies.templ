@@ -1,0 +1,120 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ CookiePolicy() {
+	@templates.Layout("Cookie Policy", "Cookie policy for Secure-UI. This site uses only two cookies: a session cookie for authentication and a language preference cookie. No tracking, no analytics, no third-party cookies.") {
+		<section class="policy-page">
+			<div class="container">
+				<div class="policy-header">
+					<h1 class="policy-title">Cookie Policy</h1>
+					<p class="policy-updated">Last updated: March 2026</p>
+				</div>
+
+				<div class="policy-content">
+					<section class="policy-section">
+						<h2>Overview</h2>
+						<p>
+							This site uses the minimum number of cookies necessary to function. There are no
+							analytics cookies, no advertising cookies, and no third-party cookies of any kind.
+						</p>
+					</section>
+
+					<section class="policy-section">
+						<h2>Cookies we set</h2>
+
+						<div class="cookie-table-wrapper">
+						<table class="cookie-table">
+							<thead>
+								<tr>
+									<th>Name</th>
+									<th>Purpose</th>
+									<th>Duration</th>
+									<th>Type</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td><code>__Host-session</code></td>
+									<td>Authenticates your session after login. Without it, protected pages such as the dashboard are inaccessible. Cleared on logout.</td>
+									<td>24 hours</td>
+									<td>Strictly necessary</td>
+								</tr>
+								<tr>
+									<td><code>lang</code></td>
+									<td>Stores your language preference (English, Spanish, French, or German) so the correct language is shown on your next visit. Only set when you actively choose a language.</td>
+									<td>1 year</td>
+									<td>Preference</td>
+								</tr>
+							</tbody>
+						</table>
+						</div>
+					</section>
+
+					<section class="policy-section">
+						<h2>Technical details</h2>
+						<p>
+							The session cookie is set with <code>HttpOnly</code>, <code>Secure</code>, and
+							<code>SameSite=Strict</code> flags. It cannot be read by JavaScript, is only sent
+							over HTTPS, and is not transmitted on cross-site requests. In production the cookie
+							name carries the <code>__Host-</code> prefix, which additionally locks it to the
+							exact host with no Domain attribute and <code>Path=/</code>.
+						</p>
+						<p>
+							The language cookie is set with <code>Secure</code> and <code>SameSite=Lax</code>.
+							It is readable by the page so the current language selection can be reflected in the
+							UI, but contains no personal data — only a locale code such as <code>en</code> or
+							<code>fr</code>.
+						</p>
+					</section>
+
+					<section class="policy-section">
+						<h2>What we do not do</h2>
+						<ul class="policy-list">
+							<li>We do not set tracking or analytics cookies.</li>
+							<li>We do not use advertising cookies or retargeting pixels.</li>
+							<li>We do not load any third-party scripts that set cookies.</li>
+							<li>We do not share cookie data with any third party.</li>
+							<li>We do not fingerprint browsers or devices.</li>
+						</ul>
+					</section>
+
+					<section class="policy-section">
+						<h2>Consent</h2>
+						<p>
+							The session cookie is strictly necessary for the authenticated features of this site
+							to work and does not require consent under ePrivacy regulations. It is only set when
+							you log in.
+						</p>
+						<p>
+							The language preference cookie is set only when you actively select a language. It
+							contains no personal data and is used solely to remember your choice.
+						</p>
+						<p>
+							Because neither cookie is used for tracking or advertising, no cookie consent banner
+							is required or shown.
+						</p>
+					</section>
+
+					<section class="policy-section">
+						<h2>Managing cookies</h2>
+						<p>
+							You can delete or block cookies at any time using your browser settings. Deleting
+							the session cookie will log you out. Deleting the language cookie will reset the
+							language to your browser default on the next visit. Blocking cookies will prevent
+							login from working.
+						</p>
+					</section>
+
+					<section class="policy-section">
+						<h2>Contact</h2>
+						<p>
+							Questions about this policy can be raised via the
+							<a href="https://github.com/Barryprender/Secure-UI/issues" rel="noopener" target="_blank">GitHub issue tracker</a>.
+						</p>
+					</section>
+				</div>
+			</div>
+		</section>
+	}
+}

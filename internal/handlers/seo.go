@@ -55,6 +55,7 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 		{"/documentation/secure-table", "0.8", "weekly"},
 		{"/theming", "0.8", "monthly"},
 		{"/telemetry", "0.9", "monthly"},
+		{"/cookies", "0.3", "yearly"},
 		{"/components", "0.9", "weekly"},
 		{"/components/secure-input", "0.8", "weekly"},
 		{"/components/secure-textarea", "0.8", "weekly"},
