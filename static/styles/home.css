@@ -1342,6 +1342,9 @@
     }
 }
 
+.demo-form-submit-wrapper { margin-top: 1rem; }
+.demo-form-submit-wrapper .btn { width: 100%; }
+
 @media (prefers-reduced-motion: reduce) {
     .sc-char { transition: none; }
     .stats-strip.sweep-active::before { display: none; }

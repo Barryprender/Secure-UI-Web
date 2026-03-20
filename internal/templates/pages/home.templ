@@ -82,7 +82,7 @@ templ Home() {
 						name="email"
 						type="email"
 						label="Email address"
-						security-tier="sensitive"
+						security-tier="authenticated"
 						required>
 					</secure-input>
 					<secure-input
@@ -93,8 +93,8 @@ templ Home() {
 						min-length="8"
 						required>
 					</secure-input>
-					<div style="margin-top: 1rem;">
-						<button type="submit" class="btn btn-primary" style="width: 100%;">Submit securely</button>
+					<div class="demo-form-submit-wrapper">
+						<button type="submit" class="btn btn-primary">Submit securely</button>
 					</div>
 				</secure-form>
 			</div>

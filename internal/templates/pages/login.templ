@@ -71,7 +71,7 @@ templ Login(csrfToken string, errorMessage string) {
 							@components.SecureInputField(i18n.T(ctx, "login.email"), "email", "email", "", "sensitive", "", true)
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "login.password"), "password", "password", "", "critical", "", true, 8, 0)
 
-							<button type="submit" class="btn btn-primary w-full" style="margin-top: var(--space-xs);">
+							<button type="submit" class="btn btn-primary w-full">
 								{ i18n.T(ctx, "login.submit") }
 							</button>
 						}

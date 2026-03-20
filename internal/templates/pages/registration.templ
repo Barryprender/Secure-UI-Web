@@ -63,10 +63,10 @@ templ Registration(csrfToken string) {
 
 					<div class="auth-form-body">
 						@components.SecureFormWrapper("POST", "/register", csrfToken, "critical", "registration-form") {
-							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.first_name"), "first_name", "text", "", "authenticated", "", true, 1, 50)
-							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.last_name"), "last_name", "text", "", "authenticated", "", true, 1, 50)
+							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.first_name"), "first_name", "text", "", "public", "", true, 1, 50)
+							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.last_name"), "last_name", "text", "", "public", "", true, 1, 50)
 
-							@components.SecureInputField(i18n.T(ctx, "reg.email"), "email", "email", "", "authenticated", "", true)
+							@components.SecureInputField(i18n.T(ctx, "reg.email"), "email", "email", "", "public", "", true)
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.password"), "password", "password", "", "critical", "", true, 8, 0)
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.confirm"), "confirm_password", "password", "", "critical", "", true, 8, 0)
 
@@ -82,7 +82,7 @@ templ Registration(csrfToken string) {
 { i18n.T(ctx, "reg.terms") }</label>
 							</div>
 
-							<button type="submit" class="btn btn-primary w-full" style="margin-top: var(--space-xs);">
+							<button type="submit" class="btn btn-primary w-full">
 									{ i18n.T(ctx, "reg.submit") }
 							</button>
 						}

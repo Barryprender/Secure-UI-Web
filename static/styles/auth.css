@@ -262,6 +262,10 @@
     gap: var(--space-md);
 }
 
+.auth-form-body .btn[type="submit"] {
+    margin-block-start: var(--space-xs);
+}
+
 .auth-divider {
     height: 1px;
     background: var(--border-subtle);

@@ -132,6 +132,11 @@
     font-size: 0.9375rem;
 }
 
+ul.docs-text {
+    margin-inline-start: 1.5rem;
+    line-height: 2;
+}
+
 /* ── Code Blocks ──────────────────────────────────── */
 
 .docs-code-block {
