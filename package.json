@@ -4,6 +4,6 @@
   "private": true,
   "description": "Go showcase app for the secure-ui-components library",
   "dependencies": {
-    "secure-ui-components": "0.1.1"
+    "secure-ui-components": "latest"
   }
 }
