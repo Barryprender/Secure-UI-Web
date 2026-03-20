@@ -32,7 +32,7 @@ async function handleDemoSubmit(event) {
   // Stop the component's own fetch so we control the response display.
   event.preventDefault();
 
-  const { formData, telemetry } = event.detail;
+  const { formData, telemetry = {} } = event.detail;
   const action = form.getAttribute('action');
   const csrfToken = form.getAttribute('csrf-token') ?? '';
 
