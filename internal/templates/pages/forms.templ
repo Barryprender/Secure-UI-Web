@@ -37,24 +37,26 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 									<h3>Sign In</h3>
 									<p>Try submitting with invalid data to see server-side validation.</p>
 								</div>
-								<secure-form
-									id="demo-login-form"
-									method="POST"
-									action="/api/demo/login"
-									csrf-token={ csrfLogin }
-									csrf-header-name="X-CSRF-Token"
-									security-tier="sensitive"
-									enhance
-								>
-									<form method="POST" action="/api/demo/login" novalidate>
-										<input type="hidden" name="csrf_token" value={ csrfLogin }/>
-										@components.SecureInputField("Email Address", "email", "email", "user@example.com", "authenticated", "mb-lg", true)
-										@components.SecureInputField("Password", "password", "password", "Minimum 8 characters", "critical", "mb-lg", true)
-										<div class="form-submit">
-											<button type="submit" class="btn btn-primary w-full">Sign In</button>
-										</div>
-									</form>
-								</secure-form>
+								<secure-telemetry-provider signing-key="demo-key">
+									<secure-form
+										id="demo-login-form"
+										method="POST"
+										action="/api/demo/login"
+										csrf-token={ csrfLogin }
+										csrf-header-name="X-CSRF-Token"
+										security-tier="sensitive"
+										enhance
+									>
+										<form method="POST" action="/api/demo/login" novalidate>
+											<input type="hidden" name="csrf_token" value={ csrfLogin }/>
+											@components.SecureInputField("Email Address", "email", "email", "user@example.com", "authenticated", "mb-lg", true)
+											@components.SecureInputField("Password", "password", "password", "Minimum 8 characters", "critical", "mb-lg", true)
+											<div class="form-submit">
+												<button type="submit" class="btn btn-primary w-full">Sign In</button>
+											</div>
+										</form>
+									</secure-form>
+								</secure-telemetry-provider>
 							</div>
 						</div>
 						<div class="demo-response-col">
@@ -89,6 +91,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 									<h3>Start Your Free Trial</h3>
 									<p>14-day free trial, no credit card required for this demo.</p>
 								</div>
+								<secure-telemetry-provider signing-key="demo-key">
 								<secure-form
 									id="demo-subscribe-form"
 									method="POST"
@@ -119,6 +122,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 										</div>
 									</form>
 								</secure-form>
+								</secure-telemetry-provider>
 							</div>
 						</div>
 						<div class="demo-response-col">
@@ -156,6 +160,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 									<h3>Card Details</h3>
 									<p>Use test number <strong>4242 4242 4242 4242</strong>, any future expiry, any CVC.</p>
 								</div>
+								<secure-telemetry-provider signing-key="demo-key">
 								<secure-form
 									id="demo-payment-form"
 									method="POST"
@@ -184,6 +189,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 										</div>
 									</form>
 								</secure-form>
+								</secure-telemetry-provider>
 							</div>
 						</div>
 						<div class="demo-response-col">
