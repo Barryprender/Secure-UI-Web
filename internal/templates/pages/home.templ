@@ -72,31 +72,40 @@ templ Home() {
 				</a>
 			</div>
 
-			<div class="demo-component-panel">
+			<div class="demo-component-panel" id="demo-panel">
 				<div class="demo-component-panel-header">
 					<span class="demo-panel-title">secure-form + secure-input</span>
 					<span class="demo-panel-badge">Live</span>
 				</div>
-				<secure-form action="#" method="POST">
-					<secure-input
-						name="email"
-						type="email"
-						label="Email address"
-						security-tier="authenticated"
-						required>
-					</secure-input>
-					<secure-input
-						name="password"
-						type="password"
-						label="Password"
-						security-tier="critical"
-						min-length="8"
-						required>
-					</secure-input>
-					<div class="demo-form-submit-wrapper">
-						<button type="submit" class="btn btn-primary">Submit securely</button>
-					</div>
-				</secure-form>
+				<div id="demo-form-wrap">
+					<secure-form action="#" method="POST" enhance>
+						<secure-input
+							name="email"
+							type="email"
+							label="Email address"
+							security-tier="authenticated"
+							required>
+						</secure-input>
+						<secure-input
+							name="password"
+							type="password"
+							label="Password"
+							security-tier="critical"
+							min-length="8"
+							required>
+						</secure-input>
+						<div class="demo-form-submit-wrapper">
+							<button type="submit" class="btn btn-primary">Submit securely</button>
+						</div>
+					</secure-form>
+				</div>
+				<div id="demo-success" class="demo-success demo-success--hidden" aria-live="polite">
+					<svg class="demo-success-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
+					<p class="demo-success-title">Submitted securely</p>
+					<div id="demo-success-data" class="demo-success-data"></div>
+					<div id="demo-success-telemetry" class="demo-success-telemetry"></div>
+					<button class="btn btn-secondary demo-reset-btn">Reset demo</button>
+				</div>
 			</div>
 		</div>
 	</div>
@@ -632,6 +641,62 @@ func (h *Handlers) Register(
 </section>
 
 <script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+// ── Demo form intercept ───────────────────────────────────────
+{
+  const formWrap   = document.getElementById('demo-form-wrap');
+  const successEl  = document.getElementById('demo-success');
+  const demoForm   = document.querySelector('#demo-panel secure-form');
+  const resetBtn   = document.querySelector('.demo-reset-btn');
+
+  const dataEl      = document.getElementById('demo-success-data');
+  const telemetryEl = document.getElementById('demo-success-telemetry');
+
+  if (demoForm && formWrap && successEl) {
+    demoForm.addEventListener('secure-form-submit', (e) => {
+      e.preventDefault();
+
+      // Form data table
+      if (dataEl && e.detail?.formData) {
+        const rows = Object.entries(e.detail.formData).map(([k, v]) => {
+          const display = k === 'password' ? '•'.repeat(Math.min(String(v).length, 10)) : String(v);
+          return `<tr><td class="demo-data-key">${k}</td><td class="demo-data-val">${display}</td></tr>`;
+        }).join('');
+        dataEl.innerHTML = `<table class="demo-data-table"><tbody>${rows}</tbody></table>`;
+      }
+
+      // Telemetry risk badge
+      if (telemetryEl && e.detail?.telemetry) {
+        const { riskScore, riskSignals, sessionDuration } = e.detail.telemetry;
+        const level  = riskScore <= 30 ? 'pass' : riskScore <= 60 ? 'warn' : 'fail';
+        const label  = riskScore <= 30 ? 'Low risk' : riskScore <= 60 ? 'Moderate risk' : 'High risk';
+        const secs   = (sessionDuration / 1000).toFixed(1);
+        const signals = riskSignals.length ? riskSignals.join(', ') : 'none';
+        telemetryEl.innerHTML = `
+          <div class="demo-telemetry-row">
+            <span class="demo-telemetry-label">Risk score</span>
+            <span class="demo-telemetry-badge demo-telemetry-badge--${level}">${riskScore} — ${label}</span>
+          </div>
+          <div class="demo-telemetry-row">
+            <span class="demo-telemetry-label">Session duration</span>
+            <span class="demo-telemetry-val">${secs}s</span>
+          </div>
+          <div class="demo-telemetry-row">
+            <span class="demo-telemetry-label">Signals</span>
+            <span class="demo-telemetry-val">${signals}</span>
+          </div>`;
+      }
+
+      formWrap.hidden = true;
+      successEl.classList.remove('demo-success--hidden');
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      successEl.classList.add('demo-success--hidden');
+      formWrap.hidden = false;
+    });
+  }
+}
+
 // ── Hero decode sequence ──────────────────────────────────────
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 

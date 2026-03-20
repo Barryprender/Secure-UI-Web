@@ -1345,6 +1345,119 @@
 .demo-form-submit-wrapper { margin-top: 1rem; }
 .demo-form-submit-wrapper .btn { width: 100%; }
 
+.demo-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-xl) var(--space-lg);
+    text-align: center;
+    animation: fadeSlideUp 0.35s cubic-bezier(.25,1,.5,1) both;
+}
+
+.demo-success--hidden {
+    display: none;
+}
+
+.demo-success-icon {
+    color: var(--accent-primary);
+    stroke-width: 2;
+}
+
+.demo-success-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+}
+
+.demo-success-body {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.demo-success-data,
+.demo-success-telemetry {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+
+.demo-data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.demo-data-table tr + tr {
+    border-top: 1px solid var(--border-subtle);
+}
+
+.demo-data-key {
+    padding: 0.5rem 0.75rem;
+    color: var(--text-secondary);
+    font-family: var(--font-mono, monospace);
+    white-space: nowrap;
+    width: 1%;
+}
+
+.demo-data-val {
+    padding: 0.5rem 0.75rem;
+    color: var(--text-primary);
+    font-family: var(--font-mono, monospace);
+    word-break: break-all;
+}
+
+.demo-telemetry-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-sm);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+}
+
+.demo-telemetry-row + .demo-telemetry-row {
+    border-top: 1px solid var(--border-subtle);
+}
+
+.demo-telemetry-label {
+    color: var(--text-secondary);
+    white-space: nowrap;
+}
+
+.demo-telemetry-val {
+    color: var(--text-primary);
+    font-family: var(--font-mono, monospace);
+    text-align: right;
+}
+
+.demo-telemetry-badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.2em 0.6em;
+    border-radius: var(--radius-sm);
+}
+
+.demo-telemetry-badge--pass {
+    background: oklch(from var(--accent-primary) l c h / 0.15);
+    color: var(--accent-primary);
+}
+
+.demo-telemetry-badge--warn {
+    background: oklch(75% 0.15 80 / 0.15);
+    color: oklch(60% 0.15 80);
+}
+
+.demo-telemetry-badge--fail {
+    background: oklch(55% 0.2 25 / 0.15);
+    color: oklch(55% 0.2 25);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .sc-char { transition: none; }
     .stats-strip.sweep-active::before { display: none; }
