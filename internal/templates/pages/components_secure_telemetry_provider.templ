@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureTelemetryProvider() {
-	@templates.Layout("secure-telemetry-provider Component", "Live demos for secure-telemetry-provider: bot detection, DOM tampering detection, HMAC-signed signals, devtools detection, and server-side verification examples.") {
+	@templates.Layout("secure-telemetry-provider Component", "Live demos for secure-telemetry-provider: bot detection, DOM tampering detection, HMAC-signed signals, devtools detection, and server-side verification examples.", true) {
 		@templates.ComponentPageJsonLDScript("secure-telemetry-provider")
 		<div class="component-page">
 			<!-- Hero -->

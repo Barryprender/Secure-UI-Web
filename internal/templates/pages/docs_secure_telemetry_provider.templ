@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureTelemetryProvider() {
-	@templates.Layout("secure-telemetry-provider Docs", "API reference for secure-telemetry-provider: bot detection, DOM tampering, HMAC-SHA-256 signed envelopes, environmental signals, and server-side verification.") {
+	@templates.Layout("secure-telemetry-provider Docs", "API reference for secure-telemetry-provider: bot detection, DOM tampering, HMAC-SHA-256 signed envelopes, environmental signals, and server-side verification.", true) {
 		@templates.DocsPageJsonLDScript("secure-telemetry-provider", "Environmental signal collector that attaches HMAC-signed bot-detection data to form submissions.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

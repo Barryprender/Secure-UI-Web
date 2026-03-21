@@ -3,9 +3,10 @@ package templates
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 )
 
-// HomeJsonLD returns JSON-LD for the home page: Organization + SoftwareApplication + SoftwareSourceCode.
+// HomeJsonLD returns JSON-LD for the home page: Organization + SoftwareApplication + SoftwareSourceCode + WebSite.
 func HomeJsonLD(siteURL string) string {
 	data := map[string]any{
 		"@context": "https://schema.org",
@@ -65,6 +66,16 @@ func HomeJsonLD(siteURL string) string {
 				"description":     "Source code for the Secure-UI web component library. MIT licensed.",
 				"url":             siteURL,
 			},
+			{
+				"@type": "WebSite",
+				"url":   siteURL,
+				"name":  "Secure-UI",
+				"potentialAction": map[string]any{
+					"@type":       "SearchAction",
+					"target":      siteURL + "/documentation?q={search_term}",
+					"query-input": "required name=search_term",
+				},
+			},
 		},
 	}
 	b, err := json.Marshal(data)
@@ -119,14 +130,27 @@ func ComponentsIndexJsonLD(siteURL, canonicalURL string) string {
 // DocsPageJsonLD returns JSON-LD for a component documentation page:
 // TechArticle + BreadcrumbList.
 func DocsPageJsonLD(siteURL, canonicalURL, componentName, description string) string {
+	today := time.Now().UTC().Format("2006-01-02")
 	data := map[string]any{
 		"@context": "https://schema.org",
 		"@graph": []map[string]any{
 			{
-				"@type":       "TechArticle",
-				"headline":    fmt.Sprintf("%s - Secure-UI", componentName),
-				"description": description,
-				"url":         canonicalURL,
+				"@type":         "TechArticle",
+				"headline":      fmt.Sprintf("%s - Secure-UI", componentName),
+				"description":   description,
+				"url":           canonicalURL,
+				"datePublished": "2024-09-01",
+				"dateModified":  today,
+				"author": map[string]any{
+					"@type": "Organization",
+					"name":  "Secure-UI",
+					"url":   siteURL,
+				},
+				"publisher": map[string]any{
+					"@type": "Organization",
+					"name":  "Secure-UI",
+					"url":   siteURL,
+				},
 				"isPartOf": map[string]any{
 					"@type": "WebSite",
 					"name":  "Secure-UI",
@@ -150,15 +174,37 @@ func DocsPageJsonLD(siteURL, canonicalURL, componentName, description string) st
 	return string(b)
 }
 
-// ComponentPageJsonLD returns JSON-LD for a component showcase page: BreadcrumbList.
-func ComponentPageJsonLD(siteURL, canonicalURL, componentName string) string {
+// ComponentPageJsonLD returns JSON-LD for a component showcase page:
+// SoftwareApplication + BreadcrumbList.
+func ComponentPageJsonLD(siteURL, canonicalURL, componentName, description string) string {
 	data := map[string]any{
 		"@context": "https://schema.org",
-		"@type":    "BreadcrumbList",
-		"itemListElement": []map[string]any{
-			{"@type": "ListItem", "position": 1, "name": "Home", "item": siteURL + "/"},
-			{"@type": "ListItem", "position": 2, "name": "Components", "item": siteURL + "/components"},
-			{"@type": "ListItem", "position": 3, "name": componentName, "item": canonicalURL},
+		"@graph": []map[string]any{
+			{
+				"@type":               "SoftwareApplication",
+				"name":                componentName + " — Secure-UI",
+				"applicationCategory": "DeveloperApplication",
+				"description":         description,
+				"url":                 canonicalURL,
+				"isPartOf": map[string]any{
+					"@type": "SoftwareApplication",
+					"name":  "Secure-UI",
+					"url":   siteURL,
+				},
+				"offers": map[string]any{
+					"@type":         "Offer",
+					"price":         "0",
+					"priceCurrency": "USD",
+				},
+			},
+			{
+				"@type": "BreadcrumbList",
+				"itemListElement": []map[string]any{
+					{"@type": "ListItem", "position": 1, "name": "Home", "item": siteURL + "/"},
+					{"@type": "ListItem", "position": 2, "name": "Components", "item": siteURL + "/components"},
+					{"@type": "ListItem", "position": 3, "name": componentName, "item": canonicalURL},
+				},
+			},
 		},
 	}
 	b, err := json.Marshal(data)

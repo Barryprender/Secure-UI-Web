@@ -7,7 +7,7 @@ import (
 )
 
 templ Home() {
-	@templates.Layout("Security-First Web Components", "Zero-dependency web components with built-in XSS protection, rate limiting, CSRF defence, and CSP-safe Shadow DOM. Security-first, works with any framework.") {
+	@templates.Layout("Security-First Web Components", "Zero-dependency web components with built-in XSS protection, rate limiting, CSRF defence, and CSP-safe Shadow DOM. Security-first, works with any framework.", true) {
 		@templates.HomeJsonLDScript()
 		<!-- Hero Section -->
 <section class="hero-section">
@@ -263,61 +263,61 @@ templ Home() {
 						<td class="owasp-table-id">A01</td>
 						<td class="owasp-table-title">Broken Access Control</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
-						<td class="owasp-table-how">Automatic CSRF token injection via <code>&lt;secure-form&gt;</code>. Immutable security tiers prevent runtime downgrade.</td>
+						<td class="owasp-table-how">Automatic CSRF token injection via <a href="/documentation/secure-form"><code>&lt;secure-form&gt;</code></a>. Immutable security tiers prevent runtime downgrade.</td>
 					</tr>
 					<tr class="owasp-row--complementary">
 						<td class="owasp-table-id">A02</td>
 						<td class="owasp-table-title">Cryptographic Failures</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--partial">Complementary</span></td>
-						<td class="owasp-table-how">Disables autocomplete and browser caching on sensitive and critical tiers. Cryptographic controls require server-side implementation.</td>
+						<td class="owasp-table-how">Disables autocomplete and browser caching on sensitive and critical tiers via <a href="/documentation/secure-input"><code>&lt;secure-input&gt;</code></a>. Cryptographic controls require server-side implementation.</td>
 					</tr>
 					<tr class="owasp-row--addressed">
 						<td class="owasp-table-id">A03</td>
 						<td class="owasp-table-title">Injection</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
-						<td class="owasp-table-how">All input sanitized via HTML entity encoding, script tag stripping, and event handler removal. Closed Shadow DOM isolates component internals.</td>
+						<td class="owasp-table-how">All input sanitized via HTML entity encoding, script tag stripping, and event handler removal. Closed Shadow DOM isolates component internals. See <a href="/documentation/secure-input">secure-input</a> and <a href="/documentation/secure-textarea">secure-textarea</a>.</td>
 					</tr>
 					<tr class="owasp-row--addressed">
 						<td class="owasp-table-id">A04</td>
 						<td class="owasp-table-title">Insecure Design</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
-						<td class="owasp-table-how">Security-by-default architecture. Fail-secure defaults, four-tier security model, and progressive enhancement ensure security without developer effort.</td>
+						<td class="owasp-table-how">Security-by-default architecture. Fail-secure defaults, four-tier security model, and progressive enhancement ensure security without developer effort. See <a href="/documentation">all components</a>.</td>
 					</tr>
 					<tr class="owasp-row--addressed">
 						<td class="owasp-table-id">A05</td>
 						<td class="owasp-table-title">Security Misconfiguration</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
-						<td class="owasp-table-how">Defaults to CRITICAL tier. Provides CSP directives and security header recommendations out of the box.</td>
+						<td class="owasp-table-how">Defaults to CRITICAL tier. Provides CSP directives and security header recommendations out of the box. See <a href="/documentation/secure-form">secure-form</a>.</td>
 					</tr>
 					<tr class="owasp-row--addressed">
 						<td class="owasp-table-id">A06</td>
 						<td class="owasp-table-title">Vulnerable and Outdated Components</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
-						<td class="owasp-table-how">Zero runtime dependencies. No transitive supply chain risk. The entire library is self-contained TypeScript.</td>
+						<td class="owasp-table-how">Zero runtime dependencies. No transitive supply chain risk. The entire library is self-contained TypeScript. See <a href="/documentation/secure-file-upload">secure-file-upload</a>; upload integrity hooks included.</td>
 					</tr>
 					<tr class="owasp-row--complementary">
 						<td class="owasp-table-id">A07</td>
 						<td class="owasp-table-title">Authentication Failures</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--partial">Complementary</span></td>
-						<td class="owasp-table-how">Client-side rate limiting on sensitive and critical tiers throttles brute-force attempts. Authentication logic requires server-side implementation.</td>
+						<td class="owasp-table-how">Client-side rate limiting on sensitive and critical tiers throttles brute-force attempts via <a href="/documentation/secure-input">secure-input</a>. Authentication logic requires server-side implementation.</td>
 					</tr>
 					<tr class="owasp-row--addressed">
 						<td class="owasp-table-id">A08</td>
 						<td class="owasp-table-title">Software and Data Integrity Failures</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
-						<td class="owasp-table-how">CSRF protection prevents cross-site request forgery. File upload scan hooks validate file integrity. Closed Shadow DOM prevents DOM tampering.</td>
+						<td class="owasp-table-how">CSRF protection via <a href="/documentation/secure-form">secure-form</a>. File upload scan hooks via <a href="/documentation/secure-file-upload">secure-file-upload</a>. Closed Shadow DOM prevents DOM tampering.</td>
 					</tr>
 					<tr class="owasp-row--addressed">
 						<td class="owasp-table-id">A09</td>
 						<td class="owasp-table-title">Security Logging Failures</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--direct">Addressed</span></td>
-						<td class="owasp-table-how">Every component records client-side security events via <code>getAuditLog()</code> and <code>secure-audit</code> custom events. Tier-configurable logging detail.</td>
+						<td class="owasp-table-how">Every component records client-side security events via <code>getAuditLog()</code> and <code>secure-audit</code> events. See <a href="/documentation/secure-telemetry-provider">secure-telemetry-provider</a>.</td>
 					</tr>
 					<tr class="owasp-row--complementary">
 						<td class="owasp-table-id">A10</td>
 						<td class="owasp-table-title">Server-Side Request Forgery</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--partial">Complementary</span></td>
-						<td class="owasp-table-how">CSP <code>form-action 'self'</code> restricts form submissions to the same origin. Components make no outbound requests.</td>
+						<td class="owasp-table-how">CSP <code>form-action 'self'</code> restricts form submissions to the same origin via <a href="/documentation/secure-form">secure-form</a>. Components make no outbound requests.</td>
 					</tr>
 				</tbody>
 			</table>

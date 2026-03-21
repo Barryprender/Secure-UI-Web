@@ -29,7 +29,7 @@ templ DocsPageJsonLDScript(componentName string, description string) {
 	@JsonLD(DocsPageJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx), componentName, description))
 }
 
-// ComponentPageJsonLDScript renders BreadcrumbList JSON-LD for a component showcase page.
+// ComponentPageJsonLDScript renders SoftwareApplication + BreadcrumbList JSON-LD for a component showcase page.
 templ ComponentPageJsonLDScript(componentName string) {
-	@JsonLD(ComponentPageJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx), componentName))
+	@JsonLD(ComponentPageJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx), componentName, ""))
 }

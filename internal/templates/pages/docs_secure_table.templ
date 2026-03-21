@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureTable() {
-	@templates.Layout("secure-table Docs", "API reference for secure-table: server-rendered data table, sorting, filtering, pagination, column security tiers, action buttons, and JavaScript API.") {
+	@templates.Layout("secure-table Docs", "API reference for secure-table: server-rendered data table, sorting, filtering, pagination, column security tiers, action buttons, and JavaScript API.", true) {
 		@templates.DocsPageJsonLDScript("secure-table", "Server-rendered data table with sorting, filtering, pagination, and column security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

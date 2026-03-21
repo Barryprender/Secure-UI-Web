@@ -7,7 +7,7 @@ import (
 )
 
 templ ComponentsIndex() {
-	@templates.Layout("Components", "Interactive showcase for all Secure-UI web components. Live demos, configuration options, security features, and integration examples for every component.") {
+	@templates.Layout("Components", "Interactive showcase for all Secure-UI web components. Live demos, configuration options, security features, and integration examples for every component.", false) {
 		@templates.ComponentsIndexJsonLDScript()
 		<div class="components-index-page">
 			<!-- Hero -->

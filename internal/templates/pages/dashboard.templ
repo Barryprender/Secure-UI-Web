@@ -6,7 +6,7 @@ import "secure-ui-showcase-go/internal/models"
 import "fmt"
 
 templ Dashboard(users []*models.User, csrfToken string) {
-	@templates.Layout("Dashboard", "User management dashboard") {
+	@templates.Layout("Dashboard", "User management dashboard", false) {
 		<section class="py-3xl">
 			<div class="container">
 				<div class="section-header">

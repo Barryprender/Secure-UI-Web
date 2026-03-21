@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureCard() {
-	@templates.Layout("secure-card Docs", "API reference for secure-card: Luhn validation, card type detection, PAN masking, CVC protection, 3D flip preview, CSS custom properties, and JavaScript API.") {
+	@templates.Layout("secure-card Docs", "API reference for secure-card: Luhn validation, card type detection, PAN masking, CVC protection, 3D flip preview, CSS custom properties, and JavaScript API.", true) {
 		@templates.DocsPageJsonLDScript("secure-card", "Payment card input with Luhn validation, 3D preview, PAN masking, and CRITICAL-tier security enforcement.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

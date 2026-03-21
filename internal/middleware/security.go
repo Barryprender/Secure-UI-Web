@@ -210,9 +210,9 @@ var mimeTypes = map[string]string{
 // staticCacheMaxAge maps file extensions to Cache-Control max-age values.
 // Fonts and images are immutable in practice; CSS/JS may change between deploys.
 var staticCacheMaxAge = map[string]string{
-	".css":   "public, max-age=86400",    // 1 day
-	".js":    "public, max-age=86400",    // 1 day
-	".mjs":   "public, max-age=86400",    // 1 day
+	".css":   "public, max-age=604800, stale-while-revalidate=86400",  // 1 week
+	".js":    "public, max-age=604800, stale-while-revalidate=86400",  // 1 week
+	".mjs":   "public, max-age=604800, stale-while-revalidate=86400",  // 1 week
 	".png":   "public, max-age=31536000", // 1 year
 	".svg":   "public, max-age=31536000", // 1 year
 	".ico":   "public, max-age=31536000", // 1 year

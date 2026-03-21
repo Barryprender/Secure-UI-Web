@@ -3,7 +3,6 @@ package handlers
 import (
 	"fmt"
 	"net/http"
-	"time"
 )
 
 // RobotsTxt serves /robots.txt with explicit allow rules for known AI crawlers
@@ -135,13 +134,15 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 		scheme = "http"
 	}
 	base := scheme + "://" + r.Host
-	today := time.Now().UTC().Format("2006-01-02")
+	// Use a stable date tied to the last known content update.
+	// Avoid time.Now() — dynamic lastmod signals to crawlers that
+	// content changes daily even when it doesn't, wasting crawl budget.
+	lastmod := "2026-03-21"
 
 	entries := []sitemapEntry{
 		{"/", "1.0", "weekly"},
 		{"/forms", "0.7", "monthly"},
 		{"/login", "0.3", "yearly"},
-		{"/register", "0.5", "yearly"},
 		{"/registration", "0.6", "monthly"},
 		{"/documentation", "0.9", "weekly"},
 		{"/documentation/secure-input", "0.8", "weekly"},
@@ -177,7 +178,7 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 
 	for _, e := range entries {
 		fmt.Fprintf(w, "  <url>\n    <loc>%s%s</loc>\n    <lastmod>%s</lastmod>\n    <changefreq>%s</changefreq>\n    <priority>%s</priority>\n  </url>\n",
-			base, e.loc, today, e.changeFreq, e.priority)
+			base, e.loc, lastmod, e.changeFreq, e.priority)
 	}
 
 	fmt.Fprint(w, "</urlset>\n")

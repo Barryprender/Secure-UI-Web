@@ -4,7 +4,7 @@ import "secure-ui-showcase-go/internal/i18n"
 import "secure-ui-showcase-go/internal/templates"
 
 templ Documentation() {
-	@templates.Layout("Documentation", "API reference for all Secure-UI web components. Covers security tiers, CSP compliance, Shadow DOM styles, CSS custom properties, and framework integration guides.") {
+	@templates.Layout("Documentation", "API reference for all Secure-UI web components. Covers security tiers, CSP compliance, Shadow DOM styles, CSS custom properties, and framework integration guides.", true) {
 		@templates.DocsIndexJsonLDScript()
 		<div class="docs-container">
 			<header class="docs-header">
