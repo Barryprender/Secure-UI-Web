@@ -11,11 +11,64 @@ templ ComponentSecureTelemetryProvider() {
 				<div class="component-hero-content">
 					<h1>&lt;secure-telemetry-provider&gt;</h1>
 					<p class="component-hero-description">
-						A wrapper component that collects environmental security signals — bot indicators,
-						DOM tampering, devtools status, and user interaction patterns — and attaches a
-						HMAC-SHA-256 signed envelope to every form submission. Raises the cost of automated
-						attacks without blocking real users.
+						Replaces CAPTCHA with passive behavioral analysis. Collects environmental signals —
+						webdriver and headless browser detection, DOM tampering, devtools status, and
+						user interaction patterns — and attaches a HMAC-SHA-256 signed envelope to every
+						form submission. Real users see nothing; automated clients are identified
+						before the request reaches your server.
 					</p>
+
+					<!-- Why Not CAPTCHA comparison -->
+					<div class="captcha-comparison">
+						<h2 class="captcha-comparison-title">Why not CAPTCHA?</h2>
+						<table class="captcha-comparison-table">
+							<thead>
+								<tr>
+									<th></th>
+									<th>CAPTCHA</th>
+									<th>secure-telemetry-provider</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<td>User friction</td>
+									<td class="captcha-cell--bad">High — puzzles, image grids, waits</td>
+									<td class="captcha-cell--good">None — fully passive</td>
+								</tr>
+								<tr>
+									<td>Accessibility</td>
+									<td class="captcha-cell--bad">Fails WCAG for many users</td>
+									<td class="captcha-cell--good">Transparent to all users</td>
+								</tr>
+								<tr>
+									<td>AI bypass risk</td>
+									<td class="captcha-cell--bad">Increasing — solvable by commodity models</td>
+									<td class="captcha-cell--good">Raises attacker cost significantly</td>
+								</tr>
+								<tr>
+									<td>Data sharing</td>
+									<td class="captcha-cell--bad">Sent to Google, Cloudflare, or third party</td>
+									<td class="captcha-cell--good">Stays on your servers only</td>
+								</tr>
+								<tr>
+									<td>Integration</td>
+									<td class="captcha-cell--bad">Separate SDK, extra script, API key</td>
+									<td class="captcha-cell--good">One web component, no API key</td>
+								</tr>
+								<tr>
+									<td>Cost</td>
+									<td class="captcha-cell--bad">Per-transaction fees at scale</td>
+									<td class="captcha-cell--good">Zero — self-hosted</td>
+								</tr>
+								<tr>
+									<td>Sophisticated bots</td>
+									<td class="captcha-cell--bad">Solvable by commodity AI models</td>
+									<td class="captcha-cell--warn">Higher cost to bypass — use CAPTCHA as fallback only for flagged requests</td>
+								</tr>
+							</tbody>
+						</table>
+						<p class="captcha-note">For most applications, behavioral scoring eliminates CAPTCHA for the majority of traffic. Keep CAPTCHA as an optional fallback triggered only when risk score exceeds your threshold.</p>
+					</div>
 					<div class="component-hero-install">
 						<pre><code class="language-markup">{ `<script type="module"
   src="/components/secure-telemetry-provider/secure-telemetry-provider.js">
@@ -158,6 +211,14 @@ console.log(envelope.signature);` }</code></pre>
 							<td><code>keyboardActivityDetected</code></td>
 							<td>At least one <code>keydown</code> event received</td>
 						</tr>
+						<tr>
+							<td><code>pageLoadToFirstKeystroke</code></td>
+							<td>ms from component mount to first <code>keydown</code> event. Returns -1 if no keystroke was received before submit. Values below 200ms suggest programmatic input</td>
+						</tr>
+						<tr>
+							<td><code>loadToSubmit</code></td>
+							<td>ms from component mount to form submission. Values below 500ms are consistent with automated submission</td>
+						</tr>
 					</tbody>
 				</table>
 			</section>
@@ -197,10 +258,25 @@ console.log(envelope.signature);` }</code></pre>
 // as JSON in the _telemetry field.
 
 type TelemetryEnvelope struct {
-    Nonce       string              ` + "`json:\"nonce\"`" + `
-    IssuedAt    time.Time           ` + "`json:\"issuedAt\"`" + `
+    Nonce       string               ` + "`json:\"nonce\"`" + `
+    IssuedAt    time.Time            ` + "`json:\"issuedAt\"`" + `
     Environment EnvironmentalSignals ` + "`json:\"environment\"`" + `
-    Signature   string              ` + "`json:\"signature\"`" + `
+    Signature   string               ` + "`json:\"signature\"`" + `
+}
+
+type EnvironmentalSignals struct {
+    WebdriverDetected          bool   ` + "`json:\"webdriverDetected\"`" + `
+    HeadlessDetected           bool   ` + "`json:\"headlessDetected\"`" + `
+    DomMutationDetected        bool   ` + "`json:\"domMutationDetected\"`" + `
+    InjectedScriptCount        int    ` + "`json:\"injectedScriptCount\"`" + `
+    DevtoolsOpen               bool   ` + "`json:\"devtoolsOpen\"`" + `
+    SuspiciousScreenSize       bool   ` + "`json:\"suspiciousScreenSize\"`" + `
+    PointerType                string ` + "`json:\"pointerType\"`" + `
+    MouseMovementDetected      bool   ` + "`json:\"mouseMovementDetected\"`" + `
+    KeyboardActivityDetected   bool   ` + "`json:\"keyboardActivityDetected\"`" + `
+    // Timing signals (v1.1+)
+    PageLoadToFirstKeystroke   int    ` + "`json:\"pageLoadToFirstKeystroke\"`" + `
+    LoadToSubmit               int    ` + "`json:\"loadToSubmit\"`" + `
 }
 
 func verifyTelemetry(env TelemetryEnvelope, key []byte) bool {
@@ -216,6 +292,57 @@ func verifyTelemetry(env TelemetryEnvelope, key []byte) bool {
         []byte(expected),
         []byte(env.Signature),
     )
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Risk scoring (Go)</span>
+							<span class="framework-tab-lang">go</span>
+						</div>
+						<pre><code class="language-go">{ `// Score returns 0–100. Higher = more suspicious.
+// Threshold guidance:
+//   0–30  → allow
+//   31–60 → log / challenge with CAPTCHA
+//   61+   → reject or require step-up auth
+
+func Score(env EnvironmentalSignals) int {
+    score := 0
+
+    // Hard bot signals
+    if env.WebdriverDetected  { score += 40 }
+    if env.HeadlessDetected   { score += 35 }
+
+    // Suspicious environment
+    if env.SuspiciousScreenSize { score += 20 }
+    if env.DOMMutationDetected  { score += 10 }
+    if env.InjectedScriptCount > 2 { score += 10 }
+
+    // Timing signals — bots fill forms instantly or at fixed intervals
+    if env.LoadToSubmit < 500 {
+        score += 30 // submitted in under 500ms
+    } else if env.LoadToSubmit < 2000 {
+        score += 10
+    }
+    if env.PageLoadToFirstKeystroke >= 0 && env.PageLoadToFirstKeystroke < 200 {
+        score += 20 // first keystroke in under 200ms
+    }
+
+    // Interaction signals — mobile-aware:
+    // Touch devices never produce mouse events;
+    // suppress the mouse-movement penalty for them.
+    isTouchDevice := env.PointerType == "touch" ||
+                     env.PointerType == "pen"
+
+    if !isTouchDevice && !env.MouseMovementDetected {
+        score += 15
+    }
+    if !env.KeyboardActivityDetected {
+        score += 10
+    }
+
+    if score > 100 { score = 100 }
+    return score
 }` }</code></pre>
 					</div>
 

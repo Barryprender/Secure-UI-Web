@@ -7,7 +7,7 @@ import (
 )
 
 templ Home() {
-	@templates.Layout("Secure Form Components for Web Apps", "Drop-in web components that block XSS, inject CSRF tokens, and enforce security tiers on every field. Zero dependencies. Works with React, Vue, Angular, Go, and plain HTML.", true, "/static/styles/home.min.css") {
+	@templates.Layout("Secure Form Components — Bot Detection Without CAPTCHA", "Stop bots without CAPTCHA friction. Drop-in web components with behavioral bot detection, CSRF protection, XSS prevention, and HMAC-signed telemetry. Zero dependencies. Works with any framework.", true, "/static/styles/home.min.css") {
 		@templates.HomeJsonLDScript()
 		@templates.HomeFAQJsonLDScript()
 		<!-- Hero Section -->
@@ -28,8 +28,38 @@ templ Home() {
 			<p class="hero-description">{ i18n.T(ctx, "home.hero.desc") }</p>
 
 			<div class="hero-cta" id="hero-cta">
-				<a href="/components" class="btn btn-primary">{ i18n.T(ctx, "home.hero.cta_explore") }</a>
+				<a href="/components" class="btn btn-primary hero-btn-primary">
+					{ i18n.T(ctx, "home.hero.cta_explore") }
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+				</a>
 				<a href="/documentation" class="btn btn-secondary">{ i18n.T(ctx, "home.hero.cta_start") }</a>
+			</div>
+
+			<div class="hero-install" id="hero-install">
+				<span class="hero-install-prompt" aria-hidden="true">$</span>
+				<code class="hero-install-cmd" id="hero-install-cmd">{ i18n.T(ctx, "home.hero.install") }</code>
+				<button class="hero-install-copy" id="hero-install-copy" aria-label="Copy install command" type="button">
+					<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+				</button>
+			</div>
+
+			<div class="hero-trust" role="list" aria-label="Key facts">
+				<div class="hero-trust-item" role="listitem">
+					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+					{ i18n.T(ctx, "home.hero.trust_deps") }
+				</div>
+				<div class="hero-trust-item" role="listitem">
+					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+					{ i18n.T(ctx, "home.hero.trust_mit") }
+				</div>
+				<div class="hero-trust-item" role="listitem">
+					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+					{ i18n.T(ctx, "home.hero.trust_comp") }
+				</div>
+				<div class="hero-trust-item" role="listitem">
+					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+					{ i18n.T(ctx, "home.hero.trust_fw") }
+				</div>
 			</div>
 		</div>
 	</div>
@@ -112,6 +142,82 @@ templ Home() {
 	</div>
 </section>
 
+<!-- Behavioral Intelligence Section -->
+<section class="home-telemetry-section">
+	<div class="container">
+		<div class="home-telemetry-inner" data-reveal-stagger>
+			<div class="home-telemetry-content">
+				<span class="home-telemetry-badge">{ i18n.T(ctx, "home.tel.badge") }</span>
+				<h2>{ i18n.T(ctx, "home.tel.title") }<br/><em>{ i18n.T(ctx, "home.tel.title_em") }</em></h2>
+				<p>{ i18n.T(ctx, "home.tel.desc") }</p>
+				<ul class="home-telemetry-differentiators">
+					<li>Stops bots that pass visual CAPTCHAs</li>
+					<li>Detects webdrivers, headless browsers, and DevTools automation</li>
+					<li>Flags DOM tampering and injected scripts in real time</li>
+					<li>HMAC-SHA-256 signed — forged telemetry is detectable server-side</li>
+					<li>Your infrastructure, your rules — no data leaves your servers</li>
+				</ul>
+				<a href="/telemetry" class="btn btn-primary">{ i18n.T(ctx, "home.tel.cta") }</a>
+			</div>
+			<div class="home-telemetry-panel" aria-hidden="true">
+				<div class="home-telemetry-panel-header">
+					<span class="home-telemetry-panel-dot"></span>
+					<span class="home-telemetry-panel-live">LIVE</span>
+					Environmental Signals
+				</div>
+				<div class="home-telemetry-signals">
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">webdriverDetected</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">headlessDetected</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">domMutationDetected</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">injectedScriptCount</span>
+						<span class="home-telemetry-signal-value">0</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">suspiciousScreenSize</span>
+						<span class="home-telemetry-signal-value">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">pointerType</span>
+						<span class="home-telemetry-signal-value">"mouse"</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">mouseMovementDetected</span>
+						<span class="home-telemetry-signal-value" data-live-signal="mouseMovementDetected">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+					<div class="home-telemetry-signal home-telemetry-signal--pass">
+						<span class="home-telemetry-signal-name">keyboardActivityDetected</span>
+						<span class="home-telemetry-signal-value" data-live-signal="keyboardActivityDetected">false</span>
+						<span class="home-telemetry-signal-status"></span>
+					</div>
+				</div>
+				<div class="home-telemetry-envelope">
+					<div class="home-telemetry-envelope-label">HMAC-SHA-256 signed envelope</div>
+					<pre>{ `{ nonce: "a3f8b2c1...",
+  issuedAt: "2026-03-17T14:32:07Z",
+  signature: "7c2bef09a1d3..." }` }</pre>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
 <!-- Built-in Security Features Section -->
 <section class="features-section">
 	<div class="container">
@@ -124,6 +230,22 @@ templ Home() {
 		</div>
 
 		<div class="features-grid" data-reveal-stagger>
+			<!-- CAPTCHA-Free Bot Detection — indigo: intelligence/detection -->
+			<div class="feature-card">
+				<div class="feature-icon feature-icon--indigo" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+					</svg>
+				</div>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.captcha.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.captcha.desc") }</p>
+				<ul class="feature-list">
+					<li>No user-visible challenge</li>
+					<li>Webdriver and headless detection</li>
+					<li>HMAC-signed risk envelope</li>
+				</ul>
+			</div>
+
 			<!-- CSRF Protection — blue: trust/auth boundary -->
 			<div class="feature-card">
 				<div class="feature-icon feature-icon--blue" aria-hidden="true">
@@ -228,9 +350,9 @@ templ Home() {
 				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.audit.title") }</h3>
 				<p class="feature-description">{ i18n.T(ctx, "home.feat.audit.desc") }</p>
 				<ul class="feature-list">
-					<li>Component interaction events</li>
-					<li>Security tier violations</li>
-					<li>Input validation errors</li>
+					<li>Per-component event trail</li>
+					<li>Suspicious pattern detection</li>
+					<li>Abuse identification and flagging</li>
 				</ul>
 			</div>
 		</div>
@@ -300,7 +422,7 @@ templ Home() {
 						<td class="owasp-table-id">A07</td>
 						<td class="owasp-table-title">Authentication Failures</td>
 						<td><span class="owasp-coverage-badge owasp-coverage-badge--partial">Complementary</span></td>
-						<td class="owasp-table-how">Client-side rate limiting on sensitive and critical tiers throttles brute-force attempts via <a href="/documentation/secure-input">secure-input</a>. Authentication logic requires server-side implementation.</td>
+						<td class="owasp-table-how">Behavioral telemetry via <a href="/documentation/secure-telemetry-provider">secure-telemetry-provider</a> detects automated clients before submission. Client-side rate limiting on sensitive and critical tiers adds a secondary layer. Authentication logic requires server-side implementation.</td>
 					</tr>
 					<tr class="owasp-row--addressed">
 						<td class="owasp-table-id">A08</td>
@@ -475,82 +597,6 @@ func (h *Handlers) Register(
 				<span class="swc-framework-badge">Rails</span>
 				<span class="swc-framework-badge">Laravel</span>
 				<span class="swc-framework-badge">Any SSR</span>
-			</div>
-		</div>
-	</div>
-</section>
-
-<!-- Behavioral Intelligence Section -->
-<section class="home-telemetry-section">
-	<div class="container">
-		<div class="home-telemetry-inner" data-reveal-stagger>
-			<div class="home-telemetry-content">
-				<span class="home-telemetry-badge">{ i18n.T(ctx, "home.tel.badge") }</span>
-				<h2>{ i18n.T(ctx, "home.tel.title") }<br/><em>{ i18n.T(ctx, "home.tel.title_em") }</em></h2>
-				<p>{ i18n.T(ctx, "home.tel.desc") }</p>
-				<ul class="home-telemetry-differentiators">
-					<li>Webdriver, headless browser, and DevTools detection</li>
-					<li>DOM mutation and script injection monitoring</li>
-					<li>Mouse, keyboard, and pointer-type activity signals</li>
-					<li>HMAC-SHA-256 signed — forgery raises the cost of attack</li>
-					<li>All data stays on your servers — zero third-party sharing</li>
-				</ul>
-				<a href="/telemetry" class="btn btn-primary">{ i18n.T(ctx, "home.tel.cta") }</a>
-			</div>
-			<div class="home-telemetry-panel" aria-hidden="true">
-				<div class="home-telemetry-panel-header">
-					<span class="home-telemetry-panel-dot"></span>
-					<span class="home-telemetry-panel-live">LIVE</span>
-					Environmental Signals
-				</div>
-				<div class="home-telemetry-signals">
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">webdriverDetected</span>
-						<span class="home-telemetry-signal-value">false</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">headlessDetected</span>
-						<span class="home-telemetry-signal-value">false</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">domMutationDetected</span>
-						<span class="home-telemetry-signal-value">false</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">injectedScriptCount</span>
-						<span class="home-telemetry-signal-value">0</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">suspiciousScreenSize</span>
-						<span class="home-telemetry-signal-value">false</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">pointerType</span>
-						<span class="home-telemetry-signal-value">"mouse"</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">mouseMovementDetected</span>
-						<span class="home-telemetry-signal-value" data-live-signal="mouseMovementDetected">false</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
-						<span class="home-telemetry-signal-name">keyboardActivityDetected</span>
-						<span class="home-telemetry-signal-value" data-live-signal="keyboardActivityDetected">false</span>
-						<span class="home-telemetry-signal-status"></span>
-					</div>
-				</div>
-				<div class="home-telemetry-envelope">
-					<div class="home-telemetry-envelope-label">HMAC-SHA-256 signed envelope</div>
-					<pre>{ `{ nonce: "a3f8b2c1...",
-  issuedAt: "2026-03-17T14:32:07Z",
-  signature: "7c2bef09a1d3..." }` }</pre>
-				</div>
 			</div>
 		</div>
 	</div>
@@ -761,8 +807,12 @@ if (!reduceMotion) {
   if (titleEl) {
     // Suppress CSS entrance before it fires
     titleEl.style.animation = 'none'; titleEl.style.opacity = '0';
-    if (descEl) { descEl.style.animation = 'none'; descEl.style.opacity = '0'; }
-    if (ctaEl)  { ctaEl.style.animation = 'none';  ctaEl.style.opacity = '0'; ctaEl.style.transform = 'translateY(8px)'; }
+    const installEl = document.getElementById('hero-install');
+    const trustEl   = document.querySelector('.hero-trust');
+    if (descEl)    { descEl.style.animation = 'none'; descEl.style.opacity = '0'; }
+    if (ctaEl)     { ctaEl.style.animation = 'none';  ctaEl.style.opacity = '0'; ctaEl.style.transform = 'translateY(8px)'; }
+    if (installEl) { installEl.style.animation = 'none'; installEl.style.opacity = '0'; installEl.style.transform = 'translateY(6px)'; }
+    if (trustEl)   { trustEl.style.animation = 'none';   trustEl.style.opacity = '0'; }
 
     // Screen-reader text via aria-label during scramble
     titleEl.setAttribute('aria-label', SEGMENTS.map(s => s.text).join(' '));
@@ -824,6 +874,12 @@ if (!reduceMotion) {
         }
         setTimeout(() => {
           if (ctaEl) { ctaEl.style.transition = easeStr; ctaEl.style.opacity = '1'; ctaEl.style.transform = 'none'; }
+          setTimeout(() => {
+            if (installEl) { installEl.style.transition = easeStr; installEl.style.opacity = '1'; installEl.style.transform = 'none'; }
+          }, 80);
+          setTimeout(() => {
+            if (trustEl) { trustEl.style.transition = 'opacity 0.4s cubic-bezier(.25,1,.5,1)'; trustEl.style.opacity = '1'; }
+          }, 160);
         }, 160);
         setTimeout(() => {
           if (stripEl) {
@@ -832,6 +888,26 @@ if (!reduceMotion) {
           }
         }, 340);
       }, 160);
+    });
+  }
+}
+
+// ── Install snippet copy ──────────────────────────────────────
+{
+  const copyBtn = document.getElementById('hero-install-copy');
+  const cmdEl   = document.getElementById('hero-install-cmd');
+  if (copyBtn && cmdEl) {
+    copyBtn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(cmdEl.textContent.trim());
+        copyBtn.classList.add('hero-install-copy--copied');
+        const orig = copyBtn.innerHTML;
+        copyBtn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+        setTimeout(() => {
+          copyBtn.classList.remove('hero-install-copy--copied');
+          copyBtn.innerHTML = orig;
+        }, 1800);
+      } catch (_) {}
     });
   }
 }

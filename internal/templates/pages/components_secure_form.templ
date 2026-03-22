@@ -13,7 +13,9 @@ templ ComponentSecureForm() {
 					<p class="component-hero-description">
 						A form wrapper that automatically injects CSRF tokens, enforces form action URLs,
 						coordinates security tiers across all child components, and logs every submission
-						attempt to the audit trail.
+						attempt to the audit trail. Compose with
+						<a href="/components/secure-telemetry-provider"><code>&lt;secure-telemetry-provider&gt;</code></a>
+						to attach HMAC-signed behavioral signals to every submission — bot detection without CAPTCHA.
 					</p>
 					<div class="component-hero-install">
 						<pre><code class="language-markup">{ `<script type="module"

@@ -36,8 +36,39 @@ templ ComponentsIndex() {
 
 			<!-- Component grid -->
 			<div class="components-grid" id="ci-grid">
+				<!-- secure-telemetry-provider — featured first -->
+				<a href="/components/secure-telemetry-provider" class="component-card component-card--featured" data-ci-index="0">
+					<div class="card-preview card-preview--telemetry" aria-hidden="true">
+						<div class="cp-tel-grid">
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+							<span class="cp-tel-dot"></span>
+						</div>
+						<div class="cp-tel-badge">HMAC-SHA-256</div>
+					</div>
+					<span class="component-card-tag">&lt;secure-telemetry-provider&gt;</span>
+					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.telemetry.desc") }</p>
+					<ul class="component-card-features">
+						<li>Replaces CAPTCHA — no user friction</li>
+						<li>Headless, webdriver, and DevTools detection</li>
+						<li>HMAC-SHA-256 signed signals</li>
+					</ul>
+				</a>
+
 				<!-- secure-input -->
-				<a href="/components/secure-input" class="component-card" data-ci-index="0">
+				<a href="/components/secure-input" class="component-card" data-ci-index="1">
 					<div class="card-preview card-preview--input" aria-hidden="true">
 						<div class="cp-label">Email address</div>
 						<div class="cp-input-field">
@@ -54,7 +85,7 @@ templ ComponentsIndex() {
 				</a>
 
 				<!-- secure-select -->
-				<a href="/components/secure-select" class="component-card" data-ci-index="1">
+				<a href="/components/secure-select" class="component-card" data-ci-index="2">
 					<div class="card-preview card-preview--select" aria-hidden="true">
 						<div class="cp-select-trigger">
 							<span>Administrator</span>
@@ -75,7 +106,7 @@ templ ComponentsIndex() {
 				</a>
 
 				<!-- secure-textarea -->
-				<a href="/components/secure-textarea" class="component-card" data-ci-index="2">
+				<a href="/components/secure-textarea" class="component-card" data-ci-index="3">
 					<div class="card-preview card-preview--textarea" aria-hidden="true">
 						<div class="cp-ta-box">
 							<div class="cp-ta-line cp-ta-line--1"></div>
@@ -95,7 +126,7 @@ templ ComponentsIndex() {
 				</a>
 
 				<!-- secure-form -->
-				<a href="/components/secure-form" class="component-card" data-ci-index="3">
+				<a href="/components/secure-form" class="component-card" data-ci-index="4">
 					<div class="card-preview card-preview--form" aria-hidden="true">
 						<div class="cp-step cp-step--1">
 							<span class="cp-step-icon"></span>
@@ -120,7 +151,7 @@ templ ComponentsIndex() {
 				</a>
 
 				<!-- secure-file-upload -->
-				<a href="/components/secure-file-upload" class="component-card" data-ci-index="4">
+				<a href="/components/secure-file-upload" class="component-card" data-ci-index="5">
 					<div class="card-preview card-preview--upload" aria-hidden="true">
 						<div class="cp-upload-filename">
 							<span class="cp-upload-arrow">&#8593;</span>
@@ -141,7 +172,7 @@ templ ComponentsIndex() {
 				</a>
 
 				<!-- secure-datetime -->
-				<a href="/components/secure-datetime" class="component-card" data-ci-index="5">
+				<a href="/components/secure-datetime" class="component-card" data-ci-index="6">
 					<div class="card-preview card-preview--datetime" aria-hidden="true">
 						<div class="cp-dt-header">March 2026</div>
 						<div class="cp-dt-grid">
@@ -165,7 +196,7 @@ templ ComponentsIndex() {
 				</a>
 
 				<!-- secure-table -->
-				<a href="/components/secure-table" class="component-card" data-ci-index="6">
+				<a href="/components/secure-table" class="component-card" data-ci-index="7">
 					<div class="card-preview card-preview--table" aria-hidden="true">
 						<div class="cp-tbl-head">
 							<span>Name</span><span>Role</span><span>&#9679;</span>
@@ -190,7 +221,7 @@ templ ComponentsIndex() {
 				</a>
 
 				<!-- secure-card -->
-				<a href="/components/secure-card" class="component-card" data-ci-index="7">
+				<a href="/components/secure-card" class="component-card" data-ci-index="8">
 					<div class="card-preview card-preview--payment" aria-hidden="true">
 						<div class="cp-payment-scene">
 							<div class="cp-payment-front">
@@ -213,36 +244,6 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
-				<!-- secure-telemetry-provider -->
-				<a href="/components/secure-telemetry-provider" class="component-card" data-ci-index="8">
-					<div class="card-preview card-preview--telemetry" aria-hidden="true">
-						<div class="cp-tel-grid">
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-							<span class="cp-tel-dot"></span>
-						</div>
-						<div class="cp-tel-badge">HMAC-SHA-256</div>
-					</div>
-					<span class="component-card-tag">&lt;secure-telemetry-provider&gt;</span>
-					<p class="component-card-desc">{ i18n.T(ctx, "ci.card.telemetry.desc") }</p>
-					<ul class="component-card-features">
-						<li>Headless / webdriver detection</li>
-						<li>HMAC-SHA-256 signed signals</li>
-						<li>DOM tampering detection</li>
-					</ul>
-				</a>
 			</div>
 
 			<!-- Framework section -->
