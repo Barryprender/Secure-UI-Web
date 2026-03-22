@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureFileUpload() {
-	@templates.Layout("secure-file-upload Docs", "API reference for secure-file-upload: CSP-safe file input, MIME type validation, file size limits, drag-and-drop, security tiers, and JavaScript API.", true) {
+	@templates.Layout("Secure File Upload — MIME Validation, Size Limits, Scan Hooks", "Secure file upload with MIME type validation, size enforcement, drag-and-drop, preview generation, and virus scan hook support. CSP-safe, zero dependencies.", true, "/static/styles/documentation.min.css") {
 		@templates.DocsPageJsonLDScript("secure-file-upload", "CSP-safe file input with MIME type validation, file size limits, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

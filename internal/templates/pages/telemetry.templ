@@ -4,7 +4,7 @@ import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/middleware"
 
 templ TelemetryPage() {
-	@templates.Layout("Behavioral Intelligence", "Own your bot detection. secure-telemetry-provider collects HMAC-signed behavioral signals on every form submission — no third-party SDKs, no per-transaction fees, no user friction.", true) {
+	@templates.Layout("Behavioral Intelligence", "Own your bot detection. secure-telemetry-provider collects HMAC-signed behavioral signals on every form submission — no third-party SDKs, no per-transaction fees, no user friction.", true, "/static/styles/telemetry.min.css") {
 		<!-- Hero -->
 		<section class="telemetry-hero">
 			<div class="container">

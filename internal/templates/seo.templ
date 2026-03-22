@@ -14,6 +14,11 @@ templ HomeJsonLDScript() {
 	@JsonLD(HomeJsonLD(middleware.SiteBaseURLFromContext(ctx)))
 }
 
+// HomeFAQJsonLDScript renders FAQPage JSON-LD for the home page FAQ section.
+templ HomeFAQJsonLDScript() {
+	@JsonLD(HomeFAQJsonLD())
+}
+
 // DocsIndexJsonLDScript renders WebPage JSON-LD for the documentation index.
 templ DocsIndexJsonLDScript() {
 	@JsonLD(DocsIndexJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx)))
@@ -30,6 +35,6 @@ templ DocsPageJsonLDScript(componentName string, description string) {
 }
 
 // ComponentPageJsonLDScript renders SoftwareApplication + BreadcrumbList JSON-LD for a component showcase page.
-templ ComponentPageJsonLDScript(componentName string) {
-	@JsonLD(ComponentPageJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx), componentName, ""))
+templ ComponentPageJsonLDScript(componentName string, description string) {
+	@JsonLD(ComponentPageJsonLD(middleware.SiteBaseURLFromContext(ctx), middleware.CanonicalURLFromContext(ctx), componentName, description))
 }

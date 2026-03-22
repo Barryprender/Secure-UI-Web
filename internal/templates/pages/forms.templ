@@ -4,7 +4,7 @@ import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
 templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
-	@templates.Layout("Live Form Demos", "Live interactive demos of Secure-UI form components: login, subscription, and payment forms with real-time telemetry display.", false) {
+	@templates.Layout("Live Form Demos", "Live interactive demos of Secure-UI form components: login, subscription, and payment forms with real-time telemetry display.", false, "/static/styles/forms.min.css") {
 		<section class="py-3xl">
 			<div class="container">
 				<!-- Hero -->
@@ -241,7 +241,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 					</div>
 				</section>
 
-				<script src="/static/js/forms-demo.js" defer></script>
+				<script src="/static/js/forms-demo.min.js" defer></script>
 			</div>
 		</section>
 	}

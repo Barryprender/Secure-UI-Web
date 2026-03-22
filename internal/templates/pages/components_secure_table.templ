@@ -3,8 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureTable() {
-	@templates.Layout("secure-table Component", "Live demos for secure-table: server-rendered slotted content, sorting, filtering, pagination, column security tiers, action buttons, and framework examples.", true) {
-		@templates.ComponentPageJsonLDScript("secure-table")
+	@templates.Layout("Live Demo: Secure Table — Sorting, Filtering, Security Tiers", "Interactive demos for secure-table: server-rendered slotted content, sorting, filtering, pagination, column security tiers, and framework examples.", true, "/static/styles/components.min.css") {
+		@templates.ComponentPageJsonLDScript("secure-table", "Secure data table with client-side sorting, column filtering, and per-column security tier display rules.")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">

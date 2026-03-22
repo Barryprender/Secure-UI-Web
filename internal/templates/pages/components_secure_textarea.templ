@@ -3,8 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureTextarea() {
-	@templates.Layout("secure-textarea Component", "Live demos for secure-textarea: character limits, resize modes, security tiers, XSS prevention, CSS custom properties, and framework integration examples.", true) {
-		@templates.ComponentPageJsonLDScript("secure-textarea")
+	@templates.Layout("Live Demo: Secure Textarea — XSS Safety, Char Limits", "Interactive demos for secure-textarea: character limits, resize modes, security tiers, XSS prevention, CSS custom properties, and framework integration examples.", true, "/static/styles/components.min.css") {
+		@templates.ComponentPageJsonLDScript("secure-textarea", "XSS-safe multi-line input with HTML sanitisation, character limits, rate limiting, and security tier enforcement.")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">

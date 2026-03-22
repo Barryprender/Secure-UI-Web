@@ -9,7 +9,7 @@ import (
 templ Layout(title string, description string, prism bool, pageCSS ...string) {
 	<!DOCTYPE html>
 	<html lang={ string(i18n.LocaleFromContext(ctx)) }>
-		@Head(title, description, pageCSS)
+		@Head(title, description, prism, pageCSS)
 		<body>
 			@partials.Navbar(middleware.UserFromContext(ctx) != nil)
 			<div class="main-content">
@@ -18,17 +18,6 @@ templ Layout(title string, description string, prism bool, pageCSS ...string) {
 				</main>
 				@partials.Footer()
 			</div>
-			if prism {
-				<!-- Prism.js syntax highlighting -->
-				<script defer src="/static/js/prism.js"></script>
-				<script defer src="/static/js/prism-go.min.js"></script>
-				<script defer src="/static/js/prism-javascript.min.js"></script>
-				<script defer src="/static/js/prism-typescript.min.js"></script>
-				<script defer src="/static/js/prism-bash.min.js"></script>
-				<script defer src="/static/js/prism-json.min.js"></script>
-				<script defer src="/static/js/prism-markup.min.js"></script>
-				<script defer src="/static/js/prism-css.min.js"></script>
-			}
 		</body>
 	</html>
 }
@@ -47,7 +36,7 @@ templ LandingLayout(title string, description string) {
 	</html>
 }
 
-templ Head(title string, description string, pageCSS []string) {
+templ Head(title string, description string, prism bool, pageCSS []string) {
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
@@ -99,26 +88,39 @@ templ Head(title string, description string, pageCSS []string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Global CSS -->
-		<link rel="stylesheet" href="/static/styles/tokens.css"/>
-		<link rel="stylesheet" href="/static/styles/base.css"/>
-		<link rel="stylesheet" href="/static/styles/navigation.css"/>
-		<link rel="stylesheet" href="/static/styles/footer.css"/>
-		<link rel="stylesheet" href="/static/styles/view-transitions.css"/>
-		<link rel="stylesheet" href="/static/styles/no-js-fallback.css"/>
+		<link rel="stylesheet" href="/static/styles/tokens.min.css"/>
+		<link rel="stylesheet" href="/static/styles/base.min.css"/>
+		<link rel="stylesheet" href="/static/styles/navigation.min.css"/>
+		<link rel="stylesheet" href="/static/styles/footer.min.css"/>
+		<link rel="stylesheet" href="/static/styles/view-transitions.min.css"/>
+		<link rel="stylesheet" href="/static/styles/no-js-fallback.min.css"/>
 
 		<!-- Page-specific CSS -->
 		for _, css := range pageCSS {
 			<link rel="stylesheet" href={ css }/>
 		}
+		if prism {
+			<link rel="stylesheet" href="/static/styles/prism.min.css"/>
+		}
 
 		<!-- View Transitions — directional navigation (parser-blocking, must run before first render) -->
-		<script nonce={ middleware.NonceFromContext(ctx) } src="/static/js/view-transitions.js"></script>
+		<script nonce={ middleware.NonceFromContext(ctx) } src="/static/js/view-transitions.min.js"></script>
 
 		<!-- Secure-UI Components - modulepreload for earlier fetch, then self-register -->
 		<link rel="modulepreload" href="/components/index.js" nonce={ middleware.NonceFromContext(ctx) }/>
 		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
 			import '/components/index.js';
 		</script>
+		if prism {
+			<script defer src="/static/js/prism.min.js"></script>
+			<script defer src="/static/js/prism-go.min.js"></script>
+			<script defer src="/static/js/prism-javascript.min.js"></script>
+			<script defer src="/static/js/prism-typescript.min.js"></script>
+			<script defer src="/static/js/prism-bash.min.js"></script>
+			<script defer src="/static/js/prism-json.min.js"></script>
+			<script defer src="/static/js/prism-markup.min.js"></script>
+			<script defer src="/static/js/prism-css.min.js"></script>
+		}
 	</head>
 }
 
@@ -176,8 +178,8 @@ templ LandingHead(title string, description string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Landing page CSS only -->
-		<link rel="stylesheet" href="/static/styles/tokens.css"/>
-		<link rel="stylesheet" href="/static/styles/base.css"/>
-		<link rel="stylesheet" href="/static/styles/telemetry-pro.css"/>
+		<link rel="stylesheet" href="/static/styles/tokens.min.css"/>
+		<link rel="stylesheet" href="/static/styles/base.min.css"/>
+		<link rel="stylesheet" href="/static/styles/telemetry-pro.min.css"/>
 	</head>
 }

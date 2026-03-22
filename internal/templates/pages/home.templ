@@ -7,8 +7,9 @@ import (
 )
 
 templ Home() {
-	@templates.Layout("Security-First Web Components", "Zero-dependency web components with built-in XSS protection, rate limiting, CSRF defence, and CSP-safe Shadow DOM. Security-first, works with any framework.", true) {
+	@templates.Layout("Secure Form Components for Web Apps", "Drop-in web components that block XSS, inject CSRF tokens, and enforce security tiers on every field. Zero dependencies. Works with React, Vue, Angular, Go, and plain HTML.", true, "/static/styles/home.min.css") {
 		@templates.HomeJsonLDScript()
+		@templates.HomeFAQJsonLDScript()
 		<!-- Hero Section -->
 <section class="hero-section">
 	<div class="container">
@@ -637,6 +638,50 @@ func (h *Handlers) Register(
 		<div class="home-theming-cta">
 			<a href="/theming" class="btn btn-secondary">{ i18n.T(ctx, "home.theme.cta") } →</a>
 		</div>
+	</div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-section">
+	<div class="container">
+		<div class="section-header">
+			<p class="section-eyebrow">Common questions</p>
+			<h2 class="section-title">Frequently Asked Questions</h2>
+		</div>
+		<dl class="faq-list">
+			<div class="faq-item">
+				<dt class="faq-question">Does Secure-UI work without JavaScript?</dt>
+				<dd class="faq-answer">Yes. All components render as native HTML elements when JavaScript is unavailable. Client-side features — XSS sanitisation, rate limiting, audit logging — activate when JS is enabled. The page never breaks.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">What is a security tier?</dt>
+				<dd class="faq-answer">A per-field declaration of data sensitivity: <code>public</code>, <code>authenticated</code>, <code>sensitive</code>, or <code>critical</code>. Set it via <code>security-tier="sensitive"</code>. The library automatically applies the corresponding protections — stricter rate limits, autocomplete suppression, enhanced audit logging.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">How does Secure-UI prevent XSS?</dt>
+				<dd class="faq-answer">All input is sanitised via HTML entity encoding, script tag stripping, and event handler removal before it is used or emitted. The closed Shadow DOM prevents host-page scripts from reaching component internals. No raw user input reaches the DOM unsanitised.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">Is this a replacement for server-side validation?</dt>
+				<dd class="faq-answer">No. Secure-UI is a client-side defence layer. Your server must still validate and sanitise all input — client-side controls can be bypassed. The components reduce boilerplate and enforce security by default, but server-side validation is always the security boundary.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">Does it work with React, Vue, Angular, or Next.js?</dt>
+				<dd class="faq-answer">Yes. Web Components are a browser standard supported by all major frameworks. Import the library once with a single script tag, then use the element tags anywhere in your templates — React, Vue, Angular, Svelte, Next.js, Nuxt, Go Templ, Django, Rails, or plain HTML.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">How are CSRF tokens handled?</dt>
+				<dd class="faq-answer"><code>&lt;secure-form&gt;</code> automatically fetches a CSRF token and injects it before each submission as both a request header and a hidden field. No manual token management required. The token is single-use and expires server-side.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">What makes this different from DOMPurify?</dt>
+				<dd class="faq-answer">DOMPurify sanitises HTML strings as a post-processing step. Secure-UI is a complete form component library: CSRF defence, behavioral bot detection, audit logging, security tier enforcement, and input sanitisation are all part of the interaction model.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">Is there a CDN option?</dt>
+				<dd class="faq-answer">Yes. Load directly from npm CDN without installing anything: <code>&lt;script type="module" src="https://esm.sh/secure-ui-components"&gt;&lt;/script&gt;</code></dd>
+			</div>
+		</dl>
 	</div>
 </section>
 

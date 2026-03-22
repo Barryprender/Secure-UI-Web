@@ -3,8 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureInput() {
-	@templates.Layout("secure-input Component", "Live demos for secure-input: input types, security tiers, XSS prevention, validation, CSS custom properties, and framework integration examples.", true) {
-		@templates.ComponentPageJsonLDScript("secure-input")
+	@templates.Layout("Live Demo: Secure Input — XSS Prevention, Security Tiers", "Interactive demos for secure-input: all input types, security tiers, XSS prevention, validation, CSS custom properties, and framework integration examples.", true, "/static/styles/components.min.css") {
+		@templates.ComponentPageJsonLDScript("secure-input", "XSS-safe HTML input component with built-in sanitisation, rate limiting, four security tiers, and audit logging.")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">

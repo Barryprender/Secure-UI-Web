@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureSelect() {
-	@templates.Layout("secure-select Docs", "API reference for secure-select: XSS-safe dropdown, dynamic options, AJAX loading, security tiers, CSS custom properties, and JavaScript API.", true) {
+	@templates.Layout("Secure Select — XSS-Safe Dropdown, Server Allowlist Validation", "Secure dropdown with server-side allowlist validation, XSS prevention, security tiers, and audit logging. Blocks client-side option injection attacks.", true, "/static/styles/documentation.min.css") {
 		@templates.DocsPageJsonLDScript("secure-select", "XSS-safe dropdown component with dynamic options, AJAX loading, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

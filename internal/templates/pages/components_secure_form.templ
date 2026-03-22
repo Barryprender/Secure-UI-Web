@@ -3,8 +3,8 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureForm() {
-	@templates.Layout("secure-form Component", "Live demos for secure-form: CSRF protection, submission handling, rate limiting, validation, security tier configurations, and framework integration examples.", true) {
-		@templates.ComponentPageJsonLDScript("secure-form")
+	@templates.Layout("Live Demo: Secure Form — CSRF Defence, Telemetry", "Interactive demos for secure-form: CSRF protection, submission handling, rate limiting, validation, security tier configurations, and framework integration examples.", true, "/static/styles/components.min.css") {
+		@templates.ComponentPageJsonLDScript("secure-form", "CSRF-protected form wrapper with automatic token injection, behavioral telemetry, and JSON submission.")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">

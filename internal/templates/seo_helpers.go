@@ -89,14 +89,25 @@ func HomeJsonLD(siteURL string) string {
 func DocsIndexJsonLD(siteURL, canonicalURL string) string {
 	data := map[string]any{
 		"@context":    "https://schema.org",
-		"@type":       "WebPage",
-		"name":        "Documentation - Secure-UI",
-		"description": "API reference for all Secure-UI web components.",
+		"@type":       "CollectionPage",
+		"name":        "Secure Web Components API Reference",
+		"description": "Complete API reference for all Secure-UI web components: XSS sanitisation, CSRF defence, security tiers, Shadow DOM styling, and framework integration guides.",
 		"url":         canonicalURL,
 		"isPartOf": map[string]any{
 			"@type": "WebSite",
 			"name":  "Secure-UI",
 			"url":   siteURL,
+		},
+		"hasPart": []map[string]any{
+			{"@type": "TechArticle", "name": "secure-input", "url": siteURL + "/documentation/secure-input"},
+			{"@type": "TechArticle", "name": "secure-textarea", "url": siteURL + "/documentation/secure-textarea"},
+			{"@type": "TechArticle", "name": "secure-select", "url": siteURL + "/documentation/secure-select"},
+			{"@type": "TechArticle", "name": "secure-form", "url": siteURL + "/documentation/secure-form"},
+			{"@type": "TechArticle", "name": "secure-file-upload", "url": siteURL + "/documentation/secure-file-upload"},
+			{"@type": "TechArticle", "name": "secure-datetime", "url": siteURL + "/documentation/secure-datetime"},
+			{"@type": "TechArticle", "name": "secure-table", "url": siteURL + "/documentation/secure-table"},
+			{"@type": "TechArticle", "name": "secure-card", "url": siteURL + "/documentation/secure-card"},
+			{"@type": "TechArticle", "name": "secure-telemetry-provider", "url": siteURL + "/documentation/secure-telemetry-provider"},
 		},
 	}
 	b, err := json.Marshal(data)
@@ -163,6 +174,94 @@ func DocsPageJsonLD(siteURL, canonicalURL, componentName, description string) st
 					{"@type": "ListItem", "position": 1, "name": "Home", "item": siteURL + "/"},
 					{"@type": "ListItem", "position": 2, "name": "Documentation", "item": siteURL + "/documentation"},
 					{"@type": "ListItem", "position": 3, "name": componentName, "item": canonicalURL},
+				},
+			},
+		},
+	}
+	b, err := json.Marshal(data)
+	if err != nil {
+		return ""
+	}
+	return string(b)
+}
+
+// HomeFAQJsonLD returns FAQPage JSON-LD for the home page FAQ section.
+func HomeFAQJsonLD() string {
+	type answer struct {
+		Type string `json:"@type"`
+		Text string `json:"text"`
+	}
+	type question struct {
+		Type           string `json:"@type"`
+		Name           string `json:"name"`
+		AcceptedAnswer answer `json:"acceptedAnswer"`
+	}
+	data := map[string]any{
+		"@context": "https://schema.org",
+		"@type":    "FAQPage",
+		"mainEntity": []question{
+			{
+				Type: "Question",
+				Name: "Does Secure-UI work without JavaScript?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "Yes. All components render as native HTML elements when JavaScript is unavailable. Client-side features — XSS sanitisation, rate limiting, audit logging — activate when JS is enabled. The page never breaks.",
+				},
+			},
+			{
+				Type: "Question",
+				Name: "What is a security tier?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "A security tier is a per-field declaration of data sensitivity: public, authenticated, sensitive, or critical. Set it with the security-tier attribute on any component. The library applies the corresponding protections — stricter rate limits, autocomplete suppression, enhanced audit logging — automatically.",
+				},
+			},
+			{
+				Type: "Question",
+				Name: "How does Secure-UI prevent XSS?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "All input is sanitised via HTML entity encoding, script tag stripping, and event handler removal before it is used or emitted. The closed Shadow DOM prevents host-page scripts from reaching component internals. No raw user input ever reaches the DOM unsanitised.",
+				},
+			},
+			{
+				Type: "Question",
+				Name: "Is Secure-UI a replacement for server-side validation?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "No. Secure-UI is a client-side defence layer. Your server must still validate and sanitise all input — client-side controls can be bypassed. The components reduce frontend boilerplate and enforce security by default, but server-side validation is always the security boundary.",
+				},
+			},
+			{
+				Type: "Question",
+				Name: "Does it work with React, Vue, Angular, or Next.js?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "Yes. Web Components are a browser standard supported by all major frameworks. Import the library once with a single script tag, then use the element tags anywhere in your templates — React, Vue, Angular, Svelte, Next.js, Nuxt, Go Templ, Django, Rails, or plain HTML.",
+				},
+			},
+			{
+				Type: "Question",
+				Name: "How are CSRF tokens handled?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "The secure-form component automatically fetches a CSRF token from your server and injects it before each submission as both a request header and a hidden field. No manual token management is required. The token is single-use and expires server-side.",
+				},
+			},
+			{
+				Type: "Question",
+				Name: "What makes this different from DOMPurify?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "DOMPurify sanitises HTML strings as a post-processing step. Secure-UI is a complete form component library: CSRF defence, behavioral bot detection, audit logging, security tier enforcement, and input sanitisation are part of the interaction model, not an afterthought.",
+				},
+			},
+			{
+				Type: "Question",
+				Name: "Is there a CDN option?",
+				AcceptedAnswer: answer{
+					Type: "Answer",
+					Text: "Yes. Load directly from npm CDN without installing anything: &lt;script type=\"module\" src=\"https://esm.sh/secure-ui-components\"&gt;&lt;/script&gt;",
 				},
 			},
 		},
