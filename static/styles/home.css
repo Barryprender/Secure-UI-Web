@@ -420,7 +420,24 @@
         grid-template-columns: 1fr;
     }
     .hero-demo-panel {
-        display: none;
+        display: block;
+    }
+    #hd-wrap {
+        min-height: 420px;
+        padding: 2rem 1.25rem;
+    }
+}
+
+@media (max-width: 480px) {
+    #hd-wrap {
+        min-height: 380px;
+        padding: 1.5rem 1rem;
+    }
+    #hd-stage {
+        max-width: 100%;
+    }
+    #hd-card {
+        padding: 20px 16px;
     }
 }
 
