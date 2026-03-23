@@ -1308,6 +1308,7 @@ if (navigator.clipboard) {
     while (true) {
       const s = SC[i % SC.length];
       const idx = i % SC.length;
+      if (idx === 0) el('hd-history').innerHTML = '';
       el('hd-rc').textContent = `attempt ${idx+1} of ${SC.length}`;
       el('hd-rc').className = 'lit';
 
