@@ -74,9 +74,9 @@ templ Home() {
 							</div>
 							<div id="hd-ftitle">sign in</div>
 							<div class="hd-fl">email</div>
-							<div class="hd-fb" id="hd-fe"><span id="hd-et"></span><span class="hd-cur" id="hd-ec" style="display:none"></span></div>
+							<div class="hd-fb" id="hd-fe"><span id="hd-et"></span><span class="hd-cur" id="hd-ec"></span></div>
 							<div class="hd-fl">password</div>
-							<div class="hd-fb" id="hd-fp"><span id="hd-pt"></span><span class="hd-cur" id="hd-pc" style="display:none"></span></div>
+							<div class="hd-fb" id="hd-fp"><span id="hd-pt"></span><span class="hd-cur" id="hd-pc"></span></div>
 							<button id="hd-fbtn">submit</button>
 							<div id="hd-sb"></div>
 						</div>
@@ -1167,7 +1167,7 @@ if (navigator.clipboard) {
 
   async function typeField(tid, cid, bid, text, speed, cls) {
     const t = el(tid), c = el(cid), b = el(bid);
-    t.textContent = ''; c.style.display = 'inline-block';
+    t.textContent = ''; c.classList.add('vis');
     b.className = 'hd-fb ' + (speed === 'fast' ? 't' : speed === 'mobile' ? 'mt' : 'ht');
     for (let i = 0; i < text.length; i++) {
       t.textContent += text[i];
@@ -1175,7 +1175,7 @@ if (navigator.clipboard) {
       else if (speed === 'mobile') await wait(55 + Math.random() * 70 + (Math.random() < .1 ? 180 : 0));
       else await wait(62 + Math.random() * 88 + (Math.random() < .07 ? 240 : 0));
     }
-    c.style.display = 'none';
+    c.classList.remove('vis');
     if (cls) b.className = 'hd-fb ' + cls;
   }
 
@@ -1218,7 +1218,7 @@ if (navigator.clipboard) {
     el('hd-ftitle').textContent = 'sign in'; el('hd-ftitle').style.color = '#5a6a82';
     el('hd-fe').className = 'hd-fb'; el('hd-fp').className = 'hd-fb';
     el('hd-et').textContent = ''; el('hd-pt').textContent = '';
-    el('hd-ec').style.display = 'none'; el('hd-pc').style.display = 'none';
+    el('hd-ec').classList.remove('vis'); el('hd-pc').classList.remove('vis');
     el('hd-lk').style.stroke = '#3a4a62';
     el('hd-fbtn').style.cssText = ''; el('hd-fbtn').textContent = 'submit';
     el('hd-sb').textContent = ''; el('hd-sb').className = '';

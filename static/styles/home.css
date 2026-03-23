@@ -293,13 +293,15 @@
 .hd-fb.s  { border-color: rgba(0,229,160,0.5); color: #10b981; }
 
 .hd-cur {
-    display: inline-block;
+    display: none;
     width: 1px;
     height: 13px;
     background: currentColor;
     margin-left: 1px;
     vertical-align: middle;
 }
+
+.hd-cur.vis { display: inline-block; }
 
 @media (prefers-reduced-motion: no-preference) {
     .hd-cur { animation: hd-bl 0.75s step-end infinite; }
