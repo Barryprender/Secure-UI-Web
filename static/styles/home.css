@@ -1530,6 +1530,11 @@
     align-items: start;
 }
 
+.home-theme-preview-left,
+.home-theme-preview-right {
+    min-width: 0;
+}
+
 @media (max-width: 768px) {
     .home-theme-preview {
         grid-template-columns: 1fr;
@@ -1654,6 +1659,7 @@
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-lg);
     overflow: hidden;
+    min-width: 0;
 }
 
 .home-theme-preview-code-title {
