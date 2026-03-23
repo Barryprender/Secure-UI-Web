@@ -13,54 +13,85 @@ templ Home() {
 		<!-- Hero Section -->
 <section class="hero-section">
 	<div class="container">
-		<div class="hero-content">
-			<p class="hero-eyebrow">
-				<span class="hero-eyebrow-dot" aria-hidden="true"></span>
-				{ i18n.T(ctx, "home.hero.eyebrow") }
-			</p>
+		<div class="hero-inner">
+			<div class="hero-content">
+				<p class="hero-eyebrow">
+					<span class="hero-eyebrow-dot" aria-hidden="true"></span>
+					{ i18n.T(ctx, "home.hero.eyebrow") }
+				</p>
 
-			<h1 class="hero-title" id="hero-title">
-				<span>{ i18n.T(ctx, "home.hero.line1") }</span><br/>
-				<span>{ i18n.T(ctx, "home.hero.line2") }</span><br/>
-				<em>{ i18n.T(ctx, "home.hero.line3") }</em>
-			</h1>
+				<h1 class="hero-title" id="hero-title">
+					<span>{ i18n.T(ctx, "home.hero.line1") }</span><br/>
+					<span>{ i18n.T(ctx, "home.hero.line2") }</span><br/>
+					<em>{ i18n.T(ctx, "home.hero.line3") }</em>
+				</h1>
 
-			<p class="hero-description">{ i18n.T(ctx, "home.hero.desc") }</p>
+				<p class="hero-description">{ i18n.T(ctx, "home.hero.desc") }</p>
 
-			<div class="hero-cta" id="hero-cta">
-				<a href="/components" class="btn btn-primary hero-btn-primary">
-					{ i18n.T(ctx, "home.hero.cta_explore") }
-					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-				</a>
-				<a href="/documentation" class="btn btn-secondary">{ i18n.T(ctx, "home.hero.cta_start") }</a>
+				<div class="hero-cta" id="hero-cta">
+					<a href="/components" class="btn btn-primary hero-btn-primary">
+						{ i18n.T(ctx, "home.hero.cta_explore") }
+						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+					</a>
+					<a href="/documentation" class="btn btn-secondary">{ i18n.T(ctx, "home.hero.cta_start") }</a>
+				</div>
+
+				<div class="hero-install" id="hero-install">
+					<span class="hero-install-prompt" aria-hidden="true">$</span>
+					<code class="hero-install-cmd" id="hero-install-cmd">{ i18n.T(ctx, "home.hero.install") }</code>
+					<button class="hero-install-copy" id="hero-install-copy" aria-label="Copy install command" type="button">
+						<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+					</button>
+				</div>
+
+				<div class="hero-trust" role="list" aria-label="Key facts">
+					<div class="hero-trust-item" role="listitem">
+						<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+						{ i18n.T(ctx, "home.hero.trust_deps") }
+					</div>
+					<div class="hero-trust-item" role="listitem">
+						<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+						{ i18n.T(ctx, "home.hero.trust_mit") }
+					</div>
+					<div class="hero-trust-item" role="listitem">
+						<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+						{ i18n.T(ctx, "home.hero.trust_comp") }
+					</div>
+					<div class="hero-trust-item" role="listitem">
+						<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+						{ i18n.T(ctx, "home.hero.trust_fw") }
+					</div>
+				</div>
 			</div>
 
-			<div class="hero-install" id="hero-install">
-				<span class="hero-install-prompt" aria-hidden="true">$</span>
-				<code class="hero-install-cmd" id="hero-install-cmd">{ i18n.T(ctx, "home.hero.install") }</code>
-				<button class="hero-install-copy" id="hero-install-copy" aria-label="Copy install command" type="button">
-					<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-				</button>
-			</div>
-
-			<div class="hero-trust" role="list" aria-label="Key facts">
-				<div class="hero-trust-item" role="listitem">
-					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-					{ i18n.T(ctx, "home.hero.trust_deps") }
+			<!-- Live Demo Panel -->
+			<aside class="hero-demo-panel" aria-hidden="true">
+				<div id="hd-wrap">
+					<div id="hd-stage">
+						<div id="hd-card">
+							<div class="hd-logo">
+								<svg id="hd-lk" viewBox="0 0 14 14"><rect x="2" y="6" width="10" height="7" rx="2"/><path d="M4.5 6V4.5a2.5 2.5 0 0 1 5 0V6"/></svg>
+							</div>
+							<div id="hd-ftitle">sign in</div>
+							<div class="hd-fl">email</div>
+							<div class="hd-fb" id="hd-fe"><span id="hd-et"></span><span class="hd-cur" id="hd-ec" style="display:none"></span></div>
+							<div class="hd-fl">password</div>
+							<div class="hd-fb" id="hd-fp"><span id="hd-pt"></span><span class="hd-cur" id="hd-pc" style="display:none"></span></div>
+							<button id="hd-fbtn">submit</button>
+							<div id="hd-sb"></div>
+						</div>
+						<div id="hd-badge">
+							<div id="hd-badge-left">
+								<div id="hd-badge-type">risk score</div>
+								<div id="hd-badge-score">—</div>
+							</div>
+							<div id="hd-badge-verdict">—</div>
+						</div>
+						<div id="hd-history"></div>
+						<div id="hd-rc"></div>
+					</div>
 				</div>
-				<div class="hero-trust-item" role="listitem">
-					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-					{ i18n.T(ctx, "home.hero.trust_mit") }
-				</div>
-				<div class="hero-trust-item" role="listitem">
-					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-					{ i18n.T(ctx, "home.hero.trust_comp") }
-				</div>
-				<div class="hero-trust-item" role="listitem">
-					<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-					{ i18n.T(ctx, "home.hero.trust_fw") }
-				</div>
-			</div>
+			</aside>
 		</div>
 	</div>
 </section>
@@ -696,6 +727,22 @@ func (h *Handlers) Register(
 		</div>
 		<dl class="faq-list">
 			<div class="faq-item">
+				<dt class="faq-question">Can secure-telemetry-provider fully replace CAPTCHA?</dt>
+				<dd class="faq-answer">For the majority of traffic, yes. Commodity bots — scrapers, credential stuffers, form spammers — are caught silently with no friction for real users. For sophisticated bots that mimic human behavior, use the risk score as a gate: serve CAPTCHA only when the score exceeds your threshold, typically 5–10% of requests. This eliminates the CAPTCHA burden for 90%+ of users while keeping a challenge in reserve for flagged sessions.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">Is the signing key in the HTML attribute a security risk?</dt>
+				<dd class="faq-answer">Yes, if treated as a production secret. The <code>signing-key</code> attribute is a symmetric key visible in page source — it prevents casual forgery but not a motivated attacker who reads the HTML. For stronger integrity, rotate the key per-session: serve a short-lived key from a server endpoint, inject it via script, and validate server-side with a nonce check to block replay attacks.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">What risk score threshold should I use?</dt>
+				<dd class="faq-answer">A common starting point: 0–30 allow, 31–60 log and optionally challenge, 61+ reject or require step-up authentication. Start permissive, log everything, then tighten based on real traffic patterns.</dd>
+			</div>
+			<div class="faq-item">
+				<dt class="faq-question">Does behavioral scoring work on mobile?</dt>
+				<dd class="faq-answer">Yes. Touch devices never produce mouse events, so the scoring function skips the mouse-movement penalty when <code>pointerType</code> is <code>touch</code> or <code>pen</code>. Timing and webdriver signals apply equally across all device types.</dd>
+			</div>
+			<div class="faq-item">
 				<dt class="faq-question">Does Secure-UI work without JavaScript?</dt>
 				<dd class="faq-answer">Yes. All components render as native HTML elements when JavaScript is unavailable. Client-side features — XSS sanitisation, rate limiting, audit logging — activate when JS is enabled. The page never breaks.</dd>
 			</div>
@@ -1107,6 +1154,226 @@ if (navigator.clipboard) {
   document.addEventListener('keydown', () => updateSignal('keyboardActivityDetected', 'true'),
     { once: true, passive: true });
 }
+
+// ── Hero demo panel ───────────────────────────────────────────
+(function(){
+  const hdWrap = document.getElementById('hd-wrap');
+  if (!hdWrap) return;
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const el = id => document.getElementById(id);
+
+  async function typeField(tid, cid, bid, text, speed, cls) {
+    const t = el(tid), c = el(cid), b = el(bid);
+    t.textContent = ''; c.style.display = 'inline-block';
+    b.className = 'hd-fb ' + (speed === 'fast' ? 't' : speed === 'mobile' ? 'mt' : 'ht');
+    for (let i = 0; i < text.length; i++) {
+      t.textContent += text[i];
+      if (speed === 'fast') await wait(14);
+      else if (speed === 'mobile') await wait(55 + Math.random() * 70 + (Math.random() < .1 ? 180 : 0));
+      else await wait(62 + Math.random() * 88 + (Math.random() < .07 ? 240 : 0));
+    }
+    c.style.display = 'none';
+    if (cls) b.className = 'hd-fb ' + cls;
+  }
+
+  function setBtn(text, bg, col, bc) {
+    const b = el('hd-fbtn');
+    b.textContent = text;
+    b.style.background = bg; b.style.color = col; b.style.borderColor = bc;
+    if (!reduceMotion) {
+      b.classList.add('pulse');
+      setTimeout(() => b.classList.remove('pulse'), 400);
+    }
+  }
+
+  function showBadge(score, verdict, type) {
+    const col = type === 'r' ? '#f87171' : '#00e5a0';
+    const b = el('hd-badge');
+    b.className = 'show ' + (type === 'r' ? 'r' : 'a');
+    el('hd-badge-score').textContent = score;
+    el('hd-badge-score').style.color = col;
+    el('hd-badge-type').style.color = type === 'r' ? '#7a3a3a' : '#1a5a42';
+    el('hd-badge-verdict').textContent = verdict;
+    el('hd-badge-verdict').style.color = col;
+  }
+
+  function addHistoryDot(ok) {
+    const d = document.createElement('div');
+    d.className = 'hd-dot ' + (ok ? 'ok' : 'no');
+    el('hd-history').appendChild(d);
+  }
+
+  function flashCard() {
+    if (reduceMotion) return;
+    const c = el('hd-card');
+    c.classList.add('shake');
+    setTimeout(() => c.classList.remove('shake'), 400);
+  }
+
+  function reset() {
+    el('hd-card').className = '';
+    el('hd-ftitle').textContent = 'sign in'; el('hd-ftitle').style.color = '#5a6a82';
+    el('hd-fe').className = 'hd-fb'; el('hd-fp').className = 'hd-fb';
+    el('hd-et').textContent = ''; el('hd-pt').textContent = '';
+    el('hd-ec').style.display = 'none'; el('hd-pc').style.display = 'none';
+    el('hd-lk').style.stroke = '#3a4a62';
+    el('hd-fbtn').style.cssText = ''; el('hd-fbtn').textContent = 'submit';
+    el('hd-sb').textContent = ''; el('hd-sb').className = '';
+    el('hd-badge').className = ''; el('hd-badge').style.opacity = '0';
+    el('hd-badge-score').textContent = '—'; el('hd-badge-score').style.color = '#2a3a52';
+    el('hd-badge-type').style.color = '#2a3a52';
+    el('hd-badge-verdict').textContent = '—'; el('hd-badge-verdict').style.color = '#2a3a52';
+  }
+
+  const SC = [
+    {
+      kind:'bot', label:'SQLi bot',
+      email:"admin@target.com", pass:"' OR 1=1 --",
+      speed:'fast', statusA:'bot connecting...', statusB:'injection payload detected',
+      score:'94/100', verdict:'REJECT', vt:'r',
+      fxType:'attack', fxN:22,
+      emailCls:'d', passCls:'d',
+      btnA:['submitting...','rgba(248,113,113,0.12)','#f87171','rgba(248,113,113,0.3)'],
+      btnB:['blocked by secure-ui','rgba(248,113,113,0.1)','#f87171','rgba(248,113,113,0.3)'],
+      finalTitle:'threat blocked', titleCol:'#f87171', lockCol:'#f87171',
+      finalSb:'request rejected', sbCls:'w', cardFinal:'blocked', shake:true,
+    },
+    {
+      kind:'human', label:'alice@acme.com',
+      email:"alice@acme.com", pass:"••••••••••",
+      speed:'slow', statusA:'', statusB:'',
+      score:'3/100', verdict:'ALLOW', vt:'a',
+      fxType:'safe', fxN:10,
+      emailCls:'', passCls:'',
+      btnA:['verifying...','rgba(80,120,180,0.1)','#5a8aaa','#2a3a55'],
+      btnB:['access granted','rgba(0,229,160,0.1)','#00e5a0','rgba(0,229,160,0.3)'],
+      finalTitle:'welcome back', titleCol:'#00e5a0', lockCol:'#00e5a0',
+      finalSb:'verified — signed in', sbCls:'ok', cardFinal:'allowed', shake:false,
+    },
+    {
+      kind:'bot', label:'credential stuffer',
+      email:"user@gmail.com", pass:"password123",
+      speed:'fast', statusA:'bot connecting...', statusB:'no interaction signals',
+      score:'71/100', verdict:'REJECT', vt:'r',
+      fxType:'attack', fxN:20,
+      emailCls:'d', passCls:'d',
+      btnA:['submitting...','rgba(248,113,113,0.12)','#f87171','rgba(248,113,113,0.3)'],
+      btnB:['blocked by secure-ui','rgba(248,113,113,0.1)','#f87171','rgba(248,113,113,0.3)'],
+      finalTitle:'threat blocked', titleCol:'#f87171', lockCol:'#f87171',
+      finalSb:'request rejected', sbCls:'w', cardFinal:'blocked', shake:true,
+    },
+    {
+      kind:'mobile', label:'mobile user — touch',
+      email:"dan@example.com", pass:"••••••••••••",
+      speed:'mobile', statusA:'', statusB:'',
+      score:'5/100', verdict:'ALLOW', vt:'a',
+      fxType:'mobile', fxN:12,
+      emailCls:'', passCls:'',
+      btnA:['verifying...','rgba(80,120,180,0.1)','#5a8aaa','#2a3a55'],
+      btnB:['access granted','rgba(0,229,160,0.1)','#00e5a0','rgba(0,229,160,0.3)'],
+      finalTitle:'welcome back', titleCol:'#00e5a0', lockCol:'#00e5a0',
+      finalSb:'touch user verified', sbCls:'ok', cardFinal:'allowed', shake:false,
+    },
+    {
+      kind:'bot', label:'headless scraper',
+      email:"test@test.com", pass:"<script>alert(1)<\/script>",
+      speed:'fast', statusA:'bot connecting...', statusB:'xss payload stripped',
+      score:'80/100', verdict:'REJECT', vt:'r',
+      fxType:'attack', fxN:22,
+      emailCls:'d', passCls:'d',
+      btnA:['submitting...','rgba(248,113,113,0.12)','#f87171','rgba(248,113,113,0.3)'],
+      btnB:['blocked by secure-ui','rgba(248,113,113,0.1)','#f87171','rgba(248,113,113,0.3)'],
+      finalTitle:'threat blocked', titleCol:'#f87171', lockCol:'#f87171',
+      finalSb:'request rejected', sbCls:'w', cardFinal:'blocked', shake:true,
+    },
+    {
+      kind:'human', label:'carol@corp.net',
+      email:"carol@corp.net", pass:"••••••••••••",
+      speed:'slow', statusA:'', statusB:'',
+      score:'2/100', verdict:'ALLOW', vt:'a',
+      fxType:'safe', fxN:10,
+      emailCls:'', passCls:'',
+      btnA:['verifying...','rgba(80,120,180,0.1)','#5a8aaa','#2a3a55'],
+      btnB:['access granted','rgba(0,229,160,0.1)','#00e5a0','rgba(0,229,160,0.3)'],
+      finalTitle:'welcome back', titleCol:'#00e5a0', lockCol:'#00e5a0',
+      finalSb:'verified — signed in', sbCls:'ok', cardFinal:'allowed', shake:false,
+    },
+  ];
+
+  async function run() {
+    let i = 0;
+    while (true) {
+      const s = SC[i % SC.length];
+      const idx = i % SC.length;
+      el('hd-rc').textContent = `attempt ${idx+1} of ${SC.length}`;
+      el('hd-rc').className = 'lit';
+
+      reset();
+      await wait(380);
+
+      if (s.kind === 'bot') {
+        el('hd-sb').textContent = s.statusA; el('hd-sb').className = 'w';
+        el('hd-card').className = 'bot';
+        await wait(360);
+      } else if (s.kind === 'mobile') {
+        el('hd-sb').textContent = 'touch device detected'; el('hd-sb').className = 'i';
+        el('hd-card').className = 'human';
+        await wait(260);
+      } else {
+        el('hd-card').className = 'human';
+      }
+
+      await typeField('hd-et','hd-ec','hd-fe', s.email, s.speed, s.emailCls);
+      await wait(s.kind === 'bot' ? 70 : 140);
+      await typeField('hd-pt','hd-pc','hd-fp', s.pass, s.speed, s.passCls);
+      await wait(s.kind === 'bot' ? 140 : 260);
+
+      if (s.statusB) el('hd-sb').textContent = s.statusB;
+      setBtn(...s.btnA);
+
+      await wait(320);
+      showBadge(s.score, s.verdict, s.vt);
+
+      await wait(400);
+
+      if (s.shake) flashCard();
+      await wait(s.shake ? 180 : 0);
+
+      el('hd-card').className = s.cardFinal;
+
+      if (s.kind === 'bot') {
+        el('hd-fe').className = 'hd-fb d';
+        el('hd-fp').className = 'hd-fb d';
+      } else {
+        el('hd-fe').className = 'hd-fb s';
+        el('hd-et').textContent = s.email;
+        el('hd-fp').className = 'hd-fb s';
+        el('hd-pt').textContent = s.pass;
+      }
+
+      setBtn(...s.btnB);
+      el('hd-sb').textContent = s.finalSb; el('hd-sb').className = s.sbCls;
+      el('hd-ftitle').textContent = s.finalTitle; el('hd-ftitle').style.color = s.titleCol;
+      el('hd-lk').style.stroke = s.lockCol;
+
+      addHistoryDot(s.kind !== 'bot');
+
+      const isLast = idx === SC.length - 1;
+      if (isLast) {
+        el('hd-rc').textContent = '4 blocked · 2 allowed — looping';
+        await wait(2600);
+      } else {
+        await wait(2000);
+      }
+      i++;
+    }
+  }
+
+  run();
+})();
 </script>
 	}
 }

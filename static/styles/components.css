@@ -247,6 +247,10 @@
   margin-block: var(--space-xl, 2rem);
 }
 
+.component-hero > .captcha-comparison {
+  grid-column: 1 / -1;
+}
+
 .captcha-comparison-title {
   font-size: 1rem;
   font-weight: 600;

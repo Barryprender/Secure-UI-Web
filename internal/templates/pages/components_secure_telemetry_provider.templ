@@ -17,58 +17,6 @@ templ ComponentSecureTelemetryProvider() {
 						form submission. Real users see nothing; automated clients are identified
 						before the request reaches your server.
 					</p>
-
-					<!-- Why Not CAPTCHA comparison -->
-					<div class="captcha-comparison">
-						<h2 class="captcha-comparison-title">Why not CAPTCHA?</h2>
-						<table class="captcha-comparison-table">
-							<thead>
-								<tr>
-									<th></th>
-									<th>CAPTCHA</th>
-									<th>secure-telemetry-provider</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>User friction</td>
-									<td class="captcha-cell--bad">High — puzzles, image grids, waits</td>
-									<td class="captcha-cell--good">None — fully passive</td>
-								</tr>
-								<tr>
-									<td>Accessibility</td>
-									<td class="captcha-cell--bad">Fails WCAG for many users</td>
-									<td class="captcha-cell--good">Transparent to all users</td>
-								</tr>
-								<tr>
-									<td>AI bypass risk</td>
-									<td class="captcha-cell--bad">Increasing — solvable by commodity models</td>
-									<td class="captcha-cell--good">Raises attacker cost significantly</td>
-								</tr>
-								<tr>
-									<td>Data sharing</td>
-									<td class="captcha-cell--bad">Sent to Google, Cloudflare, or third party</td>
-									<td class="captcha-cell--good">Stays on your servers only</td>
-								</tr>
-								<tr>
-									<td>Integration</td>
-									<td class="captcha-cell--bad">Separate SDK, extra script, API key</td>
-									<td class="captcha-cell--good">One web component, no API key</td>
-								</tr>
-								<tr>
-									<td>Cost</td>
-									<td class="captcha-cell--bad">Per-transaction fees at scale</td>
-									<td class="captcha-cell--good">Zero — self-hosted</td>
-								</tr>
-								<tr>
-									<td>Sophisticated bots</td>
-									<td class="captcha-cell--bad">Solvable by commodity AI models</td>
-									<td class="captcha-cell--warn">Higher cost to bypass — use CAPTCHA as fallback only for flagged requests</td>
-								</tr>
-							</tbody>
-						</table>
-						<p class="captcha-note">For most applications, behavioral scoring eliminates CAPTCHA for the majority of traffic. Keep CAPTCHA as an optional fallback triggered only when risk score exceeds your threshold.</p>
-					</div>
 					<div class="component-hero-install">
 						<pre><code class="language-markup">{ `<script type="module"
   src="/components/secure-telemetry-provider/secure-telemetry-provider.js">
@@ -84,6 +32,57 @@ templ ComponentSecureTelemetryProvider() {
 							<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit with Telemetry</button>
 						</secure-form>
 					</secure-telemetry-provider>
+				</div>
+				<!-- Why Not CAPTCHA comparison — full-width row spanning both columns -->
+				<div class="captcha-comparison">
+					<h2 class="captcha-comparison-title">Why not CAPTCHA?</h2>
+					<table class="captcha-comparison-table">
+						<thead>
+							<tr>
+								<th></th>
+								<th>CAPTCHA</th>
+								<th>secure-telemetry-provider</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>User friction</td>
+								<td class="captcha-cell--bad">High — puzzles, image grids, waits</td>
+								<td class="captcha-cell--good">None — fully passive</td>
+							</tr>
+							<tr>
+								<td>Accessibility</td>
+								<td class="captcha-cell--bad">Fails WCAG for many users</td>
+								<td class="captcha-cell--good">Transparent to all users</td>
+							</tr>
+							<tr>
+								<td>AI bypass risk</td>
+								<td class="captcha-cell--bad">Increasing — solvable by commodity models</td>
+								<td class="captcha-cell--good">Raises attacker cost significantly</td>
+							</tr>
+							<tr>
+								<td>Data sharing</td>
+								<td class="captcha-cell--bad">Sent to Google, Cloudflare, or third party</td>
+								<td class="captcha-cell--good">Stays on your servers only</td>
+							</tr>
+							<tr>
+								<td>Integration</td>
+								<td class="captcha-cell--bad">Separate SDK, extra script, API key</td>
+								<td class="captcha-cell--good">One web component, no API key</td>
+							</tr>
+							<tr>
+								<td>Cost</td>
+								<td class="captcha-cell--bad">Per-transaction fees at scale</td>
+								<td class="captcha-cell--good">Zero — self-hosted</td>
+							</tr>
+							<tr>
+								<td>Sophisticated bots</td>
+								<td class="captcha-cell--bad">Solvable by commodity AI models</td>
+								<td class="captcha-cell--warn">Higher cost to bypass — use CAPTCHA as fallback only for flagged requests</td>
+							</tr>
+						</tbody>
+					</table>
+					<p class="captcha-note">For most applications, behavioral scoring eliminates CAPTCHA for the majority of traffic. Keep CAPTCHA as an optional fallback triggered only when risk score exceeds your threshold.</p>
 				</div>
 			</section>
 
