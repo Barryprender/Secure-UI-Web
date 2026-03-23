@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node C:/Users/barry/Desktop/projects/secure-ui/secure-ui-showcase-go/scripts/css-hook.js"
+          }
+        ]
+      }
+    ]
+  }
+}
