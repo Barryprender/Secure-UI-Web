@@ -1,6 +1,7 @@
 package templates
 
 import (
+	"secure-ui-showcase-go/internal/assets"
 	"secure-ui-showcase-go/internal/i18n"
 	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/templates/partials"
@@ -90,25 +91,25 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Global CSS — preload hints for critical always-loaded files -->
-		<link rel="preload" as="style" href="/static/styles/tokens.min.css"/>
-		<link rel="preload" as="style" href="/static/styles/base.min.css"/>
-		<link rel="stylesheet" href="/static/styles/tokens.min.css"/>
-		<link rel="stylesheet" href="/static/styles/base.min.css"/>
-		<link rel="stylesheet" href="/static/styles/navigation.min.css"/>
-		<link rel="stylesheet" href="/static/styles/footer.min.css"/>
-		<link rel="stylesheet" href="/static/styles/view-transitions.min.css"/>
-		<link rel="stylesheet" href="/static/styles/no-js-fallback.min.css"/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/tokens.min.css") }/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/base.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/tokens.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/base.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/navigation.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/footer.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/view-transitions.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/no-js-fallback.min.css") }/>
 
 		<!-- Page-specific CSS -->
 		for _, css := range pageCSS {
-			<link rel="stylesheet" href={ css }/>
+			<link rel="stylesheet" href={ assets.URL(css) }/>
 		}
 		if prism {
-			<link rel="stylesheet" href="/static/styles/prism.min.css"/>
+			<link rel="stylesheet" href={ assets.URL("/static/styles/prism.min.css") }/>
 		}
 
 		<!-- View Transitions — directional navigation (parser-blocking, must run before first render) -->
-		<script nonce={ middleware.NonceFromContext(ctx) } src="/static/js/view-transitions.min.js"></script>
+		<script nonce={ middleware.NonceFromContext(ctx) } src={ assets.URL("/static/js/view-transitions.min.js") }></script>
 
 		<!-- Secure-UI Components - modulepreload for earlier fetch, then self-register -->
 		<link rel="modulepreload" href="/components/index.js" nonce={ middleware.NonceFromContext(ctx) }/>
@@ -116,14 +117,14 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 			import '/components/index.js';
 		</script>
 		if prism {
-			<script defer src="/static/js/prism.min.js"></script>
-			<script defer src="/static/js/prism-go.min.js"></script>
-			<script defer src="/static/js/prism-javascript.min.js"></script>
-			<script defer src="/static/js/prism-typescript.min.js"></script>
-			<script defer src="/static/js/prism-bash.min.js"></script>
-			<script defer src="/static/js/prism-json.min.js"></script>
-			<script defer src="/static/js/prism-markup.min.js"></script>
-			<script defer src="/static/js/prism-css.min.js"></script>
+			<script defer src={ assets.URL("/static/js/prism.min.js") }></script>
+			<script defer src={ assets.URL("/static/js/prism-go.min.js") }></script>
+			<script defer src={ assets.URL("/static/js/prism-javascript.min.js") }></script>
+			<script defer src={ assets.URL("/static/js/prism-typescript.min.js") }></script>
+			<script defer src={ assets.URL("/static/js/prism-bash.min.js") }></script>
+			<script defer src={ assets.URL("/static/js/prism-json.min.js") }></script>
+			<script defer src={ assets.URL("/static/js/prism-markup.min.js") }></script>
+			<script defer src={ assets.URL("/static/js/prism-css.min.js") }></script>
 		}
 	</head>
 }
@@ -184,10 +185,10 @@ templ LandingHead(title string, description string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Landing page CSS only -->
-		<link rel="preload" as="style" href="/static/styles/tokens.min.css"/>
-		<link rel="preload" as="style" href="/static/styles/base.min.css"/>
-		<link rel="stylesheet" href="/static/styles/tokens.min.css"/>
-		<link rel="stylesheet" href="/static/styles/base.min.css"/>
-		<link rel="stylesheet" href="/static/styles/telemetry-pro.min.css"/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/tokens.min.css") }/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/base.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/tokens.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/base.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/telemetry-pro.min.css") }/>
 	</head>
 }

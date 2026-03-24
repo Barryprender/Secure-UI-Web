@@ -10,6 +10,7 @@ import (
 	"strings"
 	"time"
 
+	"secure-ui-showcase-go/internal/assets"
 	"secure-ui-showcase-go/internal/database"
 	"secure-ui-showcase-go/internal/handlers"
 	"secure-ui-showcase-go/internal/i18n"
@@ -47,6 +48,9 @@ func main() {
 	if err := database.SeedSampleData(db); err != nil {
 		log.Fatalf("Failed to seed sample data: %v", err)
 	}
+
+	// Fingerprint static assets for cache-busting
+	assets.Init("./static")
 
 	// Create a context that cancels on SIGINT/SIGTERM
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt)
