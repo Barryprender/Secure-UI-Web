@@ -76,10 +76,12 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		if siteURL := middleware.SiteBaseURLFromContext(ctx); siteURL != "" {
 			<meta name="twitter:image" content={ siteURL + "/static/og-image.png" }/>
 		}
-		<!-- Fonts: Manrope (display) + IBM Plex Sans (body) + IBM Plex Mono (code) -->
+		<!-- Fonts: non-render-blocking — preload then apply via script -->
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
+		<link rel="preload" as="style" id="gfonts" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/></noscript>
+		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var l=document.getElementById('gfonts');l.onload=function(){l.rel='stylesheet';};})();</script>
 		<!-- Favicon - multiple formats for maximum compatibility -->
 		<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
 		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
@@ -87,7 +89,9 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"/>
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
-		<!-- Global CSS -->
+		<!-- Global CSS — preload hints for critical always-loaded files -->
+		<link rel="preload" as="style" href="/static/styles/tokens.min.css"/>
+		<link rel="preload" as="style" href="/static/styles/base.min.css"/>
 		<link rel="stylesheet" href="/static/styles/tokens.min.css"/>
 		<link rel="stylesheet" href="/static/styles/base.min.css"/>
 		<link rel="stylesheet" href="/static/styles/navigation.min.css"/>
@@ -167,10 +171,12 @@ templ LandingHead(title string, description string) {
 		if siteURL := middleware.SiteBaseURLFromContext(ctx); siteURL != "" {
 			<meta name="twitter:image" content={ siteURL + "/static/og-telemetry.png" }/>
 		}
-		<!-- Fonts: Manrope (display) + IBM Plex Sans (body) + IBM Plex Mono (code) -->
+		<!-- Fonts: non-render-blocking -->
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-		<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
+		<link rel="preload" as="style" id="gfonts" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
+		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/></noscript>
+		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var l=document.getElementById('gfonts');l.onload=function(){l.rel='stylesheet';};})();</script>
 		<!-- Favicon -->
 		<link rel="icon" type="image/x-icon" href="/static/favicon.ico"/>
 		<link rel="icon" type="image/svg+xml" href="/static/favicon.svg"/>
@@ -178,6 +184,8 @@ templ LandingHead(title string, description string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Landing page CSS only -->
+		<link rel="preload" as="style" href="/static/styles/tokens.min.css"/>
+		<link rel="preload" as="style" href="/static/styles/base.min.css"/>
 		<link rel="stylesheet" href="/static/styles/tokens.min.css"/>
 		<link rel="stylesheet" href="/static/styles/base.min.css"/>
 		<link rel="stylesheet" href="/static/styles/telemetry-pro.min.css"/>
