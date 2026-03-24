@@ -1415,13 +1415,43 @@
     font-size: 1.375rem;
   }
 
+  .security-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
   .security-matrix {
     font-size: 0.8125rem;
+    min-width: 480px;
+  }
+
+  .captcha-comparison {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .captcha-comparison-table {
+    min-width: 480px;
+    font-size: 0.8125rem;
+  }
+
+  .captcha-comparison-table th,
+  .captcha-comparison-table td {
+    padding: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem);
   }
 
   .security-matrix th,
   .security-matrix td {
     padding: var(--space-xs, 0.5rem) var(--space-sm, 0.75rem);
+  }
+
+  .theming-section {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .css-vars-table {
+    min-width: 380px;
   }
 
   .component-nav {
@@ -1471,8 +1501,16 @@
     font-size: 1.75rem;
   }
 
-  .configs-section-title {
+  .configs-section-title,
+  .security-section-title,
+  .theming-section-title,
+  .framework-section-title {
     font-size: 1.25rem;
+  }
+
+  .tier-badge {
+    font-size: 0.625rem;
+    padding: 0.2rem 0.45rem;
   }
 
   .css-vars-table {
@@ -1491,14 +1529,21 @@
     font-size: 1.875rem;
   }
 
-  .security-matrix-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  .security-matrix {
+    min-width: 440px;
   }
 
-  .css-vars-table-wrapper {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+  .css-vars-table {
+    min-width: 340px;
+  }
+
+  .captcha-comparison-table {
+    min-width: 420px;
+    font-size: 0.75rem;
+  }
+
+  .captcha-comparison-table td:first-child {
+    white-space: normal;
   }
 
   .card-preview {
