@@ -478,6 +478,137 @@ ul.docs-text {
     line-height: 1.55;
 }
 
+/* ── Feature List ─────────────────────────────────── */
+/* Used on component docs pages to showcase security features */
+
+.docs-feature-list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+    margin-block: var(--space-lg);
+}
+
+@media (min-width: 640px) {
+    .docs-feature-list {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.docs-feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-md);
+    padding: var(--space-md);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-inline-start-width: 3px;
+    border-inline-start-style: solid;
+    border-inline-start-color: var(--border-medium);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s var(--ease-out-quart);
+}
+
+.docs-feature-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
+}
+
+/* Per-feature left-border identity */
+.docs-feature-item--allowlist {
+    border-inline-start-color: #059669;
+}
+.docs-feature-item--allowlist .docs-feature-icon {
+    background: rgba(5, 150, 105, 0.1);
+    border-color: rgba(5, 150, 105, 0.25);
+    color: #059669;
+}
+
+.docs-feature-item--xss {
+    border-inline-start-color: #3b82f6;
+}
+.docs-feature-item--xss .docs-feature-icon {
+    background: rgba(59, 130, 246, 0.1);
+    border-color: rgba(59, 130, 246, 0.25);
+}
+
+.docs-feature-item--audit {
+    border-inline-start-color: #f59e0b;
+}
+.docs-feature-item--audit .docs-feature-icon {
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.25);
+}
+
+.docs-feature-item--progressive {
+    border-inline-start-color: #8b5cf6;
+}
+.docs-feature-item--progressive .docs-feature-icon {
+    background: rgba(139, 92, 246, 0.1);
+    border-color: rgba(139, 92, 246, 0.25);
+}
+
+.docs-feature-icon {
+    font-size: 1.375rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(5, 150, 105, 0.08);
+    border: 1px solid rgba(5, 150, 105, 0.18);
+    border-radius: var(--radius-md);
+}
+
+.docs-feature-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.docs-feature-title {
+    font-weight: 700;
+    color: var(--text-primary);
+    font-size: 0.9375rem;
+    letter-spacing: -0.01em;
+    margin-bottom: 0.375rem;
+}
+
+.docs-feature-description {
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.docs-feature-description code {
+    font-family: var(--font-mono);
+    font-size: 0.78125rem;
+    background: rgba(5, 150, 105, 0.08);
+    color: var(--accent-primary);
+    padding: 1px 5px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(5, 150, 105, 0.15);
+}
+
+/* ── Blocked code block variant ───────────────────── */
+/* Visual treatment for "this is the attack being stopped" */
+
+.docs-code-block--blocked {
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.docs-code-block--blocked .docs-code-header {
+    background: rgba(239, 68, 68, 0.06);
+    border-bottom-color: rgba(239, 68, 68, 0.2);
+}
+
+.docs-code-block--blocked .docs-code-title {
+    color: #f87171;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .docs-feature-item { transition: none; }
+}
+
 /* ── Responsive ───────────────────────────────────── */
 
 @media (max-width: 768px) {

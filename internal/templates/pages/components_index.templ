@@ -34,6 +34,104 @@ templ ComponentsIndex() {
 				</div>
 			</header>
 
+			<!-- Why Secure-UI -->
+			<section class="ci-why">
+				<h2 class="ci-why-title">What makes Secure-UI different</h2>
+				<p class="ci-why-intro">Standard HTML elements and UI libraries handle presentation. Secure-UI handles security — baked in, not bolted on.</p>
+				<div class="ci-pillars">
+					<div class="ci-pillar ci-pillar--isolation">
+						<span class="ci-pillar-icon">&#128274;</span>
+						<h3 class="ci-pillar-title">Closed Shadow DOM</h3>
+						<p class="ci-pillar-desc">
+							Field values live inside a closed shadow root. <code>element.shadowRoot</code> returns <code>null</code> —
+							injected scripts, browser extensions, and devtools cannot read or tamper with the internal DOM.
+							Validation state and form data stay private until submission.
+						</p>
+					</div>
+					<div class="ci-pillar ci-pillar--telemetry">
+						<span class="ci-pillar-icon">&#128225;</span>
+						<h3 class="ci-pillar-title">Behavioral Telemetry</h3>
+						<p class="ci-pillar-desc">
+							Every interaction is measured: focus timing, typing velocity, paste events, zero-keystroke fills.
+							<code>&lt;secure-telemetry-provider&gt;</code> adds device signals — headless detection, webdriver
+							presence, devtools state — signed with HMAC-SHA-256. Bot detection with no user friction.
+						</p>
+					</div>
+					<div class="ci-pillar ci-pillar--audit">
+						<span class="ci-pillar-icon">&#128203;</span>
+						<h3 class="ci-pillar-title">Audit Trail by Default</h3>
+						<p class="ci-pillar-desc">
+							Every injection attempt, validation failure, and selection change dispatches a <code>secure-audit</code>
+							CustomEvent. Blocked inputs record the exact value attempted. Your server receives a complete,
+							timestamped interaction history with every submission.
+						</p>
+					</div>
+				</div>
+
+				<div class="ci-comparison">
+					<table class="ci-comparison-table">
+						<thead>
+							<tr>
+								<th>Capability</th>
+								<th class="ci-col--neutral">&lt;input&gt;</th>
+								<th class="ci-col--neutral">MUI / ShadCN</th>
+								<th class="ci-col--accent">&lt;secure-input&gt;</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Closed Shadow DOM (script-proof)</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--yes">Yes</td>
+							</tr>
+							<tr>
+								<td>Behavioral telemetry</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--yes">Yes</td>
+							</tr>
+							<tr>
+								<td>Headless / bot detection</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--yes">Yes</td>
+							</tr>
+							<tr>
+								<td>Tamper-proof audit log</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--yes">Yes</td>
+							</tr>
+							<tr>
+								<td>XSS sanitization</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--partial">Partial</td>
+								<td class="ci-cell--yes">Yes</td>
+							</tr>
+							<tr>
+								<td>Security tiers (public / sensitive / critical)</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--yes">Yes</td>
+							</tr>
+							<tr>
+								<td>Works without JavaScript</td>
+								<td class="ci-cell--yes">Yes</td>
+								<td class="ci-cell--no">—</td>
+								<td class="ci-cell--yes">Yes</td>
+							</tr>
+							<tr>
+								<td>Runtime dependencies</td>
+								<td class="ci-cell--yes">0</td>
+								<td class="ci-cell--no">200+</td>
+								<td class="ci-cell--yes">0</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</section>
+
 			<!-- Component grid -->
 			<div class="components-grid" id="ci-grid">
 				<!-- secure-telemetry-provider — featured first -->

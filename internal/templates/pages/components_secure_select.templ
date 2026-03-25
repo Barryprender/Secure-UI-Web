@@ -11,9 +11,10 @@ templ ComponentSecureSelect() {
 				<div class="component-hero-content">
 					<h1>&lt;secure-select&gt;</h1>
 					<p class="component-hero-description">
-						A security-hardened dropdown select component that prevents option injection attacks
-						and enforces server-defined value allowlists. Submitted values are validated against
-						the declared options regardless of client-side manipulation.
+						A drop-in replacement for <code>&lt;select&gt;</code> that locks accepted
+						values to the server-rendered option set. Injection attempts — from scripts,
+						extensions, or devtools — are blocked and logged. Works without JavaScript
+						as a native select.
 					</p>
 					<div class="component-hero-install">
 						<pre><code class="language-markup">{ `<script type="module"
@@ -31,141 +32,118 @@ templ ComponentSecureSelect() {
 						<option value="ca">Canada</option>
 						<option value="au">Australia</option>
 					</secure-select>
-					<secure-select label="Role" name="hero-role" security-tier="authenticated" required>
+					<secure-select label="Access Level" name="hero-role" security-tier="critical" required>
 						<option value="">Select role</option>
 						<option value="viewer">Viewer</option>
 						<option value="editor">Editor</option>
-						<option value="admin">Admin</option>
+						<option value="admin">Administrator</option>
 					</secure-select>
 				</div>
 			</section>
 
-			<!-- All Configurations -->
+			<!-- Configurations -->
 			<section class="configs-section">
 				<h2 class="configs-section-title">Configurations</h2>
 				<div class="configs-grid">
+
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-card-desc">Browser autocomplete allowed. No rate limiting. Use for preferences, categories, filters.</div>
 						<div class="config-demo">
-							<secure-select label="Public select" name="cfg-sel-pub" security-tier="public">
+							<secure-select label="Theme" name="cfg-sel-pub" security-tier="public">
 								<option value="">Choose...</option>
-								<option value="a">Option A</option>
-								<option value="b">Option B</option>
+								<option value="light">Light</option>
+								<option value="dark">Dark</option>
+								<option value="system">System</option>
 							</secure-select>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-select
-  label="Public select"
-  name="field"
+  label="Theme"
+  name="theme"
   security-tier="public">
-  <option value="">Choose...</option>
-  <option value="a">Option A</option>
-</secure-select>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
-						<div class="config-demo">
-							<secure-select label="Authenticated select" name="cfg-sel-auth" security-tier="authenticated">
-								<option value="">Choose...</option>
-								<option value="a">Option A</option>
-								<option value="b">Option B</option>
-							</secure-select>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-select
-  security-tier="authenticated"
-  label="Authenticated select"
-  name="field">
-  <option value="a">Option A</option>
-</secure-select>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
-						<div class="config-demo">
-							<secure-select label="Sensitive select" name="cfg-sel-sens" security-tier="sensitive">
-								<option value="">Choose...</option>
-								<option value="a">Option A</option>
-								<option value="b">Option B</option>
-							</secure-select>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-select
-  security-tier="sensitive"
-  label="Sensitive select"
-  name="field">
-  <option value="a">Option A</option>
+  <option value="light">Light</option>
+  <option value="dark">Dark</option>
+  <option value="system">System</option>
 </secure-select>` }</code></pre>
 						</div>
 					</div>
 
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
+						<div class="config-card-desc">Autocomplete disabled. Rate limiting on. Full audit log. Use for roles, permissions, security questions.</div>
 						<div class="config-demo">
-							<secure-select label="Critical select" name="cfg-sel-crit" security-tier="critical">
+							<secure-select label="Access Level" name="cfg-sel-crit" security-tier="critical">
 								<option value="">Choose...</option>
-								<option value="a">Option A</option>
-								<option value="b">Option B</option>
+								<option value="viewer">Viewer</option>
+								<option value="editor">Editor</option>
+								<option value="admin">Administrator</option>
 							</secure-select>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-select
-  security-tier="critical"
-  label="Critical select"
-  name="field">
-  <option value="a">Option A</option>
+  label="Access Level"
+  name="access_level"
+  security-tier="critical">
+  <option value="viewer">Viewer</option>
+  <option value="editor">Editor</option>
+  <option value="admin">Administrator</option>
 </secure-select>` }</code></pre>
 						</div>
 					</div>
 
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-card-desc">Validates that a selection is made before form submission. Error is displayed on blur.</div>
 						<div class="config-demo">
-							<secure-select label="Required select" name="cfg-sel-req" security-tier="public" required>
-								<option value="">Choose...</option>
-								<option value="a">Option A</option>
+							<secure-select label="Country" name="cfg-sel-req" security-tier="sensitive" required>
+								<option value="">Select a country</option>
+								<option value="us">United States</option>
+								<option value="gb">United Kingdom</option>
+								<option value="ca">Canada</option>
 							</secure-select>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-select
-  label="Required select"
-  name="field"
+  label="Country"
+  name="country"
   required
-  security-tier="public">
-  <option value="a">Option A</option>
+  security-tier="sensitive">
+  <option value="">Select a country</option>
+  <option value="us">United States</option>
 </secure-select>` }</code></pre>
 						</div>
 					</div>
 
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">disabled</span></div>
+						<div class="config-card-desc">Field is non-interactive. Use to show a locked selection from a previous step.</div>
 						<div class="config-demo">
-							<secure-select label="Disabled select" name="cfg-sel-dis" security-tier="public" disabled>
-								<option value="a">Option A</option>
+							<secure-select label="Plan" name="cfg-sel-dis" security-tier="public" disabled>
+								<option value="pro" selected>Pro</option>
+								<option value="enterprise">Enterprise</option>
 							</secure-select>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-select
-  label="Disabled select"
-  name="field"
+  label="Plan"
+  name="plan"
   disabled
   security-tier="public">
-  <option value="a">Option A</option>
+  <option value="pro" selected>Pro</option>
 </secure-select>` }</code></pre>
 						</div>
 					</div>
 
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">multiple</span></div>
+						<div class="config-card-desc">All selected values are validated against the allowlist — not just the first. Any injected value in the selection is caught and rejected.</div>
 						<div class="config-demo">
-							<secure-select label="Multiple select" name="cfg-sel-multi" security-tier="public" multiple size="4">
-								<option value="js">JavaScript</option>
-								<option value="ts">TypeScript</option>
+							<secure-select label="Languages" name="cfg-sel-multi" security-tier="public" multiple size="4">
 								<option value="go">Go</option>
+								<option value="ts">TypeScript</option>
 								<option value="py">Python</option>
+								<option value="rs">Rust</option>
 							</secure-select>
 						</div>
 						<div class="config-code">
@@ -175,40 +153,19 @@ templ ComponentSecureSelect() {
   multiple
   size="4"
   security-tier="public">
-  <option value="js">JavaScript</option>
   <option value="go">Go</option>
+  <option value="ts">TypeScript</option>
 </secure-select>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">size</span></div>
-						<div class="config-demo">
-							<secure-select label="Visible rows" name="cfg-sel-size" security-tier="public" size="3">
-								<option value="1">Row one</option>
-								<option value="2">Row two</option>
-								<option value="3">Row three</option>
-								<option value="4">Row four</option>
-							</secure-select>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-select
-  label="Visible rows"
-  name="field"
-  size="3"
-  security-tier="public">
-  <option value="1">Row one</option>
-  <option value="2">Row two</option>
-</secure-select>` }</code></pre>
-						</div>
-					</div>
 				</div>
 			</section>
 
 			<!-- Security Features -->
 			<section class="security-section">
 				<h2 class="security-section-title">Security Features</h2>
-				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<p class="security-callout">Client-side defence in depth. Server-side validation is always required.</p>
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -221,14 +178,21 @@ templ ComponentSecureSelect() {
 					</thead>
 					<tbody>
 						<tr>
-							<td>Option injection prevention</td>
+							<td>Option allowlist enforcement</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
-							<td>Value allowlist enforcement</td>
+							<td>XSS sanitization (values + labels)</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Progressive enhancement (no-JS fallback)</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
@@ -238,6 +202,20 @@ templ ComponentSecureSelect() {
 							<td>Audit logging</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Autocomplete disabled</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Rate limiting</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>

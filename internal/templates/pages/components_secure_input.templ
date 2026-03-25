@@ -1,6 +1,9 @@
 package pages
 
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ ComponentSecureInput() {
 	@templates.Layout("Live Demo: Secure Input — XSS Prevention, Security Tiers", "Interactive demos for secure-input: all input types, security tiers, XSS prevention, validation, CSS custom properties, and framework integration examples.", true, "/static/styles/components.min.css") {
@@ -11,9 +14,10 @@ templ ComponentSecureInput() {
 				<div class="component-hero-content">
 					<h1>&lt;secure-input&gt;</h1>
 					<p class="component-hero-description">
-						A security-hardened text input supporting all HTML5 input types. Provides automatic XSS
-						prevention, type-specific validation, autocomplete control, and per-field audit logging.
-						Security tier determines strictness of enforcement and what gets recorded.
+						A drop-in replacement for <code>&lt;input&gt;</code> that moves security enforcement
+						inside a closed Shadow DOM. Scripts, extensions, and devtools cannot read the field value
+						or reach its internal state. Every interaction is measured — focus timing, typing velocity,
+						paste events — and dispatched as a <code>secure-audit</code> event on your server.
 					</p>
 					<div class="component-hero-install">
 						<pre><code class="language-markup">{ `<script type="module"
@@ -50,204 +54,94 @@ templ ComponentSecureInput() {
 				</div>
 			</section>
 
-			<!-- All Configurations -->
+			<!-- Configurations -->
 			<section class="configs-section">
 				<h2 class="configs-section-title">Configurations</h2>
 				<div class="configs-grid">
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">type="text"</span></div>
-						<div class="config-demo">
-							<secure-input label="Text" name="cfg-text" type="text" placeholder="Plain text" security-tier="public"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  type="text"
-  label="Text"
-  name="field"
-  security-tier="public">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">type="email"</span></div>
+					<div class="config-card config-card--stagger" style="--ci:0">
+						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
+						<div class="config-card-desc">The default tier. Autocomplete disabled, rate limiting on, full audit logging. Use for passwords, security questions, and any field that controls access.</div>
 						<div class="config-demo">
-							<secure-input label="Email" name="cfg-email" type="email" placeholder="user@example.com" security-tier="sensitive"></secure-input>
+							<secure-input label="Access Token" name="cfg-crit" type="text" security-tier="critical" placeholder="Paste or type your token"></secure-input>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-input
-  type="email"
-  label="Email"
-  name="email"
-  security-tier="sensitive">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">type="password"</span></div>
-						<div class="config-demo">
-							<secure-input label="Password" name="cfg-pw" type="password" placeholder="Password" security-tier="critical"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  type="password"
-  label="Password"
-  name="password"
+  label="Access Token"
+  name="token"
   security-tier="critical">
 </secure-input>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">type="tel"</span></div>
-						<div class="config-demo">
-							<secure-input label="Phone" name="cfg-tel" type="tel" placeholder="+1 555 000 0000" security-tier="sensitive"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  type="tel"
-  label="Phone"
-  name="phone"
-  security-tier="sensitive">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">type="url"</span></div>
-						<div class="config-demo">
-							<secure-input label="Website" name="cfg-url" type="url" placeholder="https://example.com" security-tier="public"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  type="url"
-  label="Website"
-  name="website"
-  security-tier="public">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">type="number"</span></div>
-						<div class="config-demo">
-							<secure-input label="Quantity" name="cfg-num" type="number" min="1" max="100" security-tier="public"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  type="number"
-  label="Quantity"
-  name="quantity"
-  min="1" max="100"
-  security-tier="public">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
-						<div class="config-demo">
-							<secure-input label="Public field" name="cfg-tier-pub" type="text" security-tier="public"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  security-tier="public"
-  label="Public field"
-  name="field">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
-						<div class="config-demo">
-							<secure-input label="Authenticated field" name="cfg-tier-auth" type="text" security-tier="authenticated"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  security-tier="authenticated"
-  label="Authenticated field"
-  name="field">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
+					<div class="config-card config-card--stagger" style="--ci:1">
 						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
+						<div class="config-card-desc">For PII — email, phone, address. Autocomplete disabled, audit logging on. Browser cannot cache the value between sessions.</div>
 						<div class="config-demo">
-							<secure-input label="Sensitive field" name="cfg-tier-sens" type="text" security-tier="sensitive"></secure-input>
+							<secure-input label="Email Address" name="cfg-sens" type="email" security-tier="sensitive" placeholder="you@example.com" required></secure-input>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-input
+  label="Email Address"
+  name="email"
+  type="email"
   security-tier="sensitive"
-  label="Sensitive field"
-  name="field">
+  required>
 </secure-input>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
+					<div class="config-card config-card--stagger" style="--ci:2">
+						<div class="config-card-header"><span class="config-label">type="password" security-tier="critical"</span></div>
+						<div class="config-card-desc">Value is masked inside the Shadow DOM. <code>autocomplete="new-password"</code> set automatically. Paste events are recorded in the audit log. The plaintext never touches the light DOM.</div>
 						<div class="config-demo">
-							<secure-input label="Critical field" name="cfg-tier-crit" type="text" security-tier="critical"></secure-input>
+							<secure-input label="Password" name="cfg-pw" type="password" security-tier="critical" required></secure-input>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-input
+  label="Password"
+  name="password"
+  type="password"
   security-tier="critical"
-  label="Critical field"
-  name="field">
+  required>
 </secure-input>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">required</span></div>
+					<div class="config-card config-card--stagger" style="--ci:3">
+						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-card-desc">Browser autocomplete allowed. No rate limiting. XSS sanitization still active. Use for preferences, search fields, and non-sensitive data.</div>
 						<div class="config-demo">
-							<secure-input label="Required field" name="cfg-req" type="text" required security-tier="public"></secure-input>
+							<secure-input label="Display Name" name="cfg-pub" type="text" security-tier="public" placeholder="How you appear to others"></secure-input>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-input
-  label="Required field"
-  name="field"
+  label="Display Name"
+  name="display_name"
+  security-tier="public">
+</secure-input>` }</code></pre>
+						</div>
+					</div>
+
+					<div class="config-card config-card--stagger" style="--ci:4">
+						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-card-desc">Error is shown on blur if the field is empty. Works with native <code>&lt;form&gt;</code> constraint validation and <code>checkValidity()</code>.</div>
+						<div class="config-demo">
+							<secure-input label="Company Name" name="cfg-req" type="text" required security-tier="public" placeholder="Required before submit"></secure-input>
+						</div>
+						<div class="config-code">
+							<pre><code class="language-markup">{ `<secure-input
+  label="Company Name"
+  name="company"
   required
   security-tier="public">
 </secure-input>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">disabled</span></div>
-						<div class="config-demo">
-							<secure-input label="Disabled field" name="cfg-dis" type="text" disabled security-tier="public"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  label="Disabled field"
-  name="field"
-  disabled
-  security-tier="public">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">readonly</span></div>
-						<div class="config-demo">
-							<secure-input label="Read-only field" name="cfg-ro" type="text" readonly security-tier="public"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  label="Read-only field"
-  name="field"
-  readonly
-  security-tier="public">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
+					<div class="config-card config-card--stagger" style="--ci:5">
 						<div class="config-card-header"><span class="config-label">minlength / maxlength</span></div>
+						<div class="config-card-desc">Length limits enforced inside the Shadow DOM — not bypassable by setting <code>input.maxLength</code> from outside. Violation is recorded in the audit log.</div>
 						<div class="config-demo">
 							<secure-input label="Username" name="cfg-len" type="text" minlength="3" maxlength="20" placeholder="3–20 characters" security-tier="public"></secure-input>
 						</div>
@@ -262,28 +156,65 @@ templ ComponentSecureInput() {
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">pattern</span></div>
-						<div class="config-demo">
-							<secure-input label="Product Code" name="cfg-pat" type="text" pattern="[A-Z]{3}-[0-9]{4}" placeholder="ABC-1234" security-tier="public"></secure-input>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-input
-  label="Product Code"
-  name="code"
-  pattern="[A-Z]{3}-[0-9]{4}"
-  placeholder="ABC-1234"
-  security-tier="public">
-</secure-input>` }</code></pre>
-						</div>
-					</div>
 				</div>
 			</section>
 
 			<!-- Security Features -->
 			<section class="security-section">
 				<h2 class="security-section-title">Security Features</h2>
-				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<p class="security-callout">
+					These are client-side defences. Server-side validation is always the security boundary —
+					these reduce the attack surface and produce a complete interaction record for your server to act on.
+				</p>
+
+				<!-- Behavioral telemetry callout — live demo -->
+				<div class="security-telemetry-panel" id="telemetry-live-panel">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Per-field behavioral signals</span>
+						<span class="security-telemetry-badge">Available on authenticated, sensitive, critical</span>
+						<span class="stel-live-indicator" aria-hidden="true" title="Live — interact with a field above to see signals update">
+							<span class="stel-dot"></span>Live
+						</span>
+					</div>
+					<div class="security-telemetry-signals">
+						<div class="security-telemetry-signal">
+							<span class="stel-key">focusAt</span>
+							<span class="stel-desc">Timestamp when the field received focus</span>
+							<span class="stel-live" data-tel="focusAt">&mdash;</span>
+						</div>
+						<div class="security-telemetry-signal">
+							<span class="stel-key">firstKeystrokeAt</span>
+							<span class="stel-desc">Timestamp of the first keypress after focus</span>
+							<span class="stel-live" data-tel="firstKeystrokeAt">&mdash;</span>
+						</div>
+						<div class="security-telemetry-signal">
+							<span class="stel-key">dwell</span>
+							<span class="stel-desc">Milliseconds spent in the field</span>
+							<span class="stel-live" data-tel="dwell">&mdash;</span>
+						</div>
+						<div class="security-telemetry-signal">
+							<span class="stel-key">keyCount</span>
+							<span class="stel-desc">Total keypresses recorded</span>
+							<span class="stel-live" data-tel="keyCount">&mdash;</span>
+						</div>
+						<div class="security-telemetry-signal">
+							<span class="stel-key">velocity</span>
+							<span class="stel-desc">Keystrokes per second — bots type instantly</span>
+							<span class="stel-live" data-tel="velocity">&mdash;</span>
+						</div>
+						<div class="security-telemetry-signal">
+							<span class="stel-key">pasteDetected</span>
+							<span class="stel-desc">Whether the value was pasted rather than typed</span>
+							<span class="stel-live" data-tel="pasteDetected">&mdash;</span>
+						</div>
+						<div class="security-telemetry-signal">
+							<span class="stel-key">zeroKeystrokeSubmit</span>
+							<span class="stel-desc">Field submitted with a value but zero keypresses — flags autofill attacks</span>
+							<span class="stel-live" data-tel="zeroKeystrokeSubmit">&mdash;</span>
+						</div>
+					</div>
+				</div>
+
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -296,23 +227,30 @@ templ ComponentSecureInput() {
 					</thead>
 					<tbody>
 						<tr>
-							<td>Input sanitization</td>
+							<td>Closed Shadow DOM isolation</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
-							<td>XSS prevention</td>
+							<td>XSS sanitization</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
-							<td>Autocomplete control</td>
+							<td>Progressive enhancement (no-JS fallback)</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Behavioral telemetry</td>
 							<td class="matrix-no">-</td>
-							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
@@ -324,16 +262,16 @@ templ ComponentSecureInput() {
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
-							<td>Rate limiting</td>
+							<td>Autocomplete disabled</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
-							<td>Pattern enforcement</td>
-							<td class="matrix-yes">Yes</td>
-							<td class="matrix-yes">Yes</td>
+							<td>Rate limiting</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
@@ -365,19 +303,9 @@ templ ComponentSecureInput() {
 							<td>Horizontal padding</td>
 						</tr>
 						<tr>
-							<td>--secure-ui-input-padding-y</td>
-							<td>0.5rem</td>
-							<td>Vertical padding</td>
-						</tr>
-						<tr>
 							<td>--secure-ui-input-font-size</td>
 							<td>0.9375rem</td>
 							<td>Font size inside input</td>
-						</tr>
-						<tr>
-							<td>--secure-ui-input-border-width</td>
-							<td>1px</td>
-							<td>Border width</td>
 						</tr>
 						<tr>
 							<td>--secure-ui-input-border-radius</td>
@@ -395,11 +323,6 @@ templ ComponentSecureInput() {
 							<td>Default border color</td>
 						</tr>
 						<tr>
-							<td>--secure-ui-input-border-color-hover</td>
-							<td>var(--secure-ui-color-primary)</td>
-							<td>Border color on hover</td>
-						</tr>
-						<tr>
 							<td>--secure-ui-input-border-color-focus</td>
 							<td>var(--secure-ui-color-primary)</td>
 							<td>Border color on focus</td>
@@ -408,16 +331,6 @@ templ ComponentSecureInput() {
 							<td>--secure-ui-input-text-color</td>
 							<td>var(--secure-ui-color-text-primary)</td>
 							<td>Input text color</td>
-						</tr>
-						<tr>
-							<td>--secure-ui-input-placeholder-color</td>
-							<td>var(--secure-ui-color-text-secondary)</td>
-							<td>Placeholder text color</td>
-						</tr>
-						<tr>
-							<td>--secure-ui-input-disabled-bg</td>
-							<td>var(--secure-ui-color-bg-secondary)</td>
-							<td>Background when disabled</td>
 						</tr>
 					</tbody>
 				</table>
@@ -592,7 +505,118 @@ onMounted(() => {
 				</div>
 			</section>
 
-			<!-- Component Navigation -->
+			<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+// ── Stagger entrance for config cards ─────────────────────────────────────────
+{
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    const cards = document.querySelectorAll('.config-card--stagger');
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('config-card--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    cards.forEach(c => io.observe(c));
+
+    // Security matrix rows
+    const rows = document.querySelectorAll('.security-matrix tbody tr');
+    const rowIo = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          entry.target.style.setProperty('--ri', entry.target.dataset.ri || '0');
+          entry.target.classList.add('matrix-row--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    rows.forEach((r, i) => { r.dataset.ri = i; rowIo.observe(r); });
+  }
+}
+
+// ── Live behavioral telemetry panel ───────────────────────────────────────────
+(function() {
+  const panel = document.getElementById('telemetry-live-panel');
+  if (!panel) return;
+
+  /** @type {Map<Element, {focusAt:number, firstKey:number|null, keyCount:number, pasteDetected:boolean}>} */
+  const state = new WeakMap();
+
+  function tel(name) {
+    return panel.querySelector('[data-tel="' + name + '"]');
+  }
+
+  function flash(el, value) {
+    el.textContent = value;
+    el.classList.remove('stel-updated');
+    // Force reflow to restart animation
+    void el.offsetWidth;
+    el.classList.add('stel-updated');
+  }
+
+  function updatePanel(s) {
+    const now = Date.now();
+    flash(tel('focusAt'), s.focusAt ? new Date(s.focusAt).toISOString().slice(11, 23) : '\u2014');
+    flash(tel('firstKeystrokeAt'), s.firstKey ? '+' + (s.firstKey - s.focusAt) + 'ms' : '\u2014');
+    flash(tel('dwell'), s.focusAt ? (now - s.focusAt) + 'ms' : '\u2014');
+    flash(tel('keyCount'), String(s.keyCount));
+    const elapsed = s.firstKey ? (now - s.firstKey) / 1000 : 0;
+    const vel = elapsed > 0 && s.keyCount > 0 ? (s.keyCount / elapsed).toFixed(1) : '\u2014';
+    flash(tel('velocity'), vel !== '\u2014' ? vel + '/s' : vel);
+    flash(tel('pasteDetected'), s.pasteDetected ? 'true' : 'false');
+    flash(tel('zeroKeystrokeSubmit'), '\u2014');
+  }
+
+  // Events compose through closed Shadow DOM — retarget to host secure-input
+  document.addEventListener('focusin', e => {
+    const host = e.target.closest('secure-input');
+    if (!host) return;
+    state.set(host, { focusAt: Date.now(), firstKey: null, keyCount: 0, pasteDetected: false });
+    updatePanel(state.get(host));
+  }, true);
+
+  document.addEventListener('input', e => {
+    const host = e.target.closest('secure-input');
+    if (!host) return;
+    const s = state.get(host);
+    if (!s) return;
+    if (s.firstKey === null) s.firstKey = Date.now();
+    s.keyCount++;
+    updatePanel(s);
+  }, true);
+
+  document.addEventListener('paste', e => {
+    const host = e.target.closest('secure-input');
+    if (!host) return;
+    const s = state.get(host);
+    if (!s) return;
+    s.pasteDetected = true;
+    updatePanel(s);
+  }, true);
+})()
+
+// ── Developer console easter egg ──────────────────────────────────────────────
+{
+  const si = document.querySelector('secure-input');
+  if (si) {
+    const shadow = si.shadowRoot;
+    if (shadow === null) {
+      console.log(
+        '%c secure-input shadowRoot: null ',
+        'background:#059669;color:#fff;font-weight:700;padding:2px 8px;border-radius:4px;font-family:monospace',
+      );
+      console.log(
+        '%cClosed Shadow DOM is working.\nNo script on this page can read the field value — including this one.',
+        'color:#6ee7b7;font-family:monospace;font-size:12px',
+      );
+    }
+  }
+}
+</script>
+
+		<!-- Component Navigation -->
 			<nav class="component-nav" aria-label="Component pages">
 				<a href="/components" class="component-nav-link component-nav-link--prev">
 					<span class="component-nav-direction">Previous</span>
