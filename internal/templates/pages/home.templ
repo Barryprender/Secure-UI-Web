@@ -253,31 +253,70 @@ templ Home() {
 <section class="features-section">
 	<div class="container">
 		<div class="section-header">
-			<p class="section-eyebrow">Built-in security</p>
-			<h2 class="section-title">Secure by default</h2>
+			<p class="section-eyebrow">What sets it apart</p>
+			<h2 class="section-title">Not just a UI library</h2>
 			<p class="section-description">
-				Comprehensive protection enabled without configuration. Sensible, strict defaults — not the other way around.
+				Shadow DOM isolation, behavioral telemetry, and audit logging — capabilities MUI, ShadCN, and Radix
+				cannot add without a full architectural rewrite. In Secure-UI they ship by default.
 			</p>
 		</div>
 
 		<div class="features-grid" data-reveal-stagger>
-			<!-- CAPTCHA-Free Bot Detection — indigo: intelligence/detection -->
+			<!-- 1. Closed Shadow DOM — green: isolation/locked -->
+			<div class="feature-card">
+				<div class="feature-icon" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+						<line x1="12" y1="16" x2="12" y2="16.01"></line>
+					</svg>
+				</div>
+				<h3 class="feature-title">Closed Shadow DOM</h3>
+				<p class="feature-description">Field values live inside a closed shadow root. <code>element.shadowRoot</code> returns <code>null</code> — injected scripts, browser extensions, and devtools cannot reach the internal DOM.</p>
+				<ul class="feature-list">
+					<li>Script injection attacks blocked</li>
+					<li>Extension data harvesting prevented</li>
+					<li>Validation state private until submit</li>
+				</ul>
+			</div>
+
+			<!-- 2. Behavioral Telemetry — indigo: intelligence/detection -->
 			<div class="feature-card">
 				<div class="feature-icon feature-icon--indigo" aria-hidden="true">
 					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
 						<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
 					</svg>
 				</div>
-				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.captcha.title") }</h3>
-				<p class="feature-description">{ i18n.T(ctx, "home.feat.captcha.desc") }</p>
+				<h3 class="feature-title">Behavioral Telemetry</h3>
+				<p class="feature-description">Every interaction is measured — focus timing, typing velocity, paste events, zero-keystroke fills — plus device signals signed with HMAC-SHA-256. Bots caught silently, no CAPTCHA needed.</p>
 				<ul class="feature-list">
-					<li>No user-visible challenge</li>
 					<li>Webdriver and headless detection</li>
-					<li>HMAC-signed risk envelope</li>
+					<li>Typing velocity and dwell analysis</li>
+					<li>HMAC-signed risk envelope per submit</li>
 				</ul>
 			</div>
 
-			<!-- CSRF Protection — blue: trust/auth boundary -->
+			<!-- 3. Audit Trail — teal: recording/compliance -->
+			<div class="feature-card">
+				<div class="feature-icon feature-icon--teal" aria-hidden="true">
+					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+						<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+						<rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+						<line x1="8" y1="10" x2="16" y2="10"></line>
+						<line x1="8" y1="14" x2="16" y2="14"></line>
+						<line x1="8" y1="18" x2="12" y2="18"></line>
+					</svg>
+				</div>
+				<h3 class="feature-title">Audit Trail by Default</h3>
+				<p class="feature-description">Every injection attempt, validation failure, and selection change dispatches a <code>secure-audit</code> CustomEvent. Blocked inputs record the exact value attempted. Compliance logging ships out of the box.</p>
+				<ul class="feature-list">
+					<li>Injection attempts logged with exact value</li>
+					<li>Timestamped interaction history per field</li>
+					<li>No extra instrumentation required</li>
+				</ul>
+			</div>
+
+			<!-- 4. CSRF Protection — blue: trust/auth boundary -->
 			<div class="feature-card">
 				<div class="feature-icon feature-icon--blue" aria-hidden="true">
 					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -289,32 +328,12 @@ templ Home() {
 				<p class="feature-description">{ i18n.T(ctx, "home.feat.csrf.desc") }</p>
 				<ul class="feature-list">
 					<li>Per-request token generation</li>
-					<li>Automatic token validation</li>
-					<li>Seamless integration</li>
+					<li>Automatic token injection and validation</li>
+					<li>Single-use, server-side expiry</li>
 				</ul>
 			</div>
 
-			<!-- Layered Validation — amber: precision/two-layer caution -->
-			<div class="feature-card">
-				<div class="feature-icon feature-icon--amber" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
-						<rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
-						<line x1="6" y1="6" x2="6.01" y2="6"></line>
-						<line x1="6" y1="18" x2="6.01" y2="18"></line>
-						<path d="m15 11 2 2 4-4"></path>
-					</svg>
-				</div>
-				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.validation.title") }</h3>
-				<p class="feature-description">{ i18n.T(ctx, "home.feat.validation.desc") }</p>
-				<ul class="feature-list">
-					<li>Real-time client-side feedback</li>
-					<li>Server-authoritative validation</li>
-					<li>Detailed error messages</li>
-				</ul>
-			</div>
-
-			<!-- Input Sanitization — green (default): cleaning/safe -->
+			<!-- 5. Input Sanitization — green: cleaning/safe -->
 			<div class="feature-card">
 				<div class="feature-icon" aria-hidden="true">
 					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -332,58 +351,20 @@ templ Home() {
 				</ul>
 			</div>
 
-			<!-- Secure Defaults — blue: configuration/trust -->
+			<!-- 6. Zero Dependencies — amber: supply chain safety -->
 			<div class="feature-card">
-				<div class="feature-icon feature-icon--blue" aria-hidden="true">
+				<div class="feature-icon feature-icon--amber" aria-hidden="true">
 					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-						<path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+						<path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+						<path d="m9 12 2 2 4-4"></path>
 					</svg>
 				</div>
-				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.defaults.title") }</h3>
-				<p class="feature-description">{ i18n.T(ctx, "home.feat.defaults.desc") }</p>
+				<h3 class="feature-title">Zero Dependencies</h3>
+				<p class="feature-description">The entire library is self-contained TypeScript. No transitive packages, no supply chain risk, no CVEs inherited from third-party code. A single script tag is all you add to your project.</p>
 				<ul class="feature-list">
-					<li>Strict Content Security Policy</li>
-					<li>Closed Shadow DOM isolation</li>
-					<li>Tier-based security controls</li>
-				</ul>
-			</div>
-
-			<!-- Single Source of Truth — indigo: data/consistency -->
-			<div class="feature-card">
-				<div class="feature-icon feature-icon--indigo" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
-						<path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path>
-						<path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path>
-					</svg>
-				</div>
-				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.ssot.title") }</h3>
-				<p class="feature-description">{ i18n.T(ctx, "home.feat.ssot.desc") }</p>
-				<ul class="feature-list">
-					<li>Server-authoritative data</li>
-					<li>No client-server state sync</li>
-					<li>Consistent security enforcement</li>
-				</ul>
-			</div>
-
-			<!-- Audit-Ready Logging — teal: monitoring/recording -->
-			<div class="feature-card">
-				<div class="feature-icon feature-icon--teal" aria-hidden="true">
-					<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-						<path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-						<rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
-						<line x1="8" y1="10" x2="16" y2="10"></line>
-						<line x1="8" y1="14" x2="16" y2="14"></line>
-						<line x1="8" y1="18" x2="12" y2="18"></line>
-					</svg>
-				</div>
-				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.audit.title") }</h3>
-				<p class="feature-description">{ i18n.T(ctx, "home.feat.audit.desc") }</p>
-				<ul class="feature-list">
-					<li>Per-component event trail</li>
-					<li>Suspicious pattern detection</li>
-					<li>Abuse identification and flagging</li>
+					<li>No npm install required at runtime</li>
+					<li>No transitive vulnerability surface</li>
+					<li>Works from CDN or self-hosted</li>
 				</ul>
 			</div>
 		</div>
