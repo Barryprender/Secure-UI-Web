@@ -25,7 +25,7 @@ var translations = map[string]map[Locale]string{
 	"nav.close":        {EN: "Close navigation", ES: "Cerrar navegación", FR: "Fermer la navigation", DE: "Navigation schließen"},
 
 	// ── Footer ─────────────────────────────────────────────────────────────
-	"footer.tagline":  {EN: "Bot detection without CAPTCHA. Zero dependencies. 100% built-in security.", ES: "Detección de bots sin CAPTCHA. Cero dependencias. Seguridad 100% integrada.", FR: "Détection de bots sans CAPTCHA. Zéro dépendances. Sécurité 100% intégrée.", DE: "Bot-Erkennung ohne CAPTCHA. Null Abhängigkeiten. 100% integrierte Sicherheit."},
+	"footer.tagline":  {EN: "Client-side security defaults. Zero dependencies. No CAPTCHA required.", ES: "Seguridad por defecto en el cliente. Sin dependencias. Sin CAPTCHA.", FR: "Sécurité côté client par défaut. Zéro dépendances. Sans CAPTCHA.", DE: "Client-seitige Sicherheit als Standard. Null Abhängigkeiten. Kein CAPTCHA erforderlich."},
 	"footer.resources": {EN: "Resources", ES: "Recursos", FR: "Ressources", DE: "Ressourcen"},
 	"footer.community": {EN: "Community", ES: "Comunidad", FR: "Communauté", DE: "Community"},
 	"footer.legal":     {EN: "Legal", ES: "Legal", FR: "Légal", DE: "Rechtliches"},
@@ -41,8 +41,8 @@ var translations = map[string]map[Locale]string{
 	"home.hero.line2":       {EN: "components.", ES: "de seguridad reforzada.", FR: "sécurisés par défaut.", DE: "Komponenten."},
 	"home.hero.line3":       {EN: "One tag. No config.", ES: "Una etiqueta. Sin config.", FR: "Une balise. Zéro config.", DE: "Ein Tag. Kein Setup."},
 	"home.hero.desc":        {EN: "Bot detection without the vendor tax. CSRF, XSS, and audit logging active on every component by default. Works with any framework or server-rendered HTML.", ES: "Detección de bots sin costes de proveedor. CSRF, XSS y registro de auditoría activos en cada componente por defecto. Compatible con cualquier framework o HTML renderizado en servidor.", FR: "Détection de bots sans frais de fournisseur. CSRF, XSS et journalisation d'audit actifs sur chaque composant par défaut. Compatible avec tout framework ou HTML rendu côté serveur.", DE: "Bot-Erkennung ohne Anbietergebühren. CSRF, XSS und Audit-Logging standardmäßig auf jeder Komponente aktiv. Funktioniert mit jedem Framework oder server-seitig gerendertem HTML."},
-	"home.hero.cta_explore": {EN: "See live demos", ES: "Ver demos en vivo", FR: "Voir les démos", DE: "Live-Demos ansehen"},
-	"home.hero.cta_start":   {EN: "Read the docs", ES: "Leer la documentación", FR: "Lire la doc", DE: "Dokumentation lesen"},
+	"home.hero.cta_explore": {EN: "Get started", ES: "Comenzar", FR: "Démarrer", DE: "Loslegen"},
+	"home.hero.cta_start":   {EN: "See live demos", ES: "Ver demos en vivo", FR: "Voir les démos", DE: "Live-Demos ansehen"},
 	"home.hero.install":     {EN: "npm i secure-ui-components", ES: "npm i secure-ui-components", FR: "npm i secure-ui-components", DE: "npm i secure-ui-components"},
 	"home.hero.trust_deps":  {EN: "Zero dependencies", ES: "Sin dependencias", FR: "Zéro dépendances", DE: "Null Abhängigkeiten"},
 	"home.hero.trust_mit":   {EN: "MIT License", ES: "Licencia MIT", FR: "Licence MIT", DE: "MIT-Lizenz"},

@@ -7,6 +7,16 @@ import (
 	"secure-ui-showcase-go/internal/templates/partials"
 )
 
+// pageTitle returns the full <title> string.
+// Pages that already lead with "Secure-UI" are returned as-is;
+// all others get " — Secure-UI" appended.
+func pageTitle(title string) string {
+	if len(title) >= 9 && title[:9] == "Secure-UI" {
+		return title
+	}
+	return title + " — Secure-UI"
+}
+
 templ Layout(title string, description string, prism bool, pageCSS ...string) {
 	<!DOCTYPE html>
 	<html lang={ string(i18n.LocaleFromContext(ctx)) }>
@@ -42,7 +52,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<meta name="robots" content="index, follow"/>
-		<title>{ title } - Secure-UI</title>
+		<title>{ pageTitle(title) }</title>
 		if description != "" {
 			<meta name="description" content={ description }/>
 		}
@@ -55,7 +65,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<!-- Open Graph -->
 		<meta property="og:site_name" content="Secure-UI"/>
 		<meta property="og:type" content="website"/>
-		<meta property="og:title" content={ title + " - Secure-UI" }/>
+		<meta property="og:title" content={ pageTitle(title) }/>
 		if description != "" {
 			<meta property="og:description" content={ description }/>
 		}
@@ -70,7 +80,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		}
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image"/>
-		<meta name="twitter:title" content={ title + " - Secure-UI" }/>
+		<meta name="twitter:title" content={ pageTitle(title) }/>
 		if description != "" {
 			<meta name="twitter:description" content={ description }/>
 		}
@@ -137,7 +147,7 @@ templ LandingHead(title string, description string) {
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 		<meta name="robots" content="index, follow"/>
-		<title>{ title } - Secure-UI</title>
+		<title>{ pageTitle(title) }</title>
 		if description != "" {
 			<meta name="description" content={ description }/>
 		}
@@ -150,7 +160,7 @@ templ LandingHead(title string, description string) {
 		<!-- Open Graph — landing page specific -->
 		<meta property="og:site_name" content="Secure-UI"/>
 		<meta property="og:type" content="website"/>
-		<meta property="og:title" content={ title + " - Secure-UI" }/>
+		<meta property="og:title" content={ pageTitle(title) }/>
 		if description != "" {
 			<meta property="og:description" content={ description }/>
 		}
@@ -165,7 +175,7 @@ templ LandingHead(title string, description string) {
 		}
 		<!-- Twitter Card -->
 		<meta name="twitter:card" content="summary_large_image"/>
-		<meta name="twitter:title" content={ title + " - Secure-UI" }/>
+		<meta name="twitter:title" content={ pageTitle(title) }/>
 		if description != "" {
 			<meta name="twitter:description" content={ description }/>
 		}

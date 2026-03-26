@@ -59,7 +59,7 @@ templ ComponentSecureInput() {
 				<h2 class="configs-section-title">Configurations</h2>
 				<div class="configs-grid">
 
-					<div class="config-card config-card--stagger" style="--ci:0">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
 						<div class="config-card-desc">The default tier. Autocomplete disabled, rate limiting on, full audit logging. Use for passwords, security questions, and any field that controls access.</div>
 						<div class="config-demo">
@@ -74,7 +74,7 @@ templ ComponentSecureInput() {
 						</div>
 					</div>
 
-					<div class="config-card config-card--stagger" style="--ci:1">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
 						<div class="config-card-desc">For PII — email, phone, address. Autocomplete disabled, audit logging on. Browser cannot cache the value between sessions.</div>
 						<div class="config-demo">
@@ -91,7 +91,7 @@ templ ComponentSecureInput() {
 						</div>
 					</div>
 
-					<div class="config-card config-card--stagger" style="--ci:2">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">type="password" security-tier="critical"</span></div>
 						<div class="config-card-desc">Value is masked inside the Shadow DOM. <code>autocomplete="new-password"</code> set automatically. Paste events are recorded in the audit log. The plaintext never touches the light DOM.</div>
 						<div class="config-demo">
@@ -108,7 +108,7 @@ templ ComponentSecureInput() {
 						</div>
 					</div>
 
-					<div class="config-card config-card--stagger" style="--ci:3">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
 						<div class="config-card-desc">Browser autocomplete allowed. No rate limiting. XSS sanitization still active. Use for preferences, search fields, and non-sensitive data.</div>
 						<div class="config-demo">
@@ -123,7 +123,7 @@ templ ComponentSecureInput() {
 						</div>
 					</div>
 
-					<div class="config-card config-card--stagger" style="--ci:4">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">required</span></div>
 						<div class="config-card-desc">Error is shown on blur if the field is empty. Works with native <code>&lt;form&gt;</code> constraint validation and <code>checkValidity()</code>.</div>
 						<div class="config-demo">
@@ -139,7 +139,7 @@ templ ComponentSecureInput() {
 						</div>
 					</div>
 
-					<div class="config-card config-card--stagger" style="--ci:5">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">minlength / maxlength</span></div>
 						<div class="config-card-desc">Length limits enforced inside the Shadow DOM — not bypassable by setting <code>input.maxLength</code> from outside. Violation is recorded in the audit log.</div>
 						<div class="config-demo">
@@ -521,18 +521,17 @@ onMounted(() => {
     }, { threshold: 0.12 });
     cards.forEach(c => io.observe(c));
 
-    // Security matrix rows
+    // Security matrix rows (--ri set via CSS :nth-child)
     const rows = document.querySelectorAll('.security-matrix tbody tr');
     const rowIo = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry, i) => {
+      entries.forEach(entry => {
         if (entry.isIntersecting) {
-          entry.target.style.setProperty('--ri', entry.target.dataset.ri || '0');
           entry.target.classList.add('matrix-row--visible');
           obs.unobserve(entry.target);
         }
       });
     }, { threshold: 0.1 });
-    rows.forEach((r, i) => { r.dataset.ri = i; rowIo.observe(r); });
+    rows.forEach(r => rowIo.observe(r));
   }
 }
 

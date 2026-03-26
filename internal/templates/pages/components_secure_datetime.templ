@@ -1,6 +1,9 @@
 package pages
 
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ ComponentSecureDatetime() {
 	@templates.Layout("Live Demo: Secure Date Input — Range Validation", "Interactive demos for secure-datetime: date and time pickers, format validation, range constraints, security tier configurations, and framework integration examples.", true, "/static/styles/components.min.css") {
@@ -50,8 +53,10 @@ templ ComponentSecureDatetime() {
 			<section class="configs-section">
 				<h2 class="configs-section-title">Configurations</h2>
 				<div class="configs-grid">
-					<div class="config-card">
+
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">type="date"</span></div>
+						<div class="config-card-desc">Calendar date input. Value is validated as a well-formed ISO 8601 date string before submission. Out-of-range values are rejected and cleared.</div>
 						<div class="config-demo">
 							<secure-datetime label="Date" name="cfg-dt-date" type="date" security-tier="public"></secure-datetime>
 						</div>
@@ -65,8 +70,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">type="time"</span></div>
+						<div class="config-card-desc">Clock time input. Validates HH:MM or HH:MM:SS format. Values outside a configured <code>min</code>/<code>max</code> window are rejected.</div>
 						<div class="config-demo">
 							<secure-datetime label="Time" name="cfg-dt-time" type="time" security-tier="public"></secure-datetime>
 						</div>
@@ -80,8 +86,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">type="datetime-local"</span></div>
+						<div class="config-card-desc">Combined date and time picker. The submitted value is normalized to UTC — the browser's local timezone offset is stripped before the value reaches your server.</div>
 						<div class="config-demo">
 							<secure-datetime label="Date and Time" name="cfg-dt-dtl" type="datetime-local" security-tier="public"></secure-datetime>
 						</div>
@@ -95,8 +102,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">type="month"</span></div>
+						<div class="config-card-desc">Year and month picker. Value format is <code>YYYY-MM</code>. Useful for expiry dates, billing periods, and subscription billing cycles.</div>
 						<div class="config-demo">
 							<secure-datetime label="Month" name="cfg-dt-month" type="month" security-tier="public"></secure-datetime>
 						</div>
@@ -110,8 +118,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">type="week"</span></div>
+						<div class="config-card-desc">ISO week picker. Value format is <code>YYYY-WNN</code>. Useful for sprint planning, scheduling, and reporting periods.</div>
 						<div class="config-demo">
 							<secure-datetime label="Week" name="cfg-dt-week" type="week" security-tier="public"></secure-datetime>
 						</div>
@@ -125,8 +134,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
+						<div class="config-card-desc">Audit log enabled. All changes are recorded with field name and value. Use for dates associated with user accounts, preferences, or history.</div>
 						<div class="config-demo">
 							<secure-datetime label="Authenticated date" name="cfg-dt-auth" type="date" security-tier="authenticated"></secure-datetime>
 						</div>
@@ -140,8 +150,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
+						<div class="config-card-desc">Autocomplete disabled to prevent browsers from caching the value. Full audit log. Use for dates of birth, medical appointments, and legal deadlines.</div>
 						<div class="config-demo">
 							<secure-datetime label="Sensitive date" name="cfg-dt-sens" type="date" security-tier="sensitive"></secure-datetime>
 						</div>
@@ -155,8 +166,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">required</span></div>
+						<div class="config-card-desc">Shows an inline error on blur when no date is selected. The <code>required</code> attribute is forwarded to the internal input so constraint validation also applies.</div>
 						<div class="config-demo">
 							<secure-datetime label="Required date" name="cfg-dt-req" type="date" required security-tier="public"></secure-datetime>
 						</div>
@@ -171,8 +183,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">disabled</span></div>
+						<div class="config-card-desc">Non-interactive. Excluded from form submission. Use to display a confirmed date from a previous step that the user cannot change.</div>
 						<div class="config-demo">
 							<secure-datetime label="Disabled date" name="cfg-dt-dis" type="date" disabled security-tier="public"></secure-datetime>
 						</div>
@@ -187,8 +200,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">min / max</span></div>
+						<div class="config-card-desc">Server-defined range boundaries. Values outside the range are rejected on the component before submission — they never reach your handler. The constraint is also enforced on the internal input so the browser picker won't offer out-of-range dates.</div>
 						<div class="config-demo">
 							<secure-datetime label="Date range" name="cfg-dt-range" type="date" min="2025-01-01" max="2025-12-31" security-tier="public"></secure-datetime>
 						</div>
@@ -204,8 +218,9 @@ templ ComponentSecureDatetime() {
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">step</span></div>
+						<div class="config-card-desc">Constrains valid values to increments of <code>step</code>. For <code>type="time"</code>, the unit is seconds — <code>1800</code> restricts selection to half-hour slots. Out-of-step values are rejected on submission.</div>
 						<div class="config-demo">
 							<secure-datetime label="Time (30 min steps)" name="cfg-dt-step" type="time" step="1800" security-tier="public"></secure-datetime>
 						</div>
@@ -220,13 +235,48 @@ templ ComponentSecureDatetime() {
 </secure-datetime>` }</code></pre>
 						</div>
 					</div>
+
 				</div>
 			</section>
 
 			<!-- Security Features -->
 			<section class="security-section">
 				<h2 class="security-section-title">Security Features</h2>
-				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements that reduce attack surface.</p>
+
+				<!-- Range enforcement panel -->
+				<div class="security-telemetry-panel">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Range enforcement + timezone normalization</span>
+						<span class="security-telemetry-badge">All tiers</span>
+					</div>
+					<p class="sel-enforcement-desc">
+						At mount, the component records the <code>min</code>, <code>max</code>, and <code>step</code>
+						values from server-rendered attributes. On every <code>change</code> and <code>blur</code>
+						event the submitted value is checked against those bounds. Out-of-range values are cleared
+						and a <code>secure-audit</code> event is dispatched — the value never reaches your submit
+						handler. For <code>datetime-local</code> the value is converted to UTC before dispatch,
+						so your server always receives a timezone-agnostic timestamp regardless of the user's locale.
+					</p>
+					<div class="sel-enforcement-example">
+						<div class="sel-enforcement-col">
+							<div class="sel-enforcement-label">Manipulation attempt</div>
+							<pre><code class="language-javascript">{ `// Attacker removes the max attribute
+const el = document.querySelector('secure-datetime');
+el.removeAttribute('max');
+el.value = '2099-12-31';` }</code></pre>
+						</div>
+						<div class="sel-enforcement-col">
+							<div class="sel-enforcement-label sel-enforcement-label--success">What fires on your listener</div>
+							<pre><code class="language-javascript">{ `element.addEventListener('secure-audit', e => {
+  // e.detail.event === 'out_of_range_date'
+  // e.detail.attemptedValue === '2099-12-31'
+  // field cleared — value never submitted
+});` }</code></pre>
+						</div>
+					</div>
+				</div>
+
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -239,21 +289,21 @@ templ ComponentSecureDatetime() {
 					</thead>
 					<tbody>
 						<tr>
-							<td>Input sanitization</td>
+							<td>Input format validation</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
-							<td>Range enforcement</td>
+							<td>Range enforcement (min/max/step)</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
-							<td>Timezone handling</td>
+							<td>Timezone normalization to UTC</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
@@ -263,6 +313,13 @@ templ ComponentSecureDatetime() {
 							<td>Audit logging</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Autocomplete disabled</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
@@ -476,5 +533,33 @@ onMounted(() => import('/components/secure-datetime/secure-datetime.js'));
 				</a>
 			</nav>
 		</div>
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+{
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    const cards = document.querySelectorAll('.config-card--stagger');
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('config-card--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    cards.forEach(c => io.observe(c));
+
+    const rows = document.querySelectorAll('.security-matrix tbody tr');
+    const rowIo = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('matrix-row--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    rows.forEach(r => rowIo.observe(r));
+  }
+}
+		</script>
 	}
 }

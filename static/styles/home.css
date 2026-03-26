@@ -644,6 +644,15 @@
     flex-shrink: 0;
 }
 
+/* Licence line below CTA */
+.hero-licence {
+    font-size: 0.75rem;
+    color: var(--text-tertiary, var(--text-secondary));
+    letter-spacing: 0.03em;
+    margin-block-start: var(--space-xs, 0.5rem);
+    margin-block-end: 0;
+}
+
 /* ============================================
    STATS STRIP — horizontal, no cards
    ============================================ */
@@ -1447,10 +1456,198 @@
     overflow-x: auto;
 }
 
+/* ── Telemetry panel continuous animation ──────────────────── */
+
+/* Radar sweep line */
+.home-telemetry-panel {
+    position: relative;
+    overflow: hidden;
+}
+
+.home-telemetry-panel::after {
+    content: '';
+    position: absolute;
+    inset-inline: 0;
+    height: 48px;
+    top: -48px;
+    background: linear-gradient(to bottom,
+        transparent,
+        oklch(35% 0.08 165 / 0.10),
+        transparent
+    );
+    pointer-events: none;
+    animation: tel-sweep 5s linear infinite;
+    z-index: 1;
+}
+
+@keyframes tel-sweep {
+    from { top: -48px; }
+    to   { top: 100%; }
+}
+
+/* LIVE dot glow pulse */
+@keyframes tel-dot-pulse {
+    0%, 100% { box-shadow: 0 0 4px rgba(16,185,129,0.4); }
+    50%       { box-shadow: 0 0 12px rgba(16,185,129,1), 0 0 24px rgba(16,185,129,0.3); }
+}
+
+.home-telemetry-panel-dot {
+    animation: tel-dot-pulse 2s ease-in-out infinite;
+}
+
+/* Session ID pushed to end of header */
+.tel-session-id {
+    margin-inline-start: auto;
+    font-size: 0.6875rem;
+    color: oklch(38% 0.022 240);
+    font-weight: 400;
+    letter-spacing: 0;
+}
+
+/* Signal warn / fail state colors */
+.home-telemetry-signal--warn .home-telemetry-signal-value { color: #f59e0b; }
+.home-telemetry-signal--warn .home-telemetry-signal-status {
+    background: #f59e0b;
+    box-shadow: 0 0 5px rgba(245,158,11,0.6);
+}
+.home-telemetry-signal--fail .home-telemetry-signal-value { color: #ef4444; }
+.home-telemetry-signal--fail .home-telemetry-signal-status {
+    background: #ef4444;
+    box-shadow: 0 0 5px rgba(239,68,68,0.6);
+}
+
+/* Row scan highlight */
+@keyframes tel-row-scan {
+    0%   { background: transparent; }
+    25%  { background: oklch(22% 0.07 165 / 0.30); }
+    100% { background: transparent; }
+}
+
+.home-telemetry-signal.tel-scanning {
+    animation: tel-row-scan 0.5s ease-out forwards;
+}
+
+/* Value flash on update */
+@keyframes tel-value-flash {
+    0%   { opacity: 0; transform: translateY(-5px); }
+    55%  { opacity: 1; transform: translateY(1px); }
+    100% { opacity: 1; transform: none; }
+}
+
+.home-telemetry-signal-value.tel-updating {
+    animation: tel-value-flash 0.35s cubic-bezier(0.25,1,0.5,1) forwards;
+}
+
+/* Panel BLOCK flash */
+@keyframes tel-block-flash {
+    0%, 100% { border-color: oklch(26% 0.022 240); box-shadow: var(--shadow-xl); }
+    40%       { border-color: #ef4444; box-shadow: 0 0 0 2px rgba(239,68,68,0.25), var(--shadow-xl); }
+}
+
+.home-telemetry-panel.tel-blocked {
+    animation: tel-block-flash 0.7s ease-out;
+}
+
+/* Risk score bar */
+.home-telemetry-risk {
+    margin: 0 var(--space-md) var(--space-sm);
+    padding: 0.5rem var(--space-md);
+    background: oklch(9% 0.015 240);
+    border: 1px solid oklch(22% 0.020 240);
+    border-radius: var(--radius-lg);
+}
+
+.tel-risk-row {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: 0.4rem;
+}
+
+.tel-risk-label {
+    flex: 1;
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: oklch(40% 0.022 240);
+}
+
+.tel-risk-num {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: #10b981;
+    min-width: 2.5ch;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.tel-risk-verdict {
+    font-size: 0.5625rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.2em 0.55em;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    line-height: 1.5;
+}
+
+.tel-risk-verdict--allow  { color: #10b981; }
+.tel-risk-verdict--review { color: #f59e0b; }
+.tel-risk-verdict--block  { color: #ef4444; }
+
+.tel-risk-track {
+    height: 3px;
+    background: oklch(20% 0.018 240);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.tel-risk-fill {
+    height: 100%;
+    width: 8%;
+    border-radius: 2px;
+    background: #10b981;
+}
+
+/* Reduced motion — kill all panel animations */
+@media (prefers-reduced-motion: reduce) {
+    .home-telemetry-panel::after,
+    .home-telemetry-panel.tel-blocked,
+    .home-telemetry-signal.tel-scanning,
+    .home-telemetry-signal-value.tel-updating { animation: none; }
+    .home-telemetry-panel-dot { animation: none; }
+}
+
 /* ============================================
    THEMING SECTION
    ============================================ */
 
+.theming-teaser-section {
+    padding: var(--space-xl) 0;
+    border-top: 1px solid var(--border-subtle);
+}
+
+.theming-teaser {
+    font-size: 0.9375rem;
+    color: var(--text-secondary);
+    text-align: center;
+    margin: 0;
+}
+
+.theming-teaser-link {
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.theming-teaser-link:hover {
+    text-decoration: underline;
+}
+
+/* kept for reference — theming showcase moved to /theming */
 .theming-section {
     padding: var(--space-2xl) 0 var(--space-3xl);
     background: var(--bg-secondary);

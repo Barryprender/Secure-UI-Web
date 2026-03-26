@@ -96,8 +96,6 @@ templ Navbar(isLoggedIn bool) {
 								<input type="hidden" name="csrf_token" value={ middleware.LayoutCSRFFromContext(ctx) }/>
 								<button type="submit" class="btn btn-sm btn-secondary">{ i18n.T(ctx, "nav.logout") }</button>
 							</form>
-						} else {
-							<a href="/login" class="btn btn-sm btn-accent">{ i18n.T(ctx, "nav.signin") }</a>
 						}
 					</div>
 				</nav>

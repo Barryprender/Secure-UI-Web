@@ -7,7 +7,7 @@ import (
 )
 
 templ Home() {
-	@templates.Layout("Secure Form Components — Bot Detection Without CAPTCHA", "Stop bots without CAPTCHA friction. Drop-in web components with behavioral bot detection, CSRF protection, XSS prevention, and HMAC-signed telemetry. Zero dependencies. Works with any framework.", true, "/static/styles/home.min.css") {
+	@templates.Layout("Secure-UI — Security-hardened Web Components. Bot Detection Without CAPTCHA.", "Stop bots without CAPTCHA friction. Drop-in web components with behavioral bot detection, CSRF protection, XSS prevention, and HMAC-signed telemetry. Zero dependencies. Works with any framework.", true, "/static/styles/home.min.css") {
 		@templates.HomeJsonLDScript()
 		@templates.HomeFAQJsonLDScript()
 		<!-- Hero Section -->
@@ -29,12 +29,13 @@ templ Home() {
 				<p class="hero-description">{ i18n.T(ctx, "home.hero.desc") }</p>
 
 				<div class="hero-cta" id="hero-cta">
-					<a href="/components" class="btn btn-primary hero-btn-primary">
+					<a href="/documentation" class="btn btn-primary hero-btn-primary">
 						{ i18n.T(ctx, "home.hero.cta_explore") }
 						<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
 					</a>
-					<a href="/documentation" class="btn btn-secondary">{ i18n.T(ctx, "home.hero.cta_start") }</a>
+					<a href="/components" class="btn btn-secondary">{ i18n.T(ctx, "home.hero.cta_start") }</a>
 				</div>
+				<p class="hero-licence">MIT Licence · Free forever</p>
 
 				<div class="hero-install" id="hero-install">
 					<span class="hero-install-prompt" aria-hidden="true">$</span>
@@ -190,57 +191,68 @@ templ Home() {
 				</ul>
 				<a href="/telemetry" class="btn btn-primary">{ i18n.T(ctx, "home.tel.cta") }</a>
 			</div>
-			<div class="home-telemetry-panel" aria-hidden="true">
+			<div class="home-telemetry-panel" id="tel-panel" aria-hidden="true">
 				<div class="home-telemetry-panel-header">
 					<span class="home-telemetry-panel-dot"></span>
 					<span class="home-telemetry-panel-live">LIVE</span>
 					Environmental Signals
+					<span class="tel-session-id" id="tel-session">Session #0f3a</span>
 				</div>
 				<div class="home-telemetry-signals">
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="webdriverDetected">
 						<span class="home-telemetry-signal-name">webdriverDetected</span>
 						<span class="home-telemetry-signal-value">false</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="headlessDetected">
 						<span class="home-telemetry-signal-name">headlessDetected</span>
 						<span class="home-telemetry-signal-value">false</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="domMutationDetected">
 						<span class="home-telemetry-signal-name">domMutationDetected</span>
 						<span class="home-telemetry-signal-value">false</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="injectedScriptCount">
 						<span class="home-telemetry-signal-name">injectedScriptCount</span>
 						<span class="home-telemetry-signal-value">0</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="suspiciousScreenSize">
 						<span class="home-telemetry-signal-name">suspiciousScreenSize</span>
 						<span class="home-telemetry-signal-value">false</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="pointerType">
 						<span class="home-telemetry-signal-name">pointerType</span>
 						<span class="home-telemetry-signal-value">"mouse"</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="mouseMovementDetected">
 						<span class="home-telemetry-signal-name">mouseMovementDetected</span>
-						<span class="home-telemetry-signal-value" data-live-signal="mouseMovementDetected">false</span>
+						<span class="home-telemetry-signal-value">false</span>
 						<span class="home-telemetry-signal-status"></span>
 					</div>
-					<div class="home-telemetry-signal home-telemetry-signal--pass">
+					<div class="home-telemetry-signal home-telemetry-signal--pass" data-signal="keyboardActivityDetected">
 						<span class="home-telemetry-signal-name">keyboardActivityDetected</span>
-						<span class="home-telemetry-signal-value" data-live-signal="keyboardActivityDetected">false</span>
+						<span class="home-telemetry-signal-value">false</span>
 						<span class="home-telemetry-signal-status"></span>
+					</div>
+				</div>
+				<div class="home-telemetry-risk" id="tel-risk">
+					<div class="tel-risk-row">
+						<span class="tel-risk-label">RISK SCORE</span>
+						<span class="tel-risk-num" id="tel-risk-num">8</span>
+						<span class="tel-risk-verdict tel-risk-verdict--allow" id="tel-risk-verdict">ALLOW</span>
+					</div>
+					<div class="tel-risk-track">
+						<div class="tel-risk-fill" id="tel-risk-fill"></div>
 					</div>
 				</div>
 				<div class="home-telemetry-envelope">
 					<div class="home-telemetry-envelope-label">HMAC-SHA-256 signed envelope</div>
-					<pre>{ `{ nonce: "a3f8b2c1...",
+					<pre id="tel-envelope">{ `{ nonce: "a3f8b2c1...",
   issuedAt: "2026-03-17T14:32:07Z",
   signature: "7c2bef09a1d3..." }` }</pre>
 				</div>
@@ -614,88 +626,12 @@ func (h *Handlers) Register(
 	</div>
 </section>
 
-<!-- Complete Theming Control Section -->
-<section class="theming-section">
+<!-- Theming reference -->
+<section class="theming-teaser-section">
 	<div class="container">
-		<div class="section-header section-header--compact">
-			<p class="section-eyebrow">{ i18n.T(ctx, "home.theme.eyebrow") }</p>
-			<h2 class="section-title">{ i18n.T(ctx, "home.theme.title") }</h2>
-			<p class="section-description">{ i18n.T(ctx, "home.theme.desc") }</p>
-		</div>
-
-		<div class="home-theme-showcase reveal">
-			<div class="home-theme-tabs" role="tablist" aria-label="Theme presets">
-				<button class="home-theme-tab" data-theme="default" role="tab" aria-selected="true">
-					<span class="home-theme-tab-dot"></span>
-					Default
-				</button>
-				<button class="home-theme-tab" data-theme="dark" role="tab" aria-selected="false">
-					<span class="home-theme-tab-dot"></span>
-					Dark
-				</button>
-				<button class="home-theme-tab" data-theme="ocean" role="tab" aria-selected="false">
-					<span class="home-theme-tab-dot"></span>
-					Ocean
-				</button>
-				<button class="home-theme-tab" data-theme="forest" role="tab" aria-selected="false">
-					<span class="home-theme-tab-dot"></span>
-					Forest
-				</button>
-				<button class="home-theme-tab" data-theme="enterprise" role="tab" aria-selected="false">
-					<span class="home-theme-tab-dot"></span>
-					Enterprise
-				</button>
-			</div>
-
-			<div class="home-theme-preview" id="home-theme-preview" aria-live="polite">
-				<div class="home-theme-preview-left">
-					<div class="home-theme-preview-card">
-						<div class="home-theme-preview-card-header">
-							<span class="home-theme-preview-logo">Secure-UI</span>
-							<span class="home-theme-preview-badge">v2.0</span>
-						</div>
-						<div class="home-theme-preview-field">
-							<div class="home-theme-preview-label">Email address</div>
-							<div class="home-theme-preview-input">
-								<span>alice@example.com</span>
-								<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
-							</div>
-						</div>
-						<div class="home-theme-preview-field">
-							<div class="home-theme-preview-label">Security tier</div>
-							<div class="home-theme-preview-input home-theme-preview-input--select">
-								<span>Sensitive</span>
-							</div>
-						</div>
-						<button class="home-theme-preview-btn">Submit Securely</button>
-					</div>
-				</div>
-				<div class="home-theme-preview-right">
-					<div class="home-theme-preview-tokens">
-						<div class="home-theme-token-row">
-							<span class="home-theme-token-label">--accent-primary</span>
-							<span class="home-theme-token-swatch home-theme-swatch-accent"></span>
-						</div>
-						<div class="home-theme-token-row">
-							<span class="home-theme-token-label">--bg-primary</span>
-							<span class="home-theme-token-swatch home-theme-swatch-bg"></span>
-						</div>
-						<div class="home-theme-token-row">
-							<span class="home-theme-token-label">--text-primary</span>
-							<span class="home-theme-token-swatch home-theme-swatch-text"></span>
-						</div>
-					</div>
-					<div class="home-theme-preview-code">
-						<div class="home-theme-preview-code-title">Theme override</div>
-						<pre class="home-theme-preview-code-block" id="home-theme-code-display">/* Default theme */</pre>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div class="home-theming-cta">
-			<a href="/theming" class="btn btn-secondary">{ i18n.T(ctx, "home.theme.cta") } →</a>
-		</div>
+		<p class="theming-teaser">
+			All components are fully themeable via CSS custom properties. <a href="/theming" class="theming-teaser-link">Explore theming →</a>
+		</p>
 	</div>
 </section>
 
@@ -1134,6 +1070,149 @@ if (navigator.clipboard) {
 
   document.addEventListener('keydown', () => updateSignal('keyboardActivityDetected', 'true'),
     { once: true, passive: true });
+}
+
+// ── Telemetry panel — continuous scenario loop ────────────────
+{
+  const panel     = document.getElementById('tel-panel');
+  const sessionEl = document.getElementById('tel-session');
+  const riskNumEl = document.getElementById('tel-risk-num');
+  const fillEl    = document.getElementById('tel-risk-fill');
+  const verdictEl = document.getElementById('tel-risk-verdict');
+  const envEl     = document.getElementById('tel-envelope');
+
+  if (panel && sessionEl && riskNumEl && !reduceMotion) {
+    const rows = [...panel.querySelectorAll('[data-signal]')];
+
+    const SCENARIOS = [
+      {
+        id: '#0f3a · human',
+        signals: {
+          webdriverDetected:        { v: 'false',   s: 'pass' },
+          headlessDetected:         { v: 'false',   s: 'pass' },
+          domMutationDetected:      { v: 'false',   s: 'pass' },
+          injectedScriptCount:      { v: '0',       s: 'pass' },
+          suspiciousScreenSize:     { v: 'false',   s: 'pass' },
+          pointerType:              { v: '"mouse"', s: 'pass' },
+          mouseMovementDetected:    { v: 'true',    s: 'pass' },
+          keyboardActivityDetected: { v: 'true',    s: 'pass' },
+        },
+        risk: 8, verdict: 'ALLOW', hold: 3800,
+      },
+      {
+        id: '#7c91 · suspicious',
+        signals: {
+          webdriverDetected:        { v: 'false',   s: 'pass' },
+          headlessDetected:         { v: 'false',   s: 'pass' },
+          domMutationDetected:      { v: 'true',    s: 'warn' },
+          injectedScriptCount:      { v: '3',       s: 'warn' },
+          suspiciousScreenSize:     { v: 'true',    s: 'warn' },
+          pointerType:              { v: '"mouse"', s: 'pass' },
+          mouseMovementDetected:    { v: 'false',   s: 'warn' },
+          keyboardActivityDetected: { v: 'false',   s: 'warn' },
+        },
+        risk: 61, verdict: 'REVIEW', hold: 3200,
+      },
+      {
+        id: '#2e58 · bot',
+        signals: {
+          webdriverDetected:        { v: 'true',    s: 'fail' },
+          headlessDetected:         { v: 'true',    s: 'fail' },
+          domMutationDetected:      { v: 'true',    s: 'fail' },
+          injectedScriptCount:      { v: '12',      s: 'fail' },
+          suspiciousScreenSize:     { v: 'true',    s: 'warn' },
+          pointerType:              { v: '"none"',  s: 'warn' },
+          mouseMovementDetected:    { v: 'false',   s: 'fail' },
+          keyboardActivityDetected: { v: 'false',   s: 'fail' },
+        },
+        risk: 94, verdict: 'BLOCK', hold: 2600,
+      },
+    ];
+
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+    function randHex(n) {
+      return Array.from({ length: n }, () => (Math.random() * 16 | 0).toString(16)).join('');
+    }
+
+    function applyRisk(val, verdict) {
+      const color = val <= 30 ? '#10b981' : val <= 60 ? '#f59e0b' : '#ef4444';
+      riskNumEl.textContent = val;
+      riskNumEl.style.color = color;
+      fillEl.style.width = val + '%';
+      fillEl.style.background = color;
+      verdictEl.textContent = verdict;
+      verdictEl.className = 'tel-risk-verdict tel-risk-verdict--' + verdict.toLowerCase();
+    }
+
+    async function animateRisk(target, verdict) {
+      const from = parseInt(riskNumEl.textContent, 10) || 0;
+      const t0 = performance.now(), dur = 750;
+      await new Promise(res => {
+        const tick = now => {
+          const p = Math.min((now - t0) / dur, 1);
+          applyRisk(Math.round(from + (target - from) * (1 - Math.pow(1 - p, 3))), verdict);
+          p < 1 ? requestAnimationFrame(tick) : res();
+        };
+        requestAnimationFrame(tick);
+      });
+    }
+
+    function refreshEnvelope() {
+      const ts = new Date().toISOString().slice(0, 19) + 'Z';
+      envEl.textContent =
+        '{ nonce: "' + randHex(8) + '...",\n' +
+        '  issuedAt: "' + ts + '",\n' +
+        '  signature: "' + randHex(14) + '..." }';
+    }
+
+    let idx = 0;
+    async function loop() {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const sc = SCENARIOS[idx++ % SCENARIOS.length];
+        sessionEl.textContent = 'Session ' + sc.id;
+
+        for (const row of rows) {
+          const sig = sc.signals[row.dataset.signal];
+          if (!sig) continue;
+
+          row.classList.add('tel-scanning');
+          await sleep(160);
+
+          const valEl = row.querySelector('.home-telemetry-signal-value');
+          if (valEl && valEl.textContent !== sig.v) {
+            valEl.classList.remove('tel-updating');
+            void valEl.offsetWidth;
+            valEl.textContent = sig.v;
+            valEl.classList.add('tel-updating');
+          }
+          row.className = 'home-telemetry-signal home-telemetry-signal--' + sig.s;
+          await sleep(30);
+        }
+
+        await sleep(120);
+        await animateRisk(sc.risk, sc.verdict);
+
+        if (sc.verdict === 'BLOCK') {
+          panel.classList.remove('tel-blocked');
+          void panel.offsetWidth;
+          panel.classList.add('tel-blocked');
+          await sleep(700);
+          panel.classList.remove('tel-blocked');
+        }
+
+        refreshEnvelope();
+        await sleep(sc.hold);
+      }
+    }
+
+    // Lazy-start when panel scrolls into view
+    const startIO = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) { startIO.disconnect(); setTimeout(loop, 900); }
+    }, { threshold: 0.15 });
+    startIO.observe(panel);
+  }
 }
 
 // ── Hero demo panel ───────────────────────────────────────────

@@ -1,19 +1,22 @@
 package pages
 
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ ComponentSecureTextarea() {
-	@templates.Layout("Live Demo: Secure Textarea — XSS Safety, Char Limits", "Interactive demos for secure-textarea: character limits, resize modes, security tiers, XSS prevention, CSS custom properties, and framework integration examples.", true, "/static/styles/components.min.css") {
-		@templates.ComponentPageJsonLDScript("secure-textarea", "XSS-safe multi-line input with HTML sanitisation, character limits, rate limiting, and security tier enforcement.")
+	@templates.Layout("Live Demo: Secure Textarea — XSS Safety, Char Limits", "Interactive demos for secure-textarea: character limits, shadow DOM length enforcement, XSS sanitization, security tiers, CSS custom properties, and framework integration examples.", true, "/static/styles/components.min.css") {
+		@templates.ComponentPageJsonLDScript("secure-textarea", "XSS-safe multi-line input with HTML sanitisation, shadow DOM length enforcement, character counting with 90% warning threshold, and security tier enforcement.")
 		<div class="component-page">
 			<!-- Hero -->
 			<section class="component-hero">
 				<div class="component-hero-content">
 					<h1>&lt;secure-textarea&gt;</h1>
 					<p class="component-hero-description">
-						A multi-line text area with automatic content sanitization on every keystroke and paste
-						event. HTML entities are encoded, script tags are stripped, and length limits are
-						enforced before the value is available to consuming code.
+						Multi-line text field with a live character counter, XSS sanitization on every keystroke
+						and paste event, and length limits enforced on the native element inside the shadow DOM.
+						Content is sanitized before it ever reaches your event handlers.
 					</p>
 					<div class="component-hero-install">
 						<pre><code class="language-markup">{ `<script type="module"
@@ -28,6 +31,7 @@ templ ComponentSecureTextarea() {
 						label="Message"
 						name="hero-message"
 						rows="4"
+						maxlength="300"
 						placeholder="Enter your message..."
 						security-tier="public"
 					></secure-textarea>
@@ -45,70 +49,76 @@ templ ComponentSecureTextarea() {
 			<section class="configs-section">
 				<h2 class="configs-section-title">Configurations</h2>
 				<div class="configs-grid">
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+
+					<div class="config-card config-card--stagger">
+						<div class="config-card-header"><span class="config-label">maxlength + character counter</span></div>
+						<p class="config-card-desc">
+							The counter lives inside the shadow DOM and updates on every keystroke.
+							It turns amber at 90% of the limit—before users run out of space.
+						</p>
 						<div class="config-demo">
-							<secure-textarea label="Public textarea" name="cfg-ta-pub" rows="3" security-tier="public"></secure-textarea>
+							<secure-textarea
+								label="Bio"
+								name="cfg-ta-len"
+								rows="3"
+								minlength="20"
+								maxlength="200"
+								placeholder="At least 20 characters..."
+								security-tier="public"
+							></secure-textarea>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-textarea
-  label="Public textarea"
-  name="field"
+  label="Bio"
+  name="bio"
   rows="3"
+  minlength="20"
+  maxlength="200"
   security-tier="public">
 </secure-textarea>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
-						<div class="config-demo">
-							<secure-textarea label="Authenticated textarea" name="cfg-ta-auth" rows="3" security-tier="authenticated"></secure-textarea>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  security-tier="authenticated"
-  label="Authenticated textarea"
-  name="field"
-  rows="3">
-</secure-textarea>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
-						<div class="config-demo">
-							<secure-textarea label="Sensitive textarea" name="cfg-ta-sens" rows="3" security-tier="sensitive"></secure-textarea>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  security-tier="sensitive"
-  label="Sensitive textarea"
-  name="field"
-  rows="3">
-</secure-textarea>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
+						<p class="config-card-desc">
+							Critical tier disables autocomplete to prevent browsers from caching sensitive
+							multi-line content (incident notes, medical descriptions). Rate limiting is also active.
+						</p>
 						<div class="config-demo">
-							<secure-textarea label="Critical textarea" name="cfg-ta-crit" rows="3" security-tier="critical"></secure-textarea>
+							<secure-textarea
+								label="Incident Description"
+								name="cfg-ta-crit"
+								rows="4"
+								placeholder="Describe the incident..."
+								security-tier="critical"
+							></secure-textarea>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-textarea
-  security-tier="critical"
-  label="Critical textarea"
-  name="field"
-  rows="3">
+  label="Incident Description"
+  name="incident"
+  rows="4"
+  security-tier="critical">
 </secure-textarea>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">required</span></div>
+						<p class="config-card-desc">
+							Blur-time validation shows an inline error when the field is empty.
+							The native <code>required</code> attribute is forwarded to the internal
+							<code>&lt;textarea&gt;</code> so constraint validation also works.
+						</p>
 						<div class="config-demo">
-							<secure-textarea label="Required field" name="cfg-ta-req" rows="3" required security-tier="public"></secure-textarea>
+							<secure-textarea
+								label="Required field"
+								name="cfg-ta-req"
+								rows="3"
+								required
+								security-tier="public"
+							></secure-textarea>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-textarea
@@ -121,78 +131,25 @@ templ ComponentSecureTextarea() {
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">disabled</span></div>
-						<div class="config-demo">
-							<secure-textarea label="Disabled textarea" name="cfg-ta-dis" rows="3" disabled security-tier="public"></secure-textarea>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  label="Disabled textarea"
-  name="field"
-  rows="3"
-  disabled
-  security-tier="public">
-</secure-textarea>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">readonly</span></div>
-						<div class="config-demo">
-							<secure-textarea label="Read-only textarea" name="cfg-ta-ro" rows="3" readonly security-tier="public"></secure-textarea>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  label="Read-only textarea"
-  name="field"
-  rows="3"
-  readonly
-  security-tier="public">
-</secure-textarea>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">rows</span></div>
-						<div class="config-demo">
-							<secure-textarea label="8 rows" name="cfg-ta-rows" rows="8" security-tier="public"></secure-textarea>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  label="8 rows"
-  name="field"
-  rows="8"
-  security-tier="public">
-</secure-textarea>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">minlength / maxlength</span></div>
-						<div class="config-demo">
-							<secure-textarea label="Bio" name="cfg-ta-len" rows="3" minlength="20" maxlength="500" placeholder="At least 20 characters" security-tier="public"></secure-textarea>
-						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  label="Bio"
-  name="bio"
-  rows="3"
-  minlength="20"
-  maxlength="500"
-  security-tier="public">
-</secure-textarea>` }</code></pre>
-						</div>
-					</div>
-
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">resize="none"</span></div>
+						<p class="config-card-desc">
+							Disable user resize for fixed-height inputs like chat fields or
+							inline comment forms. Default is <code>soft</code> wrap with
+							vertical resize available.
+						</p>
 						<div class="config-demo">
-							<secure-textarea label="No resize" name="cfg-ta-rn" rows="3" resize="none" security-tier="public"></secure-textarea>
+							<secure-textarea
+								label="Fixed height"
+								name="cfg-ta-rn"
+								rows="3"
+								resize="none"
+								security-tier="public"
+							></secure-textarea>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-textarea
-  label="No resize"
+  label="Fixed height"
   name="field"
   rows="3"
   resize="none"
@@ -201,36 +158,75 @@ templ ComponentSecureTextarea() {
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">resize="vertical"</span></div>
+					<div class="config-card config-card--stagger">
+						<div class="config-card-header"><span class="config-label">disabled / readonly</span></div>
+						<p class="config-card-desc">
+							<code>disabled</code> prevents interaction and excludes the field from form submission.
+							<code>readonly</code> allows focus and copying but blocks edits.
+							Both states are forwarded to the internal element.
+						</p>
 						<div class="config-demo">
-							<secure-textarea label="Vertical resize" name="cfg-ta-rv" rows="3" resize="vertical" security-tier="public"></secure-textarea>
+							<secure-textarea
+								label="Disabled"
+								name="cfg-ta-dis"
+								rows="2"
+								disabled
+								security-tier="public"
+							></secure-textarea>
+							<secure-textarea
+								label="Read-only"
+								name="cfg-ta-ro"
+								rows="2"
+								value="This content cannot be edited"
+								readonly
+								security-tier="public"
+							></secure-textarea>
 						</div>
 						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  label="Vertical resize"
-  name="field"
-  rows="3"
-  resize="vertical"
-  security-tier="public">
+							<pre><code class="language-markup">{ `<secure-textarea disabled ...>
+</secure-textarea>
+
+<secure-textarea readonly
+  value="This content cannot be edited" ...>
 </secure-textarea>` }</code></pre>
 						</div>
 					</div>
 
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">resize="both"</span></div>
-						<div class="config-demo">
-							<secure-textarea label="Both resize" name="cfg-ta-rb" rows="3" resize="both" security-tier="public"></secure-textarea>
+				</div>
+			</section>
+
+			<!-- Character counter + sanitization panel -->
+			<section class="security-section">
+				<h2 class="security-section-title">Shadow DOM Enforcement</h2>
+				<div class="security-telemetry-panel">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Character counter + XSS sanitization</span>
+						<span class="security-telemetry-badge">All tiers</span>
+					</div>
+					<p class="sta-panel-desc">
+						The character counter and length limit are enforced on the <em>native</em>
+						<code>&lt;textarea&gt;</code> element inside the closed shadow DOM.
+						Page scripts have no access to the internal element and cannot override the limit.
+						Content sanitization runs on every <code>input</code> and <code>paste</code>
+						event—HTML entities are encoded before the value is readable by your code.
+					</p>
+					<div class="sta-counter-layout">
+						<div class="sta-counter-col">
+							<div class="sel-enforcement-label">Paste attempt (raw)</div>
+							<pre><code class="language-markup">{ `<!-- user pastes this -->
+<script>alert('xss')</script>
+<b>bold</b> text &amp; more` }</code></pre>
 						</div>
-						<div class="config-code">
-							<pre><code class="language-markup">{ `<secure-textarea
-  label="Both resize"
-  name="field"
-  rows="3"
-  resize="both"
-  security-tier="public">
-</secure-textarea>` }</code></pre>
+						<div class="sta-counter-col">
+							<div class="sel-enforcement-label sel-enforcement-label--success">After sanitization</div>
+							<pre><code class="language-markup">{ `// textarea.value reads as:
+&lt;script&gt;alert('xss')&lt;/script&gt;
+&lt;b&gt;bold&lt;/b&gt; text &amp;amp; more` }</code></pre>
 						</div>
+					</div>
+					<div class="sta-counter-note">
+						Counter colour tokens: <code>--secure-ui-color-text-secondary</code> (normal)
+						&#8594; <code>--secure-ui-color-warning</code> (amber, at 90% of <code>maxlength</code>).
 					</div>
 				</div>
 			</section>
@@ -238,7 +234,7 @@ templ ComponentSecureTextarea() {
 			<!-- Security Features -->
 			<section class="security-section">
 				<h2 class="security-section-title">Security Features</h2>
-				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<p class="security-callout">Security is enforced server-side. These are client-side complements.</p>
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -250,31 +246,52 @@ templ ComponentSecureTextarea() {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<tr data-ri="0">
 							<td>Content sanitization</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
-						<tr>
-							<td>Length enforcement</td>
+						<tr data-ri="1">
+							<td>Length enforcement (shadow DOM)</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
-						<tr>
+						<tr data-ri="2">
+							<td>Character counter with 90% warning</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr data-ri="3">
 							<td>Paste sanitization</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
-						<tr>
+						<tr data-ri="4">
+							<td>Autocomplete disabled</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr data-ri="5">
 							<td>Audit logging</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr data-ri="6">
+							<td>Rate limiting</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
@@ -418,7 +435,8 @@ export function MessageField() {
 <script setup>
 import { onMounted } from 'vue';
 const rows = 5;
-onMounted(() => import('/components/secure-textarea/secure-textarea.js'));
+onMounted(() =>
+  import('/components/secure-textarea/secure-textarea.js'));
 </script>` }</code></pre>
 					</div>
 
@@ -437,7 +455,8 @@ onMounted(() => import('/components/secure-textarea/secure-textarea.js'));
 						</div>
 						<pre><code class="language-markup">{ `<script>
   import { onMount } from 'svelte';
-  onMount(() => import('/components/secure-textarea/secure-textarea.js'));
+  onMount(() =>
+    import('/components/secure-textarea/secure-textarea.js'));
 </script>
 
 <secure-textarea
@@ -481,5 +500,50 @@ onMounted(() => import('/components/secure-textarea/secure-textarea.js'));
 				</a>
 			</nav>
 		</div>
+
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+		(function() {
+			// Config card stagger entrance
+			const staggerCards = document.querySelectorAll('.config-card--stagger');
+			if (staggerCards.length && 'IntersectionObserver' in window) {
+				const cardObs = new IntersectionObserver((entries) => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('config-card--visible');
+							cardObs.unobserve(entry.target);
+						}
+					});
+				}, { threshold: 0.1 });
+				staggerCards.forEach(card => cardObs.observe(card));
+			}
+
+			// Security matrix row stagger
+			const matrixRows = document.querySelectorAll('[data-ri]');
+			if (matrixRows.length && 'IntersectionObserver' in window) {
+				const rowObs = new IntersectionObserver((entries) => {
+					entries.forEach(entry => {
+						if (entry.isIntersecting) {
+							entry.target.classList.add('matrix-row--visible');
+							rowObs.unobserve(entry.target);
+						}
+					});
+				}, { threshold: 0.1 });
+				matrixRows.forEach(row => rowObs.observe(row));
+			}
+
+			// Console easter egg
+			const ta = document.querySelector('secure-textarea');
+			if (ta && ta.shadowRoot === null) {
+				const s = [
+					'%c secure-textarea ',
+					'background:#10b981;color:#fff;font-weight:700;padding:2px 8px;border-radius:3px',
+				];
+				console.log(s[0] + '%c shadowRoot is null — closed shadow DOM confirmed.\n' +
+					'Length enforcement and sanitization run on the internal element.\n' +
+					'Page scripts have zero access.',
+					s[1], 'color:#6ee7b7;font-family:monospace');
+			}
+		})();
+		</script>
 	}
 }

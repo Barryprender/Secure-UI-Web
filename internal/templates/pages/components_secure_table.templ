@@ -1,6 +1,9 @@
 package pages
 
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ ComponentSecureTable() {
 	@templates.Layout("Live Demo: Secure Table — Sorting, Filtering, Security Tiers", "Interactive demos for secure-table: server-rendered slotted content, sorting, filtering, pagination, column security tiers, and framework examples.", true, "/static/styles/components.min.css") {
@@ -56,6 +59,29 @@ templ ComponentSecureTable() {
 				<div class="configs-grid configs-grid--2col">
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">Slotted HTML (recommended)</span></div>
+						<div class="config-card-desc">Server renders a standard <code>&lt;table slot="table"&gt;</code>. The component reads it on mount, builds an internal data model, then replaces the slot with an enhanced UI. Works without JavaScript.</div>
+						<div class="data-flow" role="img" aria-label="Slotted HTML data flow: Server renders HTML, component reads on mount, enhanced UI">
+							<div class="data-flow-step data-flow-step--server">
+								<span class="data-flow-step-label">Server</span>
+								<span class="data-flow-step-sub">Go renders</span>
+							</div>
+							<div class="data-flow-arrow" aria-hidden="true">&#8594;</div>
+							<div class="data-flow-step">
+								<span class="data-flow-step-label">&lt;table slot&gt;</span>
+								<span class="data-flow-step-sub">light DOM</span>
+							</div>
+							<div class="data-flow-arrow" aria-hidden="true">&#8594;</div>
+							<div class="data-flow-step">
+								<span class="data-flow-step-label">mount</span>
+								<span class="data-flow-step-sub">on connect</span>
+							</div>
+							<div class="data-flow-arrow" aria-hidden="true">&#8594;</div>
+							<div class="data-flow-step data-flow-step--result">
+								<span class="data-flow-step-label">sort&#xB7;filter</span>
+								<span class="data-flow-step-sub">enhanced UI</span>
+							</div>
+						</div>
+						<p class="data-flow-note data-flow-note--progressive">&#10003;&nbsp; Progressive enhancement — readable without JS</p>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<!-- Table data is in the light DOM.
      Component reads it on mount, then
@@ -83,6 +109,29 @@ templ ComponentSecureTable() {
 
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">Programmatic (JavaScript)</span></div>
+						<div class="config-card-desc">Set <code>columns</code> and <code>data</code> as JS properties after the component connects. Use this for SPA data flows where rows arrive asynchronously or update reactively.</div>
+						<div class="data-flow" role="img" aria-label="Programmatic data flow: import JS module, set columns schema, set data rows, component renders reactively">
+							<div class="data-flow-step data-flow-step--js">
+								<span class="data-flow-step-label">import()</span>
+								<span class="data-flow-step-sub">JS module</span>
+							</div>
+							<div class="data-flow-arrow" aria-hidden="true">&#8594;</div>
+							<div class="data-flow-step">
+								<span class="data-flow-step-label">.columns</span>
+								<span class="data-flow-step-sub">set schema</span>
+							</div>
+							<div class="data-flow-arrow" aria-hidden="true">&#8594;</div>
+							<div class="data-flow-step">
+								<span class="data-flow-step-label">.data</span>
+								<span class="data-flow-step-sub">set rows</span>
+							</div>
+							<div class="data-flow-arrow" aria-hidden="true">&#8594;</div>
+							<div class="data-flow-step data-flow-step--result">
+								<span class="data-flow-step-label">Rendered</span>
+								<span class="data-flow-step-sub">reactive</span>
+							</div>
+						</div>
+						<p class="data-flow-note data-flow-note--reactive">&#8635;&nbsp; Reactive — reassign <code>.data</code> to update the table</p>
 						<div class="config-code">
 							<pre><code class="language-javascript">{ `// Set columns and data via JS properties
 // after the component is connected to the DOM.
@@ -108,9 +157,9 @@ table.data = [
 				<h2 class="configs-section-title">Configurations</h2>
 				<div class="configs-grid">
 
-					<!-- security-tier: public -->
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="public"</span></div>
+						<div class="config-card-desc">XSS sanitization on all cells. No audit log. Use for catalog listings, search results, and reference data accessible without authentication.</div>
 						<div class="config-demo">
 							<secure-table security-tier="public">
 								<table slot="table">
@@ -144,9 +193,9 @@ table.data = [
 						</div>
 					</div>
 
-					<!-- security-tier: authenticated -->
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="authenticated"</span></div>
+						<div class="config-card-desc">Adds audit logging on sort, filter, and access events. Use for user lists, order history, and records only accessible to authenticated users.</div>
 						<div class="config-demo">
 							<secure-table security-tier="authenticated">
 								<table slot="table">
@@ -172,9 +221,9 @@ table.data = [
 						</div>
 					</div>
 
-					<!-- security-tier: sensitive -->
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="sensitive" — column masking</span></div>
+						<div class="config-card-desc">Columns marked <code>data-tier="sensitive"</code> on the <code>&lt;th&gt;</code> display only the last 4 characters (<code>••••4321</code>). The full value is never written to the DOM.</div>
 						<div class="config-demo">
 							<secure-table security-tier="sensitive">
 								<table slot="table">
@@ -209,9 +258,9 @@ table.data = [
 						</div>
 					</div>
 
-					<!-- security-tier: critical -->
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">security-tier="critical" — full masking</span></div>
+						<div class="config-card-desc">Columns marked <code>data-tier="critical"</code> are fully replaced with <code>••••••••</code>. Masked values cannot be selected, copied, or read by page scripts.</div>
 						<div class="config-demo">
 							<secure-table security-tier="critical">
 								<table slot="table">
@@ -238,9 +287,9 @@ table.data = [
 						</div>
 					</div>
 
-					<!-- sortable -->
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">sortable (column headers)</span></div>
+					<div class="config-card config-card--stagger">
+						<div class="config-card-header"><span class="config-label">sortable</span></div>
+						<div class="config-card-desc">Add <code>data-sortable="true"</code> to individual <code>&lt;th&gt;</code> elements to enable click-to-sort on those columns. Sort state is reflected in column headers. Values sort as strings by default.</div>
 						<div class="config-demo">
 							<secure-table security-tier="public" sortable>
 								<table slot="table">
@@ -261,9 +310,7 @@ table.data = [
 							</secure-table>
 						</div>
 						<div class="config-code">
-							<pre><code class="language-markup">{ `<!-- data-sortable="true" on individual
-     columns enables click-to-sort -->
-<secure-table security-tier="public" sortable>
+							<pre><code class="language-markup">{ `<secure-table security-tier="public" sortable>
   <table slot="table">
     <thead><tr>
       <th data-key="name" data-sortable="true">
@@ -279,9 +326,9 @@ table.data = [
 						</div>
 					</div>
 
-					<!-- filterable -->
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">filterable (search across columns)</span></div>
+					<div class="config-card config-card--stagger">
+						<div class="config-card-header"><span class="config-label">filterable</span></div>
+						<div class="config-card-desc">Adds a search input above the table. <code>data-filterable="true"</code> on a <code>&lt;th&gt;</code> includes that column in the match. The filter input is sanitized before matching — XSS payloads entered as search terms are neutralized.</div>
 						<div class="config-demo">
 							<secure-table security-tier="public" filterable>
 								<table slot="table">
@@ -303,17 +350,25 @@ table.data = [
 							</secure-table>
 						</div>
 						<div class="config-code">
-							<pre><code class="language-markup">{ `<!-- data-filterable="true" includes a
-     column in the search filter -->
-<th data-key="name" data-filterable="true">
-  Name
-</th>` }</code></pre>
+							<pre><code class="language-markup">{ `<secure-table security-tier="public" filterable>
+  <table slot="table">
+    <thead><tr>
+      <!-- data-filterable includes this column -->
+      <th data-key="name" data-filterable="true">
+        Name
+      </th>
+      <!-- location column excluded from search -->
+      <th data-key="location">Location</th>
+    </tr></thead>
+    ...
+  </table>
+</secure-table>` }</code></pre>
 						</div>
 					</div>
 
-					<!-- paginated -->
-					<div class="config-card">
-						<div class="config-card-header"><span class="config-label">paginated (automatic on large datasets)</span></div>
+					<div class="config-card config-card--stagger">
+						<div class="config-card-header"><span class="config-label">paginated</span></div>
+						<div class="config-card-desc">Pagination activates automatically when row count exceeds the configured page size (default 10). Page controls appear below the table. Works with both slotted and programmatic data.</div>
 						<div class="config-demo">
 							<secure-table security-tier="public" sortable filterable>
 								<table slot="table">
@@ -344,16 +399,22 @@ table.data = [
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<!-- Pagination activates automatically
      when row count exceeds page size (default 10).
-     Set programmatically to override: -->
-const table = document.querySelector('secure-table');
-table.columns = [...];
-table.data = [...]; // 12 rows → pagination shown` }</code></pre>
+     12 rows below → pagination shown. -->
+<secure-table security-tier="public"
+  sortable filterable>
+  <table slot="table">
+    <thead>...</thead>
+    <tbody>
+      <!-- 12 rows -->
+    </tbody>
+  </table>
+</secure-table>` }</code></pre>
 						</div>
 					</div>
 
-					<!-- sortable + filterable combined -->
-					<div class="config-card">
+					<div class="config-card config-card--stagger">
 						<div class="config-card-header"><span class="config-label">sortable + filterable combined</span></div>
+						<div class="config-card-desc">All three features active together. The filter reduces the visible row set first, then sort is applied to the filtered result. Pagination reflects the filtered count.</div>
 						<div class="config-demo">
 							<secure-table security-tier="authenticated" sortable filterable>
 								<table slot="table">
@@ -391,7 +452,44 @@ table.data = [...]; // 12 rows → pagination shown` }</code></pre>
 			<!-- Security Features -->
 			<section class="security-section">
 				<h2 class="security-section-title">Security Features</h2>
-				<p class="security-callout">Security is enforced server-side. These features are client-side complements.</p>
+				<p class="security-callout">Security is enforced server-side. These features are client-side complements that reduce attack surface.</p>
+
+				<!-- XSS / column injection panel -->
+				<div class="security-telemetry-panel">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">XSS-safe rendering + column injection prevention</span>
+						<span class="security-telemetry-badge">All tiers</span>
+					</div>
+					<p class="sel-enforcement-desc">
+						The component never writes cell values directly to the DOM. All data passes through
+						a text-content assignment — HTML entities are encoded before the cell is rendered.
+						For slotted tables, the column schema is locked at mount time from the
+						server-rendered <code>&lt;th data-key&gt;</code> elements. Attempts to inject
+						additional columns via DOM manipulation after mount are ignored — only keys in
+						the locked schema are rendered.
+					</p>
+					<div class="sel-enforcement-example">
+						<div class="sel-enforcement-col">
+							<div class="sel-enforcement-label">Injection attempt</div>
+							<pre><code class="language-javascript">{ `// Attacker adds a new column to the DOM
+const thead = document.querySelector('tr');
+const th = document.createElement('th');
+th.dataset.key = 'injectedCol';
+th.textContent = '<script>alert(1)</script>';
+thead.appendChild(th);` }</code></pre>
+						</div>
+						<div class="sel-enforcement-col">
+							<div class="sel-enforcement-label sel-enforcement-label--success">Result</div>
+							<pre><code class="language-javascript">{ `// Column schema is frozen at mount time.
+// Columns added after mount are not rendered.
+// Cell values are always text-content assigned:
+//   cell.textContent = value  ✓
+// Never:
+//   cell.innerHTML = value    ✗` }</code></pre>
+						</div>
+					</div>
+				</div>
+
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -425,6 +523,13 @@ table.data = [...]; // 12 rows → pagination shown` }</code></pre>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 						<tr>
+							<td>Audit logging</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
 							<td>Sensitive column masking (last 4 visible)</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-no">-</td>
@@ -436,13 +541,6 @@ table.data = [...]; // 12 rows → pagination shown` }</code></pre>
 							<td class="matrix-no">-</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-no">-</td>
-							<td class="matrix-yes">Yes</td>
-						</tr>
-						<tr>
-							<td>Audit logging</td>
-							<td class="matrix-no">-</td>
-							<td class="matrix-yes">Yes</td>
-							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>
 					</tbody>
@@ -733,11 +831,39 @@ templ UserTable(users []User) {
 					<span class="component-nav-direction">Previous</span>
 					<span class="component-nav-name">&lt;secure-datetime&gt;</span>
 				</a>
-				<a href="/components/secure-card" class="component-nav-link component-nav-link--next">
-					<span class="component-nav-direction">Next</span>
-					<span class="component-nav-name">&lt;secure-card&gt;</span>
+				<a href="/components" class="component-nav-link component-nav-link--next">
+					<span class="component-nav-direction">All Components</span>
+					<span class="component-nav-name">Component Index</span>
 				</a>
 			</nav>
 		</div>
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+{
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!reduceMotion) {
+    const cards = document.querySelectorAll('.config-card--stagger');
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('config-card--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    cards.forEach(c => io.observe(c));
+
+    const rows = document.querySelectorAll('.security-matrix tbody tr');
+    const rowIo = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('matrix-row--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    rows.forEach(r => rowIo.observe(r));
+  }
+}
+		</script>
 	}
 }
