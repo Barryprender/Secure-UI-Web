@@ -12,8 +12,12 @@ FROM golang:1.24-alpine AS builder
 
 WORKDIR /src
 
-# Install templ CLI (same version as go.mod requires)
-RUN go install github.com/a-h/templ/cmd/templ@v0.3.977
+# Install templ CLI — download pre-built binary (faster than go install)
+RUN wget -qO /tmp/templ.tar.gz \
+      https://github.com/a-h/templ/releases/download/v0.3.977/templ_Linux_x86_64.tar.gz \
+    && tar -xzf /tmp/templ.tar.gz -C /usr/local/bin templ \
+    && chmod +x /usr/local/bin/templ \
+    && rm /tmp/templ.tar.gz
 
 # Fetch dependencies before copying source (improves layer caching)
 COPY go.mod go.sum ./
