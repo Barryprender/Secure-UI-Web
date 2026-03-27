@@ -92,6 +92,7 @@ templ ComponentSecureTelemetryProvider() {
 				<div class="configs-grid">
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">Basic wrapper</span></div>
+						<div class="config-card-desc">Wrap any <code>&lt;secure-form&gt;</code> with <code>&lt;secure-telemetry-provider&gt;</code>. All form submissions automatically carry a HMAC-signed behavioral envelope — no changes required inside the form.</div>
 						<div class="config-demo">
 							<secure-telemetry-provider signing-key="demo-key">
 								<secure-form action="/api/forms/submit" method="POST" security-tier="public">
@@ -112,6 +113,7 @@ templ ComponentSecureTelemetryProvider() {
 
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">JS: read signals manually</span></div>
+						<div class="config-card-desc">Access a point-in-time snapshot of environmental signals before submission, or build custom risk logic on top of the raw data without waiting for a form event.</div>
 						<div class="config-demo">
 							<secure-telemetry-provider id="cfg-tp-manual" signing-key="demo-key">
 								<secure-form action="/api/forms/submit" method="POST" security-tier="authenticated">
@@ -137,6 +139,7 @@ console.log(envelope.signature);` }</code></pre>
 
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">With secure-card</span></div>
+						<div class="config-card-desc">Payment flows benefit most from behavioral telemetry. Wrapping <code>&lt;secure-card&gt;</code> applies bot detection to the highest-risk transaction in your application.</div>
 						<div class="config-demo">
 							<secure-telemetry-provider signing-key="demo-key">
 								<secure-form action="/api/forms/submit" method="POST" security-tier="critical">
@@ -222,10 +225,16 @@ console.log(envelope.signature);` }</code></pre>
 				</table>
 			</section>
 
+			<!-- Theming -->
+			<section class="theming-section">
+				<h2 class="theming-section-title">Theming</h2>
+				<p class="theming-intro"><code>&lt;secure-telemetry-provider&gt;</code> renders no visible output and exposes no CSS custom properties. Apply all theming to the child <code>&lt;secure-form&gt;</code> and its field components directly.</p>
+			</section>
+
 			<!-- Framework Examples -->
 			<section class="framework-section">
 				<h2 class="framework-section-title">Framework Examples</h2>
-				<p class="framework-section-subtitle">Wrap any <code>&lt;secure-form&gt;</code> with the telemetry provider. The signed envelope is automatically injected into the submission event.</p>
+				<p class="framework-section-subtitle">Client-side integration and server-side verification. The provider wraps any framework's form components without adapters.</p>
 				<div class="framework-tabs">
 					<div class="framework-tab-panel">
 						<div class="framework-tab-header">
@@ -246,6 +255,130 @@ console.log(envelope.signature);` }</code></pre>
     <button type="submit">Sign In</button>
   </secure-form>
 </secure-telemetry-provider>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">React (JSX)</span>
+							<span class="framework-tab-lang">tsx</span>
+						</div>
+						<pre><code class="language-jsx">{ `import { useEffect } from 'react';
+
+export function ProtectedForm({
+  signingKey,
+}: { signingKey: string }) {
+  useEffect(() => {
+    import('/components/secure-telemetry-provider/secure-telemetry-provider.js');
+    import('/components/secure-form/secure-form.js');
+    import('/components/secure-input/secure-input.js');
+  }, []);
+
+  return (
+    <secure-telemetry-provider signing-key={signingKey}>
+      <secure-form action="/login" method="POST"
+        security-tier="sensitive">
+        <secure-input type="email" label="Email"
+          name="email" security-tier="sensitive" required />
+        <secure-input type="password" label="Password"
+          name="password" security-tier="critical" required />
+        <button type="submit">Sign In</button>
+      </secure-form>
+    </secure-telemetry-provider>
+  );
+}` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Vue 3</span>
+							<span class="framework-tab-lang">vue</span>
+						</div>
+						<pre><code class="language-markup">{ `<template>
+  <secure-telemetry-provider :signing-key="signingKey">
+    <secure-form action="/login" method="POST"
+      security-tier="sensitive">
+      <secure-input type="email" label="Email" name="email"
+        security-tier="sensitive" required />
+      <secure-input type="password" label="Password"
+        name="password" security-tier="critical" required />
+      <button type="submit">Sign In</button>
+    </secure-form>
+  </secure-telemetry-provider>
+</template>
+
+<script setup>
+import { onMounted } from 'vue';
+const props = defineProps({ signingKey: String });
+onMounted(async () => {
+  await import('/components/secure-telemetry-provider/secure-telemetry-provider.js');
+  await import('/components/secure-form/secure-form.js');
+  await import('/components/secure-input/secure-input.js');
+});
+</script>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Angular</span>
+							<span class="framework-tab-lang">typescript</span>
+						</div>
+						<pre><code class="language-typescript">{ "import { Component, CUSTOM_ELEMENTS_SCHEMA,\n         OnInit, Input } from '@angular/core';\n\n@Component({\n  selector: 'app-protected-form',\n  template: `\n    <secure-telemetry-provider [attr.signing-key]=\"signingKey\">\n      <secure-form action=\"/login\" method=\"POST\"\n        security-tier=\"sensitive\">\n        <secure-input type=\"email\" label=\"Email\" name=\"email\"\n          security-tier=\"sensitive\" required>\n        </secure-input>\n        <secure-input type=\"password\" label=\"Password\"\n          name=\"password\" security-tier=\"critical\" required>\n        </secure-input>\n        <button type=\"submit\">Sign In</button>\n      </secure-form>\n    </secure-telemetry-provider>\n  `,\n  schemas: [CUSTOM_ELEMENTS_SCHEMA],\n})\nexport class ProtectedFormComponent implements OnInit {\n  @Input() signingKey = '';\n  ngOnInit() {\n    import('/components/secure-telemetry-provider/secure-telemetry-provider.js');\n    import('/components/secure-form/secure-form.js');\n    import('/components/secure-input/secure-input.js');\n  }\n}" }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Svelte</span>
+							<span class="framework-tab-lang">svelte</span>
+						</div>
+						<pre><code class="language-markup">{ `<script>
+  import { onMount } from 'svelte';
+  export let signingKey = '';
+  onMount(async () => {
+    await import('/components/secure-telemetry-provider/secure-telemetry-provider.js');
+    await import('/components/secure-form/secure-form.js');
+    await import('/components/secure-input/secure-input.js');
+  });
+</script>
+
+<secure-telemetry-provider signing-key={signingKey}>
+  <secure-form action="/login" method="POST"
+    security-tier="sensitive">
+    <secure-input type="email" label="Email" name="email"
+      security-tier="sensitive" required>
+    </secure-input>
+    <secure-input type="password" label="Password"
+      name="password" security-tier="critical" required>
+    </secure-input>
+    <button type="submit">Sign In</button>
+  </secure-form>
+</secure-telemetry-provider>` }</code></pre>
+					</div>
+
+					<div class="framework-tab-panel">
+						<div class="framework-tab-header">
+							<span class="framework-tab-name">Go / Templ</span>
+							<span class="framework-tab-lang">templ</span>
+						</div>
+						<pre><code class="language-markup">{ `templ LoginForm(action string) {
+  <secure-telemetry-provider signing-key="SECRET">
+    <secure-form
+      action={ action }
+      method="POST"
+      security-tier="sensitive">
+      <secure-input
+        type="email" label="Email"
+        name="email"
+        security-tier="sensitive" required>
+      </secure-input>
+      <secure-input
+        type="password" label="Password"
+        name="password"
+        security-tier="critical" required>
+      </secure-input>
+      <button type="submit">Sign In</button>
+    </secure-form>
+  </secure-telemetry-provider>
+}` }</code></pre>
 					</div>
 
 					<div class="framework-tab-panel">
@@ -342,33 +475,6 @@ func Score(env EnvironmentalSignals) int {
 
     if score > 100 { score = 100 }
     return score
-}` }</code></pre>
-					</div>
-
-					<div class="framework-tab-panel">
-						<div class="framework-tab-header">
-							<span class="framework-tab-name">Go / Templ</span>
-							<span class="framework-tab-lang">templ</span>
-						</div>
-						<pre><code class="language-markup">{ `templ LoginForm(action string) {
-  <secure-telemetry-provider signing-key="SECRET">
-    <secure-form
-      action={ action }
-      method="POST"
-      security-tier="sensitive">
-      <secure-input
-        type="email" label="Email"
-        name="email"
-        security-tier="sensitive" required>
-      </secure-input>
-      <secure-input
-        type="password" label="Password"
-        name="password"
-        security-tier="critical" required>
-      </secure-input>
-      <button type="submit">Sign In</button>
-    </secure-form>
-  </secure-telemetry-provider>
 }` }</code></pre>
 					</div>
 				</div>

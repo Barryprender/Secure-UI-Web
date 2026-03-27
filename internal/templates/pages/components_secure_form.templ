@@ -30,8 +30,8 @@ templ ComponentSecureForm() {
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>
 					<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
-						<secure-input label="Name" name="demo-name" type="text" security-tier="sensitive" required></secure-input>
-						<secure-input label="Email" name="demo-email" type="email" security-tier="sensitive" required></secure-input>
+						<secure-input label="Name" name="demo-name" type="text" security-tier="public" required></secure-input>
+						<secure-input label="Email" name="demo-email" type="email" security-tier="public" required></secure-input>
 						<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
 					</secure-form>
 				</div>
