@@ -78,7 +78,7 @@ async function handleDemoSubmit(event) {
     });
 
     const data = await res.json();
-    showResponse(responsePanel, data, res.status);
+    showResponse(responsePanel, data, res.status, telemetry);
 
     // CSRF tokens are single-use (ConsumeToken). Refresh immediately so the
     // form can be submitted again without a page reload.
@@ -126,7 +126,7 @@ function showLoading(panel) {
   }
 }
 
-function showResponse(panel, data, httpStatus) {
+function showResponse(panel, data, httpStatus, telemetry = {}) {
   if (!panel) return;
   const body = panel.querySelector('.demo-response-body');
   if (!body) return;
@@ -134,11 +134,36 @@ function showResponse(panel, data, httpStatus) {
   const ok = httpStatus >= 200 && httpStatus < 300;
   const statusClass = ok ? 'demo-response-status--ok' : 'demo-response-status--error';
 
-  // Omit _telemetry from display to keep the panel readable.
+  // Omit _telemetry from display to keep the JSON panel readable.
   const display = { ...data };
   delete display._telemetry;
 
+  // Behavioral intelligence summary
+  const score     = Math.min(Math.max(telemetry.riskScore ?? 0, 0), 100);
+  const riskClass = score >= 60 ? 'high' : score >= 30 ? 'med' : 'low';
+  const verdict   = score >= 60 ? 'BLOCK' : score >= 30 ? 'REVIEW' : 'ALLOW';
+  const duration  = telemetry.sessionDuration != null
+    ? (telemetry.sessionDuration / 1000).toFixed(2) + 's'
+    : '\u2014';
+  const signals = telemetry.riskSignals ?? [];
+  const signalsHtml = signals.length
+    ? signals.map(s => `<span class="demo-resp-signal">${escH(s)}</span>`).join('')
+    : `<span class="demo-resp-signal-none">no anomalies detected</span>`;
+
   body.innerHTML =
+    `<div class="demo-resp-intel">` +
+      `<div class="demo-resp-intel-row">` +
+        `<span class="demo-resp-intel-label">Behavioral Analysis</span>` +
+        `<span class="demo-resp-intel-meta">${escH(duration)} session</span>` +
+      `</div>` +
+      `<div class="demo-resp-intel-scores">` +
+        `<span class="demo-resp-risk-score demo-resp-risk-score--${escH(riskClass)}">` +
+          `Risk ${escH(String(score))} / 100` +
+        `</span>` +
+        `<span class="demo-resp-verdict demo-resp-verdict--${escH(riskClass)}">${escH(verdict)}</span>` +
+      `</div>` +
+      `<div class="demo-resp-signals">${signalsHtml}</div>` +
+    `</div>` +
     `<div class="demo-response-status ${escH(statusClass)}">` +
       `HTTP ${escH(String(httpStatus))} &mdash; ${escH(ok ? 'OK' : 'Error')}` +
     `</div>` +

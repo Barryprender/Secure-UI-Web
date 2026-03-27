@@ -1,5 +1,6 @@
 package pages
 
+import "secure-ui-showcase-go/internal/middleware"
 import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
@@ -8,16 +9,68 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 		<section class="py-3xl">
 			<div class="container">
 				<!-- Hero -->
-				<div class="section-header">
-					<div class="forms-demo-eyebrow">
-						<span class="forms-demo-eyebrow-dot"></span>
-						Live Demos
+				<div class="forms-hero">
+					<div class="forms-hero-content">
+						<div class="forms-demo-eyebrow">
+							<span class="forms-demo-eyebrow-dot"></span>
+							Behavioral Intelligence · Live
+						</div>
+						<h1 class="forms-hero-title">Every Form.<br/>Every Keystroke.<br/>Analyzed.</h1>
+						<p class="forms-hero-desc">
+							Three real-world forms — authentication, sign-up, payment — each silently profiling
+							keystroke timing, mouse patterns, and paste behavior on every interaction.
+							Risk-scored server-side. No CAPTCHA required.
+						</p>
+						<div class="forms-hero-jumps">
+							<a href="#demo-login" class="forms-hero-jump forms-hero-jump--auth">Authentication</a>
+							<a href="#demo-subscribe" class="forms-hero-jump forms-hero-jump--public">Sign Up</a>
+							<a href="#demo-payment" class="forms-hero-jump forms-hero-jump--critical">Payment</a>
+						</div>
 					</div>
-					<h1 class="section-title">Form Demos</h1>
-					<p class="section-description">
-						Submit any form below to see the live server response and real-time behavioral
-						telemetry captured by the Secure-UI components.
-					</p>
+					<div class="forms-hero-scanner" id="fhs-panel" aria-hidden="true">
+						<div class="fhs-header">
+							<span class="fhs-dot"></span>
+							<span class="fhs-header-text">Analyzing</span>
+							<span class="fhs-session" id="fhs-session">Session #a2f7</span>
+						</div>
+						<div class="fhs-signals">
+							<div class="fhs-signal fhs-signal--pass" data-fhs="keystrokeInterval">
+								<span class="fhs-signal-name">keystrokeInterval</span>
+								<span class="fhs-signal-value">142ms</span>
+								<span class="fhs-signal-status"></span>
+							</div>
+							<div class="fhs-signal fhs-signal--pass" data-fhs="mouseEntropy">
+								<span class="fhs-signal-name">mouseEntropy</span>
+								<span class="fhs-signal-value">high</span>
+								<span class="fhs-signal-status"></span>
+							</div>
+							<div class="fhs-signal fhs-signal--pass" data-fhs="pasteDetected">
+								<span class="fhs-signal-name">pasteDetected</span>
+								<span class="fhs-signal-value">false</span>
+								<span class="fhs-signal-status"></span>
+							</div>
+							<div class="fhs-signal fhs-signal--pass" data-fhs="fieldDwellTime">
+								<span class="fhs-signal-name">fieldDwellTime</span>
+								<span class="fhs-signal-value">2340ms</span>
+								<span class="fhs-signal-status"></span>
+							</div>
+							<div class="fhs-signal fhs-signal--pass" data-fhs="autofillDetected">
+								<span class="fhs-signal-name">autofillDetected</span>
+								<span class="fhs-signal-value">false</span>
+								<span class="fhs-signal-status"></span>
+							</div>
+						</div>
+						<div class="fhs-risk">
+							<div class="fhs-risk-row">
+								<span class="fhs-risk-label">Risk Score</span>
+								<span class="fhs-risk-num" id="fhs-risk-num">11</span>
+								<span class="fhs-risk-verdict fhs-risk-verdict--allow" id="fhs-risk-verdict">ALLOW</span>
+							</div>
+							<div class="fhs-risk-track">
+								<div class="fhs-risk-fill" id="fhs-risk-fill"></div>
+							</div>
+						</div>
+					</div>
 				</div>
 
 				<!-- ── Demo 1: Login ──────────────────────────────────────── -->
@@ -241,7 +294,126 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 					</div>
 				</section>
 
-				<script src="/static/js/forms-demo.min.js" defer></script>
+				<script nonce={ middleware.NonceFromContext(ctx) }>
+(function () {
+  const panel     = document.getElementById('fhs-panel');
+  const sessionEl = document.getElementById('fhs-session');
+  const riskNumEl = document.getElementById('fhs-risk-num');
+  const fillEl    = document.getElementById('fhs-risk-fill');
+  const verdictEl = document.getElementById('fhs-risk-verdict');
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!panel || !sessionEl || reduceMotion) return;
+
+  const rows = [...panel.querySelectorAll('[data-fhs]')];
+
+  const SCENARIOS = [
+    {
+      id: '#a2f7 · human',
+      signals: {
+        keystrokeInterval: { v: '142ms',   s: 'pass' },
+        mouseEntropy:      { v: 'high',    s: 'pass' },
+        pasteDetected:     { v: 'false',   s: 'pass' },
+        fieldDwellTime:    { v: '2340ms',  s: 'pass' },
+        autofillDetected:  { v: 'false',   s: 'pass' },
+      },
+      risk: 11, verdict: 'ALLOW', hold: 4000,
+    },
+    {
+      id: '#3d19 · suspicious',
+      signals: {
+        keystrokeInterval: { v: '18ms',    s: 'warn' },
+        mouseEntropy:      { v: 'low',     s: 'warn' },
+        pasteDetected:     { v: 'true',    s: 'warn' },
+        fieldDwellTime:    { v: '95ms',    s: 'warn' },
+        autofillDetected:  { v: 'false',   s: 'pass' },
+      },
+      risk: 63, verdict: 'REVIEW', hold: 3400,
+    },
+    {
+      id: '#f80c · bot',
+      signals: {
+        keystrokeInterval: { v: '2ms',     s: 'fail' },
+        mouseEntropy:      { v: 'none',    s: 'fail' },
+        pasteDetected:     { v: 'true',    s: 'fail' },
+        fieldDwellTime:    { v: '8ms',     s: 'fail' },
+        autofillDetected:  { v: 'true',    s: 'warn' },
+      },
+      risk: 92, verdict: 'BLOCK', hold: 2800,
+    },
+  ];
+
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  function applyRisk(val, verdict) {
+    const color = val <= 30 ? '#10b981' : val <= 60 ? '#f59e0b' : '#ef4444';
+    riskNumEl.textContent = val;
+    riskNumEl.style.color = color;
+    fillEl.style.width = val + '%';
+    fillEl.style.background = color;
+    verdictEl.textContent = verdict;
+    verdictEl.className = 'fhs-risk-verdict fhs-risk-verdict--' + verdict.toLowerCase();
+  }
+
+  async function animateRisk(target, verdict) {
+    const from = parseInt(riskNumEl.textContent, 10) || 0;
+    const t0 = performance.now(), dur = 700;
+    await new Promise(res => {
+      const tick = now => {
+        const p = Math.min((now - t0) / dur, 1);
+        applyRisk(Math.round(from + (target - from) * (1 - Math.pow(1 - p, 3))), verdict);
+        p < 1 ? requestAnimationFrame(tick) : res();
+      };
+      requestAnimationFrame(tick);
+    });
+  }
+
+  let idx = 0;
+  async function loop() {
+    while (true) {
+      const sc = SCENARIOS[idx++ % SCENARIOS.length];
+      sessionEl.textContent = 'Session ' + sc.id;
+
+      for (const row of rows) {
+        const sig = sc.signals[row.dataset.fhs];
+        if (!sig) continue;
+
+        row.classList.add('fhs-scanning');
+        await sleep(160);
+
+        const valEl = row.querySelector('.fhs-signal-value');
+        if (valEl && valEl.textContent !== sig.v) {
+          valEl.classList.remove('fhs-updating');
+          void valEl.offsetWidth;
+          valEl.textContent = sig.v;
+          valEl.classList.add('fhs-updating');
+        }
+        row.className = 'fhs-signal fhs-signal--' + sig.s;
+        await sleep(30);
+      }
+
+      await sleep(120);
+      await animateRisk(sc.risk, sc.verdict);
+
+      if (sc.verdict === 'BLOCK') {
+        panel.classList.remove('fhs-blocked');
+        void panel.offsetWidth;
+        panel.classList.add('fhs-blocked');
+        await sleep(700);
+        panel.classList.remove('fhs-blocked');
+      }
+
+      await sleep(sc.hold);
+    }
+  }
+
+  const io = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) { io.disconnect(); setTimeout(loop, 600); }
+  }, { threshold: 0.1 });
+  io.observe(panel);
+}());
+			</script>
+			<script src="/static/js/forms-demo.min.js" defer></script>
 			</div>
 		</section>
 	}
