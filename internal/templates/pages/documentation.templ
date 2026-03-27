@@ -1,17 +1,68 @@
 package pages
 
-import "secure-ui-showcase-go/internal/i18n"
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/i18n"
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ Documentation() {
 	@templates.Layout("Secure Web Component API Reference", "Complete API reference for all Secure-UI web components. XSS sanitisation, CSRF protection, security tiers, Shadow DOM styling, and framework integration guides for every component.", true, "/static/styles/documentation.min.css") {
 		@templates.DocsIndexJsonLDScript()
-		<div class="docs-container">
-			<header class="docs-header">
-				<h1 class="docs-title">{ i18n.T(ctx, "docs.title") }</h1>
-				<p class="docs-subtitle">{ i18n.T(ctx, "docs.subtitle") }</p>
-			</header>
 
+		<header class="docs-hero">
+			<div class="docs-hero-inner">
+				<p class="docs-hero-eyebrow">
+					<span class="docs-hero-eyebrow-dot" aria-hidden="true"></span>
+					API Reference
+				</p>
+
+				<h1 class="docs-hero-title">{ i18n.T(ctx, "docs.title") }</h1>
+				<p class="docs-hero-desc">{ i18n.T(ctx, "docs.subtitle") }</p>
+
+				<div class="docs-hero-stats" role="list" aria-label="Library statistics">
+					<div class="docs-hero-stat" role="listitem">
+						<span class="docs-hero-stat-num" data-target="9">9</span>
+						<span class="docs-hero-stat-label">Components</span>
+					</div>
+					<div class="docs-hero-stat" role="listitem">
+						<span class="docs-hero-stat-num" data-target="4">4</span>
+						<span class="docs-hero-stat-label">Security Tiers</span>
+					</div>
+					<div class="docs-hero-stat" role="listitem">
+						<span class="docs-hero-stat-num">0</span>
+						<span class="docs-hero-stat-label">Dependencies</span>
+					</div>
+					<div class="docs-hero-stat" role="listitem">
+						<span class="docs-hero-stat-num" data-target="10">10</span>
+						<span class="docs-hero-stat-label">OWASP Controls</span>
+					</div>
+				</div>
+
+				<div class="docs-hero-install">
+					<span class="docs-hero-install-prompt" aria-hidden="true">$</span>
+					<code class="docs-hero-install-cmd" id="dh-install-cmd">npm install secure-ui-components</code>
+					<button class="docs-hero-install-copy" id="dh-install-copy" aria-label="Copy install command" type="button">
+						<svg class="dh-copy-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+						<svg class="dh-check-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>
+					</button>
+				</div>
+
+				<nav class="docs-hero-chips" aria-label="Component reference quick links">
+					<a href="/documentation/secure-input" class="docs-hero-chip">&lt;secure-input&gt;</a>
+					<a href="/documentation/secure-select" class="docs-hero-chip">&lt;secure-select&gt;</a>
+					<a href="/documentation/secure-textarea" class="docs-hero-chip">&lt;secure-textarea&gt;</a>
+					<a href="/documentation/secure-form" class="docs-hero-chip">&lt;secure-form&gt;</a>
+					<a href="/documentation/secure-file-upload" class="docs-hero-chip">&lt;secure-file-upload&gt;</a>
+					<a href="/documentation/secure-datetime" class="docs-hero-chip">&lt;secure-datetime&gt;</a>
+					<a href="/documentation/secure-table" class="docs-hero-chip">&lt;secure-table&gt;</a>
+					<a href="/documentation/secure-card" class="docs-hero-chip">&lt;secure-card&gt;</a>
+					<a href="/documentation/secure-telemetry-provider" class="docs-hero-chip">&lt;secure-telemetry-provider&gt;</a>
+				</nav>
+			</div>
+		</header>
+
+		<div class="docs-container">
 			<!-- Quick Start Section -->
 			<section class="docs-section">
 				<h2 class="docs-section-title">{ i18n.T(ctx, "docs.qs.title") }</h2>
@@ -335,5 +386,48 @@ console.log(auditLog);</code></pre>
 				</div>
 			</section>
 		</div>
+
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+			const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+			// Copy button
+			const copyBtn = document.getElementById('dh-install-copy');
+			const installCmd = document.getElementById('dh-install-cmd');
+			if (copyBtn && installCmd) {
+				copyBtn.addEventListener('click', async () => {
+					try {
+						await navigator.clipboard.writeText(installCmd.textContent.trim());
+						copyBtn.dataset.copied = 'true';
+						setTimeout(() => delete copyBtn.dataset.copied, 2000);
+					} catch (_) {}
+				});
+			}
+
+			// Stat counters — skip if reduced motion
+			if (!reduceMotion) {
+				const counters = document.querySelectorAll('.docs-hero-stat-num[data-target]');
+				if (counters.length && 'IntersectionObserver' in window) {
+					const obs = new IntersectionObserver((entries) => {
+						entries.forEach(entry => {
+							if (!entry.isIntersecting) return;
+							const el = entry.target;
+							const target = parseInt(el.dataset.target, 10);
+							if (!target) return;
+							const duration = 700;
+							const start = performance.now();
+							const tick = (now) => {
+								const t = Math.min(1, (now - start) / duration);
+								const ease = 1 - Math.pow(1 - t, 3);
+								el.textContent = Math.round(ease * target);
+								if (t < 1) requestAnimationFrame(tick);
+							};
+							requestAnimationFrame(tick);
+							obs.unobserve(el);
+						});
+					}, { threshold: 0.5 });
+					counters.forEach(c => obs.observe(c));
+				}
+			}
+		</script>
 	}
 }

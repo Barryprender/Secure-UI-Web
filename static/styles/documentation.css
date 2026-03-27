@@ -3,33 +3,278 @@
  * Uses global design tokens from base.css — NO local :root overrides.
  */
 
-.docs-container {
+/* ── Hero ─────────────────────────────────────────── */
+
+@keyframes dh-pulse {
+    0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent-primary) 50%, transparent); }
+    60%       { box-shadow: 0 0 0 5px color-mix(in oklch, var(--accent-primary) 0%, transparent); }
+}
+
+@keyframes dh-chip-in {
+    from { opacity: 0; transform: translateY(5px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes dh-blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+}
+
+@keyframes dh-fade-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.docs-hero {
+    position: relative;
+    background-color: var(--bg-primary);
+    background-image:
+        linear-gradient(color-mix(in oklch, var(--border-subtle) 45%, transparent) 1px, transparent 1px),
+        linear-gradient(90deg, color-mix(in oklch, var(--border-subtle) 45%, transparent) 1px, transparent 1px);
+    background-size: 48px 48px;
+    border-bottom: 1px solid var(--border-subtle);
+    padding-block: var(--space-2xl) var(--space-xl);
+    overflow: hidden;
+}
+
+.docs-hero::after {
+    content: '';
+    position: absolute;
+    inset-block-end: 0;
+    inset-inline: 0;
+    height: 80px;
+    background: linear-gradient(transparent, var(--bg-primary));
+    pointer-events: none;
+}
+
+.docs-hero-inner {
     max-width: 900px;
     margin-inline: auto;
-    padding: var(--space-xl) var(--space-lg);
+    padding-inline: var(--space-lg);
+    animation: dh-fade-up 0.5s var(--ease-out-expo) both;
 }
 
-.docs-header {
-    margin-bottom: var(--space-3xl);
-    padding-bottom: var(--space-xl);
-    border-bottom: 1px solid var(--border-subtle);
-}
-
-.docs-title {
-    font-size: clamp(2rem, 5vw, 2.75rem);
+.docs-hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: -0.025em;
-    line-height: 1.1;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent-primary);
+    margin-bottom: var(--space-sm);
+    font-family: var(--font-mono);
+}
+
+.docs-hero-eyebrow-dot {
+    display: inline-block;
+    width: 7px;
+    height: 7px;
+    background: var(--accent-primary);
+    border-radius: 50%;
+    flex-shrink: 0;
+    animation: dh-pulse 2.5s ease-in-out infinite;
+}
+
+.docs-hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.08;
     margin-bottom: var(--space-sm);
     color: var(--text-primary);
     font-family: var(--font-display);
 }
 
-.docs-subtitle {
+.docs-hero-desc {
     font-size: 1.0625rem;
     color: var(--text-secondary);
-    max-width: 600px;
+    max-width: 580px;
     line-height: 1.65;
+    margin-bottom: var(--space-xl);
+}
+
+/* Stats */
+
+.docs-hero-stats {
+    display: flex;
+    align-items: center;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-xl);
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.docs-hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.docs-hero-stat + .docs-hero-stat {
+    padding-inline-start: var(--space-lg);
+    border-inline-start: 1px solid var(--border-subtle);
+}
+
+.docs-hero-stat-num {
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-variant-numeric: tabular-nums;
+}
+
+.docs-hero-stat-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+/* Install command */
+
+.docs-hero-install {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    padding: 0.625rem var(--space-md);
+    margin-bottom: var(--space-xl);
+    font-family: var(--font-mono);
+    max-width: 100%;
+}
+
+.docs-hero-install-prompt {
+    color: var(--accent-primary);
+    font-weight: 600;
+    font-size: 0.9375rem;
+    user-select: none;
+}
+
+.docs-hero-install-cmd {
+    font-size: 0.9375rem;
+    color: var(--text-primary);
+    letter-spacing: 0.01em;
+    flex: 1;
+}
+
+.docs-hero-install-cmd::after {
+    content: '';
+    display: inline-block;
+    width: 2px;
+    height: 0.9em;
+    background: var(--accent-primary);
+    margin-inline-start: 3px;
+    vertical-align: text-bottom;
+    border-radius: 1px;
+    animation: dh-blink 1.2s step-end infinite;
+}
+
+.docs-hero-install-copy {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--text-muted);
+    padding: 0.25rem;
+    border-radius: var(--radius-sm);
+    transition: color 0.15s ease, background 0.15s ease;
+    flex-shrink: 0;
+}
+
+.docs-hero-install-copy:hover {
+    color: var(--accent-primary);
+    background: color-mix(in oklch, var(--accent-primary) 8%, transparent);
+}
+
+.docs-hero-install-copy .dh-check-icon { display: none; }
+
+.docs-hero-install-copy[data-copied] {
+    color: var(--accent-primary);
+}
+
+.docs-hero-install-copy[data-copied] .dh-copy-icon  { display: none; }
+.docs-hero-install-copy[data-copied] .dh-check-icon { display: block; }
+
+/* Component chips */
+
+.docs-hero-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: relative;
+    z-index: 1;
+}
+
+.docs-hero-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.3125rem 0.75rem;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease, transform 0.15s var(--ease-out-quart);
+    animation: dh-chip-in 0.4s var(--ease-out-expo) both;
+}
+
+.docs-hero-chip:nth-child(1) { animation-delay: 0.05s; }
+.docs-hero-chip:nth-child(2) { animation-delay: 0.09s; }
+.docs-hero-chip:nth-child(3) { animation-delay: 0.13s; }
+.docs-hero-chip:nth-child(4) { animation-delay: 0.17s; }
+.docs-hero-chip:nth-child(5) { animation-delay: 0.21s; }
+.docs-hero-chip:nth-child(6) { animation-delay: 0.25s; }
+.docs-hero-chip:nth-child(7) { animation-delay: 0.29s; }
+.docs-hero-chip:nth-child(8) { animation-delay: 0.33s; }
+.docs-hero-chip:nth-child(9) { animation-delay: 0.37s; }
+
+.docs-hero-chip:hover {
+    border-color: color-mix(in oklch, var(--accent-primary) 50%, transparent);
+    color: var(--accent-primary);
+    background: color-mix(in oklch, var(--accent-primary) 6%, var(--bg-secondary));
+    transform: translateY(-1px);
+    text-decoration: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .docs-hero-inner        { animation: none; }
+    .docs-hero-eyebrow-dot  { animation: none; }
+    .docs-hero-chip         { animation: none; opacity: 1; transform: none; }
+    .docs-hero-install-cmd::after { animation: none; opacity: 1; }
+}
+
+@media (max-width: 768px) {
+    .docs-hero          { padding-block: var(--space-xl) var(--space-lg); }
+    .docs-hero-inner    { padding-inline: var(--space-md); }
+    .docs-hero-stats    { gap: var(--space-md); }
+    .docs-hero-stat + .docs-hero-stat { padding-inline-start: var(--space-md); }
+    .docs-hero-stat-num { font-size: 1.5rem; }
+}
+
+@media (max-width: 480px) {
+    .docs-hero-stats    { gap: var(--space-sm); flex-wrap: nowrap; overflow-x: auto; padding-bottom: var(--space-sm); }
+    .docs-hero-install  { width: 100%; }
+    .docs-hero-install-cmd { font-size: 0.8125rem; }
+}
+
+/* ── Container ────────────────────────────────────── */
+
+.docs-container {
+    max-width: 900px;
+    margin-inline: auto;
+    padding: var(--space-xl) var(--space-lg);
 }
 
 /* ── Component Navigation ─────────────────────────── */
