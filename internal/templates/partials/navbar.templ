@@ -52,7 +52,6 @@ templ Navbar(isLoggedIn bool) {
 					</div>
 
 					<ul class="nav-links">
-						<li><a href="/" class="nav-link">{ i18n.T(ctx, "nav.home") }</a></li>
 						<li><a href="/forms" class="nav-link">{ i18n.T(ctx, "nav.forms") }</a></li>
 						if isLoggedIn {
 							<li><a href="/dashboard" class="nav-link">{ i18n.T(ctx, "nav.dashboard") }</a></li>
