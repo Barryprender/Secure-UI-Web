@@ -678,6 +678,16 @@
     gap: 0.25rem;
     padding: var(--space-sm) var(--space-lg);
     border-right: 1px solid var(--border-subtle);
+    text-decoration: none;
+    transition: background 0.15s;
+}
+
+.stats-item:hover {
+    background: color-mix(in oklch, var(--accent-primary) 5%, transparent);
+}
+
+.stats-item:hover strong {
+    color: var(--accent-primary);
 }
 
 .stats-item:last-child {

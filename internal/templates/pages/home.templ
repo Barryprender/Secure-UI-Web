@@ -101,22 +101,22 @@ templ Home() {
 <section class="stats-strip" aria-label="Key facts">
 	<div class="container">
 		<div class="stats-list">
-			<div class="stats-item">
+			<a href="/documentation" class="stats-item">
 				<strong>Zero</strong>
 				<span>{ i18n.T(ctx, "home.stats.deps") }</span>
-			</div>
-			<div class="stats-item">
+			</a>
+			<a href="/telemetry" class="stats-item">
 				<strong data-count-to="9">0</strong>
 				<span>{ i18n.T(ctx, "home.stats.signals") }</span>
-			</div>
-			<div class="stats-item">
+			</a>
+			<a href="/telemetry" class="stats-item">
 				<strong>HMAC</strong>
 				<span>{ i18n.T(ctx, "home.stats.signed") }</span>
-			</div>
-			<div class="stats-item">
+			</a>
+			<a href="#owasp" class="stats-item">
 				<strong>A01–A10</strong>
 				<span>{ i18n.T(ctx, "home.stats.owasp") }</span>
-			</div>
+			</a>
 		</div>
 	</div>
 </section>
@@ -384,7 +384,7 @@ templ Home() {
 </section>
 
 <!-- OWASP Top 10:2021 Alignment Section -->
-<section class="owasp-section">
+<section class="owasp-section" id="owasp">
 	<div class="container">
 		<div class="section-header">
 			<p class="section-eyebrow">{ i18n.T(ctx, "home.owasp.eyebrow") }</p>
