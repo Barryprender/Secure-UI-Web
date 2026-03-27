@@ -140,6 +140,22 @@ make fmt        — Format Go and templ files
 make test       — Run tests
 ```
 
+### Windows (PowerShell) — without `make`
+
+`make` is not available in PowerShell by default. Use these equivalents:
+
+| Command | PowerShell equivalent |
+|---|---|
+| `make generate` | `templ generate` |
+| `make dev` | `templ generate; air` |
+| `make run` | `templ generate; go run cmd/server/main.go` |
+| `make build` | `templ generate; go build -o bin/showcase-server cmd/server/main.go` |
+| `make fmt` | `go fmt ./...; templ fmt .` |
+| `make test` | `go test -v ./...` |
+| `make clean` | `Remove-Item -Recurse -Force bin, tmp` |
+
+To get `make` on Windows: `choco install make` (requires [Chocolatey](https://chocolatey.org/)).
+
 ## Environment Variables
 
 | Variable | Default | Description |
