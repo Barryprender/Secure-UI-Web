@@ -120,7 +120,7 @@ func main() {
 	mux.HandleFunc("/cookies", h.CookiePolicy)
 
 	// --- Auth routes ---
-	mux.Handle("/login", middleware.CSRF(csrfStore)(optAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mux.Handle("/login", middleware.CSRF(csrfStore, h.RenderErrorPage)(optAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			h.LoginPage(w, r)
 		} else if r.Method == http.MethodPost {
@@ -130,7 +130,7 @@ func main() {
 		}
 	}))))
 
-	mux.Handle("/register", middleware.CSRF(csrfStore)(optAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mux.Handle("/register", middleware.CSRF(csrfStore, h.RenderErrorPage)(optAuth(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodGet {
 			h.RegisterPage(w, r)
 		} else if r.Method == http.MethodPost {
@@ -140,7 +140,7 @@ func main() {
 		}
 	}))))
 
-	mux.Handle("/logout", middleware.CSRF(csrfStore)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+	mux.Handle("/logout", middleware.CSRF(csrfStore, h.RenderErrorPage)(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == http.MethodPost {
 			h.LogoutSubmit(w, r)
 		} else {
@@ -152,13 +152,13 @@ func main() {
 	mux.Handle("/dashboard", reqAuth(http.HandlerFunc(h.Dashboard)))
 	mux.Handle("/table", reqAuth(http.HandlerFunc(h.Table)))
 	mux.Handle("/profile", reqAuth(http.HandlerFunc(h.ProfilePage)))
-	mux.Handle("/profile/password", middleware.CSRF(csrfStore)(reqAuth(http.HandlerFunc(h.ChangePassword))))
+	mux.Handle("/profile/password", middleware.CSRF(csrfStore, h.RenderErrorPage)(reqAuth(http.HandlerFunc(h.ChangePassword))))
 
 	// --- Form submission routes (with CSRF protection) ---
 	userFormMux := http.NewServeMux()
 	userFormMux.HandleFunc("/users", h.CreateUserFromForm)
-	mux.Handle("/users", middleware.CSRF(csrfStore)(userFormMux))
-	mux.Handle("/users/delete", middleware.CSRF(csrfStore)(reqAuth(http.HandlerFunc(h.DeleteUserFromForm))))
+	mux.Handle("/users", middleware.CSRF(csrfStore, h.RenderErrorPage)(userFormMux))
+	mux.Handle("/users/delete", middleware.CSRF(csrfStore, h.RenderErrorPage)(reqAuth(http.HandlerFunc(h.DeleteUserFromForm))))
 
 	// --- API routes ---
 	// Public read-only endpoints (no auth required)
@@ -203,7 +203,7 @@ func main() {
 
 	// Apply CSRF + auth middleware to API routes
 	// reqAuthAPI wraps mutating handlers; read handlers remain public
-	mux.Handle("/api/", middleware.CSRF(csrfStore)(
+	mux.Handle("/api/", middleware.CSRF(csrfStore, h.RenderErrorPage)(
 		optAuth(apiMux),
 	))
 

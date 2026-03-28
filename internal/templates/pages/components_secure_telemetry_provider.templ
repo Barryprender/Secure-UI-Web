@@ -2,7 +2,7 @@ package pages
 
 import "secure-ui-showcase-go/internal/templates"
 
-templ ComponentSecureTelemetryProvider() {
+templ ComponentSecureTelemetryProvider(csrfDemo1 string, csrfDemo2 string) {
 	@templates.Layout("Live Demo: Bot Detection — HMAC Signals, Risk Scoring", "Interactive demos for secure-telemetry-provider: bot detection, DOM tampering, HMAC-signed signals, devtools detection, and server-side verification examples.", true, "/static/styles/components.min.css") {
 		@templates.ComponentPageJsonLDScript("secure-telemetry-provider", "Behavioral intelligence provider with HMAC-SHA-256 signed signals, risk scoring, and bot detection.")
 		<div class="component-page">
@@ -27,7 +27,7 @@ templ ComponentSecureTelemetryProvider() {
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>
 					<secure-telemetry-provider signing-key="demo-key-replace-in-prod">
-						<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
+						<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfDemo1} security-tier="sensitive">
 							<secure-input label="Email" name="tp-demo-email" type="email" security-tier="sensitive" required></secure-input>
 							<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit with Telemetry</button>
 						</secure-form>
@@ -142,7 +142,7 @@ console.log(envelope.signature);` }</code></pre>
 						<div class="config-card-desc">Payment flows benefit most from behavioral telemetry. Wrapping <code>&lt;secure-card&gt;</code> applies bot detection to the highest-risk transaction in your application.</div>
 						<div class="config-demo">
 							<secure-telemetry-provider signing-key="demo-key">
-								<secure-form action="/api/forms/submit" method="POST" security-tier="critical">
+								<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfDemo2} security-tier="critical">
 									<secure-card name="cfg-tp-card" label="Card" required></secure-card>
 									<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Pay</button>
 								</secure-form>

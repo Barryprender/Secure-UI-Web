@@ -5,7 +5,7 @@ import (
 	"secure-ui-showcase-go/internal/templates"
 )
 
-templ ComponentSecureForm() {
+templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string) {
 	@templates.Layout("Live Demo: Secure Form — CSRF, Behavioral Telemetry, Bot Detection", "Interactive demos for secure-form: CSRF token injection, behavioral telemetry aggregation, risk scoring, bot detection without CAPTCHA, and framework integration examples.", true, "/static/styles/components.min.css") {
 		@templates.ComponentPageJsonLDScript("secure-form", "CSRF-protected form wrapper that aggregates per-field behavioral telemetry into a risk score and named risk signals — bot detection without CAPTCHA.")
 		<div class="component-page">
@@ -29,7 +29,7 @@ templ ComponentSecureForm() {
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>
-					<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
+					<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfDemo1} security-tier="sensitive">
 						<secure-input label="Name" name="demo-name" type="text" security-tier="public" required></secure-input>
 						<secure-input label="Email" name="demo-email" type="email" security-tier="public" required></secure-input>
 						<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
@@ -68,7 +68,7 @@ templ ComponentSecureForm() {
 						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
 						<div class="config-card-desc">Every submission attempt is written to the audit log. Child fields with <code>security-tier="sensitive"</code> disable autocomplete and prevent browser caching. Use for login, profile, and any form collecting PII.</div>
 						<div class="config-demo">
-							<secure-form action="/api/forms/submit" method="POST" security-tier="sensitive">
+							<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfDemo2} security-tier="sensitive">
 								<secure-input label="Email" name="cfg-sens-email" type="email" security-tier="sensitive" required></secure-input>
 								<secure-input label="Password" name="cfg-sens-pw" type="password" security-tier="critical" required></secure-input>
 								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Sign in</button>
@@ -97,7 +97,7 @@ templ ComponentSecureForm() {
 						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
 						<div class="config-card-desc">Highest risk tier. Rate limiting active on all child fields. All fields audited. Combined with <code>&lt;secure-telemetry-provider&gt;</code>, environmental signals (headless browser, webdriver flags, suspicious screen dimensions) are bundled into the payload alongside behavioral telemetry for a full bot detection signal set.</div>
 						<div class="config-demo">
-							<secure-form action="/api/forms/submit" method="POST" security-tier="critical">
+							<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfDemo3} security-tier="critical">
 								<secure-input label="Account Number" name="cfg-crit-acct" type="text" security-tier="critical" placeholder="Critical tier — all signals active"></secure-input>
 								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
 							</secure-form>

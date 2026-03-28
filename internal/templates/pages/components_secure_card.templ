@@ -2,7 +2,7 @@ package pages
 
 import "secure-ui-showcase-go/internal/templates"
 
-templ ComponentSecureCard() {
+templ ComponentSecureCard(csrfToken string) {
 	@templates.Layout("Live Demo: Secure Card — PCI Payment, Luhn, PAN Masking", "Interactive demos for secure-card: 3D card preview, Luhn validation, card type detection, PAN masking, CVC protection, and framework examples.", true, "/static/styles/components.min.css") {
 		@templates.ComponentPageJsonLDScript("secure-card", "PCI-compliant payment card component with Luhn validation, card type detection, PAN masking on blur, and CVC protection.")
 		<div class="component-page">
@@ -104,7 +104,7 @@ templ ComponentSecureCard() {
 					<div class="config-card">
 						<div class="config-card-header"><span class="config-label">Inside secure-form</span></div>
 						<div class="config-demo">
-							<secure-form action="/api/forms/submit" method="POST" security-tier="critical">
+							<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfToken} security-tier="critical">
 								<secure-card name="cfg-card-form" label="Card Details" required></secure-card>
 								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Pay Now</button>
 							</secure-form>

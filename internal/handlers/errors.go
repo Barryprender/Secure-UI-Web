@@ -22,7 +22,7 @@ var httpErrors = map[int]struct {
 	},
 	403: {
 		Title:   "Forbidden",
-		Message: "You don't have permission to access this resource.",
+		Message: "Your form token has expired or is invalid. Please go back and try again.",
 	},
 	404: {
 		Title:   "Page Not Found",

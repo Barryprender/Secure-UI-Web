@@ -115,7 +115,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		}
 
 		<!-- View Transitions — inlined to avoid extra HTTP request -->
-		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var n={"/":0,"/forms":1,"/documentation":2,"/login":3,"/register":3,"/registration":3,"/dashboard":4,"/table":5,"/profile":6};function r(i){try{var a=new URL(i).pathname.replace(/\/$/,"")||"/";return a.startsWith("/documentation/")?2:n[a]!==void 0?n[a]:-1}catch{return-1}}window.addEventListener("pagereveal",function(i){if(i.viewTransition&&navigation.activation){var a=r(navigation.activation.from.url),t=r(navigation.activation.entry.url);a>=0&&t>=0&&a!==t&&(t>a?i.viewTransition.types.add("forwards"):i.viewTransition.types.add("backwards"))}})})();</script>
+		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var n={"/":0,"/forms":1,"/documentation":2,"/login":3,"/register":3,"/registration":3,"/dashboard":4,"/table":5,"/profile":6};function r(i){try{var a=new URL(i).pathname.replace(/\/$/,"")||"/";return a.startsWith("/documentation/")?2:n[a]!==void 0?n[a]:-1}catch{return-1}}window.addEventListener("unhandledrejection",function(e){if(e.reason&&e.reason.name==="AbortError")e.preventDefault();});window.addEventListener("pagereveal",function(i){if(i.viewTransition&&navigation.activation){var a=r(navigation.activation.from.url),t=r(navigation.activation.entry.url);a>=0&&t>=0&&a!==t&&(t>a?i.viewTransition.types.add("forwards"):i.viewTransition.types.add("backwards"))}})})();</script>
 
 		<!-- Secure-UI Components - modulepreload for earlier fetch, then self-register -->
 		<link rel="modulepreload" href="/components/index.js" nonce={ middleware.NonceFromContext(ctx) }/>

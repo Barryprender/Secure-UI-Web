@@ -461,8 +461,9 @@ func RateLimit(limiter *RateLimiter, onLimitExceeded ErrorRenderer) func(http.Ha
 	}
 }
 
-// CSRF middleware for protecting forms
-func CSRF(store *CSRFTokenStore) func(http.Handler) http.Handler {
+// CSRF middleware for protecting forms.
+// If onError is non-nil it is called on token failure; otherwise a plain-text 403 is returned.
+func CSRF(store *CSRFTokenStore, onError ErrorRenderer) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			// Only check CSRF for state-changing methods
@@ -473,7 +474,11 @@ func CSRF(store *CSRFTokenStore) func(http.Handler) http.Handler {
 				}
 
 				if token == "" || !store.ConsumeToken(token) {
-					http.Error(w, "Invalid or missing CSRF token", http.StatusForbidden)
+					if onError != nil {
+						onError(w, r, http.StatusForbidden)
+					} else {
+						http.Error(w, "Invalid or missing CSRF token", http.StatusForbidden)
+					}
 					return
 				}
 
