@@ -111,7 +111,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		}
 		if prism {
 			<!-- Prism CSS loaded async — code blocks are below fold, does not affect LCP -->
-			<script nonce={ middleware.NonceFromContext(ctx) }>{ "(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='" + assets.URL("/static/styles/prism.min.css") + "';document.head.appendChild(l);})()" }</script>
+			<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='/static/styles/prism.min.css';document.head.appendChild(l);})()</script>
 		}
 
 		<!-- View Transitions — inlined to avoid extra HTTP request -->
