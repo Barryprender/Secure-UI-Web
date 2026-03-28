@@ -8,15 +8,59 @@ import (
 templ Theming() {
 	@templates.Layout("Theming Guide", "Five built-in theme presets and a complete CSS custom property system. Override tokens globally, per component, or per instance. Supports dark mode and scoped theming.", true, "/static/styles/theming.min.css") {
 		<!-- Hero -->
-		<section class="theming-hero">
+		<section class="theming-hero" id="theming-hero">
 			<div class="container">
 				<div class="theming-hero-content">
-					<span class="theming-hero-eyebrow">CSS Custom Properties</span>
+					<div class="theming-hero-top">
+						<span class="theming-hero-eyebrow">
+							<span class="theming-hero-eyebrow-dot" aria-hidden="true"></span>
+							CSS Custom Properties
+						</span>
+						<span class="theming-hero-badge" id="theming-hero-badge" aria-live="polite">Default</span>
+					</div>
 					<h1 class="theming-hero-title">Theming Guide</h1>
 					<p class="theming-hero-description">
 						Secure-UI uses CSS custom properties as design tokens. Override them globally,
 						per component, or per instance — no build step, no configuration files.
 					</p>
+
+					<div class="theming-hero-stats" role="list" aria-label="Theming system capabilities">
+						<div class="theming-hero-stat" role="listitem">
+							<span class="theming-hero-stat-num">5</span>
+							<span class="theming-hero-stat-label">Built-in Themes</span>
+						</div>
+						<div class="theming-hero-stat" role="listitem">
+							<span class="theming-hero-stat-num">&#x221E;</span>
+							<span class="theming-hero-stat-label">Custom Combinations</span>
+						</div>
+						<div class="theming-hero-stat" role="listitem">
+							<span class="theming-hero-stat-num">0</span>
+							<span class="theming-hero-stat-label">Build Steps</span>
+						</div>
+					</div>
+
+					<div class="theming-hero-swatches" role="list" aria-label="Available theme presets">
+						<div class="theming-hero-swatch" data-accent="#059669" role="listitem">
+							<span class="theming-hero-swatch-dot th-swatch--default"></span>
+							<span class="theming-hero-swatch-name">Default</span>
+						</div>
+						<div class="theming-hero-swatch" data-accent="#6366f1" role="listitem">
+							<span class="theming-hero-swatch-dot th-swatch--dark"></span>
+							<span class="theming-hero-swatch-name">Dark</span>
+						</div>
+						<div class="theming-hero-swatch" data-accent="#0284c7" role="listitem">
+							<span class="theming-hero-swatch-dot th-swatch--ocean"></span>
+							<span class="theming-hero-swatch-name">Ocean</span>
+						</div>
+						<div class="theming-hero-swatch" data-accent="#16a34a" role="listitem">
+							<span class="theming-hero-swatch-dot th-swatch--forest"></span>
+							<span class="theming-hero-swatch-name">Forest</span>
+						</div>
+						<div class="theming-hero-swatch" data-accent="#2563eb" role="listitem">
+							<span class="theming-hero-swatch-dot th-swatch--enterprise"></span>
+							<span class="theming-hero-swatch-name">Enterprise</span>
+						</div>
+					</div>
 				</div>
 			</div>
 		</section>
@@ -437,6 +481,59 @@ const revealObs = new IntersectionObserver((entries) => {
 }, { threshold: 0.12 });
 
 document.querySelectorAll('.theming-reveal').forEach(el => revealObs.observe(el));
+		</script>
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+const heroEl = document.getElementById('theming-hero');
+const heroBadge = document.getElementById('theming-hero-badge');
+const heroSwatches = document.querySelectorAll('.theming-hero-swatch');
+
+const heroThemes = [
+    { name: 'Default',    bg: '#ffffff',  bg2: '#f8f9fa', accent: '#059669', text: '#1a1a2e', text2: '#4a5568', border: '#e2e8f0' },
+    { name: 'Dark',       bg: '#0a0a0f',  bg2: '#121218', accent: '#6366f1', text: '#f0f4ff', text2: '#94a3b8', border: 'rgba(255,255,255,0.1)' },
+    { name: 'Ocean',      bg: '#f0f9ff',  bg2: '#e0f2fe', accent: '#0284c7', text: '#0c4a6e', text2: '#0369a1', border: '#bae6fd' },
+    { name: 'Forest',     bg: '#f0fdf4',  bg2: '#dcfce7', accent: '#16a34a', text: '#14532d', text2: '#166534', border: '#bbf7d0' },
+    { name: 'Enterprise', bg: '#ffffff',  bg2: '#f8fafc', accent: '#2563eb', text: '#0f172a', text2: '#475569', border: '#e2e8f0' },
+];
+
+function setHeroTheme(theme) {
+    if (!heroEl) return;
+    heroEl.style.setProperty('--th-hero-bg',     theme.bg);
+    heroEl.style.setProperty('--th-hero-bg2',    theme.bg2);
+    heroEl.style.setProperty('--th-hero-accent', theme.accent);
+    heroEl.style.setProperty('--th-hero-text',   theme.text);
+    heroEl.style.setProperty('--th-hero-text2',  theme.text2);
+    heroEl.style.setProperty('--th-hero-border', theme.border);
+    if (heroBadge) heroBadge.textContent = theme.name;
+    heroSwatches.forEach(s => {
+        const isActive = s.dataset.accent === theme.accent;
+        s.classList.toggle('theming-hero-swatch--active', isActive);
+    });
+}
+
+// Apply initial
+setHeroTheme(heroThemes[0]);
+
+// Auto-cycle unless reduced-motion
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let heroIdx = 0;
+let cycleTimer = null;
+
+if (!reduceMotion) {
+    cycleTimer = setInterval(() => {
+        heroIdx = (heroIdx + 1) % heroThemes.length;
+        setHeroTheme(heroThemes[heroIdx]);
+    }, 3200);
+}
+
+// Stop cycling and sync hero when user picks a preset card
+document.querySelectorAll('.theming-preset-card').forEach(card => {
+    card.addEventListener('click', () => {
+        if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+        const p = card.dataset.preset ?? 'default';
+        const match = heroThemes.find(t => t.name.toLowerCase() === p.toLowerCase());
+        if (match) { heroIdx = heroThemes.indexOf(match); setHeroTheme(match); }
+    });
+});
 		</script>
 	}
 }
