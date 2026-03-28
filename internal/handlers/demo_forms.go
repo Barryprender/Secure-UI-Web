@@ -54,7 +54,7 @@ func (h *Handlers) DemoSubscribeHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	name := validation.Sanitize(demoJSONString(body["name"]))
+	name := validation.SanitizeHTML(demoJSONString(body["name"]))
 	email := validation.Sanitize(demoJSONString(body["email"]))
 	plan := validation.Sanitize(demoJSONString(body["plan"]))
 
@@ -93,9 +93,9 @@ func (h *Handlers) DemoPaymentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cardholderName := validation.Sanitize(demoJSONString(body["cardholder_name"]))
-	billingAddress := validation.Sanitize(demoJSONString(body["billing_address"]))
-	billingCity := validation.Sanitize(demoJSONString(body["billing_city"]))
+	cardholderName := validation.SanitizeHTML(demoJSONString(body["cardholder_name"]))
+	billingAddress := validation.SanitizeHTML(demoJSONString(body["billing_address"]))
+	billingCity := validation.SanitizeHTML(demoJSONString(body["billing_city"]))
 	billingPostcode := validation.Sanitize(demoJSONString(body["billing_postcode"]))
 	cardLast4 := validation.Sanitize(demoJSONString(body["card_last4"]))
 	cardType := validation.Sanitize(demoJSONString(body["card_type"]))
@@ -122,6 +122,17 @@ func (h *Handlers) DemoPaymentHandler(w http.ResponseWriter, r *http.Request) {
 		"currency":        "GBP",
 		"note":            "Full PAN never received — tokenise via payment SDK in production",
 	})
+}
+
+// DemoComponentSubmitHandler handles POST /api/demo/component-submit.
+// Used by all component showcase pages as a generic form submission target.
+// Accepts any JSON body (the format secure-form sends), returns a success response.
+func (h *Handlers) DemoComponentSubmitHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPost {
+		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		return
+	}
+	writeSuccess(w, http.StatusOK, "Form submitted successfully", nil)
 }
 
 // GetDemoCSRFToken issues a fresh CSRF token for re-use after a demo form submission.
