@@ -9,9 +9,76 @@ import (
 templ ComponentsIndex() {
 	@templates.Layout("Interactive Secure Web Component Demos", "Live browser demos for all Secure-UI components. Try XSS prevention, CSRF protection, security tiers, and behavioral telemetry without installing anything.", false, "/static/styles/components.min.css") {
 		@templates.ComponentsIndexJsonLDScript()
-		<div class="components-index-page">
-			<!-- Hero -->
-			<header class="ci-hero">
+		<!-- Hero — full-bleed outside container -->
+		<header class="ci-hero" id="ci-hero">
+			<!-- Background mosaic of animated component previews -->
+			<div class="ci-hero-mosaic" aria-hidden="true">
+				<div class="card-preview card-preview--telemetry ci-mc ci-mc--1">
+					<div class="cp-tel-grid">
+						<span class="cp-tel-dot"></span><span class="cp-tel-dot"></span><span class="cp-tel-dot"></span>
+						<span class="cp-tel-dot"></span><span class="cp-tel-dot"></span><span class="cp-tel-dot"></span>
+						<span class="cp-tel-dot"></span><span class="cp-tel-dot"></span><span class="cp-tel-dot"></span>
+					</div>
+					<div class="cp-tel-badge">HMAC-SHA-256</div>
+				</div>
+				<div class="card-preview card-preview--input ci-mc ci-mc--2">
+					<div class="cp-label">Email address</div>
+					<div class="cp-input-field">
+						<span class="cp-input-text">alice@example.com</span><span class="cp-cursor"></span>
+					</div>
+				</div>
+				<div class="card-preview card-preview--select ci-mc ci-mc--3">
+					<div class="cp-select-trigger">
+						<span>Administrator</span>
+						<span class="cp-chevron">&#8250;</span>
+					</div>
+					<div class="cp-select-dropdown">
+						<div class="cp-select-option">Editor</div>
+						<div class="cp-select-option cp-select-option--2">Viewer</div>
+					</div>
+				</div>
+				<div class="card-preview card-preview--datetime ci-mc ci-mc--4">
+					<div class="cp-dt-header">March 2026</div>
+					<div class="cp-dt-grid">
+						<span class="cp-dt-cell">3</span>
+						<span class="cp-dt-cell">10</span>
+						<span class="cp-dt-cell">17</span>
+						<span class="cp-dt-cell">24</span>
+						<span class="cp-dt-cell cp-dt-cell--pulse">18</span>
+						<span class="cp-dt-cell">25</span>
+					</div>
+				</div>
+				<div class="card-preview card-preview--form ci-mc ci-mc--5">
+					<div class="cp-step cp-step--1"><span class="cp-step-icon"></span><span>CSRF token injected</span></div>
+					<div class="cp-step cp-step--2"><span class="cp-step-icon"></span><span>Fields validated</span></div>
+					<div class="cp-step cp-step--3"><span class="cp-step-icon"></span><span>Submission logged</span></div>
+				</div>
+				<div class="card-preview card-preview--upload ci-mc ci-mc--6">
+					<div class="cp-upload-filename">
+						<span class="cp-upload-arrow">&#8593;</span>
+						report.pdf
+					</div>
+					<div class="cp-progress-track"><div class="cp-progress-fill"></div></div>
+					<div class="cp-upload-meta">MIME &middot; SIZE &middot; MAGIC</div>
+				</div>
+				<div class="card-preview card-preview--textarea ci-mc ci-mc--7">
+					<div class="cp-ta-box">
+						<div class="cp-ta-line cp-ta-line--1"></div>
+						<div class="cp-ta-line cp-ta-line--2"></div>
+						<div class="cp-ta-line cp-ta-line--3"></div>
+						<div class="cp-ta-line cp-ta-line--4"></div>
+					</div>
+					<div class="cp-ta-count">142 / 500</div>
+				</div>
+				<div class="card-preview card-preview--table ci-mc ci-mc--8">
+					<div class="cp-tbl-head"><span>Name</span><span>Role</span><span>&#9679;</span></div>
+					<div class="cp-tbl-row cp-tbl-row--1"><span>Alice</span><span>Admin</span><span class="cp-dot cp-dot--green"></span></div>
+					<div class="cp-tbl-row cp-tbl-row--2"><span>Bob</span><span>User</span><span class="cp-dot cp-dot--green"></span></div>
+					<div class="cp-tbl-row cp-tbl-row--3"><span>Carol</span><span>Editor</span><span class="cp-dot cp-dot--amber"></span></div>
+				</div>
+			</div>
+			<!-- Foreground content -->
+			<div class="ci-hero-content">
 				<span class="ci-eyebrow">{ i18n.T(ctx, "ci.eyebrow") }</span>
 				<h1 class="ci-title">{ i18n.T(ctx, "ci.title_line1") }<br/>{ i18n.T(ctx, "ci.title_line2") }</h1>
 				<p class="ci-subtitle">{ i18n.T(ctx, "ci.subtitle") }</p>
@@ -29,7 +96,9 @@ templ ComponentsIndex() {
 						<span class="ci-stat-label">{ i18n.T(ctx, "ci.stat.deps") }</span>
 					</div>
 				</div>
-			</header>
+			</div>
+		</header>
+		<div class="components-index-page">
 
 			<!-- Why Secure-UI -->
 			<section class="ci-why">

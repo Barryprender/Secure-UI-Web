@@ -1160,8 +1160,76 @@
 /* ── Hero ── */
 
 .ci-hero {
-  text-align: center;
-  padding: var(--space-3xl, 4rem) 0 var(--space-2xl, 3rem);
+  position: relative;
+  overflow: hidden;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border-subtle);
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+}
+
+/* Soft top/bottom fade on the mosaic column only */
+.ci-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 0 50%;
+  background:
+    linear-gradient(to bottom, var(--bg-primary) 0%, transparent 14%, transparent 86%, var(--bg-primary) 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Bottom accent rule */
+.ci-hero::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--accent-primary) 25%, var(--accent-primary) 75%, transparent);
+  z-index: 2;
+}
+
+/* Mosaic — right half only */
+.ci-hero-mosaic {
+  position: absolute;
+  inset: 0 0 0 50%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  gap: 1rem;
+  padding: 1.5rem 2rem;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 1;
+}
+
+.ci-hero-mosaic .card-preview {
+  border-radius: var(--radius-lg, 10px);
+  border: 1px solid var(--border-subtle);
+  box-shadow: none;
+}
+
+/* Mosaic card staggered entrance */
+.ci-mc {
+  animation: ci-mosaic-in 1.5s cubic-bezier(0.25,1,0.5,1) both;
+}
+.ci-mc--1 { animation-delay: 0s; }
+.ci-mc--2 { animation-delay: 0.07s; }
+.ci-mc--3 { animation-delay: 0.14s; }
+.ci-mc--4 { animation-delay: 0.21s; }
+.ci-mc--5 { animation-delay: 0.28s; }
+.ci-mc--6 { animation-delay: 0.35s; }
+.ci-mc--7 { animation-delay: 0.42s; }
+.ci-mc--8 { animation-delay: 0.49s; }
+
+/* Hero foreground — left-aligned */
+.ci-hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: left;
+  padding: var(--space-3xl, 4rem) var(--space-xl, 2rem) var(--space-2xl, 3rem);
+  max-width: 52%;
   animation: ci-hero-in 0.7s var(--ease-out-quart, cubic-bezier(0.25,1,0.5,1)) both;
 }
 
@@ -1194,8 +1262,8 @@
 .ci-subtitle {
   font-size: clamp(1rem, 2vw, 1.1875rem);
   color: var(--text-secondary);
-  max-width: 580px;
-  margin: 0 auto var(--space-xl, 2rem);
+  max-width: 480px;
+  margin: 0 0 var(--space-xl, 2rem);
   line-height: 1.65;
 }
 
@@ -1203,7 +1271,7 @@
 .ci-stats {
   display: inline-flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: var(--space-sm, 0.75rem);
 }
 
@@ -2058,6 +2126,11 @@
   to   { opacity: 1; transform: none; }
 }
 
+@keyframes ci-mosaic-in {
+  from { opacity: 0; transform: scale(0.94) translateY(12px); }
+  to   { opacity: 1; transform: none; }
+}
+
 @keyframes ci-cursor {
   0%, 100% { opacity: 1; }
   50%       { opacity: 0; }
@@ -2167,6 +2240,40 @@
   .component-page,
   .components-index-page {
     padding: var(--space-lg, 1.5rem) var(--space-md, 1rem);
+  }
+
+  .ci-hero {
+    min-height: unset;
+  }
+
+  .ci-hero-mosaic {
+    inset: 0;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr 1fr;
+    padding: 1.5rem;
+    gap: 1rem;
+    opacity: 0.22;
+  }
+
+  .ci-hero::before {
+    background:
+      radial-gradient(ellipse 60% 70% at 50% 50%, var(--bg-primary) 15%, transparent 70%),
+      linear-gradient(to bottom, var(--bg-primary) 0%, transparent 20%, transparent 80%, var(--bg-primary) 100%),
+      linear-gradient(to right, var(--bg-primary) 0%, transparent 10%, transparent 90%, var(--bg-primary) 100%);
+  }
+
+  .ci-hero-content {
+    text-align: center;
+    max-width: 100%;
+    padding: var(--space-2xl, 3rem) var(--space-lg, 1.5rem) var(--space-xl, 2rem);
+  }
+
+  .ci-subtitle {
+    margin: 0 auto var(--space-xl, 2rem);
+  }
+
+  .ci-stats {
+    justify-content: center;
   }
 
   .ci-title {
@@ -2300,6 +2407,10 @@
     font-size: 1.875rem;
   }
 
+  .ci-hero-mosaic {
+    display: none;
+  }
+
   .security-matrix {
     min-width: 440px;
   }
@@ -2383,7 +2494,9 @@
   }
 
   /* Hero */
-  .ci-hero { animation: none; }
+  .ci-hero-content { animation: none; }
+  .ci-hero-mosaic  { display: none; }
+  .ci-mc           { animation: none; }
 }
 
 /* ── Demo customization classes (replaces inline style= attributes) ── */
