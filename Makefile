@@ -5,6 +5,7 @@ help:
 	@echo "Secure-UI Showcase (Go + Templ) - Available commands:"
 	@echo ""
 	@echo "  make install        - Install Go dependencies and tools (templ, air)"
+	@echo "  make components     - Update secure-ui-components to latest, sync dist/, update lock file"
 	@echo "  make generate       - Generate Go code from templ templates"
 	@echo "  make dev            - Start development server with hot reload"
 	@echo "  make build          - Build production binary"
@@ -28,17 +29,15 @@ install: components
 	@echo "Make sure $$(go env GOPATH)/bin is in your PATH"
 	@echo "Run 'make generate' to generate templ files"
 
-# Fetch web components from npm into secure-ui-components/dist/
-# Run this after cloning or when upgrading the package version in package.json
+# Fetch latest web components from npm, update package-lock.json, sync dist/
+# Commit package-lock.json after running this so Docker uses the same version.
 components:
-	@echo "📦 Installing secure-ui-components from npm..."
-	@mkdir -p .npm-components
-	@cp package.json .npm-components/
-	@npm install --prefix .npm-components --omit=dev
-	@mkdir -p secure-ui-components/dist
-	@cp -r .npm-components/node_modules/secure-ui-components/dist/. secure-ui-components/dist/
-	@rm -rf .npm-components
+	@echo "📦 Updating secure-ui-components to latest..."
+	npm install secure-ui-components@latest
+	@echo "📦 Syncing dist files..."
+	npm run sync
 	@echo "✅ Components ready at secure-ui-components/dist/"
+	@echo "   Commit package-lock.json to lock this version for Docker builds."
 
 # Generate templ templates to Go code
 generate:

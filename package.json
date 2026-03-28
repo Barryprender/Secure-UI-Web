@@ -4,7 +4,7 @@
   "private": true,
   "description": "Go showcase app for the secure-ui-components library",
   "dependencies": {
-    "secure-ui-components": "^0.1.5"
+    "secure-ui-components": "^0.1.7"
   },
   "scripts": {
     "sync": "node -e \"const fs=require('fs');fs.cpSync('node_modules/secure-ui-components/dist','secure-ui-components/dist',{recursive:true,force:true})\"",
