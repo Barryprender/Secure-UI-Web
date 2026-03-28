@@ -100,26 +100,22 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"/>
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
-		<!-- Global CSS — preload hints for critical always-loaded files -->
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/tokens.min.css") }/>
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/base.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/tokens.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/base.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/navigation.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/footer.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/view-transitions.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/no-js-fallback.min.css") }/>
+		<!-- Global CSS — tokens, base, nav, footer, view-transitions, no-js (combined, 1 request) -->
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/global.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/global.min.css") }/>
 
-		<!-- Page-specific CSS -->
+		<!-- Page-specific CSS — preloaded in parallel with global -->
 		for _, css := range pageCSS {
+			<link rel="preload" as="style" href={ assets.URL(css) }/>
 			<link rel="stylesheet" href={ assets.URL(css) }/>
 		}
 		if prism {
-			<link rel="stylesheet" href={ assets.URL("/static/styles/prism.min.css") }/>
+			<!-- Prism CSS loaded async — code blocks are below fold, does not affect LCP -->
+			<script nonce={ middleware.NonceFromContext(ctx) }>{ "(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='" + assets.URL("/static/styles/prism.min.css") + "';document.head.appendChild(l);})()" }</script>
 		}
 
-		<!-- View Transitions — directional navigation (parser-blocking, must run before first render) -->
-		<script nonce={ middleware.NonceFromContext(ctx) } src={ assets.URL("/static/js/view-transitions.min.js") }></script>
+		<!-- View Transitions — inlined to avoid extra HTTP request -->
+		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var n={"/":0,"/forms":1,"/documentation":2,"/login":3,"/register":3,"/registration":3,"/dashboard":4,"/table":5,"/profile":6};function r(i){try{var a=new URL(i).pathname.replace(/\/$/,"")||"/";return a.startsWith("/documentation/")?2:n[a]!==void 0?n[a]:-1}catch{return-1}}window.addEventListener("pagereveal",function(i){if(i.viewTransition&&navigation.activation){var a=r(navigation.activation.from.url),t=r(navigation.activation.entry.url);a>=0&&t>=0&&a!==t&&(t>a?i.viewTransition.types.add("forwards"):i.viewTransition.types.add("backwards"))}})})();</script>
 
 		<!-- Secure-UI Components - modulepreload for earlier fetch, then self-register -->
 		<link rel="modulepreload" href="/components/index.js" nonce={ middleware.NonceFromContext(ctx) }/>
@@ -197,6 +193,7 @@ templ LandingHead(title string, description string) {
 		<!-- Landing page CSS only -->
 		<link rel="preload" as="style" href={ assets.URL("/static/styles/tokens.min.css") }/>
 		<link rel="preload" as="style" href={ assets.URL("/static/styles/base.min.css") }/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/telemetry-pro.min.css") }/>
 		<link rel="stylesheet" href={ assets.URL("/static/styles/tokens.min.css") }/>
 		<link rel="stylesheet" href={ assets.URL("/static/styles/base.min.css") }/>
 		<link rel="stylesheet" href={ assets.URL("/static/styles/telemetry-pro.min.css") }/>
