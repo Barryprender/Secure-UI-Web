@@ -4,8 +4,8 @@
 FROM node:22-alpine AS components
 
 WORKDIR /components
-COPY package.json package-lock.json ./
-RUN npm ci --omit=dev
+COPY package.json ./
+RUN npm install --omit=dev
 
 # ── Stage 2: Build Go binary ──────────────────────────────────────────────────
 FROM golang:1.24-alpine AS builder
