@@ -1,9 +1,12 @@
 package pages
 
-import "secure-ui-showcase-go/internal/templates"
+import (
+	"secure-ui-showcase-go/internal/middleware"
+	"secure-ui-showcase-go/internal/templates"
+)
 
 templ ComponentSecureTelemetryProvider(csrfDemo1 string, csrfDemo2 string) {
-	@templates.Layout("Live Demo: Bot Detection — HMAC Signals, Risk Scoring", "Interactive demos for secure-telemetry-provider: bot detection, DOM tampering, HMAC-signed signals, devtools detection, and server-side verification examples.", true, "/static/styles/components.min.css") {
+	@templates.Layout("Live Demo: Bot Detection — HMAC Signals, Risk Scoring", "Interactive demos for secure-telemetry-provider: bot detection, DOM tampering, HMAC-signed signals, and server-side verification examples.", true, "/static/styles/components.min.css") {
 		@templates.ComponentPageJsonLDScript("secure-telemetry-provider", "Behavioral intelligence provider with HMAC-SHA-256 signed signals, risk scoring, and bot detection.")
 		<div class="component-page">
 			<!-- Hero -->
@@ -12,7 +15,7 @@ templ ComponentSecureTelemetryProvider(csrfDemo1 string, csrfDemo2 string) {
 					<h1>&lt;secure-telemetry-provider&gt;</h1>
 					<p class="component-hero-description">
 						Replaces CAPTCHA with passive behavioral analysis. Collects environmental signals —
-						webdriver and headless browser detection, DOM tampering, devtools status, and
+						webdriver and headless browser detection, DOM tampering, and
 						user interaction patterns — and attaches a HMAC-SHA-256 signed envelope to every
 						form submission. Real users see nothing; automated clients are identified
 						before the request reaches your server.
@@ -26,12 +29,19 @@ templ ComponentSecureTelemetryProvider(csrfDemo1 string, csrfDemo2 string) {
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>
-					<secure-telemetry-provider signing-key="demo-key-replace-in-prod">
-						<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfDemo1} security-tier="sensitive">
+					<secure-telemetry-provider id="tp-provider" signing-key="demo-key-replace-in-prod">
+						<secure-form id="tp-form" action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo1} csrf-header-name="X-CSRF-Token" security-tier="sensitive" enhance>
 							<secure-input label="Email" name="tp-demo-email" type="email" security-tier="sensitive" required></secure-input>
 							<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit with Telemetry</button>
 						</secure-form>
 					</secure-telemetry-provider>
+					<div id="tp-result" class="tp-result" hidden aria-live="polite">
+						<div class="tp-result-header">
+							<span class="tp-result-title">Telemetry Captured</span>
+							<button class="tp-result-close" aria-label="Dismiss telemetry panel" type="button">&#x2715;</button>
+						</div>
+						<div id="tp-result-body" class="tp-result-body"></div>
+					</div>
 				</div>
 				<!-- Why Not CAPTCHA comparison — full-width row spanning both columns -->
 				<div class="captcha-comparison">
@@ -141,12 +151,19 @@ console.log(envelope.signature);` }</code></pre>
 						<div class="config-card-header"><span class="config-label">With secure-card</span></div>
 						<div class="config-card-desc">Payment flows benefit most from behavioral telemetry. Wrapping <code>&lt;secure-card&gt;</code> applies bot detection to the highest-risk transaction in your application.</div>
 						<div class="config-demo">
-							<secure-telemetry-provider signing-key="demo-key">
-								<secure-form action="/api/forms/submit" method="POST" csrf-token={csrfDemo2} security-tier="critical">
+							<secure-telemetry-provider id="cfg-tp-card-provider" signing-key="demo-key">
+								<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo2} csrf-header-name="X-CSRF-Token" security-tier="critical" enhance>
 									<secure-card name="cfg-tp-card" label="Card" required></secure-card>
 									<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Pay</button>
 								</secure-form>
 							</secure-telemetry-provider>
+							<div id="cfg-tp-card-result" class="tp-result" hidden aria-live="polite">
+								<div class="tp-result-header">
+									<span class="tp-result-title">Telemetry Captured</span>
+									<button class="tp-result-close" aria-label="Dismiss" type="button">&#x2715;</button>
+								</div>
+								<div id="cfg-tp-card-result-body" class="tp-result-body"></div>
+							</div>
 						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-telemetry-provider
@@ -169,60 +186,76 @@ console.log(envelope.signature);` }</code></pre>
 			<section class="security-section">
 				<h2 class="security-section-title">Signals Collected</h2>
 				<p class="security-callout">All signals are heuristic. They raise the cost of automated attacks — not a guarantee of detection. Always validate server-side.</p>
-				<table class="security-matrix">
+				<div class="signals-legend" aria-label="Signal categories">
+					<span class="signals-legend__item" data-cat="automation">Automation</span>
+					<span class="signals-legend__item" data-cat="integrity">DOM integrity</span>
+					<span class="signals-legend__item" data-cat="environment">Environment</span>
+					<span class="signals-legend__item" data-cat="behavioral">Behavioral</span>
+					<span class="signals-legend__item" data-cat="timing">Timing</span>
+				</div>
+				<div class="security-matrix-wrapper">
+				<table class="security-matrix signals-table">
 					<thead>
 						<tr>
 							<th>Signal</th>
+							<th class="signals-table__weight-th">Max weight</th>
 							<th>How detected</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<tr data-cat="automation">
 							<td><code>webdriverDetected</code></td>
+							<td><span class="sig-weight">+40</span></td>
 							<td><code>navigator.webdriver</code> present and truthy</td>
 						</tr>
-						<tr>
+						<tr data-cat="automation">
 							<td><code>headlessDetected</code></td>
+							<td><span class="sig-weight">+35</span></td>
 							<td>User-agent contains <code>HeadlessChrome</code> or <code>Headless</code></td>
 						</tr>
-						<tr>
+						<tr data-cat="integrity">
 							<td><code>domMutationDetected</code></td>
+							<td><span class="sig-weight">+10</span></td>
 							<td><code>MutationObserver</code> on <code>document.documentElement</code> — detects dynamically injected elements</td>
 						</tr>
-						<tr>
+						<tr data-cat="integrity">
 							<td><code>injectedScriptCount</code></td>
+							<td><span class="sig-weight">+10</span></td>
 							<td>Count of <code>&lt;script&gt;</code> elements added after page load</td>
 						</tr>
-						<tr>
-							<td><code>devtoolsOpen</code></td>
-							<td>Window outer/inner size delta heuristic (&gt;160px suggests devtools panel)</td>
-						</tr>
-						<tr>
+						<tr data-cat="environment">
 							<td><code>suspiciousScreenSize</code></td>
+							<td><span class="sig-weight">+20</span></td>
 							<td>Screen width or height is 0, or both dimensions under 100px</td>
 						</tr>
-						<tr>
+						<tr data-cat="environment">
 							<td><code>pointerType</code></td>
-							<td>First <code>pointerdown</code> event's <code>pointerType</code>: mouse / touch / pen / none</td>
+							<td><span class="sig-weight sig-weight--neutral">&#x2014;</span></td>
+							<td>First <code>pointerdown</code> event&#39;s <code>pointerType</code>: mouse / touch / pen / none. Suppresses the mouse-movement penalty for touch and pen devices</td>
 						</tr>
-						<tr>
+						<tr data-cat="behavioral">
 							<td><code>mouseMovementDetected</code></td>
-							<td>At least one <code>mousemove</code> event received</td>
+							<td><span class="sig-weight">+15</span></td>
+							<td>At least one <code>mousemove</code> event received. Absence adds to score only for non-touch devices</td>
 						</tr>
-						<tr>
+						<tr data-cat="behavioral">
 							<td><code>keyboardActivityDetected</code></td>
+							<td><span class="sig-weight">+10</span></td>
 							<td>At least one <code>keydown</code> event received</td>
 						</tr>
-						<tr>
+						<tr data-cat="timing">
 							<td><code>pageLoadToFirstKeystroke</code></td>
-							<td>ms from component mount to first <code>keydown</code> event. Returns -1 if no keystroke was received before submit. Values below 200ms suggest programmatic input</td>
+							<td><span class="sig-weight">+20</span></td>
+							<td>ms from component mount to first <code>keydown</code> event. Returns -1 if no keystroke before submit. Values below 200ms suggest programmatic input</td>
 						</tr>
-						<tr>
+						<tr data-cat="timing">
 							<td><code>loadToSubmit</code></td>
+							<td><span class="sig-weight">+30</span></td>
 							<td>ms from component mount to form submission. Values below 500ms are consistent with automated submission</td>
 						</tr>
 					</tbody>
 				</table>
+				</div>
 			</section>
 
 			<!-- Theming -->
@@ -401,7 +434,6 @@ type EnvironmentalSignals struct {
     HeadlessDetected           bool   ` + "`json:\"headlessDetected\"`" + `
     DomMutationDetected        bool   ` + "`json:\"domMutationDetected\"`" + `
     InjectedScriptCount        int    ` + "`json:\"injectedScriptCount\"`" + `
-    DevtoolsOpen               bool   ` + "`json:\"devtoolsOpen\"`" + `
     SuspiciousScreenSize       bool   ` + "`json:\"suspiciousScreenSize\"`" + `
     PointerType                string ` + "`json:\"pointerType\"`" + `
     MouseMovementDetected      bool   ` + "`json:\"mouseMovementDetected\"`" + `
@@ -488,5 +520,290 @@ func Score(env EnvironmentalSignals) int {
 				</a>
 			</nav>
 		</div>
+		<script type="module" nonce={ middleware.NonceFromContext(ctx) }>
+{
+  // Security matrix row entrance animation
+  const rows = document.querySelectorAll('.security-matrix tbody tr');
+  if (rows.length) {
+    const rowIo = new IntersectionObserver((entries, obs) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('matrix-row--visible');
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    rows.forEach(r => rowIo.observe(r));
+  }
+
+  // ── Hero form panel ────────────────────────────────────────────────────────
+  const provider = document.getElementById('tp-provider');
+  const resultEl = document.getElementById('tp-result');
+  const bodyEl   = document.getElementById('tp-result-body');
+  const closeBtn = resultEl ? resultEl.querySelector('.tp-result-close') : null;
+
+  if (provider && resultEl && bodyEl) {
+    closeBtn?.addEventListener('click', () => { resultEl.hidden = true; });
+
+    let heroPending = null;
+
+    provider.addEventListener('secure-form-submit', async (e) => {
+      const telemetry = e.detail?.telemetry;
+      if (!telemetry) return;
+      const signals = provider.collectSignals();
+      resultEl.hidden = false;
+      bodyEl.innerHTML = '<p class="tp-loading">Signing envelope\u2026</p>';
+      let envelope = null;
+      try { envelope = await provider.sign(signals); } catch {}
+      heroPending = { telemetry, signals, envelope };
+    });
+
+    provider.addEventListener('secure-form-success', async (e) => {
+      const formData = e.detail?.formData ?? {};
+      let responseData = null;
+      try {
+        const clone = e.detail?.response?.clone?.();
+        if (clone) responseData = await clone.json();
+      } catch {}
+      const snapshot = heroPending ?? {};
+      heroPending = null;
+      const { telemetry, signals, envelope } = snapshot;
+      if (!telemetry || !signals) return;
+      const envScore = computeEnvScore(signals);
+      bodyEl.innerHTML = buildPanel(telemetry, signals, envelope, envScore, formData, responseData);
+      applyScoreBarStyles(bodyEl);
+    });
+  }
+
+  // ── Card config panel ───────────────────────────────────────────────────────
+  const cardProvider = document.getElementById('cfg-tp-card-provider');
+  const cardResult   = document.getElementById('cfg-tp-card-result');
+  const cardBody     = document.getElementById('cfg-tp-card-result-body');
+  const cardClose    = cardResult ? cardResult.querySelector('.tp-result-close') : null;
+
+  if (cardProvider && cardResult && cardBody) {
+    cardClose?.addEventListener('click', () => { cardResult.hidden = true; });
+
+    let pending = null;
+
+    cardProvider.addEventListener('secure-form-submit', async (e) => {
+      const telemetry = e.detail?.telemetry;
+      if (!telemetry) return;
+      const signals = cardProvider.collectSignals();
+      cardResult.hidden = false;
+      cardBody.innerHTML = '<p class="tp-loading">Signing envelope\u2026</p>';
+      let envelope = null;
+      try { envelope = await cardProvider.sign(signals); } catch {}
+      pending = { telemetry, signals, envelope };
+    });
+
+    cardProvider.addEventListener('secure-form-success', async (e) => {
+      const formData = e.detail?.formData ?? {};
+      let responseData = null;
+      try {
+        const clone = e.detail?.response?.clone?.();
+        if (clone) responseData = await clone.json();
+      } catch {}
+      const snapshot = pending ?? {};
+      pending = null;
+      const { telemetry, signals, envelope } = snapshot;
+      if (!telemetry || !signals) return;
+      const envScore = computeEnvScore(signals);
+      cardBody.innerHTML = buildPanel(telemetry, signals, envelope, envScore, formData, responseData);
+      applyScoreBarStyles(cardBody);
+    });
+  }
+
+  function computeEnvScore(env) {
+    let s = 0;
+    if (env.webdriverDetected)   s += 40;
+    if (env.headlessDetected)    s += 35;
+    if (env.suspiciousScreenSize) s += 20;
+    if (env.domMutationDetected) s += 10;
+    if (env.injectedScriptCount > 2) s += 10;
+    if (env.loadToSubmit < 500)       s += 30;
+    else if (env.loadToSubmit < 2000) s += 10;
+    if (env.pageLoadToFirstKeystroke >= 0 && env.pageLoadToFirstKeystroke < 200) s += 20;
+    const isTouch = env.pointerType === 'touch' || env.pointerType === 'pen';
+    if (!isTouch && !env.mouseMovementDetected) s += 15;
+    if (!env.keyboardActivityDetected) s += 10;
+    return Math.min(s, 100);
+  }
+
+  function verdict(score) {
+    if (score <= 30) return { label: 'ALLOW',  cls: 'tp-verdict--allow'  };
+    if (score <= 60) return { label: 'REVIEW', cls: 'tp-verdict--review' };
+    return              { label: 'BLOCK',  cls: 'tp-verdict--block'  };
+  }
+
+  function esc(v) {
+    return String(v)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function formatMs(n) {
+    if (n == null || (typeof n === 'number' && isNaN(n))) return '\u2014';
+    return n < 0 ? 'none before submit' : n + '\u202fms';
+  }
+
+  function buildPanel(telemetry, env, envelope, envScore, formData, responseData) {
+    const formScore = telemetry.riskScore ?? 0;
+    const formV     = verdict(formScore);
+    const envV      = verdict(envScore);
+
+    // ── Form-level risk (from secure-form field analysis) ──────────────────
+    let formSignalsHtml = '';
+    if (Array.isArray(telemetry.riskSignals) && telemetry.riskSignals.length) {
+      formSignalsHtml = '<ul class="tp-signals-list">' +
+        telemetry.riskSignals.map(s => '<li>' + esc(s) + '</li>').join('') +
+        '</ul>';
+    } else {
+      formSignalsHtml = '<p class="tp-no-signals">No form-level risk signals triggered.</p>';
+    }
+
+    // ── Session telemetry ──────────────────────────────────────────────────
+    let sessionHtml = '';
+    {
+      const dur = typeof telemetry.sessionDuration === 'number' ? telemetry.sessionDuration + '\u202fms' : '\u2014';
+      const fc  = typeof telemetry.fieldCount === 'number' ? telemetry.fieldCount : '\u2014';
+      sessionHtml =
+        '<div class="tp-env-grid tp-session-meta">' +
+          '<div class="tp-env-key">session duration</div><div class="tp-env-val">' + esc(dur) + '</div>' +
+          '<div class="tp-env-key">fields</div><div class="tp-env-val">' + esc(String(fc)) + '</div>' +
+        '</div>';
+
+      if (Array.isArray(telemetry.fields) && telemetry.fields.length) {
+        sessionHtml += '<div class="tp-field-list">';
+        for (const f of telemetry.fields) {
+          const rows = [
+            ['dwell',          formatMs(f.dwell)],
+            ['completion',     formatMs(f.completionTime)],
+            ['velocity',       typeof f.velocity === 'number' ? f.velocity.toFixed(1) + '\u202fkps' : '\u2014'],
+            ['corrections',    typeof f.corrections === 'number' ? String(f.corrections) : '\u2014'],
+            ['paste',          f.pasteDetected    ? '<span class="tp-flag">yes</span>' : 'no'],
+            ['autofill',       f.autofillDetected ? '<span class="tp-flag">yes</span>' : 'no'],
+            ['focus count',    typeof f.focusCount === 'number' ? String(f.focusCount) : '\u2014'],
+          ].map(([k, v]) =>
+            '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val">' + v + '</div>'
+          ).join('');
+          sessionHtml +=
+            '<div class="tp-field-item">' +
+              '<div class="tp-field-name">' + esc(f.fieldName || f.fieldType || 'field') + '</div>' +
+              '<div class="tp-env-grid">' + rows + '</div>' +
+            '</div>';
+        }
+        sessionHtml += '</div>';
+      }
+    }
+
+    // ── Environmental signals ──────────────────────────────────────────────
+    const envRows = [
+      ['webdriver',      env.webdriverDetected   ? '<span class="tp-flag">&#x26a0; detected</span>' : 'false'],
+      ['headless',       env.headlessDetected     ? '<span class="tp-flag">&#x26a0; detected</span>' : 'false'],
+      ['dom mutation',   env.domMutationDetected  ? '<span class="tp-flag">&#x26a0; detected</span>' : 'false'],
+      ['injected scripts', env.injectedScriptCount > 0 ? '<span class="tp-flag">&#x26a0; ' + env.injectedScriptCount + '</span>' : '0'],
+      ['screen size',    env.suspiciousScreenSize ? '<span class="tp-flag">&#x26a0; suspicious</span>' : screen.width + '\u00d7' + screen.height],
+      ['pointer type',   esc(env.pointerType)],
+      ['mouse movement', env.mouseMovementDetected ? 'detected' : '<span class="tp-flag">none</span>'],
+      ['keyboard',       env.keyboardActivityDetected ? 'detected' : '<span class="tp-flag">none</span>'],
+      ['first keystroke', formatMs(env.pageLoadToFirstKeystroke)],
+      ['load to submit',  formatMs(env.loadToSubmit)],
+    ].map(([k, v]) =>
+      '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val">' + v + '</div>'
+    ).join('');
+
+    // ── HMAC envelope ──────────────────────────────────────────────────────
+    let hmacHtml = '<p class="tp-no-signals">SubtleCrypto unavailable (non-secure context).</p>';
+    if (envelope?.signature) {
+      const sig = esc(envelope.signature);
+      const shortSig = sig.slice(0, 16) + '\u2026' + sig.slice(-8);
+      hmacHtml =
+        '<div class="tp-env-grid">' +
+          '<div class="tp-env-key">nonce</div><div class="tp-env-val tp-mono">' + esc(envelope.nonce) + '</div>' +
+          '<div class="tp-env-key">issuedAt</div><div class="tp-env-val tp-mono">' + esc(envelope.issuedAt) + '</div>' +
+          '<div class="tp-env-key">signature</div><div class="tp-env-val tp-mono" title="' + sig + '">' + shortSig + '</div>' +
+        '</div>';
+    }
+
+    // ── Captured form data ─────────────────────────────────────────────────
+    let dataHtml = '';
+    if (formData && Object.keys(formData).length) {
+      const dataRows = Object.entries(formData)
+        .filter(([, v]) => v !== '' && v != null)
+        .map(([k, v]) =>
+          '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val tp-mono">' + esc(String(v)) + '</div>'
+        ).join('');
+      dataHtml = '<div class="tp-env-grid">' + dataRows + '</div>';
+      if (responseData) {
+        const resRows = Object.entries(responseData)
+          .map(([k, v]) =>
+            '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val tp-mono">' + esc(typeof v === 'object' ? JSON.stringify(v) : String(v)) + '</div>'
+          ).join('');
+        dataHtml +=
+          '<div class="tp-data-resp-label">Server response</div>' +
+          '<div class="tp-env-grid">' + resRows + '</div>';
+      }
+    }
+
+    return (
+      // Captured data (card config only)
+      (dataHtml
+        ? '<div class="tp-section">' +
+            '<div class="tp-section-title">Captured Data</div>' +
+            dataHtml +
+          '</div>'
+        : '') +
+
+      // Form score
+      '<div class="tp-section">' +
+        '<div class="tp-section-title">Form Risk Score <span class="tp-hint">(field-level analysis)</span></div>' +
+        '<div class="tp-score-row">' +
+          '<span class="tp-score-num">' + formScore + '</span>' +
+          '<div class="tp-score-bar-track"><div class="tp-score-bar-fill" data-score="' + formScore + '"></div></div>' +
+          '<span class="tp-verdict ' + formV.cls + '">' + formV.label + '</span>' +
+        '</div>' +
+        formSignalsHtml +
+      '</div>' +
+
+      // Session telemetry
+      '<div class="tp-section">' +
+        '<div class="tp-section-title">Session Telemetry <span class="tp-hint">(behavioral signals per field)</span></div>' +
+        sessionHtml +
+      '</div>' +
+
+      // Env score
+      '<div class="tp-section">' +
+        '<div class="tp-section-title">Environment Risk Score <span class="tp-hint">(browser signals)</span></div>' +
+        '<div class="tp-score-row">' +
+          '<span class="tp-score-num">' + envScore + '</span>' +
+          '<div class="tp-score-bar-track"><div class="tp-score-bar-fill" data-score="' + envScore + '"></div></div>' +
+          '<span class="tp-verdict ' + envV.cls + '">' + envV.label + '</span>' +
+        '</div>' +
+      '</div>' +
+
+      // Env signals table
+      '<div class="tp-section">' +
+        '<div class="tp-section-title">Environmental Signals</div>' +
+        '<div class="tp-env-grid">' + envRows + '</div>' +
+      '</div>' +
+
+      // HMAC envelope
+      '<div class="tp-section">' +
+        '<div class="tp-section-title">HMAC Envelope</div>' +
+        hmacHtml +
+      '</div>'
+    );
+  }
+
+  function applyScoreBarStyles(container) {
+    container.querySelectorAll('.tp-score-bar-fill[data-score]').forEach(el => {
+      const score = parseInt(el.dataset.score, 10);
+      el.style.width = score + '%';
+      el.style.background = score <= 30 ? '#22c55e' : score <= 60 ? '#f59e0b' : '#ef4444';
+    });
+  }
+}
+		</script>
 	}
 }

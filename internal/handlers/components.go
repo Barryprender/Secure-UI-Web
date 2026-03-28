@@ -29,12 +29,14 @@ func (h *Handlers) Components(w http.ResponseWriter, r *http.Request) {
 		t1, err1 := h.generateCSRFToken()
 		t2, err2 := h.generateCSRFToken()
 		t3, err3 := h.generateCSRFToken()
-		if err1 != nil || err2 != nil || err3 != nil {
-			log.Printf("failed to generate CSRF tokens for secure-form page: %v %v %v", err1, err2, err3)
+		t4, err4 := h.generateCSRFToken()
+		t5, err5 := h.generateCSRFToken()
+		if err1 != nil || err2 != nil || err3 != nil || err4 != nil || err5 != nil {
+			log.Printf("failed to generate CSRF tokens for secure-form page: %v %v %v %v %v", err1, err2, err3, err4, err5)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
-		pages.ComponentSecureForm(t1, t2, t3).Render(r.Context(), w)
+		pages.ComponentSecureForm(t1, t2, t3, t4, t5).Render(r.Context(), w)
 	case "secure-file-upload":
 		pages.ComponentSecureFileUpload().Render(r.Context(), w)
 	case "secure-datetime":
