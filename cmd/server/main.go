@@ -172,6 +172,8 @@ func main() {
 	apiMux.HandleFunc("/api/demo/payment", h.DemoPaymentHandler)
 	// Issues a fresh CSRF token for demo form re-submission (tokens are single-use)
 	apiMux.HandleFunc("/api/demo/csrf-token", h.GetDemoCSRFToken)
+	// Generic submission target for all component showcase pages
+	apiMux.HandleFunc("/api/demo/component-submit", h.DemoComponentSubmitHandler)
 
 	// GET /api/users — public read (visitors may view)
 	// POST /api/users — requires auth
