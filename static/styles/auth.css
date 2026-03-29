@@ -263,7 +263,7 @@
 }
 
 .auth-form-body .btn[type="submit"] {
-    margin-block-start: var(--space-xs);
+    margin-block-start: var(--space-xl);
 }
 
 .auth-divider {

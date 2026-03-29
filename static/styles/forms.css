@@ -590,7 +590,7 @@ secure-file-upload {
   overflow: hidden;
   font-family: var(--font-mono);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.04);
-  height: stretch;
+  height: min-content;
   display: flex;
   flex-direction: column;
 }
@@ -794,6 +794,7 @@ secure-file-upload {
 /* PCI note below payment response panel */
 .demo-pci-note {
   display: flex;
+  flex-direction: column;
   align-items: flex-start;
   gap: 0.5rem;
   margin-top: var(--space-sm);

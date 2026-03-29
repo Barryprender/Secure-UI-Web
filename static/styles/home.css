@@ -804,8 +804,14 @@
     background: var(--bg-elevated);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-2xl);
-    padding: var(--space-xl);
-    box-shadow: var(--shadow-lg);
+    padding: var(--space-md);
+    box-shadow: var(--shadomdw-lg);
+}
+
+@media (min-width: 768px){
+    .demo-component-panel{
+        padding: var(--space-xl);
+    }
 }
 
 .demo-component-panel-header {
@@ -2170,8 +2176,14 @@
 
 .faq-item {
     border-bottom: 1px solid var(--border-subtle);
-    padding: var(--space-lg) var(--space-xl);
+    padding: var(--space-lg) var(--space-md);
     transition: background 0.15s ease;
+}
+
+@media (min-width: 768px) {
+    .faq-item {
+        padding-inline: var(--space-xl);
+    }
 }
 
 .faq-item:last-child {

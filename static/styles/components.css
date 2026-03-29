@@ -1555,8 +1555,14 @@
   background: var(--bg-secondary);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-2xl, 20px);
-  padding: var(--space-2xl, 3rem) var(--space-xl, 2rem);
+  padding: var(--space-2xl, 3rem) var(--space-md, 2rem);
   margin-top: var(--space-xl, 2rem);
+}
+
+@media (min-width: 768px) {
+  .ci-framework {
+      padding: var(--space-2xl, 3rem) var(--space-xl, 2rem);
+  }
 }
 
 .ci-framework-inner {
