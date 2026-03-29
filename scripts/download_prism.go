@@ -26,7 +26,7 @@ func main() {
 		fmt.Printf("Error creating js directory: %v\n", err)
 		os.Exit(1)
 	}
-	if err := os.MkdirAll("static/styles", 0755); err != nil {
+	if err := os.MkdirAll("static/styles/prism", 0755); err != nil {
 		fmt.Printf("Error creating styles directory: %v\n", err)
 		os.Exit(1)
 	}
@@ -37,7 +37,7 @@ func main() {
 		{baseURL + "/prism.js", "static/js/prism.js"},
 
 		// Dark theme CSS (Tomorrow Night)
-		{baseURL + "/themes/prism-tomorrow.min.css", "static/styles/prism.css"},
+		{baseURL + "/themes/prism-tomorrow.min.css", "static/styles/prism/prism.css"},
 
 		// Language components (add more as needed)
 		{baseURL + "/components/prism-go.min.js", "static/js/prism-go.min.js"},
@@ -61,7 +61,7 @@ func main() {
 
 	fmt.Println("\n✅ All Prism.js files downloaded successfully!")
 	fmt.Println("\nNext steps:")
-	fmt.Println("1. Update layout.templ to use /static/styles/prism.css")
+	fmt.Println("1. Update layout.templ to use /static/styles/prism/prism.css")
 	fmt.Println("2. Update layout.templ to use /static/js/prism.js")
 	fmt.Println("3. Remove CDN URLs from CSP in security.go")
 }

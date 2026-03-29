@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureCard(csrfToken string) {
-	@templates.Layout("Live Demo: Secure Card — PCI Payment, Luhn, PAN Masking", "Interactive demos for secure-card: 3D card preview, Luhn validation, card type detection, PAN masking, CVC protection, and framework examples.", true, "/static/styles/components.min.css") {
+	@templates.Layout("Live Demo: Secure Card — PCI Payment, Luhn, PAN Masking", "Interactive demos for secure-card: 3D card preview, Luhn validation, card type detection, PAN masking, CVC protection, and framework examples.", true, "/static/styles/components/components.min.css") {
 		@templates.ComponentPageJsonLDScript("secure-card", "PCI-compliant payment card component with Luhn validation, card type detection, PAN masking on blur, and CVC protection.")
 		<div class="component-page">
 			<!-- Hero -->

@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureTelemetryProvider() {
-	@templates.Layout("Bot Detection — HMAC-Signed Behavioral Signals, Risk Scoring", "Behavioral intelligence provider: keystroke timing, paste detection, environmental signals. HMAC-SHA-256 signed payloads, risk scoring. No third-party tracking.", true, "/static/styles/documentation.min.css") {
+	@templates.Layout("Bot Detection — HMAC-Signed Behavioral Signals, Risk Scoring", "Behavioral intelligence provider: keystroke timing, paste detection, environmental signals. HMAC-SHA-256 signed payloads, risk scoring. No third-party tracking.", true, "/static/styles/documentation/documentation.min.css") {
 		@templates.DocsPageJsonLDScript("secure-telemetry-provider", "Environmental signal collector that attaches HMAC-signed bot-detection data to form submissions.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

@@ -109,7 +109,7 @@ var errorPageTmpl = template.Must(template.New("error").Parse(`<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}} - Secure-UI</title>
-    <link rel="stylesheet" href="/static/styles/global.min.css">
+    <link rel="stylesheet" href="/static/styles/global/global.min.css">
     <style nonce="{{.Nonce}}">
         body {
             min-block-size: 100dvh;

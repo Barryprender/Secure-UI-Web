@@ -13,7 +13,7 @@ import (
 
 var (
 	mu     sync.RWMutex
-	hashes map[string]string // "/static/styles/base.min.css" -> "a1b2c3d4"
+	hashes map[string]string // "/static/styles/base/base.min.css" -> "a1b2c3d4"
 	root   string
 )
 

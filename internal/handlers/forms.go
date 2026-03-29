@@ -187,7 +187,7 @@ var successPageTmpl = template.Must(template.New("success").Parse(`<!DOCTYPE htm
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Success - Secure-UI</title>
-    <link rel="stylesheet" href="/static/styles/secure-ui.css">
+    <link rel="stylesheet" href="/static/styles/secure-ui/secure-ui.css">
     <style nonce="{{.Nonce}}">
         .success-container {
             max-width: 600px;

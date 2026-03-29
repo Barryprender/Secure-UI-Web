@@ -101,8 +101,8 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Global CSS — tokens, base, nav, footer, view-transitions, no-js (combined, 1 request) -->
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/global.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/global.min.css") }/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/global/global.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/global/global.min.css") }/>
 
 		<!-- Page-specific CSS — preloaded in parallel with global -->
 		for _, css := range pageCSS {
@@ -111,7 +111,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		}
 		if prism {
 			<!-- Prism CSS loaded async — code blocks are below fold, does not affect LCP -->
-			<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='/static/styles/prism.min.css';document.head.appendChild(l);})()</script>
+			<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var l=document.createElement('link');l.rel='stylesheet';l.href='/static/styles/prism/prism.min.css';document.head.appendChild(l);})()</script>
 		}
 
 		<!-- View Transitions — inlined to avoid extra HTTP request -->
@@ -191,11 +191,11 @@ templ LandingHead(title string, description string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Landing page CSS only -->
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/tokens.min.css") }/>
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/base.min.css") }/>
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/telemetry-pro.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/tokens.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/base.min.css") }/>
-		<link rel="stylesheet" href={ assets.URL("/static/styles/telemetry-pro.min.css") }/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/tokens/tokens.min.css") }/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/base/base.min.css") }/>
+		<link rel="preload" as="style" href={ assets.URL("/static/styles/telemetry-pro/telemetry-pro.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/tokens/tokens.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/base/base.min.css") }/>
+		<link rel="stylesheet" href={ assets.URL("/static/styles/telemetry-pro/telemetry-pro.min.css") }/>
 	</head>
 }
