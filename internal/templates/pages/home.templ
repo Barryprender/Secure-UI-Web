@@ -137,8 +137,8 @@ templ Home() {
 
 			<div class="demo-component-panel" id="demo-panel">
 				<div class="demo-component-panel-header">
-					<span class="demo-panel-title">secure-form + secure-input</span>
-					<span class="demo-panel-badge">Live</span>
+					<span class="demo-panel-title">{ i18n.T(ctx, "home.demo.panel_title") }</span>
+					<span class="demo-panel-badge">{ i18n.T(ctx, "home.demo.panel_live") }</span>
 				</div>
 				<div id="demo-form-wrap">
 					<secure-telemetry-provider id="home-tp" signing-key="demo-key-replace-in-prod">
@@ -159,7 +159,7 @@ templ Home() {
 								required>
 							</secure-input>
 							<div class="demo-form-submit-wrapper">
-								<button type="submit" class="btn btn-primary">Submit securely</button>
+								<button type="submit" class="btn btn-primary">{ i18n.T(ctx, "home.demo.submit") }</button>
 							</div>
 						</secure-form>
 					</secure-telemetry-provider>
@@ -185,11 +185,11 @@ templ Home() {
 				<h2>{ i18n.T(ctx, "home.tel.title") }<br/><em>{ i18n.T(ctx, "home.tel.title_em") }</em></h2>
 				<p>{ i18n.T(ctx, "home.tel.desc") }</p>
 				<ul class="home-telemetry-differentiators">
-					<li>Stops bots that pass visual CAPTCHAs</li>
-					<li>Detects webdrivers, headless browsers, and DevTools automation</li>
-					<li>Flags DOM tampering and injected scripts in real time</li>
-					<li>HMAC-SHA-256 signed — forged telemetry is detectable server-side</li>
-					<li>Your infrastructure, your rules — no data leaves your servers</li>
+					<li>{ i18n.T(ctx, "home.tel.li1") }</li>
+					<li>{ i18n.T(ctx, "home.tel.li2") }</li>
+					<li>{ i18n.T(ctx, "home.tel.li3") }</li>
+					<li>{ i18n.T(ctx, "home.tel.li4") }</li>
+					<li>{ i18n.T(ctx, "home.tel.li5") }</li>
 				</ul>
 				<a href="/telemetry" class="btn btn-primary">{ i18n.T(ctx, "home.tel.cta") }</a>
 			</div>
@@ -267,12 +267,9 @@ templ Home() {
 <section class="features-section">
 	<div class="container">
 		<div class="section-header">
-			<p class="section-eyebrow">What sets it apart</p>
-			<h2 class="section-title">Not just a UI library</h2>
-			<p class="section-description">
-				Shadow DOM isolation, behavioral telemetry, and audit logging — capabilities MUI, ShadCN, and Radix
-				cannot add without a full architectural rewrite. In Secure-UI they ship by default.
-			</p>
+			<p class="section-eyebrow">{ i18n.T(ctx, "home.feat.eyebrow") }</p>
+			<h2 class="section-title">{ i18n.T(ctx, "home.feat.title") }</h2>
+			<p class="section-description">{ i18n.T(ctx, "home.feat.desc") }</p>
 		</div>
 
 		<div class="features-grid" data-reveal-stagger>
@@ -285,12 +282,12 @@ templ Home() {
 						<line x1="12" y1="16" x2="12" y2="16.01"></line>
 					</svg>
 				</div>
-				<h3 class="feature-title">Closed Shadow DOM</h3>
-				<p class="feature-description">Field values live inside a closed shadow root. <code>element.shadowRoot</code> returns <code>null</code> — injected scripts, browser extensions, and devtools cannot reach the internal DOM.</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.shadowdom.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.shadowdom.desc") }</p>
 				<ul class="feature-list">
-					<li>Script injection attacks blocked</li>
-					<li>Extension data harvesting prevented</li>
-					<li>Validation state private until submit</li>
+					<li>{ i18n.T(ctx, "home.feat.shadowdom.li1") }</li>
+					<li>{ i18n.T(ctx, "home.feat.shadowdom.li2") }</li>
+					<li>{ i18n.T(ctx, "home.feat.shadowdom.li3") }</li>
 				</ul>
 			</div>
 
@@ -301,12 +298,12 @@ templ Home() {
 						<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
 					</svg>
 				</div>
-				<h3 class="feature-title">Behavioral Telemetry</h3>
-				<p class="feature-description">Every interaction is measured — focus timing, typing velocity, paste events, zero-keystroke fills — plus device signals signed with HMAC-SHA-256. Bots caught silently, no CAPTCHA needed.</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.captcha.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.captcha.desc") }</p>
 				<ul class="feature-list">
-					<li>Webdriver and headless detection</li>
-					<li>Typing velocity and dwell analysis</li>
-					<li>HMAC-signed risk envelope per submit</li>
+					<li>{ i18n.T(ctx, "home.feat.captcha.li1") }</li>
+					<li>{ i18n.T(ctx, "home.feat.captcha.li2") }</li>
+					<li>{ i18n.T(ctx, "home.feat.captcha.li3") }</li>
 				</ul>
 			</div>
 
@@ -321,12 +318,12 @@ templ Home() {
 						<line x1="8" y1="18" x2="12" y2="18"></line>
 					</svg>
 				</div>
-				<h3 class="feature-title">Audit Trail by Default</h3>
-				<p class="feature-description">Every injection attempt, validation failure, and selection change dispatches a <code>secure-audit</code> CustomEvent. Blocked inputs record the exact value attempted. Compliance logging ships out of the box.</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.audit.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.audit.desc") }</p>
 				<ul class="feature-list">
-					<li>Injection attempts logged with exact value</li>
-					<li>Timestamped interaction history per field</li>
-					<li>No extra instrumentation required</li>
+					<li>{ i18n.T(ctx, "home.feat.audit.li1") }</li>
+					<li>{ i18n.T(ctx, "home.feat.audit.li2") }</li>
+					<li>{ i18n.T(ctx, "home.feat.audit.li3") }</li>
 				</ul>
 			</div>
 
@@ -341,9 +338,9 @@ templ Home() {
 				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.csrf.title") }</h3>
 				<p class="feature-description">{ i18n.T(ctx, "home.feat.csrf.desc") }</p>
 				<ul class="feature-list">
-					<li>Per-request token generation</li>
-					<li>Automatic token injection and validation</li>
-					<li>Single-use, server-side expiry</li>
+					<li>{ i18n.T(ctx, "home.feat.csrf.li1") }</li>
+					<li>{ i18n.T(ctx, "home.feat.csrf.li2") }</li>
+					<li>{ i18n.T(ctx, "home.feat.csrf.li3") }</li>
 				</ul>
 			</div>
 
@@ -359,9 +356,9 @@ templ Home() {
 				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.xss.title") }</h3>
 				<p class="feature-description">{ i18n.T(ctx, "home.feat.xss.desc") }</p>
 				<ul class="feature-list">
-					<li>HTML entity encoding</li>
-					<li>Script tag stripping</li>
-					<li>Event handler removal</li>
+					<li>{ i18n.T(ctx, "home.feat.xss.li1") }</li>
+					<li>{ i18n.T(ctx, "home.feat.xss.li2") }</li>
+					<li>{ i18n.T(ctx, "home.feat.xss.li3") }</li>
 				</ul>
 			</div>
 
@@ -373,12 +370,12 @@ templ Home() {
 						<path d="m9 12 2 2 4-4"></path>
 					</svg>
 				</div>
-				<h3 class="feature-title">Zero Dependencies</h3>
-				<p class="feature-description">The entire library is self-contained TypeScript. No transitive packages, no supply chain risk, no CVEs inherited from third-party code. A single script tag is all you add to your project.</p>
+				<h3 class="feature-title">{ i18n.T(ctx, "home.feat.zerodep.title") }</h3>
+				<p class="feature-description">{ i18n.T(ctx, "home.feat.zerodep.desc") }</p>
 				<ul class="feature-list">
-					<li>No npm install required at runtime</li>
-					<li>No transitive vulnerability surface</li>
-					<li>Works from CDN or self-hosted</li>
+					<li>{ i18n.T(ctx, "home.feat.zerodep.li1") }</li>
+					<li>{ i18n.T(ctx, "home.feat.zerodep.li2") }</li>
+					<li>{ i18n.T(ctx, "home.feat.zerodep.li3") }</li>
 				</ul>
 			</div>
 		</div>
@@ -632,7 +629,7 @@ func (h *Handlers) Register(
 <section class="theming-teaser-section">
 	<div class="container">
 		<p class="theming-teaser">
-			All components are fully themeable via CSS custom properties. <a href="/theming" class="theming-teaser-link">Explore theming →</a>
+			{ i18n.T(ctx, "home.theme.teaser") } <a href="/theming" class="theming-teaser-link">{ i18n.T(ctx, "home.theme.teaser_cta") } →</a>
 		</p>
 	</div>
 </section>
