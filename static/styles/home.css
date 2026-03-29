@@ -483,7 +483,13 @@
     display: block;
     font-size: 1em;
     letter-spacing: -0.035em;
-    text-wrap-mode: nowrap;
+}
+
+@media (min-width: 760px) {
+    .hero-title em {
+        text-wrap-mode: nowrap;
+    }
+    
 }
 
 .hero-description {
