@@ -109,34 +109,56 @@ var errorPageTmpl = template.Must(template.New("error").Parse(`<!DOCTYPE html>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}} - Secure-UI</title>
-    <link rel="stylesheet" href="/static/styles/secure-ui.css">
+    <link rel="stylesheet" href="/static/styles/global.min.css">
     <style nonce="{{.Nonce}}">
+        body {
+            min-block-size: 100dvh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+        }
         .error-container {
-            max-width: 600px;
-            margin: 4rem auto;
+            max-width: 560px;
+            width: 100%;
+            margin-inline: auto;
             padding: 2rem;
-            background: var(--secure-ui-color-bg-secondary);
-            border-radius: 8px;
+            background: var(--bg-secondary, #0f1623);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
         }
-        .error-icon { font-size: 3rem; margin-bottom: 1rem; }
-        .error-title { font-size: 1.5rem; color: var(--secure-ui-color-danger); margin-bottom: 1rem; }
-        .error-list { margin: 1rem 0; list-style: none; padding: 0; }
-        .error-list li { padding: 0.5rem; margin: 0.5rem 0; background: var(--secure-ui-color-bg-primary); border-left: 3px solid var(--secure-ui-color-danger); }
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.75rem 1.5rem;
-            background: var(--secure-ui-color-primary);
-            color: white;
-            text-decoration: none;
+        .error-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-block-end: 1.25rem;
+        }
+        .error-list { list-style: none; padding: 0; margin: 0 0 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .error-list li {
+            padding: 0.625rem 0.875rem;
+            background: color-mix(in oklch, oklch(55% 0.22 25) 12%, transparent);
+            border-inline-start: 3px solid oklch(55% 0.22 25);
             border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
         }
-        .back-link:hover { opacity: 0.9; }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.625rem 1.25rem;
+            background: var(--accent-primary, oklch(65% 0.2 250));
+            color: #fff;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+        .back-link:hover { opacity: 0.88; }
     </style>
 </head>
 <body>
     <div class="error-container">
-        <div class="error-icon">Error</div>
         <div class="error-title">{{.Title}}</div>
         <ul class="error-list">
             {{range .Errors}}<li><strong>{{.Field}}:</strong> {{.Message}}</li>

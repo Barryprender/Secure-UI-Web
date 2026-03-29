@@ -167,8 +167,7 @@ templ Home() {
 				<div id="demo-success" class="demo-success demo-success--hidden" aria-live="polite">
 					<svg class="demo-success-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
 					<p class="demo-success-title">Submitted securely</p>
-					<div id="demo-success-data" class="demo-success-data"></div>
-					<div id="demo-success-telemetry" class="demo-success-telemetry"></div>
+					<div id="demo-success-code"></div>
 					<button class="btn btn-secondary demo-reset-btn">Reset demo</button>
 				</div>
 			</div>
@@ -702,120 +701,117 @@ func (h *Handlers) Register(
   const demoForm   = document.querySelector('#demo-panel secure-form');
   const resetBtn   = document.querySelector('.demo-reset-btn');
 
-  const dataEl      = document.getElementById('demo-success-data');
-  const telemetryEl = document.getElementById('demo-success-telemetry');
+  const codeEl = document.getElementById('demo-success-code');
+
+  function fmtMs(n) {
+    if (n == null || (typeof n === 'number' && isNaN(n))) return null;
+    if (n < 0) return 'none';
+    return n + 'ms';
+  }
+
+  function syntaxHighlight(obj) {
+    const str = JSON.stringify(obj, null, 2)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return str.replace(
+      /("(?:\\.|[^"\\])*"(?=\s*:))|("(?:\\.|[^"\\])*")|(true|false)|(null)|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g,
+      (_, key, str, bool, nil, num) => {
+        if (key)  return '<span class="json-key">'  + key  + '</span>';
+        if (str)  return '<span class="json-str">'  + str  + '</span>';
+        if (bool) return '<span class="json-bool">' + bool + '</span>';
+        if (nil)  return '<span class="json-null">' + nil  + '</span>';
+        if (num)  return '<span class="json-num">'  + num  + '</span>';
+        return _;
+      }
+    );
+  }
+
+  function jsonPanel(obj, signed) {
+    const badge = signed
+      ? '<span class="json-panel-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> signed</span>'
+      : '';
+    return '<div class="json-panel">' +
+      '<div class="json-panel-bar">' +
+        '<span class="json-panel-dots" aria-hidden="true"><i></i><i></i><i></i></span>' +
+        '<span class="json-panel-title">telemetry.json</span>' +
+        badge +
+      '</div>' +
+      '<pre class="json-panel-pre"><code class="json-panel-code">' + syntaxHighlight(obj) + '</code></pre>' +
+      '</div>';
+  }
 
   if (demoForm && formWrap && successEl) {
     demoForm.addEventListener('secure-form-submit', async (e) => {
       e.preventDefault();
 
       const tp = document.getElementById('home-tp');
+      const tel = e.detail?.telemetry ?? {};
+      const raw = e.detail?.formData ?? {};
 
-      // Form data table
-      if (dataEl && e.detail?.formData) {
-        const rows = Object.entries(e.detail.formData).map(([k, v]) => {
-          const display = k === 'password' ? '\u2022'.repeat(Math.min(String(v).length, 10)) : String(v);
-          return `<tr><td class="demo-data-key">${k}</td><td class="demo-data-val">${display}</td></tr>`;
-        }).join('');
-        dataEl.innerHTML = `<table class="demo-data-table"><tbody>${rows}</tbody></table>`;
+      const envSignals = tp ? tp.collectSignals() : null;
+      let envelope = null;
+      if (tp && envSignals) {
+        try { envelope = await tp.sign(envSignals); } catch {}
       }
 
-      // Telemetry
-      if (telemetryEl && e.detail?.telemetry) {
-        const { riskScore, riskSignals, sessionDuration, fields } = e.detail.telemetry;
+      const riskScore = tel.riskScore ?? 0;
+      const verdict = riskScore <= 30 ? 'ALLOW' : riskScore <= 60 ? 'REVIEW' : 'BLOCK';
 
-        // Collect env signals and sign
-        const envSignals = tp ? tp.collectSignals() : null;
-        let envelope = null;
-        if (tp && envSignals) {
-          try { envelope = await tp.sign(envSignals); } catch {}
-        }
+      // Mask password values
+      const capturedData = Object.fromEntries(
+        Object.entries(raw).map(([k, v]) =>
+          [k, k === 'password' ? '\u2022'.repeat(Math.min(String(v).length, 10)) : v]
+        )
+      );
 
-        const level = riskScore <= 30 ? 'pass' : riskScore <= 60 ? 'warn' : 'fail';
-        const label = riskScore <= 30 ? 'Low risk' : riskScore <= 60 ? 'Moderate risk' : 'High risk';
-        const secs  = (sessionDuration / 1000).toFixed(1);
-        const fmtMs = n => (n == null || (typeof n === 'number' && isNaN(n))) ? '\u2014' : n < 0 ? 'none' : n + '\u202fms';
-        const flag  = (bad, text) => bad ? `<span class="demo-telemetry-flag">${text}</span>` : text;
+      const obj = {};
 
-        let html = `<div class="demo-telemetry-section-label">Form Telemetry</div>
-          <div class="demo-telemetry-row">
-            <span class="demo-telemetry-label">Risk score</span>
-            <span class="demo-telemetry-badge demo-telemetry-badge--${level}">${riskScore} \u2014 ${label}</span>
-          </div>
-          <div class="demo-telemetry-row">
-            <span class="demo-telemetry-label">Session</span>
-            <span class="demo-telemetry-val">${secs}s</span>
-          </div>
-          <div class="demo-telemetry-row">
-            <span class="demo-telemetry-label">Risk signals</span>
-            <span class="demo-telemetry-val">${riskSignals.length ? riskSignals.join(', ') : 'none'}</span>
-          </div>`;
+      if (Object.keys(capturedData).length) obj.capturedData = capturedData;
 
-        if (Array.isArray(fields) && fields.length) {
-          html += `<div class="demo-telemetry-section-label">Field Signals</div>`;
-          for (const f of fields) {
-            html += `
-              <div class="demo-telemetry-row demo-telemetry-row--field-name">
-                <span class="demo-telemetry-label demo-telemetry-field-name">${f.fieldName}</span>
-              </div>
-              <div class="demo-telemetry-row demo-telemetry-row--sub">
-                <span class="demo-telemetry-label">dwell / velocity</span>
-                <span class="demo-telemetry-val">${fmtMs(f.dwell)} &nbsp; ${typeof f.velocity === 'number' ? f.velocity.toFixed(1) + '\u202fkps' : '\u2014'}</span>
-              </div>
-              <div class="demo-telemetry-row demo-telemetry-row--sub">
-                <span class="demo-telemetry-label">corrections / paste</span>
-                <span class="demo-telemetry-val">${f.corrections} &nbsp; ${f.pasteDetected ? flag(true, 'paste detected') : 'no paste'}</span>
-              </div>`;
-          }
-        }
+      obj.risk = {
+        score:   riskScore,
+        verdict,
+        signals: Array.isArray(tel.riskSignals) ? tel.riskSignals : [],
+      };
 
-        if (envSignals) {
-          html += `<div class="demo-telemetry-section-label">Environment</div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">webdriver</span>
-              <span class="demo-telemetry-val">${flag(envSignals.webdriverDetected, '\u26a0 detected') || 'false'}</span>
-            </div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">headless</span>
-              <span class="demo-telemetry-val">${flag(envSignals.headlessDetected, '\u26a0 detected') || 'false'}</span>
-            </div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">pointer type</span>
-              <span class="demo-telemetry-val">${envSignals.pointerType}</span>
-            </div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">mouse movement</span>
-              <span class="demo-telemetry-val">${envSignals.mouseMovementDetected ? 'detected' : flag(true, '\u26a0 none')}</span>
-            </div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">keyboard</span>
-              <span class="demo-telemetry-val">${envSignals.keyboardActivityDetected ? 'detected' : flag(true, '\u26a0 none')}</span>
-            </div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">first keystroke</span>
-              <span class="demo-telemetry-val">${fmtMs(envSignals.pageLoadToFirstKeystroke)}</span>
-            </div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">load \u2192 submit</span>
-              <span class="demo-telemetry-val">${fmtMs(envSignals.loadToSubmit)}</span>
-            </div>`;
-        }
+      obj.session = {
+        duration:   fmtMs(tel.sessionDuration),
+        fieldCount: tel.fieldCount ?? null,
+        fields: Array.isArray(tel.fields)
+          ? tel.fields.map(f => ({
+              name:        f.fieldName || f.fieldType || 'field',
+              dwell:       fmtMs(f.dwell),
+              velocity:    typeof f.velocity === 'number' ? parseFloat(f.velocity.toFixed(1)) : null,
+              corrections: f.corrections ?? 0,
+              paste:       f.pasteDetected ?? false,
+              autofill:    f.autofillDetected ?? false,
+            }))
+          : [],
+      };
 
-        if (envelope?.signature) {
-          const shortSig = envelope.signature.slice(0, 8) + '\u2026' + envelope.signature.slice(-6);
-          html += `<div class="demo-telemetry-section-label">HMAC Envelope</div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">nonce</span>
-              <span class="demo-telemetry-val demo-telemetry-val--mono">${envelope.nonce.slice(0, 16)}\u2026</span>
-            </div>
-            <div class="demo-telemetry-row">
-              <span class="demo-telemetry-label">signature</span>
-              <span class="demo-telemetry-val demo-telemetry-val--mono">${shortSig}</span>
-            </div>`;
-        }
-
-        telemetryEl.innerHTML = html;
+      if (envSignals) {
+        obj.environment = {
+          webdriverDetected:        envSignals.webdriverDetected ?? false,
+          headlessDetected:         envSignals.headlessDetected ?? false,
+          domMutationDetected:      envSignals.domMutationDetected ?? false,
+          injectedScriptCount:      envSignals.injectedScriptCount ?? 0,
+          suspiciousScreenSize:     envSignals.suspiciousScreenSize ?? false,
+          pointerType:              envSignals.pointerType ?? null,
+          mouseMovementDetected:    envSignals.mouseMovementDetected ?? false,
+          keyboardActivityDetected: envSignals.keyboardActivityDetected ?? false,
+          pageLoadToFirstKeystroke: fmtMs(envSignals.pageLoadToFirstKeystroke),
+          loadToSubmit:             fmtMs(envSignals.loadToSubmit),
+        };
       }
+
+      if (envelope?.signature) {
+        obj.envelope = {
+          nonce:     envelope.nonce,
+          issuedAt:  envelope.issuedAt,
+          signature: envelope.signature,
+        };
+      }
+
+      if (codeEl) codeEl.innerHTML = jsonPanel(obj, !!envelope?.signature);
 
       formWrap.hidden = true;
       successEl.classList.remove('demo-success--hidden');

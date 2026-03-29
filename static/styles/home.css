@@ -804,13 +804,13 @@
     background: var(--bg-elevated);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-2xl);
-    padding: var(--space-md);
+    padding: var(--space-sm);
     box-shadow: var(--shadomdw-lg);
 }
 
 @media (min-width: 768px){
     .demo-component-panel{
-        padding: var(--space-xl);
+        padding: var(--space-sm);
     }
 }
 
@@ -2009,7 +2009,7 @@
     align-items: center;
     justify-content: center;
     gap: var(--space-sm);
-    padding: var(--space-xl) var(--space-lg);
+    padding: 0;
     text-align: center;
     animation: fadeSlideUp 0.35s cubic-bezier(.25,1,.5,1) both;
 }

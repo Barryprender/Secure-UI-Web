@@ -131,7 +131,7 @@ body {
     width: 100%;
     max-width: 1440px;
     margin-inline: auto;
-    padding-inline: var(--space-lg);
+    padding-inline: var(--space-lg)
 }
 
 .container-narrow { max-width: 900px;  margin-inline: auto; }
@@ -1035,3 +1035,87 @@ a:hover {
     }
     .reveal { opacity: 1 !important; transform: none !important; }
 }
+
+/* ============================================================
+   JSON CODE PANEL
+   Used by telemetry readouts on home + component pages.
+   ============================================================ */
+
+.json-panel {
+    background: #0a0f1a;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.json-panel-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    padding: 0.625rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: rgba(0, 0, 0, 0.2);
+}
+
+.json-panel-dots {
+    display: flex;
+    gap: 5px;
+}
+
+.json-panel-dots i {
+    display: block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    font-style: normal;
+}
+
+.json-panel-dots i:nth-child(1) { background: #ff5f57; }
+.json-panel-dots i:nth-child(2) { background: #ffbd2e; }
+.json-panel-dots i:nth-child(3) { background: #28ca41; }
+
+.json-panel-title {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: rgba(140, 180, 220, 0.5);
+}
+
+.json-panel-badge {
+    margin-inline-start: auto;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: #34d399;
+    background: rgba(52, 211, 153, 0.08);
+    border: 1px solid rgba(52, 211, 153, 0.2);
+    border-radius: 100px;
+    padding: 0.2rem 0.6rem;
+}
+
+.json-panel-pre {
+    margin: 0;
+    padding: 1.25rem;
+    overflow-x: auto;
+    max-height: 520px;
+    overflow-y: auto;
+}
+
+.json-panel-code {
+    text-align-last: left;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.7;
+    color: #7a9ab8;
+    white-space: pre-wrap;
+    display: block;
+}
+
+/* JSON syntax highlighting */
+.json-key  { color: #8ba3c0; }
+.json-str  { color: #34d399; }
+.json-bool { color: #a78bfa; }
+.json-num  { color: #f59e0b; }
+.json-null { color: #6b7280; }

@@ -230,7 +230,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 										</div>
 										<div class="form-section">
 											<h4 class="demo-billing-heading">Billing Address</h4>
-											@components.SecureInputField("Full Name on Card", "cardholder_name", "text", "Jane Smith", "sensitive", "mb-lg", true)
+											@components.SecureInputField("Full Name on Card", "cardholder_name", "text", "Jane Smith", "public", "mb-lg", true)
 											@components.SecureInputField("Address Line", "billing_address", "text", "123 Main Street", "public", "mb-lg", true)
 											<div class="demo-field-row">
 												@components.SecureInputField("City", "billing_city", "text", "London", "public", "mb-lg", true)

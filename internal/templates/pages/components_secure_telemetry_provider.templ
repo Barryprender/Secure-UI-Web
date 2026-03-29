@@ -157,6 +157,7 @@ console.log(envelope.signature);` }</code></pre>
 									<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Pay</button>
 								</secure-form>
 							</secure-telemetry-provider>
+						</div>
 							<div id="cfg-tp-card-result" class="tp-result" hidden aria-live="polite">
 								<div class="tp-result-header">
 									<span class="tp-result-title">Telemetry Captured</span>
@@ -164,7 +165,6 @@ console.log(envelope.signature);` }</code></pre>
 								</div>
 								<div id="cfg-tp-card-result-body" class="tp-result-body"></div>
 							</div>
-						</div>
 						<div class="config-code">
 							<pre><code class="language-markup">{ `<secure-telemetry-provider
   signing-key="your-hmac-key">
@@ -571,7 +571,6 @@ func Score(env EnvironmentalSignals) int {
       if (!telemetry || !signals) return;
       const envScore = computeEnvScore(signals);
       bodyEl.innerHTML = buildPanel(telemetry, signals, envelope, envScore, formData, responseData);
-      applyScoreBarStyles(bodyEl);
     });
   }
 
@@ -610,7 +609,6 @@ func Score(env EnvironmentalSignals) int {
       if (!telemetry || !signals) return;
       const envScore = computeEnvScore(signals);
       cardBody.innerHTML = buildPanel(telemetry, signals, envelope, envScore, formData, responseData);
-      applyScoreBarStyles(cardBody);
     });
   }
 
@@ -649,159 +647,102 @@ func Score(env EnvironmentalSignals) int {
 
   function buildPanel(telemetry, env, envelope, envScore, formData, responseData) {
     const formScore = telemetry.riskScore ?? 0;
-    const formV     = verdict(formScore);
-    const envV      = verdict(envScore);
+    const totalScore = Math.min(100, formScore + envScore);
+    const verdictLabel = totalScore <= 30 ? 'ALLOW' : totalScore <= 60 ? 'REVIEW' : 'BLOCK';
 
-    // ── Form-level risk (from secure-form field analysis) ──────────────────
-    let formSignalsHtml = '';
-    if (Array.isArray(telemetry.riskSignals) && telemetry.riskSignals.length) {
-      formSignalsHtml = '<ul class="tp-signals-list">' +
-        telemetry.riskSignals.map(s => '<li>' + esc(s) + '</li>').join('') +
-        '</ul>';
-    } else {
-      formSignalsHtml = '<p class="tp-no-signals">No form-level risk signals triggered.</p>';
-    }
+    const obj = {};
 
-    // ── Session telemetry ──────────────────────────────────────────────────
-    let sessionHtml = '';
-    {
-      const dur = typeof telemetry.sessionDuration === 'number' ? telemetry.sessionDuration + '\u202fms' : '\u2014';
-      const fc  = typeof telemetry.fieldCount === 'number' ? telemetry.fieldCount : '\u2014';
-      sessionHtml =
-        '<div class="tp-env-grid tp-session-meta">' +
-          '<div class="tp-env-key">session duration</div><div class="tp-env-val">' + esc(dur) + '</div>' +
-          '<div class="tp-env-key">fields</div><div class="tp-env-val">' + esc(String(fc)) + '</div>' +
-        '</div>';
-
-      if (Array.isArray(telemetry.fields) && telemetry.fields.length) {
-        sessionHtml += '<div class="tp-field-list">';
-        for (const f of telemetry.fields) {
-          const rows = [
-            ['dwell',          formatMs(f.dwell)],
-            ['completion',     formatMs(f.completionTime)],
-            ['velocity',       typeof f.velocity === 'number' ? f.velocity.toFixed(1) + '\u202fkps' : '\u2014'],
-            ['corrections',    typeof f.corrections === 'number' ? String(f.corrections) : '\u2014'],
-            ['paste',          f.pasteDetected    ? '<span class="tp-flag">yes</span>' : 'no'],
-            ['autofill',       f.autofillDetected ? '<span class="tp-flag">yes</span>' : 'no'],
-            ['focus count',    typeof f.focusCount === 'number' ? String(f.focusCount) : '\u2014'],
-          ].map(([k, v]) =>
-            '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val">' + v + '</div>'
-          ).join('');
-          sessionHtml +=
-            '<div class="tp-field-item">' +
-              '<div class="tp-field-name">' + esc(f.fieldName || f.fieldType || 'field') + '</div>' +
-              '<div class="tp-env-grid">' + rows + '</div>' +
-            '</div>';
-        }
-        sessionHtml += '</div>';
-      }
-    }
-
-    // ── Environmental signals ──────────────────────────────────────────────
-    const envRows = [
-      ['webdriver',      env.webdriverDetected   ? '<span class="tp-flag">&#x26a0; detected</span>' : 'false'],
-      ['headless',       env.headlessDetected     ? '<span class="tp-flag">&#x26a0; detected</span>' : 'false'],
-      ['dom mutation',   env.domMutationDetected  ? '<span class="tp-flag">&#x26a0; detected</span>' : 'false'],
-      ['injected scripts', env.injectedScriptCount > 0 ? '<span class="tp-flag">&#x26a0; ' + env.injectedScriptCount + '</span>' : '0'],
-      ['screen size',    env.suspiciousScreenSize ? '<span class="tp-flag">&#x26a0; suspicious</span>' : screen.width + '\u00d7' + screen.height],
-      ['pointer type',   esc(env.pointerType)],
-      ['mouse movement', env.mouseMovementDetected ? 'detected' : '<span class="tp-flag">none</span>'],
-      ['keyboard',       env.keyboardActivityDetected ? 'detected' : '<span class="tp-flag">none</span>'],
-      ['first keystroke', formatMs(env.pageLoadToFirstKeystroke)],
-      ['load to submit',  formatMs(env.loadToSubmit)],
-    ].map(([k, v]) =>
-      '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val">' + v + '</div>'
-    ).join('');
-
-    // ── HMAC envelope ──────────────────────────────────────────────────────
-    let hmacHtml = '<p class="tp-no-signals">SubtleCrypto unavailable (non-secure context).</p>';
-    if (envelope?.signature) {
-      const sig = esc(envelope.signature);
-      const shortSig = sig.slice(0, 16) + '\u2026' + sig.slice(-8);
-      hmacHtml =
-        '<div class="tp-env-grid">' +
-          '<div class="tp-env-key">nonce</div><div class="tp-env-val tp-mono">' + esc(envelope.nonce) + '</div>' +
-          '<div class="tp-env-key">issuedAt</div><div class="tp-env-val tp-mono">' + esc(envelope.issuedAt) + '</div>' +
-          '<div class="tp-env-key">signature</div><div class="tp-env-val tp-mono" title="' + sig + '">' + shortSig + '</div>' +
-        '</div>';
-    }
-
-    // ── Captured form data ─────────────────────────────────────────────────
-    let dataHtml = '';
+    // Captured form data
     if (formData && Object.keys(formData).length) {
-      const dataRows = Object.entries(formData)
-        .filter(([, v]) => v !== '' && v != null)
-        .map(([k, v]) =>
-          '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val tp-mono">' + esc(String(v)) + '</div>'
-        ).join('');
-      dataHtml = '<div class="tp-env-grid">' + dataRows + '</div>';
-      if (responseData) {
-        const resRows = Object.entries(responseData)
-          .map(([k, v]) =>
-            '<div class="tp-env-key">' + esc(k) + '</div><div class="tp-env-val tp-mono">' + esc(typeof v === 'object' ? JSON.stringify(v) : String(v)) + '</div>'
-          ).join('');
-        dataHtml +=
-          '<div class="tp-data-resp-label">Server response</div>' +
-          '<div class="tp-env-grid">' + resRows + '</div>';
-      }
+      obj.capturedData = Object.fromEntries(
+        Object.entries(formData).filter(([, v]) => v !== '' && v != null)
+      );
+    }
+    if (responseData) {
+      obj.serverResponse = responseData;
     }
 
-    return (
-      // Captured data (card config only)
-      (dataHtml
-        ? '<div class="tp-section">' +
-            '<div class="tp-section-title">Captured Data</div>' +
-            dataHtml +
-          '</div>'
-        : '') +
+    // Risk summary
+    obj.risk = {
+      formScore,
+      envScore,
+      totalScore,
+      verdict:    verdictLabel,
+      signals:    Array.isArray(telemetry.riskSignals) ? telemetry.riskSignals : [],
+    };
 
-      // Form score
-      '<div class="tp-section">' +
-        '<div class="tp-section-title">Form Risk Score <span class="tp-hint">(field-level analysis)</span></div>' +
-        '<div class="tp-score-row">' +
-          '<span class="tp-score-num">' + formScore + '</span>' +
-          '<div class="tp-score-bar-track"><div class="tp-score-bar-fill" data-score="' + formScore + '"></div></div>' +
-          '<span class="tp-verdict ' + formV.cls + '">' + formV.label + '</span>' +
-        '</div>' +
-        formSignalsHtml +
-      '</div>' +
+    // Session / behavioral
+    obj.session = {
+      duration:   typeof telemetry.sessionDuration === 'number' ? telemetry.sessionDuration + 'ms' : null,
+      fieldCount: telemetry.fieldCount ?? null,
+      fields: Array.isArray(telemetry.fields)
+        ? telemetry.fields.map(f => ({
+            name:           f.fieldName || f.fieldType || 'field',
+            dwell:          formatMs(f.dwell),
+            completionTime: formatMs(f.completionTime),
+            velocity:       typeof f.velocity === 'number' ? parseFloat(f.velocity.toFixed(1)) : null,
+            corrections:    f.corrections ?? 0,
+            paste:          f.pasteDetected ?? false,
+            autofill:       f.autofillDetected ?? false,
+            focusCount:     f.focusCount ?? 0,
+          }))
+        : [],
+    };
 
-      // Session telemetry
-      '<div class="tp-section">' +
-        '<div class="tp-section-title">Session Telemetry <span class="tp-hint">(behavioral signals per field)</span></div>' +
-        sessionHtml +
-      '</div>' +
+    // Environmental signals
+    obj.environment = {
+      webdriverDetected:        env.webdriverDetected ?? false,
+      headlessDetected:         env.headlessDetected ?? false,
+      domMutationDetected:      env.domMutationDetected ?? false,
+      injectedScriptCount:      env.injectedScriptCount ?? 0,
+      suspiciousScreenSize:     env.suspiciousScreenSize ?? false,
+      pointerType:              env.pointerType ?? null,
+      mouseMovementDetected:    env.mouseMovementDetected ?? false,
+      keyboardActivityDetected: env.keyboardActivityDetected ?? false,
+      pageLoadToFirstKeystroke: formatMs(env.pageLoadToFirstKeystroke),
+      loadToSubmit:             formatMs(env.loadToSubmit),
+    };
 
-      // Env score
-      '<div class="tp-section">' +
-        '<div class="tp-section-title">Environment Risk Score <span class="tp-hint">(browser signals)</span></div>' +
-        '<div class="tp-score-row">' +
-          '<span class="tp-score-num">' + envScore + '</span>' +
-          '<div class="tp-score-bar-track"><div class="tp-score-bar-fill" data-score="' + envScore + '"></div></div>' +
-          '<span class="tp-verdict ' + envV.cls + '">' + envV.label + '</span>' +
-        '</div>' +
-      '</div>' +
+    // HMAC envelope
+    if (envelope?.signature) {
+      obj.envelope = {
+        nonce:     envelope.nonce,
+        issuedAt:  envelope.issuedAt,
+        signature: envelope.signature,
+      };
+    }
 
-      // Env signals table
-      '<div class="tp-section">' +
-        '<div class="tp-section-title">Environmental Signals</div>' +
-        '<div class="tp-env-grid">' + envRows + '</div>' +
-      '</div>' +
+    return jsonPanel(obj, !!envelope?.signature);
+  }
 
-      // HMAC envelope
-      '<div class="tp-section">' +
-        '<div class="tp-section-title">HMAC Envelope</div>' +
-        hmacHtml +
-      '</div>'
+  function syntaxHighlight(obj) {
+    const str = JSON.stringify(obj, null, 2)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    return str.replace(
+      /("(?:\\.|[^"\\])*"(?=\s*:))|("(?:\\.|[^"\\])*")|(true|false)|(null)|(-?\d+(?:\.\d+)?(?:[eE][+-]?\d+)?)/g,
+      (_, key, str, bool, nil, num) => {
+        if (key)  return '<span class="json-key">'  + key  + '</span>';
+        if (str)  return '<span class="json-str">'  + str  + '</span>';
+        if (bool) return '<span class="json-bool">' + bool + '</span>';
+        if (nil)  return '<span class="json-null">' + nil  + '</span>';
+        if (num)  return '<span class="json-num">'  + num  + '</span>';
+        return _;
+      }
     );
   }
 
-  function applyScoreBarStyles(container) {
-    container.querySelectorAll('.tp-score-bar-fill[data-score]').forEach(el => {
-      const score = parseInt(el.dataset.score, 10);
-      el.style.width = score + '%';
-      el.style.background = score <= 30 ? '#22c55e' : score <= 60 ? '#f59e0b' : '#ef4444';
-    });
+  function jsonPanel(obj, signed) {
+    const badge = signed
+      ? '<span class="json-panel-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> signed</span>'
+      : '';
+    return '<div class="json-panel">' +
+      '<div class="json-panel-bar">' +
+        '<span class="json-panel-dots" aria-hidden="true"><i></i><i></i><i></i></span>' +
+        '<span class="json-panel-title">telemetry.json</span>' +
+        badge +
+      '</div>' +
+      '<pre class="json-panel-pre"><code class="json-panel-code">' + syntaxHighlight(obj) + '</code></pre>' +
+      '</div>';
   }
 }
 		</script>
