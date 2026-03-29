@@ -81,7 +81,7 @@ body {
 /* Container System */
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
     padding: 0 var(--space-lg);
 }
@@ -91,7 +91,7 @@ body {
 }
 
 .container-wide {
-    max-width: 1400px;
+    max-width: 1600px;
 }
 
 /* Hero Section */

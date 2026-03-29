@@ -129,13 +129,13 @@ body {
 
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1440px;
     margin-inline: auto;
     padding-inline: var(--space-lg);
 }
 
 .container-narrow { max-width: 900px;  margin-inline: auto; }
-.container-wide   { max-width: 1400px; margin-inline: auto; }
+.container-wide   { max-width: 1600px; margin-inline: auto; }
 
 /* ============================================================
    HERO
