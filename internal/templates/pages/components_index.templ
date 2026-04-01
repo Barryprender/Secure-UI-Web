@@ -84,7 +84,7 @@ templ ComponentsIndex() {
 				<p class="ci-subtitle">{ i18n.T(ctx, "ci.subtitle") }</p>
 				<div class="ci-stats">
 					<div class="ci-stat">
-						<span class="ci-stat-num" data-target="9">9</span>
+						<span class="ci-stat-num" data-target="10">10</span>
 						<span class="ci-stat-label">{ i18n.T(ctx, "ci.stat.components") }</span>
 					</div>
 					<div class="ci-stat">
@@ -384,8 +384,30 @@ templ ComponentsIndex() {
 					</ul>
 				</a>
 
+				<!-- secure-password-confirm -->
+				<a href="/components/secure-password-confirm" class="component-card" data-ci-index="8">
+					<div class="card-preview card-preview--password-confirm" aria-hidden="true">
+						<div class="cp-pw-field">
+							<div class="cp-pw-label">New Password</div>
+							<div class="cp-pw-input"><span class="cp-pw-dots">&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</span><span class="cp-pw-eye">&#128065;</span></div>
+						</div>
+						<div class="cp-pw-field">
+							<div class="cp-pw-label">Confirm Password</div>
+							<div class="cp-pw-input cp-pw-input--match"><span class="cp-pw-dots">&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;</span><span class="cp-pw-eye">&#128065;</span></div>
+						</div>
+						<div class="cp-pw-match">&#10003; Passwords match</div>
+					</div>
+					<span class="component-card-tag">&lt;secure-password-confirm&gt;</span>
+					<p class="component-card-desc">Linked new-password and confirm-password fields with match validation, strength enforcement, and animated show/hide toggle.</p>
+					<ul class="component-card-features">
+						<li>Match validation on blur</li>
+						<li>Strength rules enforced</li>
+						<li>Raw value never in events</li>
+					</ul>
+				</a>
+
 				<!-- secure-card -->
-				<a href="/components/secure-card" class="component-card" data-ci-index="8">
+				<a href="/components/secure-card" class="component-card" data-ci-index="9">
 					<div class="card-preview card-preview--payment" aria-hidden="true">
 						<div class="cp-payment-scene">
 							<div class="cp-payment-front">

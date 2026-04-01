@@ -2219,6 +2219,60 @@
   text-transform: uppercase;
 }
 
+/* ── secure-password-confirm preview ── */
+
+.card-preview--password-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 4px 0;
+}
+
+.cp-pw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.cp-pw-label {
+  font-size: 0.52rem;
+  color: var(--color-text-tertiary, rgba(255,255,255,0.45));
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.cp-pw-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 4px;
+  padding: 3px 6px;
+  font-size: 0.6rem;
+  color: rgba(255,255,255,0.5);
+}
+
+.cp-pw-input--match {
+  border-color: rgba(46,125,50,0.6);
+}
+
+.cp-pw-dots {
+  letter-spacing: -0.1em;
+  font-size: 0.45rem;
+}
+
+.cp-pw-eye {
+  font-size: 0.65rem;
+  opacity: 0.5;
+}
+
+.cp-pw-match {
+  font-size: 0.55rem;
+  color: #4caf50;
+  font-weight: 600;
+}
+
 /* ── secure-telemetry-provider preview ── */
 
 .card-preview--telemetry {

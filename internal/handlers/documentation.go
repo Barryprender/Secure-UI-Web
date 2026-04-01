@@ -38,6 +38,8 @@ func (h *Handlers) Documentation(w http.ResponseWriter, r *http.Request) {
 		pages.DocsSecureCard().Render(r.Context(), w)
 	case "secure-telemetry-provider":
 		pages.DocsSecureTelemetryProvider().Render(r.Context(), w)
+	case "secure-password-confirm":
+		pages.DocsSecurePasswordConfirm().Render(r.Context(), w)
 	default:
 		http.NotFound(w, r)
 	}

@@ -60,6 +60,14 @@ func (h *Handlers) Components(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 		pages.ComponentSecureTelemetryProvider(t1, t2).Render(r.Context(), w)
+	case "secure-password-confirm":
+		t1, err := h.generateCSRFToken()
+		if err != nil {
+			log.Printf("failed to generate CSRF token for secure-password-confirm page: %v", err)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		pages.ComponentSecurePasswordConfirm(t1).Render(r.Context(), w)
 	default:
 		http.NotFound(w, r)
 	}
