@@ -16,6 +16,12 @@ func HomeJsonLD(siteURL string) string {
 				"name":        "Secure-UI",
 				"url":         siteURL,
 				"description": "Security-first web component library with zero dependencies.",
+				"logo": map[string]any{
+					"@type":  "ImageObject",
+					"url":    siteURL + "/static/favicon.svg",
+					"width":  "512",
+					"height": "512",
+				},
 				"sameAs": []string{
 					"https://github.com/Barryprender/Secure-UI",
 					"https://www.npmjs.com/package/secure-ui-components",
@@ -24,9 +30,10 @@ func HomeJsonLD(siteURL string) string {
 			{
 				"@type":               "SoftwareApplication",
 				"name":                "Secure-UI",
+				"alternateName":       []string{"secure ui components", "secure UI component library", "secure form components"},
 				"applicationCategory": "DeveloperApplication",
 				"applicationSubCategory": "Web Component Library",
-				"description":         "Zero-dependency web components with built-in XSS protection, CSRF defence, behavioral bot detection, rate limiting, and CSP-safe Shadow DOM styling. Security tier declared per field; enforced automatically.",
+				"description":         "Drop-in secure UI components with built-in XSS protection, CSRF defence, behavioral bot detection, rate limiting, and CSP-safe Shadow DOM styling. Secure form components, input components, and payment components with zero runtime dependencies.",
 				"url":                 siteURL,
 				"downloadUrl":         "https://www.npmjs.com/package/secure-ui-components",
 				"installUrl":          "https://www.npmjs.com/package/secure-ui-components",
@@ -37,23 +44,26 @@ func HomeJsonLD(siteURL string) string {
 				},
 				"operatingSystem": "Any",
 				"keywords": []string{
+					"secure ui components", "secure form components", "secure web components",
 					"web components", "custom elements", "shadow dom", "security",
-					"xss protection", "csrf", "form security", "typescript",
+					"xss protection", "csrf protection", "form security", "typescript",
 					"zero dependencies", "payment card", "pci", "behavioral telemetry",
-					"bot detection", "audit logging",
+					"bot detection", "audit logging", "injection detection",
 				},
 				"featureList": []string{
 					"XSS sanitisation on all input components",
-					"CSRF token injection and validation",
+					"Real-time injection detection: script-tag, js-protocol, event-handler, html-injection, css-expression, vbscript, data-uri-html, template-syntax",
+					"CSRF token injection and validation with secure-threat-detected event on absent token",
 					"Behavioral bot detection and risk scoring",
 					"PCI-compliant payment card input with Luhn validation",
 					"Four security tiers: public, authenticated, sensitive, critical",
 					"Audit logging without capturing raw sensitive values",
-					"HMAC-SHA256 signed telemetry payloads",
+					"HMAC-SHA256 signed telemetry payloads with cached CryptoKey",
 					"CSP-safe — no eval(), no unsafe-inline",
 					"Zero runtime dependencies",
 					"Progressive enhancement — works without JavaScript",
 				},
+				"license":             "https://github.com/Barryprender/Secure-UI/blob/main/LICENSE",
 				"programmingLanguage": "TypeScript",
 			},
 			{
@@ -108,6 +118,7 @@ func DocsIndexJsonLD(siteURL, canonicalURL string) string {
 			{"@type": "TechArticle", "name": "secure-table", "url": siteURL + "/documentation/secure-table"},
 			{"@type": "TechArticle", "name": "secure-card", "url": siteURL + "/documentation/secure-card"},
 			{"@type": "TechArticle", "name": "secure-telemetry-provider", "url": siteURL + "/documentation/secure-telemetry-provider"},
+			{"@type": "TechArticle", "name": "secure-password-confirm", "url": siteURL + "/documentation/secure-password-confirm"},
 		},
 	}
 	b, err := json.Marshal(data)
@@ -150,7 +161,7 @@ func DocsPageJsonLD(siteURL, canonicalURL, componentName, description string) st
 				"headline":      fmt.Sprintf("%s - Secure-UI", componentName),
 				"description":   description,
 				"url":           canonicalURL,
-				"datePublished": "2024-09-01",
+				"datePublished": "2025-01-01",
 				"dateModified":  today,
 				"author": map[string]any{
 					"@type": "Organization",
@@ -221,7 +232,7 @@ func HomeFAQJsonLD() string {
 				Name: "How does Secure-UI prevent XSS?",
 				AcceptedAnswer: answer{
 					Type: "Answer",
-					Text: "All input is sanitised via HTML entity encoding, script tag stripping, and event handler removal before it is used or emitted. The closed Shadow DOM prevents host-page scripts from reaching component internals. No raw user input ever reaches the DOM unsanitised.",
+					Text: "Every input component scans the raw field value on every keystroke against 8 injection patterns — script tags, javascript: URIs, inline event handlers, injected HTML elements, CSS expressions, VBScript URIs, data:text/html payloads, and template injection probes. The first match fires a secure-threat-detected event (raw value intentionally absent). Values are also sanitised via HTML entity encoding before emitting. The closed Shadow DOM prevents host-page scripts from reaching component internals.",
 				},
 			},
 			{

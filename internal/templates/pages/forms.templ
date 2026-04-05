@@ -5,7 +5,7 @@ import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
 templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
-	@templates.Layout("Live Form Demos", "Live interactive demos of Secure-UI form components: login, subscription, and payment forms with real-time telemetry display.", false, "/static/styles/forms/forms.min.css") {
+	@templates.Layout("Secure Form Components — Live Demos with Behavioral Bot Detection", "Live interactive demos of secure form components built with Secure-UI: login, subscription, and payment forms with CSRF protection, XSS prevention, and real-time telemetry.", false, "/static/styles/forms/forms.min.css") {
 		<section class="py-3xl">
 			<div class="container">
 				<!-- Hero -->
@@ -17,9 +17,9 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string) {
 						</div>
 						<h1 class="forms-hero-title">Every Form.<br/>Every Keystroke.<br/>Analyzed.</h1>
 						<p class="forms-hero-desc">
-							Three real-world forms — authentication, sign-up, payment — each silently profiling
-							keystroke timing, mouse patterns, and paste behavior on every interaction.
-							Risk-scored server-side. No CAPTCHA required.
+							Three real-world secure form components — authentication, sign-up, payment — each
+							silently profiling keystroke timing, mouse patterns, and paste behavior on every
+							interaction. Risk-scored server-side. No CAPTCHA required.
 						</p>
 						<div class="forms-hero-jumps">
 							<a href="#demo-login" class="forms-hero-jump forms-hero-jump--auth">Authentication</a>

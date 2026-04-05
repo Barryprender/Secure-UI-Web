@@ -192,6 +192,7 @@ console.log(envelope.signature);` }</code></pre>
 					<span class="signals-legend__item" data-cat="environment">Environment</span>
 					<span class="signals-legend__item" data-cat="behavioral">Behavioral</span>
 					<span class="signals-legend__item" data-cat="timing">Timing</span>
+					<span class="signals-legend__item" data-cat="threats">Threats</span>
 				</div>
 				<div class="security-matrix-wrapper">
 				<table class="security-matrix signals-table">
@@ -253,8 +254,31 @@ console.log(envelope.signature);` }</code></pre>
 							<td><span class="sig-weight">+30</span></td>
 							<td>ms from component mount to form submission. Values below 500ms are consistent with automated submission</td>
 						</tr>
+						<tr data-cat="threats">
+							<td><code>threatSignals</code></td>
+							<td><span class="sig-weight sig-weight--neutral">&#x2014;</span></td>
+							<td>Array of <code>ThreatDetectedDetail</code> objects accumulated from all <code>secure-threat-detected</code> events during the session — injection patterns from child inputs and CSRF-absent signals from nested forms. Omitted from the envelope when no threats were detected</td>
+						</tr>
 					</tbody>
 				</table>
+				</div>
+			</section>
+
+			<!-- Signing key notes -->
+			<section class="security-section">
+				<h2 class="security-section-title">Signing key lifecycle</h2>
+				<p class="security-callout">The <code>signing-key</code> is a symmetric HMAC-SHA-256 secret. It must also be known server-side to verify the signature — never send it to the client in a way visible to third-party scripts.</p>
+				<div class="security-telemetry-panel" style="margin-top: 1rem;">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Cached CryptoKey</span>
+						<span class="security-telemetry-badge">Imported once per key value</span>
+					</div>
+					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+						The <code>CryptoKey</code> derived from the <code>signing-key</code> attribute is imported once and cached for the lifetime of the component. It is re-imported only when the attribute value changes, and cleared on <code>disconnectedCallback</code>. This avoids the cost of a <code>SubtleCrypto.importKey()</code> call on every form submission.
+					</p>
+					<p style="margin: 0; font-size: 0.875rem; color: var(--text-secondary);">
+						Rotate the key by issuing a new value from your server (e.g. a per-session nonce endpoint). The component detects the change via <code>attributeChangedCallback</code> and invalidates the cache before the next <code>sign()</code> call.
+					</p>
 				</div>
 			</section>
 

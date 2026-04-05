@@ -7,7 +7,7 @@ import (
 )
 
 templ Home() {
-	@templates.Layout("Secure-UI — Security-hardened Web Components. Bot Detection Without CAPTCHA.", "Stop bots without CAPTCHA friction. Drop-in web components with behavioral bot detection, CSRF protection, XSS prevention, and HMAC-signed telemetry. Zero dependencies. Works with any framework.", true, "/static/styles/home/home.min.css") {
+	@templates.Layout("Secure-UI — Secure UI Components with Bot Detection, CSRF & XSS Protection.", "Drop-in secure UI components with CSRF protection, XSS prevention, behavioral bot detection, and HMAC-signed telemetry. Zero dependencies. MIT licence. Works with any framework.", true, "/static/styles/home/home.min.css") {
 		@templates.HomeJsonLDScript()
 		@templates.HomeFAQJsonLDScript()
 		<!-- Hero Section -->
@@ -667,7 +667,7 @@ func (h *Handlers) Register(
 			</div>
 			<div class="faq-item">
 				<dt class="faq-question">How does Secure-UI prevent XSS?</dt>
-				<dd class="faq-answer">All input is sanitised via HTML entity encoding, script tag stripping, and event handler removal before it is used or emitted. The closed Shadow DOM prevents host-page scripts from reaching component internals. No raw user input reaches the DOM unsanitised.</dd>
+				<dd class="faq-answer">Every input component scans the raw field value on every keystroke against 8 injection patterns — script tags, <code>javascript:</code> URIs, inline event handlers, injected HTML elements, CSS expressions, VBScript URIs, <code>data:text/html</code> payloads, and template injection probes. The first match fires a <code>secure-threat-detected</code> event (raw value intentionally absent). Values are also sanitised via HTML entity encoding before emitting. The closed Shadow DOM prevents host-page scripts from reaching component internals.</dd>
 			</div>
 			<div class="faq-item">
 				<dt class="faq-question">Is this a replacement for server-side validation?</dt>
@@ -1028,7 +1028,7 @@ console.log(
   'color:#475569;font-size:12px;line-height:1.8;font-family:monospace'
 );
 console.log(
-  '%c→ /components%c   9 components, fully interactive\n%c→ /documentation%c   Integration in under 5 minutes',
+  '%c→ /components%c   10 components, fully interactive\n%c→ /documentation%c   Integration in under 5 minutes',
   'color:#059669;font-weight:600;font-size:12px;font-family:monospace',
   'color:#94a3b8;font-size:12px;font-family:monospace',
   'color:#059669;font-weight:600;font-size:12px;font-family:monospace',
@@ -1364,7 +1364,7 @@ if (navigator.clipboard) {
     {
       kind:'bot', label:'SQLi bot',
       email:"admin@target.com", pass:"' OR 1=1 --",
-      speed:'fast', statusA:'bot connecting...', statusB:'injection payload detected',
+      speed:'fast', statusA:'bot connecting...', statusB:'no human interaction signals',
       score:'94/100', verdict:'REJECT', vt:'r',
       fxType:'attack', fxN:22,
       emailCls:'d', passCls:'d',
@@ -1412,7 +1412,7 @@ if (navigator.clipboard) {
     {
       kind:'bot', label:'headless scraper',
       email:"test@test.com", pass:"<script>alert(1)<\/script>",
-      speed:'fast', statusA:'bot connecting...', statusB:'xss payload stripped',
+      speed:'fast', statusA:'bot connecting...', statusB:'injection pattern detected',
       score:'80/100', verdict:'REJECT', vt:'r',
       fxType:'attack', fxN:22,
       emailCls:'d', passCls:'d',

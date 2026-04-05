@@ -215,6 +215,41 @@ templ ComponentSecureInput() {
 					</div>
 				</div>
 
+				<!-- Injection detection panel -->
+				<div class="security-telemetry-panel">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Real-time injection detection</span>
+						<span class="security-telemetry-badge">Fires <code>secure-threat-detected</code> on every input event</span>
+					</div>
+					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+						Every keystroke is scanned against 8 patterns. Only the first match per event is reported. The raw field value is never included in the event detail.
+					</p>
+					<div class="sf-event-layout">
+						<div class="sf-event-code">
+							<pre><code class="language-javascript">{ `el.addEventListener('secure-threat-detected', e => {
+  const { fieldName, threatType,
+          patternId, tier, timestamp } = e.detail;
+  // threatType: 'injection'
+  // patternId: e.g. 'script-tag', 'js-protocol'
+  // raw value intentionally absent
+});` }</code></pre>
+						</div>
+						<div class="sf-risk-signals">
+							<div class="sf-risk-signal-title">Pattern IDs</div>
+							<div class="sf-risk-signal-list">
+								<div class="sf-risk-signal"><span class="sf-signal-name">script-tag</span><span class="sf-signal-desc"><code>&lt;script</code> tags</span></div>
+								<div class="sf-risk-signal"><span class="sf-signal-name">js-protocol</span><span class="sf-signal-desc"><code>javascript:</code> URIs</span></div>
+								<div class="sf-risk-signal"><span class="sf-signal-name">event-handler</span><span class="sf-signal-desc">Inline handlers — <code>onclick=</code>, <code>onload=</code></span></div>
+								<div class="sf-risk-signal"><span class="sf-signal-name">html-injection</span><span class="sf-signal-desc"><code>&lt;img&gt;</code>, <code>&lt;svg&gt;</code>, <code>&lt;iframe&gt;</code>, etc.</span></div>
+								<div class="sf-risk-signal"><span class="sf-signal-name">css-expression</span><span class="sf-signal-desc">IE-era <code>expression()</code> CSS</span></div>
+								<div class="sf-risk-signal"><span class="sf-signal-name">vbscript</span><span class="sf-signal-desc"><code>vbscript:</code> URIs</span></div>
+								<div class="sf-risk-signal"><span class="sf-signal-name">data-uri-html</span><span class="sf-signal-desc"><code>data:text/html</code> payloads</span></div>
+								<div class="sf-risk-signal"><span class="sf-signal-name">template-syntax</span><span class="sf-signal-desc"><code>&#123;&#123;...&#125;&#125;</code> template injection probes</span></div>
+							</div>
+						</div>
+					</div>
+				</div>
+
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -235,6 +270,13 @@ templ ComponentSecureInput() {
 						</tr>
 						<tr>
 							<td>XSS sanitization</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Real-time injection detection</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>

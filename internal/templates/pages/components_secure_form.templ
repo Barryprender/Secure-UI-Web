@@ -6,7 +6,7 @@ import (
 )
 
 templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, csrfDemo4 string, csrfDemo5 string) {
-	@templates.Layout("Live Demo: Secure Form — CSRF, Behavioral Telemetry, Bot Detection", "Interactive demos for secure-form: CSRF token injection, behavioral telemetry aggregation, risk scoring, bot detection without CAPTCHA, and framework integration examples.", true, "/static/styles/components/components.min.css") {
+	@templates.Layout("Secure Form Component — CSRF Protection, Telemetry & Bot Detection", "Interactive demos for the secure-form component: CSRF token injection, behavioral telemetry aggregation, risk scoring, bot detection without CAPTCHA, and framework integration examples.", true, "/static/styles/components/components.min.css") {
 		@templates.ComponentPageJsonLDScript("secure-form", "CSRF-protected form wrapper that aggregates per-field behavioral telemetry into a risk score and named risk signals — bot detection without CAPTCHA.")
 		<div class="component-page">
 			<!-- Hero -->
@@ -14,10 +14,10 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 				<div class="component-hero-content">
 					<h1>&lt;secure-form&gt;</h1>
 					<p class="component-hero-description">
-						The orchestration layer for Secure-UI. Injects CSRF tokens, coordinates
-						validation across all child fields, and at submission collects every field's
-						behavioral signals into a <code>SessionTelemetry</code> payload — a
-						<code>riskScore</code> from 0–100 and named <code>riskSignals</code> your
+						The secure form component at the core of Secure-UI. Injects CSRF tokens,
+						coordinates validation across all child fields, and at submission collects
+						every field's behavioral signals into a <code>SessionTelemetry</code> payload
+						— a <code>riskScore</code> from 0–100 and named <code>riskSignals</code> your
 						server can act on immediately. Bot detection without CAPTCHA, no extra endpoint.
 					</p>
 					<div class="component-hero-install">
@@ -207,6 +207,24 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 					</div>
 				</div>
 
+				<!-- CSRF threat detection panel -->
+				<div class="security-telemetry-panel sf-event-panel" style="margin-bottom: 1.5rem;">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">CSRF token absent detection</span>
+						<span class="security-telemetry-badge">Fires <code>secure-threat-detected</code> at submission — sensitive &amp; critical tiers only</span>
+					</div>
+					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+						When a <code>sensitive</code> or <code>critical</code> tier form is submitted without a CSRF token value, the form dispatches <code>secure-threat-detected</code> before the request proceeds. The signal bubbles up to any wrapping <code>&lt;secure-telemetry-provider&gt;</code> where it is accumulated in the <code>threatSignals</code> array and included in the signed envelope.
+					</p>
+					<pre><code class="language-javascript">{ `element.addEventListener('secure-threat-detected', e => {
+  const { fieldName, threatType,
+          patternId, tier, timestamp } = e.detail;
+  // threatType:  'csrf-token-absent'
+  // patternId:   'csrf-token-absent'
+  // fieldName:   internal form instance ID
+});` }</code></pre>
+				</div>
+
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -262,6 +280,13 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 						</tr>
 						<tr>
 							<td>Autocomplete disabled</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>CSRF token absent detection</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-yes">Yes</td>

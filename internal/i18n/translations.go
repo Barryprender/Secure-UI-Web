@@ -38,16 +38,16 @@ var translations = map[string]map[Locale]string{
 	// ── Home — Hero ────────────────────────────────────────────────────────
 	"home.hero.eyebrow":     {EN: "No CAPTCHA required", ES: "Sin CAPTCHA", FR: "Sans CAPTCHA", DE: "Kein CAPTCHA"},
 	"home.hero.line1":       {EN: "Security-hardened", ES: "Componentes", FR: "Composants", DE: "Sicherheitsgehärtete"},
-	"home.hero.line2":       {EN: "components.", ES: "de seguridad reforzada.", FR: "sécurisés par défaut.", DE: "Komponenten."},
+	"home.hero.line2":       {EN: "UI components.", ES: "de seguridad reforzada.", FR: "UI sécurisés.", DE: "UI-Komponenten."},
 	"home.hero.line3":       {EN: "One tag. No config.", ES: "Una etiqueta. Sin config.", FR: "Une balise. Zéro config.", DE: "Ein Tag. Kein Setup."},
-	"home.hero.desc":        {EN: "Bot detection without the vendor tax. CSRF, XSS, and audit logging active on every component by default. Works with any framework or server-rendered HTML.", ES: "Detección de bots sin costes de proveedor. CSRF, XSS y registro de auditoría activos en cada componente por defecto. Compatible con cualquier framework o HTML renderizado en servidor.", FR: "Détection de bots sans frais de fournisseur. CSRF, XSS et journalisation d'audit actifs sur chaque composant par défaut. Compatible avec tout framework ou HTML rendu côté serveur.", DE: "Bot-Erkennung ohne Anbietergebühren. CSRF, XSS und Audit-Logging standardmäßig auf jeder Komponente aktiv. Funktioniert mit jedem Framework oder server-seitig gerendertem HTML."},
+	"home.hero.desc":        {EN: "Drop-in secure UI components with CSRF protection, XSS prevention, and behavioral bot detection built in by default. No vendor lock-in, no CAPTCHA required. Works with any framework or server-rendered HTML.", ES: "Componentes UI seguros listos para usar con protección CSRF, prevención XSS y detección de bots por comportamiento integradas por defecto. Sin dependencia de proveedor, sin CAPTCHA. Compatible con cualquier framework o HTML renderizado en servidor.", FR: "Composants UI sécurisés prêts à l'emploi avec protection CSRF, prévention XSS et détection de bots comportementale intégrées par défaut. Sans dépendance fournisseur, sans CAPTCHA. Compatible avec tout framework ou HTML rendu côté serveur.", DE: "Einsatzbereite sichere UI-Komponenten mit integriertem CSRF-Schutz, XSS-Prävention und verhaltensbasierter Bot-Erkennung. Kein Anbieter-Lock-in, kein CAPTCHA. Funktioniert mit jedem Framework oder server-seitig gerendertem HTML."},
 	"home.hero.cta_explore": {EN: "Get started", ES: "Comenzar", FR: "Démarrer", DE: "Loslegen"},
 	"home.hero.cta_start":   {EN: "See live demos", ES: "Ver demos en vivo", FR: "Voir les démos", DE: "Live-Demos ansehen"},
 	"home.hero.install":     {EN: "npm i secure-ui-components", ES: "npm i secure-ui-components", FR: "npm i secure-ui-components", DE: "npm i secure-ui-components"},
 	"home.hero.trust_deps":  {EN: "Zero dependencies", ES: "Sin dependencias", FR: "Zéro dépendances", DE: "Null Abhängigkeiten"},
 	"home.hero.trust_mit":   {EN: "MIT License", ES: "Licencia MIT", FR: "Licence MIT", DE: "MIT-Lizenz"},
 	"home.hero.trust_fw":    {EN: "Any framework", ES: "Cualquier framework", FR: "Tout framework", DE: "Jedes Framework"},
-	"home.hero.trust_comp":  {EN: "9 components", ES: "9 componentes", FR: "9 composants", DE: "9 Komponenten"},
+	"home.hero.trust_comp":  {EN: "11 secure UI components", ES: "11 componentes UI seguros", FR: "11 composants UI sécurisés", DE: "11 sichere UI-Komponenten"},
 
 	// ── Home — Stats ───────────────────────────────────────────────────────
 	"home.stats.deps":    {EN: "runtime dependencies", ES: "dependencias en runtime", FR: "dépendances runtime", DE: "Laufzeitabhängigkeiten"},
@@ -60,7 +60,7 @@ var translations = map[string]map[Locale]string{
 	"home.demo.heading":    {EN: "Touch the components.", ES: "Prueba los componentes.", FR: "Touchez les composants.", DE: "Testen Sie die Komponenten."},
 	"home.demo.subheading": {EN: "See security in action.", ES: "Ve la seguridad en acción.", FR: "Voyez la sécurité en action.", DE: "Sicherheit in Aktion erleben."},
 	"home.demo.body":       {EN: "These are live secure-input and secure-form components. CSRF token injection, XSS sanitization, and audit logging are active. Inspect the DOM — the Shadow DOM keeps the internal structure isolated.", ES: "Estos son componentes secure-input y secure-form en vivo. La inyección de tokens CSRF, la sanitización XSS y el registro de auditoría están activos. Inspecciona el DOM — el Shadow DOM mantiene aislada la estructura interna.", FR: "Ce sont des composants secure-input et secure-form en direct. L'injection de jetons CSRF, la désinfection XSS et la journalisation d'audit sont actives. Inspectez le DOM — le Shadow DOM isole la structure interne.", DE: "Dies sind live secure-input- und secure-form-Komponenten. CSRF-Token-Injektion, XSS-Sanitierung und Audit-Logging sind aktiv. Untersuchen Sie das DOM — das Shadow DOM hält die interne Struktur isoliert."},
-	"home.demo.link":       {EN: "See all 9 components", ES: "Ver los 9 componentes", FR: "Voir les 9 composants", DE: "Alle 9 Komponenten ansehen"},
+	"home.demo.link":       {EN: "See all 11 components", ES: "Ver los 11 componentes", FR: "Voir les 11 composants", DE: "Alle 11 Komponenten ansehen"},
 	"home.demo.panel_title": {EN: "secure-form + secure-input", ES: "secure-form + secure-input", FR: "secure-form + secure-input", DE: "secure-form + secure-input"},
 	"home.demo.panel_live":  {EN: "Live", ES: "En vivo", FR: "En direct", DE: "Live"},
 	"home.demo.submit":      {EN: "Submit securely", ES: "Enviar de forma segura", FR: "Envoyer en sécurité", DE: "Sicher absenden"},

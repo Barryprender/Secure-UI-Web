@@ -9,8 +9,14 @@ import (
 
 // Documentation renders the main documentation index page
 func (h *Handlers) Documentation(w http.ResponseWriter, r *http.Request) {
+	// Canonical URL: redirect /documentation/ → /documentation (avoid duplicate content)
+	if r.URL.Path == "/documentation/" {
+		http.Redirect(w, r, "/documentation", http.StatusMovedPermanently)
+		return
+	}
+
 	// Handle the base documentation route
-	if r.URL.Path == "/documentation" || r.URL.Path == "/documentation/" {
+	if r.URL.Path == "/documentation" {
 		pages.Documentation().Render(r.Context(), w)
 		return
 	}

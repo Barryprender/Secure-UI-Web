@@ -235,6 +235,16 @@ templ ComponentSecureTextarea() {
 			<section class="security-section">
 				<h2 class="security-section-title">Security Features</h2>
 				<p class="security-callout">Security is enforced server-side. These are client-side complements.</p>
+				<!-- Injection detection note -->
+				<div class="security-telemetry-panel" style="margin-bottom: 1.5rem;">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Real-time injection detection</span>
+						<span class="security-telemetry-badge">Fires <code>secure-threat-detected</code> on every input event</span>
+					</div>
+					<p style="margin: 0; font-size: 0.875rem; color: var(--text-secondary);">
+						Every keystroke is scanned against 8 patterns (script-tag, js-protocol, event-handler, html-injection, css-expression, vbscript, data-uri-html, template-syntax). Only the first match per event is reported. The raw field value is never included in the event detail — only the <code>patternId</code>, <code>fieldName</code>, <code>tier</code>, and <code>timestamp</code>.
+					</p>
+				</div>
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -292,6 +302,13 @@ templ ComponentSecureTextarea() {
 							<td>Rate limiting</td>
 							<td class="matrix-no">-</td>
 							<td class="matrix-no">-</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr data-ri="7">
+							<td>Real-time injection detection</td>
+							<td class="matrix-yes">Yes</td>
+							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 						</tr>

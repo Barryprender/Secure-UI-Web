@@ -10,7 +10,13 @@ import (
 
 // Components renders the component showcase pages.
 func (h *Handlers) Components(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path == "/components" || r.URL.Path == "/components/" {
+	// Canonical URL: redirect /components/ → /components (avoid duplicate content)
+	if r.URL.Path == "/components/" {
+		http.Redirect(w, r, "/components", http.StatusMovedPermanently)
+		return
+	}
+
+	if r.URL.Path == "/components" {
 		pages.ComponentsIndex().Render(r.Context(), w)
 		return
 	}

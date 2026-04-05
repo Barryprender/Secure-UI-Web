@@ -5,7 +5,7 @@ import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
 templ Login(csrfToken string, errorMessage string) {
-	@templates.Layout("Login", "Sign in to your account", false, "/static/styles/auth/auth.min.css") {
+	@templates.Layout("Login", "Sign in to the Secure-UI developer portal. Explore protected demos, live table data, and authenticated component examples secured by Secure-UI's own web components.", false, "/static/styles/auth/auth.min.css") {
 		<div class="auth-page">
 			<!-- Brand Panel -->
 			<aside class="auth-brand" aria-hidden="true">

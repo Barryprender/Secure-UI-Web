@@ -33,7 +33,7 @@ func (h *Handlers) RobotsTxt(w http.ResponseWriter, r *http.Request) {
 	body := "User-agent: *\nAllow: /\n" + disallow + "\n"
 
 	for _, agent := range aiAgents {
-		body += fmt.Sprintf("User-agent: %s\nAllow: /\n%s\n", agent, disallow)
+		body += fmt.Sprintf("User-agent: %s\n%s\n", agent, disallow)
 	}
 
 	body += fmt.Sprintf("Sitemap: %s/sitemap.xml\n", base)
@@ -69,7 +69,8 @@ Secure-UI is a TypeScript library published to npm as ` + "`secure-ui-components
 - [secure-datetime](%[1]s/documentation/secure-datetime): Date/time picker with range validation, timezone handling, and audit logging.
 - [secure-table](%[1]s/documentation/secure-table): Data table with client-side sorting, column filtering, and per-column security tier display rules. Supports slotted HTML or programmatic data binding.
 - [secure-card](%[1]s/documentation/secure-card): PCI-compliant payment card input with Luhn validation, card type detection (Visa, Mastercard, Amex, Discover), PAN masking on blur, and CVC protection. Full PAN and CVC are never exposed in DOM events, hidden inputs, or audit logs — only ` + "`last4`" + ` and ` + "`cardType`" + ` are shared.
-- [secure-telemetry-provider](%[1]s/documentation/secure-telemetry-provider): Behavioral intelligence provider. Captures keystroke timing, dwell time, paste detection, autofill signals, and typing velocity. Signs the telemetry payload with HMAC-SHA256. Risk scoring flags bot-like or scripted interactions without tracking users.
+- [secure-telemetry-provider](%[1]s/documentation/secure-telemetry-provider): Behavioral intelligence provider. Captures keystroke timing, dwell time, paste detection, autofill signals, and typing velocity. Signs the telemetry payload with HMAC-SHA256 (CryptoKey cached per session). Accumulates threat signals from all child components. Risk scoring flags bot-like or scripted interactions without tracking users.
+- [secure-password-confirm](%[1]s/documentation/secure-password-confirm): Dual-field password entry with real-time match validation, strength enforcement, show/hide toggle, injection detection on both fields, and a ` + "`secure-threat-detected`" + ` event. Security tier locked to critical. Raw password never exposed in events — retrieve via ` + "`getPasswordValue()`" + ` only.
 
 ## Security Model
 
@@ -137,7 +138,7 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 	// Use a stable date tied to the last known content update.
 	// Avoid time.Now() — dynamic lastmod signals to crawlers that
 	// content changes daily even when it doesn't, wasting crawl budget.
-	lastmod := "2026-03-21"
+	lastmod := "2026-04-05"
 
 	entries := []sitemapEntry{
 		{"/", "1.0", "weekly"},
@@ -166,8 +167,10 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 		{"/components/secure-table", "0.8", "weekly"},
 		{"/components/secure-card", "0.8", "weekly"},
 		{"/components/secure-telemetry-provider", "0.8", "weekly"},
+		{"/components/secure-password-confirm", "0.8", "weekly"},
 		{"/documentation/secure-card", "0.8", "weekly"},
 		{"/documentation/secure-telemetry-provider", "0.8", "weekly"},
+		{"/documentation/secure-password-confirm", "0.8", "weekly"},
 	}
 
 	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
