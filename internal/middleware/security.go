@@ -490,7 +490,8 @@ func CSRF(store *CSRFTokenStore, onError ErrorRenderer) func(http.Handler) http.
 // gzipResponseWriter wraps http.ResponseWriter to write through a gzip compressor.
 type gzipResponseWriter struct {
 	http.ResponseWriter
-	gz *gzip.Writer
+	gz      *gzip.Writer
+	sniffed bool
 }
 
 func (grw *gzipResponseWriter) WriteHeader(code int) {
@@ -499,6 +500,15 @@ func (grw *gzipResponseWriter) WriteHeader(code int) {
 }
 
 func (grw *gzipResponseWriter) Write(b []byte) (int, error) {
+	// On the first write, sniff Content-Type from the original uncompressed bytes.
+	// Without this, Go's http package sniffs the gzip magic bytes (0x1f 0x8b) and
+	// sets an incorrect Content-Type, causing browsers to display raw data.
+	if !grw.sniffed {
+		grw.sniffed = true
+		if grw.Header().Get("Content-Type") == "" {
+			grw.Header().Set("Content-Type", http.DetectContentType(b))
+		}
+	}
 	return grw.gz.Write(b)
 }
 
