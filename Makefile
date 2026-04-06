@@ -1,4 +1,4 @@
-.PHONY: help install components generate dev build run clean fmt test download-prism
+.PHONY: help install components generate dev build run clean fmt test download-prism css-bundle
 
 # Default target
 help:
@@ -13,6 +13,7 @@ help:
 	@echo "  make clean          - Remove generated files and binaries"
 	@echo "  make fmt            - Format Go code and templ templates"
 	@echo "  make test           - Run tests"
+	@echo "  make css-bundle     - Minify all CSS and assemble global.min.css"
 	@echo "  make download-prism - Download Prism.js syntax highlighting files"
 	@echo ""
 
@@ -84,6 +85,12 @@ fmt:
 test:
 	@echo "🧪 Running tests..."
 	go test -v ./...
+
+# Minify all CSS source files and assemble global.min.css bundle
+css-bundle:
+	@echo "Bundling CSS..."
+	node scripts/bundle-css.js
+	@echo "Done!"
 
 # Download Prism.js syntax highlighting files
 download-prism:
