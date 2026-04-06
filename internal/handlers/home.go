@@ -43,7 +43,24 @@ func (h *Handlers) Forms(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pages.FormsPage(loginToken, subscribeToken, paymentToken).Render(r.Context(), w)
+	signingKey, err := generateSigningKey()
+	if err != nil {
+		log.Printf("failed to generate signing key: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	http.SetCookie(w, &http.Cookie{
+		Name:     "forms_signing_key",
+		Value:    signingKey,
+		Path:     "/",
+		MaxAge:   3600,
+		HttpOnly: true,
+		SameSite: http.SameSiteStrictMode,
+		Secure:   r.TLS != nil,
+	})
+
+	pages.FormsPage(loginToken, subscribeToken, paymentToken, signingKey).Render(r.Context(), w)
 }
 
 // Dashboard renders the dashboard page

@@ -30,6 +30,7 @@ templ DocsSecureTextarea() {
 					<li><a href="#overview">Overview</a></li>
 					<li><a href="#basic-usage">Basic Usage</a></li>
 					<li><a href="#security-tiers">Security Tiers</a></li>
+					<li><a href="#threat-feedback">Threat Feedback</a></li>
 					<li><a href="#api-reference">API Reference</a></li>
 				</ul>
 			</nav>
@@ -107,6 +108,51 @@ templ DocsSecureTextarea() {
   name="confidential_notes"
   rows="6"
 ></secure-textarea>` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="threat-feedback" class="docs-section">
+				<h2 class="docs-section-title">Threat Feedback</h2>
+				<p class="docs-text">
+					Add <code>threat-feedback</code> to show an inline amber warning when an injection pattern
+					is detected. This attribute is opt-in by design: <code>&lt;secure-textarea&gt;</code> is often used
+					in fields where injection-like syntax is legitimate input &#8212; markdown, code snippets,
+					HTML templates, configuration files. Apply it only where the field is not expected to
+					receive such content.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Correct Usage</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Contact form message: threat feedback appropriate -->
+<secure-textarea
+  label="Message"
+  name="message"
+  security-tier="public"
+  threat-feedback>
+</secure-textarea>
+
+<!-- Code editor field: threat feedback NOT appropriate -->
+<secure-textarea
+  label="HTML Template"
+  name="template_code"
+  security-tier="public">
+</secure-textarea>` }
+						</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Silent detection still applies</div>
+					<div class="docs-callout-text">
+						Omitting <code>threat-feedback</code> does not disable injection scanning.
+						The <code>secure-threat-detected</code> event fires on every match regardless,
+						so server-side telemetry and audit logging are unaffected. Only the inline UI
+						is suppressed.
 					</div>
 				</div>
 			</section>
@@ -191,6 +237,12 @@ templ DocsSecureTextarea() {
 							<td><code>false</code></td>
 							<td>Read-only mode</td>
 						</tr>
+						<tr>
+							<td><code>threat-feedback</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Show inline amber warning when an injection pattern is detected. Opt-in &mdash; omit on fields that legitimately accept markup, code, or template syntax.</td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -220,8 +272,13 @@ templ DocsSecureTextarea() {
 					<tbody>
 						<tr>
 							<td><code>secure-textarea</code></td>
-							<td><code>{ ` name, value, tier ` }</code></td>
-							<td>Fired on content change</td>
+							<td><code>{ `{ name, value, tier }` }</code></td>
+							<td>Fired on every content change</td>
+						</tr>
+						<tr>
+							<td><code>secure-threat-detected</code></td>
+							<td><code>{ `{ fieldName, threatType, patternId, tier, timestamp }` }</code></td>
+							<td>Fired when an injection pattern matches. Raw value intentionally absent. Fires regardless of <code>threat-feedback</code> attribute.</td>
 						</tr>
 					</tbody>
 				</table>

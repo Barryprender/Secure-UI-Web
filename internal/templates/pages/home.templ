@@ -163,6 +163,29 @@ templ Home() {
 							</div>
 						</secure-form>
 					</secure-telemetry-provider>
+
+					<!-- Live signals panel — driven by real component events -->
+					<div id="demo-live-signals" class="demo-live-signals" aria-label="Live telemetry signals">
+						<div class="dls-header">
+							<span class="dls-dot" aria-hidden="true"></span>
+							<span class="dls-label">Live signals</span>
+						</div>
+						<div class="dls-fields">
+							<div class="dls-field-row" id="dls-field-email">
+								<span class="dls-field-name">email</span>
+								<span class="dls-sig"><span class="dls-sig-key">vel</span><span class="dls-sig-val" id="dls-email-velocity">&mdash;</span></span>
+								<span class="dls-sig"><span class="dls-sig-key">dwell</span><span class="dls-sig-val" id="dls-email-dwell">&mdash;</span></span>
+								<span class="dls-sig"><span class="dls-sig-key">paste</span><span class="dls-sig-val" id="dls-email-paste">&mdash;</span></span>
+							</div>
+							<div class="dls-field-row" id="dls-field-password">
+								<span class="dls-field-name">password</span>
+								<span class="dls-sig"><span class="dls-sig-key">vel</span><span class="dls-sig-val" id="dls-password-velocity">&mdash;</span></span>
+								<span class="dls-sig"><span class="dls-sig-key">dwell</span><span class="dls-sig-val" id="dls-password-dwell">&mdash;</span></span>
+								<span class="dls-sig"><span class="dls-sig-key">paste</span><span class="dls-sig-val" id="dls-password-paste">&mdash;</span></span>
+							</div>
+						</div>
+						<div id="dls-threat-feed" class="dls-threat-feed" hidden></div>
+					</div>
 				</div>
 				<div id="demo-success" class="demo-success demo-success--hidden" aria-live="polite">
 					<svg class="demo-success-icon" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polyline points="9 12 11 14 15 10"/></svg>
@@ -820,8 +843,94 @@ func (h *Handlers) Register(
     resetBtn?.addEventListener('click', () => {
       successEl.classList.add('demo-success--hidden');
       formWrap.hidden = false;
+      // reset signals panel
+      const tf = document.getElementById('dls-threat-feed');
+      if (tf) { tf.hidden = true; tf.innerHTML = ''; }
+      document.querySelectorAll('.dls-sig-val').forEach(v => { v.textContent = '\u2014'; v.className = 'dls-sig-val'; });
+      document.querySelectorAll('.dls-field-row').forEach(r => r.classList.remove('dls-field--threat'));
     });
   }
+}
+
+// ── Live signals panel — real component events ─────────────────
+{
+  const dlsThreatFeed = document.getElementById('dls-threat-feed');
+
+  function updateDlsField(fieldName, tel) {
+    const safe = fieldName.replace(/[^a-z0-9]/gi, '-');
+    const velEl   = document.getElementById('dls-' + safe + '-velocity');
+    const dwellEl = document.getElementById('dls-' + safe + '-dwell');
+    const pasteEl = document.getElementById('dls-' + safe + '-paste');
+
+    if (velEl && tel.velocity != null) {
+      velEl.textContent = tel.velocity.toFixed(1) + '/s';
+      velEl.classList.remove('dls-updated');
+      void velEl.offsetWidth; // reflow to restart animation
+      velEl.classList.add('dls-updated');
+    }
+    if (dwellEl && tel.dwell != null && tel.dwell >= 0) {
+      dwellEl.textContent = tel.dwell + 'ms';
+    }
+    if (pasteEl) {
+      const pasted = tel.pasteDetected === true;
+      pasteEl.textContent = pasted ? 'yes' : 'no';
+      pasteEl.className = 'dls-sig-val' + (pasted ? ' dls-val--warn' : '');
+    }
+  }
+
+  function addThreatEntry(fieldName, patternId, tier) {
+    if (!dlsThreatFeed) return;
+    dlsThreatFeed.hidden = false;
+
+    const entry = document.createElement('div');
+    entry.className = 'dls-threat-entry';
+
+    const icon = document.createElement('span');
+    icon.className = 'dls-threat-icon';
+    icon.setAttribute('aria-hidden', 'true');
+    icon.textContent = '\u26A0';
+
+    const text = document.createElement('span');
+    text.className = 'dls-threat-text';
+
+    const label = document.createElement('span');
+    label.className = 'dls-threat-label';
+    label.textContent = 'injection detected';
+
+    const detail = document.createElement('span');
+    detail.className = 'dls-threat-detail';
+    detail.textContent = patternId + ' \u00B7 ' + fieldName + ' \u00B7 ' + tier;
+
+    text.append(label, detail);
+    entry.append(icon, text);
+    dlsThreatFeed.prepend(entry);
+
+    // cap at 3 entries
+    while (dlsThreatFeed.children.length > 3) {
+      dlsThreatFeed.lastElementChild?.remove();
+    }
+
+    // flash the field row
+    const row = document.getElementById('dls-field-' + fieldName);
+    if (row) {
+      row.classList.add('dls-field--threat');
+      setTimeout(() => row.classList.remove('dls-field--threat'), 2000);
+    }
+  }
+
+  // Wire up input events on each live field
+  document.querySelectorAll('#demo-panel secure-input').forEach(input => {
+    input.addEventListener('secure-input', () => {
+      const tel = typeof input.getFieldTelemetry === 'function' ? input.getFieldTelemetry() : null;
+      if (tel) updateDlsField(input.getAttribute('name') ?? '', tel);
+    });
+  });
+
+  // Injection detection — fired by the real component
+  document.getElementById('home-tp')?.addEventListener('secure-threat-detected', e => {
+    const { fieldName, patternId, tier } = e.detail ?? {};
+    if (fieldName && patternId) addThreatEntry(String(fieldName), String(patternId), String(tier ?? ''));
+  });
 }
 
 // ── Hero decode sequence ──────────────────────────────────────

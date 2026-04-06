@@ -109,7 +109,7 @@ If a section does not serve one of these questions, it does not belong on the ho
   and implies incomplete SaaS infrastructure.
 - Navigation items must link to content that exists and is complete
 - The nav logo (href="/") is sufficient as the home link — do not add a redundant "Home" nav item
-- All 9 component showcase pages exist and are routed: secure-input, secure-select, secure-textarea, secure-form, secure-file-upload, secure-datetime, secure-table, secure-card, secure-telemetry-provider
+- All 10 component showcase pages exist and are routed: secure-input, secure-select, secure-textarea, secure-form, secure-file-upload, secure-datetime, secure-table, secure-card, secure-telemetry-provider, secure-password-confirm
 
 ---
 

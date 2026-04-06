@@ -250,6 +250,49 @@ templ ComponentSecureInput() {
 					</div>
 				</div>
 
+				<!-- Threat feedback panel -->
+				<div class="security-telemetry-panel">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Inline threat feedback</span>
+						<span class="security-telemetry-badge">opt-in via <code>threat-feedback</code> attribute</span>
+					</div>
+					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+						Add <code>threat-feedback</code> to show an amber inline warning directly below the field when a pattern matches.
+						The message identifies the blocked pattern and security tier. It clears automatically when the input is clean.
+						The underlying <code>secure-threat-detected</code> event fires regardless — silent detection is always on.
+					</p>
+					<div class="sf-event-layout">
+						<div class="sf-event-code">
+							<pre><code class="language-markup">{ `<!-- Inline feedback enabled -->
+<secure-input
+  type="text"
+  label="Username"
+  name="username"
+  security-tier="authenticated"
+  threat-feedback>
+</secure-input>
+
+<!-- Silent detection only (e.g. code editor) -->
+<secure-input
+  type="text"
+  label="Code"
+  name="code">
+</secure-input>` }</code></pre>
+						</div>
+						<div class="sf-risk-signals">
+							<div class="sf-risk-signal-title">Live demo — try <code>&lt;script&gt;alert(1)&lt;/script&gt;</code></div>
+							<secure-input
+								type="text"
+								label="Input with threat-feedback"
+								name="demo-threat-feedback"
+								security-tier="authenticated"
+								placeholder="Paste an XSS payload..."
+								threat-feedback
+							></secure-input>
+						</div>
+					</div>
+				</div>
+
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -281,6 +324,13 @@ templ ComponentSecureInput() {
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr>
+							<td>Inline threat feedback (<code>threat-feedback</code>)</td>
+							<td class="matrix-opt">Opt-in</td>
+							<td class="matrix-opt">Opt-in</td>
+							<td class="matrix-opt">Opt-in</td>
+							<td class="matrix-opt">Opt-in</td>
 						</tr>
 						<tr>
 							<td>Progressive enhancement (no-JS fallback)</td>

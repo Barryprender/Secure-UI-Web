@@ -1054,6 +1054,12 @@
   opacity: 0.5;
 }
 
+.matrix-opt {
+  color: #f59e0b;
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
 /* Theming Section */
 .theming-section {
   padding-inline: var(--space-md);

@@ -245,6 +245,49 @@ templ ComponentSecureTextarea() {
 						Every keystroke is scanned against 8 patterns (script-tag, js-protocol, event-handler, html-injection, css-expression, vbscript, data-uri-html, template-syntax). Only the first match per event is reported. The raw field value is never included in the event detail — only the <code>patternId</code>, <code>fieldName</code>, <code>tier</code>, and <code>timestamp</code>.
 					</p>
 				</div>
+				<!-- Threat feedback panel -->
+				<div class="security-telemetry-panel" style="margin-bottom: 1.5rem;">
+					<div class="security-telemetry-header">
+						<span class="security-telemetry-title">Inline threat feedback</span>
+						<span class="security-telemetry-badge">opt-in via <code>threat-feedback</code> attribute</span>
+					</div>
+					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+						Add <code>threat-feedback</code> to show an amber warning below the textarea when a pattern matches.
+						Opt-in by design — a textarea used for markdown, code snippets, or HTML templates should not flag
+						legitimate input as a threat. Silent detection and the <code>secure-threat-detected</code> event
+						fire regardless.
+					</p>
+					<div class="sf-event-layout">
+						<div class="sf-event-code">
+							<pre><code class="language-markup">{ `<!-- Contact message: feedback appropriate -->
+<secure-textarea
+  label="Message"
+  name="message"
+  security-tier="public"
+  threat-feedback>
+</secure-textarea>
+
+<!-- Code field: omit threat-feedback -->
+<secure-textarea
+  label="HTML Template"
+  name="template_code"
+  security-tier="public">
+</secure-textarea>` }</code></pre>
+						</div>
+						<div class="sf-risk-signals">
+							<div class="sf-risk-signal-title">Live demo — try <code>&lt;script&gt;alert(1)&lt;/script&gt;</code></div>
+							<secure-textarea
+								label="Message with threat-feedback"
+								name="demo-threat-textarea"
+								security-tier="public"
+								rows="3"
+								placeholder="Paste an XSS payload..."
+								threat-feedback
+							></secure-textarea>
+						</div>
+					</div>
+				</div>
+
 				<table class="security-matrix">
 					<thead>
 						<tr>
@@ -311,6 +354,13 @@ templ ComponentSecureTextarea() {
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
 							<td class="matrix-yes">Yes</td>
+						</tr>
+						<tr data-ri="8">
+							<td>Inline threat feedback (<code>threat-feedback</code>)</td>
+							<td class="matrix-opt">Opt-in</td>
+							<td class="matrix-opt">Opt-in</td>
+							<td class="matrix-opt">Opt-in</td>
+							<td class="matrix-opt">Opt-in</td>
 						</tr>
 					</tbody>
 				</table>

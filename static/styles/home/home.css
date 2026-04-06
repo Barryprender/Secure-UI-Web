@@ -2224,6 +2224,159 @@
    REDUCED MOTION
    ============================================ */
 
+/* ============================================
+   LIVE SIGNALS PANEL (demo-component-panel)
+   ============================================ */
+
+.demo-live-signals {
+    margin-top: var(--space-sm);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+}
+
+.dls-header {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    padding: 0.35rem 0.75rem;
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.dls-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-primary);
+    flex-shrink: 0;
+    animation: dotPulse 1.5s infinite;
+}
+
+.dls-label {
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.dls-fields {
+    padding: 0.45rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.dls-field-row {
+    display: grid;
+    grid-template-columns: 5rem 1fr 1fr 1fr;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.3rem;
+    border-radius: var(--radius-sm);
+    transition: background 0.2s;
+}
+
+.dls-field-row.dls-field--threat {
+    background: color-mix(in oklch, #f87171 8%, transparent);
+}
+
+.dls-field-name {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dls-sig {
+    display: flex;
+    align-items: baseline;
+    gap: 0.2rem;
+    min-width: 0;
+}
+
+.dls-sig-key {
+    font-size: 0.5625rem;
+    color: var(--text-muted);
+    opacity: 0.55;
+    flex-shrink: 0;
+}
+
+.dls-sig-val {
+    font-size: 0.6875rem;
+    color: var(--text-secondary);
+    min-width: 1.5rem;
+    transition: color 0.15s;
+    white-space: nowrap;
+}
+
+.dls-sig-val.dls-val--warn {
+    color: oklch(75% 0.18 50);
+}
+
+@keyframes dlsFlash {
+    0%   { color: var(--accent-primary); }
+    100% { color: var(--text-secondary); }
+}
+
+.dls-sig-val.dls-updated {
+    animation: dlsFlash 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Threat feed */
+.dls-threat-feed {
+    border-top: 1px solid color-mix(in oklch, #f87171 22%, transparent);
+    background: color-mix(in oklch, #f87171 5%, transparent);
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.dls-threat-entry {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    animation: dlsThreatIn 0.22s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes dlsThreatIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to   { opacity: 1; transform: none; }
+}
+
+.dls-threat-icon {
+    color: #f87171;
+    font-size: 0.6875rem;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+}
+
+.dls-threat-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+}
+
+.dls-threat-label {
+    color: #f87171;
+    font-weight: 700;
+    font-size: 0.6875rem;
+}
+
+.dls-threat-detail {
+    font-size: 0.5625rem;
+    color: color-mix(in oklch, #f87171 65%, var(--text-muted));
+    letter-spacing: 0.02em;
+}
+
 @media (prefers-reduced-motion: reduce) {
     .sc-char { transition: none; }
     .stats-strip.sweep-active::before { display: none; }

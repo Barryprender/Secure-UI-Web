@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"html/template"
 	"log"
 	"net/http"
@@ -217,6 +220,16 @@ func (h *Handlers) generateCSRFToken() (string, error) {
 		return "", nil
 	}
 	return h.CSRFStore.GenerateToken()
+}
+
+// generateSigningKey returns a cryptographically random 32-byte hex string
+// suitable for use as an HMAC signing key.
+func generateSigningKey() (string, error) {
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return "", fmt.Errorf("failed to generate signing key: %w", err)
+	}
+	return hex.EncodeToString(b), nil
 }
 
 // ----------------------------------------------------------------------------

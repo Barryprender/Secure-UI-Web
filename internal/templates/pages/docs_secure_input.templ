@@ -32,6 +32,7 @@ templ DocsSecureInput() {
 					<li><a href="#input-types">Input Types</a></li>
 					<li><a href="#security-tiers">Security Tiers</a></li>
 					<li><a href="#validation">Validation</a></li>
+					<li><a href="#threat-feedback">Threat Feedback</a></li>
 					<li><a href="#api-reference">API Reference</a></li>
 					<li><a href="#examples">Examples</a></li>
 				</ul>
@@ -354,6 +355,69 @@ templ DocsSecureInput() {
 				</div>
 			</section>
 
+			<section id="threat-feedback" class="docs-section">
+				<h2 class="docs-section-title">Threat Feedback</h2>
+				<p class="docs-text">
+					Add the <code>threat-feedback</code> boolean attribute to enable inline threat detection UI.
+					When present, the component shows an amber warning message directly below the field whenever
+					an injection pattern is detected — identifying the blocked pattern and the field's security tier.
+					The message clears automatically when the input no longer matches any pattern.
+				</p>
+				<p class="docs-text">
+					This attribute is opt-in. Omit it on fields where injection patterns are legitimate input
+					— such as a code editor or a support form that accepts HTML snippets. The underlying
+					<code>secure-threat-detected</code> event fires regardless of whether <code>threat-feedback</code>
+					is set, so server-side logging is unaffected.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Enabling Threat Feedback</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Threat feedback enabled: user sees inline warning on injection attempt -->
+<secure-input
+  type="text"
+  label="Username"
+  name="username"
+  security-tier="authenticated"
+  threat-feedback>
+</secure-input>
+
+<!-- Threat feedback disabled: silent detection only, event still fires -->
+<secure-textarea
+  label="Code Snippet"
+  name="code"
+  security-tier="public">
+</secure-textarea>` }
+						</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-callout docs-callout--info">
+					<div class="docs-callout-title">What the user sees</div>
+					<div class="docs-callout-text">
+						When a threat is detected, the field border turns amber and a message appears below it:
+						<em>"Script injection blocked"</em> with badges showing the pattern ID (e.g. <code>script-tag</code>)
+						and the security tier. The message disappears as soon as the input no longer matches any injection pattern.
+						The raw input value is never displayed.
+					</div>
+				</div>
+
+				<div class="docs-demo">
+					<div class="docs-demo-title">Live Demo — type <code>&lt;script&gt;alert(1)&lt;/script&gt;</code> to trigger</div>
+					<secure-input
+						type="text"
+						label="Username"
+						name="demo-threat-input"
+						security-tier="authenticated"
+						placeholder="Try pasting an XSS payload..."
+						threat-feedback
+					></secure-input>
+				</div>
+			</section>
+
 			<section id="api-reference" class="docs-section">
 				<h2 class="docs-section-title">API Reference</h2>
 
@@ -446,6 +510,12 @@ templ DocsSecureInput() {
 							<td>-</td>
 							<td>Regex pattern for validation</td>
 						</tr>
+						<tr>
+							<td><code>threat-feedback</code></td>
+							<td>boolean</td>
+							<td><code>false</code></td>
+							<td>Show inline amber warning when an injection pattern is detected. Opt-in — omit on fields where injection syntax is legitimate input (e.g. code editors).</td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -493,9 +563,14 @@ templ DocsSecureInput() {
 					</thead>
 					<tbody>
 						<tr>
-							<td>secure-input</td>
-							<td><code>{ ` name, value, masked, tier ` }</code></td>
-							<td>Fired on input change after validation</td>
+							<td><code>secure-input</code></td>
+							<td><code>{ `{ name, value, masked, tier }` }</code></td>
+							<td>Fired on every input change</td>
+						</tr>
+						<tr>
+							<td><code>secure-threat-detected</code></td>
+							<td><code>{ `{ fieldName, threatType, patternId, tier, timestamp }` }</code></td>
+							<td>Fired when an injection pattern matches. Raw value intentionally absent. Fires regardless of <code>threat-feedback</code> attribute.</td>
 						</tr>
 					</tbody>
 				</table>
