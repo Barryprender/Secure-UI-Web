@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"compress/gzip"
 	"context"
 	"crypto/rand"
 	"encoding/base64"
@@ -290,9 +291,6 @@ func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 			// Prevent MIME sniffing
 			w.Header().Set("X-Content-Type-Options", "nosniff")
 
-			// XSS Protection (legacy but still useful)
-			w.Header().Set("X-XSS-Protection", "1; mode=block")
-
 			// Referrer Policy - Don't leak referrer to other sites
 			w.Header().Set("Referrer-Policy", "strict-origin-when-cross-origin")
 
@@ -487,4 +485,63 @@ func CSRF(store *CSRFTokenStore, onError ErrorRenderer) func(http.Handler) http.
 			next.ServeHTTP(w, r)
 		})
 	}
+}
+
+// gzipResponseWriter wraps http.ResponseWriter to write through a gzip compressor.
+type gzipResponseWriter struct {
+	http.ResponseWriter
+	gz *gzip.Writer
+}
+
+func (grw *gzipResponseWriter) WriteHeader(code int) {
+	grw.Header().Del("Content-Length")
+	grw.ResponseWriter.WriteHeader(code)
+}
+
+func (grw *gzipResponseWriter) Write(b []byte) (int, error) {
+	return grw.gz.Write(b)
+}
+
+func (grw *gzipResponseWriter) Flush() {
+	_ = grw.gz.Flush()
+	if f, ok := grw.ResponseWriter.(http.Flusher); ok {
+		f.Flush()
+	}
+}
+
+// compressibleExt is the set of file extensions that benefit from gzip compression.
+// Binary formats (images, pre-compressed fonts) are excluded.
+var compressibleExt = map[string]bool{
+	".html": true, ".css": true, ".js": true, ".mjs": true,
+	".json": true, ".xml": true, ".svg": true, ".txt": true, ".map": true,
+}
+
+// GZip adds gzip compression for text-based responses when the client supports it.
+// Binary formats (images, fonts, video) are passed through uncompressed.
+func GZip(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if !strings.Contains(r.Header.Get("Accept-Encoding"), "gzip") {
+			next.ServeHTTP(w, r)
+			return
+		}
+		// Determine extension; no extension means a dynamic HTML page.
+		path := r.URL.Path
+		ext := ""
+		if i := strings.LastIndexByte(path, '.'); i >= 0 && i > strings.LastIndexByte(path, '/') {
+			ext = strings.ToLower(path[i:])
+		}
+		if ext != "" && !compressibleExt[ext] {
+			next.ServeHTTP(w, r)
+			return
+		}
+		gz, err := gzip.NewWriterLevel(w, gzip.BestSpeed)
+		if err != nil {
+			next.ServeHTTP(w, r)
+			return
+		}
+		defer gz.Close()
+		w.Header().Set("Content-Encoding", "gzip")
+		w.Header().Add("Vary", "Accept-Encoding")
+		next.ServeHTTP(&gzipResponseWriter{ResponseWriter: w, gz: gz}, r)
+	})
 }

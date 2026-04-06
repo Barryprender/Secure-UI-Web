@@ -92,7 +92,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<!-- Fonts: non-render-blocking — preload then apply via script -->
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-		<link rel="preload" as="style" id="gfonts" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
+		<link rel="preload" as="style" id="gfonts" fetchpriority="high" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
 		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/></noscript>
 		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var l=document.getElementById('gfonts');l.onload=function(){l.rel='stylesheet';};})();</script>
 		<!-- Favicon - multiple formats for maximum compatibility -->
@@ -103,7 +103,7 @@ templ Head(title string, description string, prism bool, pageCSS []string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Global CSS — tokens, base, nav, footer, view-transitions, no-js (combined, 1 request) -->
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/global/global.min.css") }/>
+		<link rel="preload" as="style" fetchpriority="high" href={ assets.URL("/static/styles/global/global.min.css") }/>
 		<link rel="stylesheet" href={ assets.URL("/static/styles/global/global.min.css") }/>
 
 		<!-- Page-specific CSS — preloaded in parallel with global -->
@@ -185,7 +185,7 @@ templ LandingHead(title string, description string) {
 		<!-- Fonts: non-render-blocking -->
 		<link rel="preconnect" href="https://fonts.googleapis.com"/>
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous"/>
-		<link rel="preload" as="style" id="gfonts" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
+		<link rel="preload" as="style" id="gfonts" fetchpriority="high" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/>
 		<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"/></noscript>
 		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var l=document.getElementById('gfonts');l.onload=function(){l.rel='stylesheet';};})();</script>
 		<!-- Favicon -->
@@ -195,7 +195,7 @@ templ LandingHead(title string, description string) {
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/apple-touch-icon.png"/>
 
 		<!-- Landing page CSS only -->
-		<link rel="preload" as="style" href={ assets.URL("/static/styles/tokens/tokens.min.css") }/>
+		<link rel="preload" as="style" fetchpriority="high" href={ assets.URL("/static/styles/tokens/tokens.min.css") }/>
 		<link rel="preload" as="style" href={ assets.URL("/static/styles/base/base.min.css") }/>
 		<link rel="preload" as="style" href={ assets.URL("/static/styles/telemetry-pro/telemetry-pro.min.css") }/>
 		<link rel="stylesheet" href={ assets.URL("/static/styles/tokens/tokens.min.css") }/>

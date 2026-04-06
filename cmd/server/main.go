@@ -253,12 +253,14 @@ func main() {
 	})))
 
 	// Apply middleware chain
-	// Order matters: Security headers -> Site URL -> Layout CSRF -> Locale -> Rate limiting -> Routes
-	handler := middleware.SecurityHeadersWithHSTS(secureCookie)(
-		middleware.InjectSiteURL(secureCookie)(
-			middleware.InjectLayoutCSRF(csrfStore)(
-				i18n.Middleware(
-					middleware.RateLimit(rateLimiter, h.RenderErrorPage)(mux),
+	// Order matters: GZip -> Security headers -> Site URL -> Layout CSRF -> Locale -> Rate limiting -> Routes
+	handler := middleware.GZip(
+		middleware.SecurityHeadersWithHSTS(secureCookie)(
+			middleware.InjectSiteURL(secureCookie)(
+				middleware.InjectLayoutCSRF(csrfStore)(
+					i18n.Middleware(
+						middleware.RateLimit(rateLimiter, h.RenderErrorPage)(mux),
+					),
 				),
 			),
 		),
