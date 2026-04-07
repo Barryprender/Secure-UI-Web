@@ -169,12 +169,13 @@
     font-family: var(--font-mono);
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 520px;
+    align-items: center; 
+    justify-content: center; 
+    height: 600px;
     position: relative;
     padding: 3rem 2rem;
     box-shadow: var(--shadow-md);
+    contain: layout;
 }
 
 #hd-stage {
@@ -382,8 +383,9 @@
     align-items: center;
     justify-content: center;
     width: 100%;
-    min-height: 14px;
-    flex-wrap: wrap;
+    height: 14px;
+    overflow: hidden;
+    flex-wrap: nowrap;
 }
 
 .hd-dot {
