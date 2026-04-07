@@ -82,11 +82,17 @@ secure-datetime:not(:defined) > input:focus {
   box-shadow: var(--secure-ui-shadow-focus, 0 0 0 3px rgba(37, 99, 235, 0.1));
 }
 
-/* Custom element display before definition */
+/* Custom element display before definition — all components must be block to prevent
+   inline→block layout shift (CLS) when customElements.define() runs */
 secure-input:not(:defined),
 secure-textarea:not(:defined),
 secure-select:not(:defined),
 secure-datetime:not(:defined),
-secure-file-upload:not(:defined) {
+secure-file-upload:not(:defined),
+secure-form:not(:defined),
+secure-telemetry-provider:not(:defined),
+secure-submit-button:not(:defined),
+secure-password-confirm:not(:defined),
+secure-card:not(:defined) {
   display: block;
 }
