@@ -268,15 +268,15 @@ console.log(envelope.signature);` }</code></pre>
 			<section class="security-section">
 				<h2 class="security-section-title">Signing key lifecycle</h2>
 				<p class="security-callout">The <code>signing-key</code> is a symmetric HMAC-SHA-256 secret. It must also be known server-side to verify the signature — never send it to the client in a way visible to third-party scripts.</p>
-				<div class="security-telemetry-panel" style="margin-top: 1rem;">
+				<div class="security-telemetry-panel security-telemetry-panel--top">
 					<div class="security-telemetry-header">
 						<span class="security-telemetry-title">Cached CryptoKey</span>
 						<span class="security-telemetry-badge">Imported once per key value</span>
 					</div>
-					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+					<p class="panel-body-text">
 						The <code>CryptoKey</code> derived from the <code>signing-key</code> attribute is imported once and cached for the lifetime of the component. It is re-imported only when the attribute value changes, and cleared on <code>disconnectedCallback</code>. This avoids the cost of a <code>SubtleCrypto.importKey()</code> call on every form submission.
 					</p>
-					<p style="margin: 0; font-size: 0.875rem; color: var(--text-secondary);">
+					<p class="panel-body-text--last">
 						Rotate the key by issuing a new value from your server (e.g. a per-session nonce endpoint). The component detects the change via <code>attributeChangedCallback</code> and invalidates the cache before the next <code>sign()</code> call.
 					</p>
 				</div>

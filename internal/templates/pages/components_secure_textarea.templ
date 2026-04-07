@@ -236,22 +236,22 @@ templ ComponentSecureTextarea() {
 				<h2 class="security-section-title">Security Features</h2>
 				<p class="security-callout">Security is enforced server-side. These are client-side complements.</p>
 				<!-- Injection detection note -->
-				<div class="security-telemetry-panel" style="margin-bottom: 1.5rem;">
+				<div class="security-telemetry-panel">
 					<div class="security-telemetry-header">
 						<span class="security-telemetry-title">Real-time injection detection</span>
 						<span class="security-telemetry-badge">Fires <code>secure-threat-detected</code> on every input event</span>
 					</div>
-					<p style="margin: 0; font-size: 0.875rem; color: var(--text-secondary);">
+					<p class="panel-body-text--last">
 						Every keystroke is scanned against 8 patterns (script-tag, js-protocol, event-handler, html-injection, css-expression, vbscript, data-uri-html, template-syntax). Only the first match per event is reported. The raw field value is never included in the event detail — only the <code>patternId</code>, <code>fieldName</code>, <code>tier</code>, and <code>timestamp</code>.
 					</p>
 				</div>
 				<!-- Threat feedback panel -->
-				<div class="security-telemetry-panel" style="margin-bottom: 1.5rem;">
+				<div class="security-telemetry-panel">
 					<div class="security-telemetry-header">
 						<span class="security-telemetry-title">Inline threat feedback</span>
 						<span class="security-telemetry-badge">opt-in via <code>threat-feedback</code> attribute</span>
 					</div>
-					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+					<p class="panel-body-text">
 						Add <code>threat-feedback</code> to show an amber warning below the textarea when a pattern matches.
 						Opt-in by design — a textarea used for markdown, code snippets, or HTML templates should not flag
 						legitimate input as a threat. Silent detection and the <code>secure-threat-detected</code> event

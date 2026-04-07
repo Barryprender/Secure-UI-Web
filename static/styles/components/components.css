@@ -258,6 +258,22 @@
   margin-bottom: var(--space-lg, 1.5rem);
 }
 
+.security-telemetry-panel--top {
+  margin-top: 1rem;
+}
+
+.panel-body-text {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.panel-body-text--last {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
 .security-telemetry-header {
   display: flex;
   align-items: center;

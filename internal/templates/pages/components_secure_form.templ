@@ -208,12 +208,12 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 				</div>
 
 				<!-- CSRF threat detection panel -->
-				<div class="security-telemetry-panel sf-event-panel" style="margin-bottom: 1.5rem;">
+				<div class="security-telemetry-panel sf-event-panel">
 					<div class="security-telemetry-header">
 						<span class="security-telemetry-title">CSRF token absent detection</span>
 						<span class="security-telemetry-badge">Fires <code>secure-threat-detected</code> at submission — sensitive &amp; critical tiers only</span>
 					</div>
-					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+					<p class="panel-body-text">
 						When a <code>sensitive</code> or <code>critical</code> tier form is submitted without a CSRF token value, the form dispatches <code>secure-threat-detected</code> before the request proceeds. The signal bubbles up to any wrapping <code>&lt;secure-telemetry-provider&gt;</code> where it is accumulated in the <code>threatSignals</code> array and included in the signed envelope.
 					</p>
 					<pre><code class="language-javascript">{ `element.addEventListener('secure-threat-detected', e => {

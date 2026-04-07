@@ -221,7 +221,7 @@ templ ComponentSecureInput() {
 						<span class="security-telemetry-title">Real-time injection detection</span>
 						<span class="security-telemetry-badge">Fires <code>secure-threat-detected</code> on every input event</span>
 					</div>
-					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+					<p class="panel-body-text">
 						Every keystroke is scanned against 8 patterns. Only the first match per event is reported. The raw field value is never included in the event detail.
 					</p>
 					<div class="sf-event-layout">
@@ -256,7 +256,7 @@ templ ComponentSecureInput() {
 						<span class="security-telemetry-title">Inline threat feedback</span>
 						<span class="security-telemetry-badge">opt-in via <code>threat-feedback</code> attribute</span>
 					</div>
-					<p style="margin: 0 0 0.75rem; font-size: 0.875rem; color: var(--text-secondary);">
+					<p class="panel-body-text">
 						Add <code>threat-feedback</code> to show an amber inline warning directly below the field when a pattern matches.
 						The message identifies the blocked pattern and security tier. It clears automatically when the input is clean.
 						The underlying <code>secure-threat-detected</code> event fires regardless — silent detection is always on.
