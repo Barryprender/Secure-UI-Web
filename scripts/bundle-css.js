@@ -21,6 +21,7 @@ const stylesDir = path.join(__dirname, '..', 'static', 'styles');
 
 // Files that compose global.min.css, in dependency order.
 const globalBundle = [
+  'fonts/fonts.min.css',
   'tokens/tokens.min.css',
   'base/base.min.css',
   'navigation/navigation.min.css',

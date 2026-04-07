@@ -4,6 +4,7 @@ go 1.24.0
 
 require (
 	github.com/a-h/templ v0.3.977
+	github.com/andybalholm/brotli v1.2.1
 	github.com/microcosm-cc/bluemonday v1.0.27
 	golang.org/x/crypto v0.48.0
 	modernc.org/sqlite v1.44.3

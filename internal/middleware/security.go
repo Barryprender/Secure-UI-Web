@@ -267,13 +267,15 @@ func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 			// Store nonce in request context for templates
 			r = r.WithContext(context.WithValue(r.Context(), nonceKey{}, nonce))
 
-			// Content Security Policy — nonce-based, no unsafe-inline
+			// Content Security Policy — nonce-based, no unsafe-inline.
+			// Fonts are self-hosted so no Google Fonts domains needed.
+			// style-src needs no nonce: all styles are external files (no <style nonce>).
 			csp := "default-src 'self'; " +
 				"script-src 'self' 'nonce-" + nonce + "'; " +
-				"style-src 'self' 'nonce-" + nonce + "' https://fonts.googleapis.com; " +
+				"style-src 'self'; " +
 				"img-src 'self' data:; " +
-				"connect-src 'self' https://fonts.googleapis.com https://fonts.gstatic.com; " +
-				"font-src 'self' https://fonts.gstatic.com; " +
+				"connect-src 'self'; " +
+				"font-src 'self'; " +
 				"object-src 'none'; " +
 				"frame-ancestors 'none'; " +
 				"base-uri 'self'; " +
@@ -297,6 +299,14 @@ func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 			// Permissions Policy - Disable unnecessary browser features
 			w.Header().Set("Permissions-Policy",
 				"geolocation=(), microphone=(), camera=(), payment=(), usb=(), magnetometer=(), gyroscope=()")
+
+			// HTML pages: must-revalidate so browsers issue conditional requests
+			// on repeat visits rather than relying on heuristic caching.
+			// Static assets get their own Cache-Control via MIMETypeWrapper.
+			path := r.URL.Path
+			if !strings.HasPrefix(path, "/static/") && !strings.HasPrefix(path, "/components/") {
+				w.Header().Set("Cache-Control", "no-cache")
+			}
 
 			next.ServeHTTP(w, r)
 		})
