@@ -37,7 +37,7 @@ func (h *Handlers) RobotsTxt(w http.ResponseWriter, r *http.Request) {
 	}
 
 	body += fmt.Sprintf("Sitemap: %s/sitemap.xml\n", base)
-	body += fmt.Sprintf("Llms: %s/llms.txt\n", base)
+	body += fmt.Sprintf("# LLMs.txt: %s/llms.txt\n", base)
 
 	w.Header().Set("Content-Type", "text/plain; charset=utf-8")
 	w.Header().Set("Cache-Control", "public, max-age=86400")
