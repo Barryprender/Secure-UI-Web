@@ -24,6 +24,16 @@ func componentJS(name string) string {
 	return "/components/components/" + name + "/" + name + ".js"
 }
 
+// deferredCSSHTML returns a nonce'd inline script that loads the deferred CSS bundle
+// asynchronously after initial render. Uses document.createElement to avoid the CSP
+// onload-on-link pattern which is blocked by style-src without unsafe-inline.
+func deferredCSSHTML(nonce, cssURL string) string {
+	return `<script nonce="` + nonce + `">` +
+		`(function(){var l=document.createElement('link');` +
+		`l.rel='stylesheet';l.href='` + cssURL + `';` +
+		`document.head.appendChild(l)})()</script>`
+}
+
 // componentModuleHTML builds the <link rel="modulepreload"> and <script type="module">
 // tags for per-page component loading. Returns raw HTML safe to pass to templ.Raw().
 // Paths are internal constants; nonce is base64 (no HTML special chars).
@@ -102,6 +112,12 @@ templ Head(title string, description string, prism bool, pageCSS []string, compo
 	<head>
 		<meta charset="UTF-8"/>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<!-- Critical CSS first — browser starts fetching before parsing meta/OG tags -->
+		<link rel="stylesheet" href={ assets.URL("/static/styles/global/global.min.css") } fetchpriority="high"/>
+		<!-- Page-specific CSS -->
+		for _, css := range pageCSS {
+			<link rel="stylesheet" href={ assets.URL(css) } fetchpriority="high"/>
+		}
 		<meta name="robots" content="index, follow"/>
 		<meta name="theme-color" content="#0d0e14"/>
 		<title>{ pageTitle(title) }</title>
@@ -141,7 +157,7 @@ templ Head(title string, description string, prism bool, pageCSS []string, compo
 			<meta name="twitter:image" content={ siteURL + "/static/og-image.png" }/>
 			<meta name="twitter:image:alt" content="Secure-UI — Security-hardened Web Components"/>
 		}
-		<!-- Self-hosted fonts: preload WOFF2 files before CSS is parsed -->
+		<!-- Self-hosted fonts: preload WOFF2 files -->
 		<link rel="preload" href="/static/fonts/ibm-plex-sans.woff2" as="font" type="font/woff2" crossorigin/>
 		<link rel="preload" href="/static/fonts/manrope.woff2" as="font" type="font/woff2" crossorigin/>
 		<link rel="preload" href="/static/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin/>
@@ -152,12 +168,8 @@ templ Head(title string, description string, prism bool, pageCSS []string, compo
 		<link rel="icon" type="image/png" sizes="32x32" href="/static/favicon-32x32.png"/>
 		<link rel="icon" type="image/png" sizes="16x16" href="/static/favicon-16x16.png"/>
 		<link rel="apple-touch-icon" sizes="180x180" href="/static/favicon-32x32.png"/>
-		<!-- Global CSS (tokens + fonts + base + nav + footer + view-transitions) -->
-		<link rel="stylesheet" href={ assets.URL("/static/styles/global/global.min.css") }/>
-		<!-- Page-specific CSS -->
-		for _, css := range pageCSS {
-			<link rel="stylesheet" href={ assets.URL(css) }/>
-		}
+		<!-- Deferred CSS (footer + view-transitions) — loaded async after initial render -->
+		@templ.Raw(deferredCSSHTML(middleware.NonceFromContext(ctx), assets.URL("/static/styles/global/deferred.min.css")))
 		<!-- View Transitions — inlined to avoid extra HTTP request -->
 		<script nonce={ middleware.NonceFromContext(ctx) }>(function(){var n={"/":0,"/forms":1,"/documentation":2,"/login":3,"/register":3,"/registration":3,"/dashboard":4,"/table":5,"/profile":6};function r(i){try{var a=new URL(i).pathname.replace(/\/$/,"")||"/";return a.startsWith("/documentation/")?2:n[a]!==void 0?n[a]:-1}catch{return-1}}window.addEventListener("unhandledrejection",function(e){if(e.reason&&e.reason.name==="AbortError")e.preventDefault();});window.addEventListener("pagereveal",function(i){if(i.viewTransition&&navigation.activation){var a=r(navigation.activation.from.url),t=r(navigation.activation.entry.url);a>=0&&t>=0&&a!==t&&(t>a?i.viewTransition.types.add("forwards"):i.viewTransition.types.add("backwards"))}})})();</script>
 		<!-- Web Components: load only what this page uses -->

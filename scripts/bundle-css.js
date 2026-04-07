@@ -19,15 +19,19 @@ const minify = require('./minify-css');
 
 const stylesDir = path.join(__dirname, '..', 'static', 'styles');
 
-// Files that compose global.min.css, in dependency order.
+// Critical CSS — render-blocking. Only styles needed for above-fold paint.
 const globalBundle = [
   'fonts/fonts.min.css',
   'tokens/tokens.min.css',
   'base/base.min.css',
   'navigation/navigation.min.css',
+  'no-js-fallback/no-js-fallback.min.css',
+];
+
+// Deferred CSS — loaded async after initial render. Below-fold content only.
+const deferredBundle = [
   'footer/footer.min.css',
   'view-transitions/view-transitions.min.css',
-  'no-js-fallback/no-js-fallback.min.css',
 ];
 
 // Step 1: Minify all source CSS files, skipping global.css (it's an @import manifest,
@@ -50,9 +54,9 @@ function minifyAll() {
   walk(stylesDir);
 }
 
-// Step 2: Concatenate global bundle files into global.min.css.
-function bundleGlobal() {
-  const parts = globalBundle.map(rel => {
+// Step 2: Concatenate a bundle of files into an output file.
+function bundle(files, outPath, label) {
+  const parts = files.map(rel => {
     const full = path.join(stylesDir, rel);
     if (!fs.existsSync(full)) {
       console.error(`bundle-css: missing ${rel}`);
@@ -61,12 +65,11 @@ function bundleGlobal() {
     return fs.readFileSync(full, 'utf8');
   });
 
-  const out = path.join(stylesDir, 'global', 'global.min.css');
-  fs.writeFileSync(out, parts.join(''));
-
-  const size = fs.statSync(out).size;
-  console.log(`[css] bundled global.min.css  ${size} B  (${globalBundle.length} files concatenated)`);
+  fs.writeFileSync(outPath, parts.join(''));
+  const size = fs.statSync(outPath).size;
+  console.log(`[css] bundled ${label}  ${size} B  (${files.length} files)`);
 }
 
 minifyAll();
-bundleGlobal();
+bundle(globalBundle,  path.join(stylesDir, 'global', 'global.min.css'),   'global.min.css  ');
+bundle(deferredBundle, path.join(stylesDir, 'global', 'deferred.min.css'), 'deferred.min.css');
