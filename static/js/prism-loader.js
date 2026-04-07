@@ -1,6 +1,7 @@
 /**
  * Lazy-loads Prism.js and language plugins when a code block scrolls into view.
- * Replaces 8 deferred <script> tags and the injected CSS <link>.
+ * Scripts are loaded sequentially via onload chaining so language plugins always
+ * execute after prism.min.js (dynamic script injection ignores the defer attribute).
  */
 (function () {
   'use strict';
@@ -27,13 +28,16 @@
       '/static/js/prism-css.min.js',
     ];
 
-    var head = document.head;
-    scripts.forEach(function (src) {
+    function loadNext(i) {
+      if (i >= scripts.length) return;
       var s = document.createElement('script');
-      s.src = src;
-      s.defer = true;
-      head.appendChild(s);
-    });
+      s.src = scripts[i];
+      s.onload = function () { loadNext(i + 1); };
+      s.onerror = function () { loadNext(i + 1); };
+      document.head.appendChild(s);
+    }
+
+    loadNext(0);
   }
 
   var blocks = document.querySelectorAll('code[class*="language-"]');
