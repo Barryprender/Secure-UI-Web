@@ -195,6 +195,7 @@
     border-radius: var(--radius-md);
     padding: 28px 24px;
     width: 100%;
+    min-height: 380px;
     transition: border-color 0.4s, transform 0.12s;
     position: relative;
     overflow: hidden;
@@ -279,7 +280,7 @@
     padding: 9px 12px;
     font-size: 12.5px;
     color: var(--text-muted);
-    min-height: 34px;
+    min-height: 2.5rem;
     display: flex;
     align-items: center;
     transition: border-color 0.3s, color 0.3s, background 0.3s;
