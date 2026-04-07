@@ -5,7 +5,7 @@ import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
 templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string, signingKey string) {
-	@templates.Layout("Secure Form Components — Live Demos with Behavioral Bot Detection", "Live interactive demos of secure form components built with Secure-UI: login, subscription, and payment forms with CSRF protection, XSS prevention, and real-time telemetry.", false, "/static/styles/forms/forms.min.css") {
+	@templates.Layout("Secure Form Components — Live Demos with Behavioral Bot Detection", "Live interactive demos of secure form components built with Secure-UI: login, subscription, and payment forms with CSRF protection, XSS prevention, and real-time telemetry.", false, []string{"/static/styles/forms/forms.min.css"}, "secure-card", "secure-form", "secure-select", "secure-telemetry-provider") {
 		<section class="py-3xl">
 			<div class="container">
 				<!-- Hero -->

@@ -6,7 +6,7 @@ import (
 )
 
 templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, csrfDemo4 string, csrfDemo5 string) {
-	@templates.Layout("Secure Form Component — CSRF Protection, Telemetry & Bot Detection", "Interactive demos for the secure-form component: CSRF token injection, behavioral telemetry aggregation, risk scoring, bot detection without CAPTCHA, and framework integration examples.", true, "/static/styles/components/components.min.css") {
+	@templates.Layout("Secure Form Component — CSRF Protection, Telemetry & Bot Detection", "Interactive demos for the secure-form component: CSRF token injection, behavioral telemetry aggregation, risk scoring, bot detection without CAPTCHA, and framework integration examples.", true, []string{"/static/styles/components/components.min.css"}, "secure-form", "secure-input", "secure-textarea", "secure-file-upload", "secure-telemetry-provider") {
 		@templates.ComponentPageJsonLDScript("secure-form", "CSRF-protected form wrapper that aggregates per-field behavioral telemetry into a risk score and named risk signals — bot detection without CAPTCHA.")
 		<div class="component-page">
 			<!-- Hero -->

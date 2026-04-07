@@ -6,7 +6,7 @@ import "secure-ui-showcase-go/internal/models"
 import "fmt"
 
 templ Table(users []*models.User, csrfToken string) {
-	@templates.Layout("Data Table", "User data table with filtering and sorting", false) {
+	@templates.Layout("Data Table", "User data table with filtering and sorting", false, nil, "secure-table") {
 		<section class="py-3xl">
 			<div class="container">
 				<div class="section-header">

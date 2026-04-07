@@ -6,7 +6,7 @@ import (
 )
 
 templ ComponentSecureTelemetryProvider(csrfDemo1 string, csrfDemo2 string) {
-	@templates.Layout("Live Demo: Bot Detection — HMAC Signals, Risk Scoring", "Interactive demos for secure-telemetry-provider: bot detection, DOM tampering, HMAC-signed signals, and server-side verification examples.", true, "/static/styles/components/components.min.css") {
+	@templates.Layout("Live Demo: Bot Detection — HMAC Signals, Risk Scoring", "Interactive demos for secure-telemetry-provider: bot detection, DOM tampering, HMAC-signed signals, and server-side verification examples.", true, []string{"/static/styles/components/components.min.css"}, "secure-telemetry-provider", "secure-form", "secure-input", "secure-card") {
 		@templates.ComponentPageJsonLDScript("secure-telemetry-provider", "Behavioral intelligence provider with HMAC-SHA-256 signed signals, risk scoring, and bot detection.")
 		<div class="component-page">
 			<!-- Hero -->

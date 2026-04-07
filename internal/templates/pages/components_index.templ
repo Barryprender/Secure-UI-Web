@@ -7,7 +7,7 @@ import (
 )
 
 templ ComponentsIndex() {
-	@templates.Layout("Interactive Secure Web Component Demos", "Live browser demos for all Secure-UI components. Try XSS prevention, CSRF protection, security tiers, and behavioral telemetry without installing anything.", false, "/static/styles/components/components.min.css") {
+	@templates.Layout("Interactive Secure Web Component Demos", "Live browser demos for all Secure-UI components. Try XSS prevention, CSRF protection, security tiers, and behavioral telemetry without installing anything.", false, []string{"/static/styles/components/components.min.css"}, "all") {
 		@templates.ComponentsIndexJsonLDScript()
 		<!-- Hero — full-bleed outside container -->
 		<header class="ci-hero" id="ci-hero">

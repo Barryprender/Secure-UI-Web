@@ -5,7 +5,7 @@ import "secure-ui-showcase-go/internal/middleware"
 import "fmt"
 
 templ ErrorPage(statusCode int, title string, message string) {
-	@templates.Layout(title, message, false) {
+	@templates.Layout(title, message, false, nil) {
 		<section class="error-page">
 			<div class="container">
 				<div class="error-page-content">

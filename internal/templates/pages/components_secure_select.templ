@@ -6,7 +6,7 @@ import (
 )
 
 templ ComponentSecureSelect() {
-	@templates.Layout("Live Demo: Secure Select — XSS-Safe Dropdown", "Interactive demos for secure-select: static and dynamic options, AJAX loading, security tiers, XSS-safe dropdowns, CSS custom properties, and framework examples.", true, "/static/styles/components/components.min.css") {
+	@templates.Layout("Live Demo: Secure Select — XSS-Safe Dropdown", "Interactive demos for secure-select: static and dynamic options, AJAX loading, security tiers, XSS-safe dropdowns, CSS custom properties, and framework examples.", true, []string{"/static/styles/components/components.min.css"}, "secure-select", "secure-input", "secure-textarea") {
 		@templates.ComponentPageJsonLDScript("secure-select", "XSS-safe dropdown with server-side allowlist validation, security tiers, and audit logging.")
 		<div class="component-page">
 			<!-- Hero -->

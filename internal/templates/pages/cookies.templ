@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ CookiePolicy() {
-	@templates.Layout("Cookie Policy", "Cookie policy for Secure-UI. This site uses only two cookies: a session cookie for authentication and a language preference cookie. No tracking, no analytics, no third-party cookies.", false) {
+	@templates.Layout("Cookie Policy", "Cookie policy for Secure-UI. This site uses only two cookies: a session cookie for authentication and a language preference cookie. No tracking, no analytics, no third-party cookies.", false, nil) {
 		<section class="policy-page">
 			<div class="container">
 				<div class="policy-header">

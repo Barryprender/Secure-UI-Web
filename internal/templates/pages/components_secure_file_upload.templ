@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ ComponentSecureFileUpload() {
-	@templates.Layout("Live Demo: Secure File Upload — MIME Validation", "Interactive demos for secure-file-upload: drag-and-drop, MIME type filtering, file size limits, security tier configurations, and framework integration examples.", true, "/static/styles/components/components.min.css") {
+	@templates.Layout("Live Demo: Secure File Upload — MIME Validation", "Interactive demos for secure-file-upload: drag-and-drop, MIME type filtering, file size limits, security tier configurations, and framework integration examples.", true, []string{"/static/styles/components/components.min.css"}, "secure-file-upload", "secure-datetime", "secure-form") {
 		@templates.ComponentPageJsonLDScript("secure-file-upload", "Secure file upload with MIME validation, size limits, drag-and-drop, and virus scan hook support.")
 		<div class="component-page">
 			<!-- Hero -->

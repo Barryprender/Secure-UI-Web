@@ -6,7 +6,7 @@ import (
 )
 
 templ ComponentSecureDatetime() {
-	@templates.Layout("Live Demo: Secure Date Input — Range Validation", "Interactive demos for secure-datetime: date and time pickers, format validation, range constraints, security tier configurations, and framework integration examples.", true, "/static/styles/components/components.min.css") {
+	@templates.Layout("Live Demo: Secure Date Input — Range Validation", "Interactive demos for secure-datetime: date and time pickers, format validation, range constraints, security tier configurations, and framework integration examples.", true, []string{"/static/styles/components/components.min.css"}, "secure-datetime", "secure-table", "secure-input", "secure-file-upload") {
 		@templates.ComponentPageJsonLDScript("secure-datetime", "Secure date and time picker with range constraints, timezone handling, format validation, and audit logging.")
 		<div class="component-page">
 			<!-- Hero -->

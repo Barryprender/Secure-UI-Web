@@ -5,7 +5,7 @@ import "secure-ui-showcase-go/internal/templates/components"
 import "secure-ui-showcase-go/internal/models"
 
 templ Profile(user *models.User, csrfToken string, errorMessage ...string) {
-	@templates.Layout("Profile", "Your account profile", false) {
+	@templates.Layout("Profile", "Your account profile", false, nil, "secure-form", "secure-input") {
 		<section class="py-3xl">
 			<div class="container">
 				<div class="section-header">

@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureTextarea() {
-	@templates.Layout("Secure Textarea — XSS Safety, Char Limits, Security Tiers", "XSS-safe multi-line input with HTML sanitisation, configurable character limits, rate limiting, and security tier enforcement. Zero dependencies, progressive enhancement.", true, "/static/styles/documentation/documentation.min.css") {
+	@templates.Layout("Secure Textarea — XSS Safety, Char Limits, Security Tiers", "XSS-safe multi-line input with HTML sanitisation, configurable character limits, rate limiting, and security tier enforcement. Zero dependencies, progressive enhancement.", true, []string{"/static/styles/documentation/documentation.min.css"}, "secure-textarea") {
 		@templates.DocsPageJsonLDScript("secure-textarea", "XSS-safe multi-line text input with character limits, rate limiting, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureForm() {
-	@templates.Layout("Secure Form — CSRF Defence, JSON Submission, Behavioral Telemetry", "CSRF-protected form wrapper that injects tokens automatically, collects behavioral telemetry, and submits as JSON. Works with any backend, zero configuration.", true, "/static/styles/documentation/documentation.min.css") {
+	@templates.Layout("Secure Form — CSRF Defence, JSON Submission, Behavioral Telemetry", "CSRF-protected form wrapper that injects tokens automatically, collects behavioral telemetry, and submits as JSON. Works with any backend, zero configuration.", true, []string{"/static/styles/documentation/documentation.min.css"}, "secure-form", "secure-input", "secure-select", "secure-textarea") {
 		@templates.DocsPageJsonLDScript("secure-form", "CSRF-protected form wrapper with submission handling, rate limiting, and security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">

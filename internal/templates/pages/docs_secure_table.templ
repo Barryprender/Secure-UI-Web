@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsSecureTable() {
-	@templates.Layout("Secure Table — Sortable, Filterable, Column Security Tiers", "Secure data table with client-side sorting, column filtering, per-column security tier display rules, and slotted HTML or programmatic data binding.", true, "/static/styles/documentation/documentation.min.css") {
+	@templates.Layout("Secure Table — Sortable, Filterable, Column Security Tiers", "Secure data table with client-side sorting, column filtering, per-column security tier display rules, and slotted HTML or programmatic data binding.", true, []string{"/static/styles/documentation/documentation.min.css"}, "secure-table") {
 		@templates.DocsPageJsonLDScript("secure-table", "Server-rendered data table with sorting, filtering, pagination, and column security tiers.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
