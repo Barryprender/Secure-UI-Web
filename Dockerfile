@@ -43,6 +43,9 @@ COPY --from=builder /out/server ./server
 # Static CSS / JS / images
 COPY --chown=app:app static/ ./static/
 
+# Google Search Console verification
+COPY --chown=app:app googlee3e4329654703f64.html ./
+
 # Built web components (from npm package)
 COPY --from=components --chown=app:app /components/node_modules/secure-ui-components/dist/ ./secure-ui-components/dist/
 
