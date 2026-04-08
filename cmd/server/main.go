@@ -217,6 +217,9 @@ func main() {
 	mux.HandleFunc("/robots.txt", h.RobotsTxt)
 	mux.HandleFunc("/sitemap.xml", h.Sitemap)
 	mux.HandleFunc("/llms.txt", h.LLMsTxt)
+	mux.HandleFunc("/googlee3e4329654703f64.html", func(w http.ResponseWriter, r *http.Request) {
+		http.ServeFile(w, r, "googlee3e4329654703f64.html")
+	})
 
 	// Favicon route - direct handler with caching
 	mux.HandleFunc("/favicon.ico", func(w http.ResponseWriter, r *http.Request) {
