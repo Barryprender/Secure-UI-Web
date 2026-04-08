@@ -3,7 +3,6 @@ package templates
 import (
 	"encoding/json"
 	"fmt"
-	"time"
 )
 
 // HomeJsonLD returns JSON-LD for the home page: Organization + SoftwareApplication + SoftwareSourceCode + WebSite.
@@ -152,7 +151,7 @@ func ComponentsIndexJsonLD(siteURL, canonicalURL string) string {
 // DocsPageJsonLD returns JSON-LD for a component documentation page:
 // TechArticle + BreadcrumbList.
 func DocsPageJsonLD(siteURL, canonicalURL, componentName, description string) string {
-	today := time.Now().UTC().Format("2006-01-02")
+	today := "2026-04-08"
 	data := map[string]any{
 		"@context": "https://schema.org",
 		"@graph": []map[string]any{

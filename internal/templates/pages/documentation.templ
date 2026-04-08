@@ -85,12 +85,12 @@ templ Documentation() {
 						<span class="docs-code-language">JavaScript</span>
 					</div>
 					<div class="docs-code-content">
-						<pre><code class="language-javascript">// Import all components
+						<pre><code class="language-javascript">{ `// Import all components
 import 'secure-ui-components';
 
 // Or import individual components
 import 'secure-ui-components/secure-input';
-import 'secure-ui-components/secure-form';</code></pre>
+import 'secure-ui-components/secure-form';` }</code></pre>
 					</div>
 				</div>
 
@@ -100,8 +100,8 @@ import 'secure-ui-components/secure-form';</code></pre>
 						<span class="docs-code-language">HTML</span>
 					</div>
 					<div class="docs-code-content">
-						<pre><code class="language-markup">&lt;!-- All components — single bundle, no build step required --&gt;
-&lt;script type="module" src="/components/secure-ui.bundle.js"&gt;&lt;/script&gt;</code></pre>
+						<pre><code class="language-markup">{ `<!-- All components — single bundle, no build step required -->
+<script type="module" src="/components/secure-ui.bundle.js"></script>` }</code></pre>
 					</div>
 				</div>
 
@@ -111,13 +111,13 @@ import 'secure-ui-components/secure-form';</code></pre>
 						<span class="docs-code-language">HTML</span>
 					</div>
 					<div class="docs-code-content">
-						<pre><code class="language-markup">&lt;secure-input
+						<pre><code class="language-markup">{ `<secure-input
   label="Email Address"
   name="email"
   type="email"
   security-tier="sensitive"
   required
-&gt;&lt;/secure-input&gt;</code></pre>
+></secure-input>` }</code></pre>
 					</div>
 				</div>
 			</section>
@@ -163,14 +163,14 @@ import 'secure-ui-components/secure-form';</code></pre>
 						<span class="docs-code-language">HTML</span>
 					</div>
 					<div class="docs-code-content">
-						<pre><code class="language-markup">&lt;!-- Public tier - for general information --&gt;
-&lt;secure-input security-tier="public" label="Name" name="name"&gt;&lt;/secure-input&gt;
+						<pre><code class="language-markup">{ `<!-- Public tier - for general information -->
+<secure-input security-tier="public" label="Name" name="name"></secure-input>
 
-&lt;!-- Sensitive tier - for PII like email, phone --&gt;
-&lt;secure-input security-tier="sensitive" label="Email" name="email" type="email"&gt;&lt;/secure-input&gt;
+<!-- Sensitive tier - for PII like email, phone -->
+<secure-input security-tier="sensitive" label="Email" name="email" type="email"></secure-input>
 
-&lt;!-- Critical tier - for passwords, financial data --&gt;
-&lt;secure-input security-tier="critical" label="Password" name="password" type="password"&gt;&lt;/secure-input&gt;</code></pre>
+<!-- Critical tier - for passwords, financial data -->
+<secure-input security-tier="critical" label="Password" name="password" type="password"></secure-input>` }</code></pre>
 					</div>
 				</div>
 			</section>
@@ -364,13 +364,13 @@ import 'secure-ui-components/secure-form';</code></pre>
 						<span class="docs-code-language">JavaScript</span>
 					</div>
 					<div class="docs-code-content">
-						<pre><code class="language-javascript">const input = document.querySelector('secure-input');
+						<pre><code class="language-javascript">{ `const input = document.querySelector('secure-input');
 const auditLog = input.getAuditLog();
 
 // Log contains entries like:
 // { action: 'input_focused', timestamp: '...', data: { name: 'email' } }
 // { action: 'validation_failed', timestamp: '...', data: { reason: 'invalid email' } }
-console.log(auditLog);</code></pre>
+console.log(auditLog);` }</code></pre>
 					</div>
 				</div>
 			</section>

@@ -138,7 +138,7 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 	// Use a stable date tied to the last known content update.
 	// Avoid time.Now() — dynamic lastmod signals to crawlers that
 	// content changes daily even when it doesn't, wasting crawl budget.
-	lastmod := "2026-04-05"
+	lastmod := "2026-04-08"
 
 	entries := []sitemapEntry{
 		{"/", "1.0", "weekly"},
