@@ -1,8 +1,6 @@
 package templates
 
 import (
-	"strings"
-
 	"secure-ui-showcase-go/internal/assets"
 	"secure-ui-showcase-go/internal/i18n"
 	"secure-ui-showcase-go/internal/middleware"
@@ -19,11 +17,6 @@ func pageTitle(title string) string {
 	return title + " — Secure-UI"
 }
 
-// componentJS maps a component name to its JS module path under /components/.
-func componentJS(name string) string {
-	return "/components/components/" + name + "/" + name + ".js"
-}
-
 // deferredCSSHTML returns a nonce'd inline script that loads the deferred CSS bundle
 // asynchronously after initial render. Uses document.createElement to avoid the CSP
 // onload-on-link pattern which is blocked by style-src without unsafe-inline.
@@ -34,42 +27,14 @@ func deferredCSSHTML(nonce, cssURL string) string {
 		`document.head.appendChild(l)})()</script>`
 }
 
-// componentModuleHTML builds the <link rel="modulepreload"> and <script type="module">
-// tags for per-page component loading. Returns raw HTML safe to pass to templ.Raw().
-// Paths are internal constants; nonce is base64 (no HTML special chars).
+// componentModuleHTML returns a deferred <script> tag that loads the bundled
+// secure-ui-components library. All components are included in the single bundle.
+// Nonce is base64 (no HTML special chars); path is an internal constant.
 func componentModuleHTML(nonce string, components []string) string {
 	if len(components) == 0 {
 		return ""
 	}
-
-	var b strings.Builder
-
-	if components[0] == "all" {
-		b.WriteString(`<link rel="modulepreload" href="/components/index.js">`)
-		b.WriteString(`<script type="module" nonce="`)
-		b.WriteString(nonce)
-		b.WriteString(`">import '/components/index.js';</script>`)
-		return b.String()
-	}
-
-	// Targeted per-page loading: preload core deps + specific components.
-	b.WriteString(`<link rel="modulepreload" href="/components/core/base-component.js">`)
-	b.WriteString(`<link rel="modulepreload" href="/components/core/security-config.js">`)
-	for _, c := range components {
-		b.WriteString(`<link rel="modulepreload" href="`)
-		b.WriteString(componentJS(c))
-		b.WriteString(`">`)
-	}
-	b.WriteString(`<script type="module" nonce="`)
-	b.WriteString(nonce)
-	b.WriteString(`">`)
-	for _, c := range components {
-		b.WriteString(`import '`)
-		b.WriteString(componentJS(c))
-		b.WriteString(`';`)
-	}
-	b.WriteString(`</script>`)
-	return b.String()
+	return `<script type="module" src="/components/secure-ui.bundle.js" nonce="` + nonce + `"></script>`
 }
 
 // Layout is the standard site layout with navbar and footer.

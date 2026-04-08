@@ -272,7 +272,7 @@ func HomeFAQJsonLD() string {
 				Name: "Is there a CDN option?",
 				AcceptedAnswer: answer{
 					Type: "Answer",
-					Text: "Yes. Load directly from npm CDN without installing anything: &lt;script type=\"module\" src=\"https://esm.sh/secure-ui-components\"&gt;&lt;/script&gt;",
+					Text: "Yes. Load directly from unpkg without installing anything: &lt;script type=\"module\" src=\"https://unpkg.com/secure-ui-components/dist/secure-ui.bundle.js\"&gt;&lt;/script&gt;",
 				},
 			},
 		},

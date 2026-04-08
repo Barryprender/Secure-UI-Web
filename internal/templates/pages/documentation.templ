@@ -89,7 +89,8 @@ templ Documentation() {
 import 'secure-ui-components';
 
 // Or import individual components
-import 'secure-ui-components/src/components/secure-input/secure-input.js';</code></pre>
+import 'secure-ui-components/secure-input';
+import 'secure-ui-components/secure-form';</code></pre>
 					</div>
 				</div>
 
@@ -99,11 +100,8 @@ import 'secure-ui-components/src/components/secure-input/secure-input.js';</code
 						<span class="docs-code-language">HTML</span>
 					</div>
 					<div class="docs-code-content">
-						<pre><code class="language-markup">&lt;!-- Import all components --&gt;
-&lt;script type="module" src="/components/index.js"&gt;&lt;/script&gt;
-
-&lt;!-- Or import individual components --&gt;
-&lt;script type="module" src="/components/secure-input/secure-input.js"&gt;&lt;/script&gt;</code></pre>
+						<pre><code class="language-markup">&lt;!-- All components — single bundle, no build step required --&gt;
+&lt;script type="module" src="/components/secure-ui.bundle.js"&gt;&lt;/script&gt;</code></pre>
 					</div>
 				</div>
 
