@@ -33,6 +33,7 @@ templ DocsSecureInput() {
 					<li><a href="#security-tiers">Security Tiers</a></li>
 					<li><a href="#validation">Validation</a></li>
 					<li><a href="#threat-feedback">Threat Feedback</a></li>
+					<li><a href="#server-side-integration">Server-Side Integration</a></li>
 					<li><a href="#api-reference">API Reference</a></li>
 					<li><a href="#examples">Examples</a></li>
 				</ul>
@@ -415,6 +416,97 @@ templ DocsSecureInput() {
 						placeholder="Try pasting an XSS payload..."
 						threat-feedback
 					></secure-input>
+				</div>
+			</section>
+
+			<section id="server-side-integration" class="docs-section">
+				<h2 class="docs-section-title">Server-Side Integration</h2>
+				<p class="docs-text">
+					The <code>secure-threat-detected</code> event fires in the browser as soon as an injection
+					pattern is matched. This is a UX signal — it cannot be trusted as a security boundary.
+					The authoritative check happens independently on the server, using the same detection
+					logic applied to the submitted value before it touches your database.
+				</p>
+
+				<div class="docs-callout docs-callout--success">
+					<div class="docs-callout-title">End-to-End Injection Detection</div>
+					<div class="docs-callout-text">
+						Client and server detect injection independently using the same classification:
+						<code>ThreatHTMLInjection</code> and <code>ThreatScriptInjection</code>. Neither
+						relies on the other. An attacker who bypasses the client-side event still hits the
+						server-side rejection.
+					</div>
+				</div>
+
+				<p class="docs-text">
+					The Go validation package exposes two functions for this. <code>DetectThreat</code>
+					classifies the raw submitted value before any sanitization.
+					<code>NoHTML</code> adds a validation error to reject the submission outright — the
+					payload never reaches your service layer or database.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Server-Side Threat Detection — Go</span>
+						<span class="docs-code-language">Go</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-go">{ `// Capture raw values before any sanitization
+rawFirstName := r.FormValue("first_name")
+rawLastName  := r.FormValue("last_name")
+
+// Log injection attempts — classified by severity
+ip := r.RemoteAddr
+for _, f := range []struct{ field, value string }{
+    {"first_name", rawFirstName},
+    {"last_name",  rawLastName},
+} {
+    if level := validation.DetectThreat(f.value); level != validation.ThreatNone {
+        log.Printf("[SECURITY] injection attempt: field=%s threat=%d ip=%s payload=%.200q",
+            f.field, level, ip, f.value)
+    }
+}
+
+// Sanitize as defense-in-depth before storage
+firstName := validation.SanitizeHTML(validation.Sanitize(rawFirstName))
+lastName  := validation.SanitizeHTML(validation.Sanitize(rawLastName))
+
+// Validate — NoHTML checks raw values and rejects the submission if HTML is present
+v := validation.New()
+v.Required("first_name", firstName, "First Name").
+    MaxLength("first_name", firstName, 50, "First Name").
+    NoHTML("first_name", rawFirstName, "First Name")
+v.Required("last_name", lastName, "Last Name").
+    MaxLength("last_name", lastName, 50, "Last Name").
+    NoHTML("last_name", rawLastName, "Last Name")
+
+if !v.Result().IsValid() {
+    // Submission rejected — error message is generic ("contains invalid characters")
+    // to avoid revealing detection logic to the attacker
+    renderErrors(w, v.Result().Errors)
+    return
+}` }
+						</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-callout docs-callout--info">
+					<div class="docs-callout-title">Three independent layers</div>
+					<div class="docs-callout-text">
+						<strong>1. Client event</strong> — <code>secure-threat-detected</code> fires immediately as the user types, providing UX feedback and enabling client-side logging via <code>&lt;secure-telemetry-provider&gt;</code>.<br/>
+						<strong>2. Server rejection</strong> — <code>NoHTML</code> rejects the submission with a validation error. The payload never reaches the service layer.<br/>
+						<strong>3. Defense-in-depth sanitization</strong> — <code>SanitizeHTML</code> strips all HTML from values before any storage, regardless of validation outcome, using a strict bluemonday policy with no allowed tags.
+					</div>
+				</div>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Client-side detection does not replace server-side validation</div>
+					<div class="docs-callout-text">
+						The <code>secure-threat-detected</code> event can be suppressed by an attacker sending
+						a crafted HTTP request directly, bypassing the browser entirely. Server-side
+						<code>DetectThreat</code> and <code>NoHTML</code> are the authoritative enforcement
+						layer. The client event is a UX and observability feature only.
+					</div>
 				</div>
 			</section>
 
