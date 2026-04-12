@@ -156,16 +156,37 @@ func (h *Handlers) RegisterSubmit(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	firstName := validation.Sanitize(r.FormValue("first_name"))
-	lastName := validation.Sanitize(r.FormValue("last_name"))
+	// Capture raw values before sanitization for threat detection
+	rawFirstName := r.FormValue("first_name")
+	rawLastName := r.FormValue("last_name")
+
+	// Threat detection: log any injection attempt before sanitizing
+	ip := clientIPFromRequest(r)
+	for _, f := range []struct{ field, value string }{
+		{"first_name", rawFirstName},
+		{"last_name", rawLastName},
+	} {
+		if level := validation.DetectThreat(f.value); level != validation.ThreatNone {
+			log.Printf("[SECURITY] injection attempt on /register: field=%s threat=%d ip=%s ua=%.200s payload=%.200q",
+				f.field, level, ip, r.UserAgent(), f.value)
+		}
+	}
+
+	// Sanitize: strip HTML as defense-in-depth before any further processing
+	firstName := validation.SanitizeHTML(validation.Sanitize(rawFirstName))
+	lastName := validation.SanitizeHTML(validation.Sanitize(rawLastName))
 	email := validation.Sanitize(r.FormValue("email"))
 	password := r.FormValue("password")
 	confirmPassword := r.FormValue("confirm_password")
 
-	// Validate
+	// Validate — NoHTML checks raw values to reject injection attempts outright
 	v := validation.New()
-	v.Required("first_name", firstName, "First Name").MaxLength("first_name", firstName, 50, "First Name")
-	v.Required("last_name", lastName, "Last Name").MaxLength("last_name", lastName, 50, "Last Name")
+	v.Required("first_name", firstName, "First Name").
+		MaxLength("first_name", firstName, 50, "First Name").
+		NoHTML("first_name", rawFirstName, "First Name")
+	v.Required("last_name", lastName, "Last Name").
+		MaxLength("last_name", lastName, 50, "Last Name").
+		NoHTML("last_name", rawLastName, "Last Name")
 	v.Required("email", email, "Email").Email("email", email, "Email")
 	v.Required("password", password, "Password").MinLength("password", password, 8, "Password")
 	v.Required("confirm_password", confirmPassword, "Confirm Password")
@@ -189,7 +210,6 @@ func (h *Handlers) RegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Auto-login after successful registration
-	ip := clientIPFromRequest(r)
 	userAgent := r.UserAgent()
 	token, err := h.AuthService.Login(email, password, ip, userAgent)
 	if err != nil {

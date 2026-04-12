@@ -249,6 +249,46 @@ func (v *Validator) FileType(field string, file *multipart.FileHeader, allowed [
 	return v
 }
 
+// ThreatLevel represents the severity of a detected input injection attempt.
+type ThreatLevel int
+
+const (
+	ThreatNone            ThreatLevel = iota // clean input
+	ThreatHTMLInjection                      // HTML markup present, no active script
+	ThreatScriptInjection                    // active script injection: <script>, javascript:, event handlers
+)
+
+// DetectThreat checks input for HTML/script injection patterns.
+// Returns ThreatNone if the input is clean.
+// Uses bluemonday StrictPolicy as the primary detector: if SanitizeHTML changes the value,
+// HTML is present. Script-specific keywords are then checked for higher severity classification.
+func DetectThreat(input string) ThreatLevel {
+	if SanitizeHTML(input) == input {
+		return ThreatNone
+	}
+	lower := strings.ToLower(input)
+	if strings.Contains(lower, "<script") ||
+		strings.Contains(lower, "javascript:") ||
+		strings.Contains(lower, "onerror=") ||
+		strings.Contains(lower, "onload=") ||
+		strings.Contains(lower, "onclick=") ||
+		strings.Contains(lower, "onfocus=") ||
+		strings.Contains(lower, "onmouseover=") {
+		return ThreatScriptInjection
+	}
+	return ThreatHTMLInjection
+}
+
+// NoHTML adds a validation error if the field value contains any HTML markup.
+// Use on plain-text fields (names, titles) where HTML is never valid input.
+// The error message is intentionally generic — it does not reveal detection logic.
+func (v *Validator) NoHTML(field, value, fieldName string) *Validator {
+	if SanitizeHTML(value) != value {
+		v.result.AddError(field, fmt.Sprintf("%s contains invalid characters", fieldName))
+	}
+	return v
+}
+
 // Sanitize removes potentially dangerous characters
 func Sanitize(input string) string {
 	// Remove null bytes

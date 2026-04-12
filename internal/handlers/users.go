@@ -289,42 +289,42 @@ func (h *Handlers) CreateUserFromForm(w http.ResponseWriter, r *http.Request) {
 // DeleteUserFromForm handles HTML form submission to delete a user (admin only)
 func (h *Handlers) DeleteUserFromForm(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+		h.RenderErrorPage(w, r, http.StatusMethodNotAllowed)
 		return
 	}
 
 	// Admin-only: check the user from context (set by RequireAuth middleware on this route)
 	caller := middleware.UserFromContext(r.Context())
 	if caller == nil || caller.Role != "admin" {
-		http.Error(w, "Admin access required", http.StatusForbidden)
+		h.RenderErrorPage(w, r, http.StatusForbidden)
 		return
 	}
 
 	if err := r.ParseForm(); err != nil {
-		http.Error(w, "Unable to parse form", http.StatusBadRequest)
+		h.RenderErrorPage(w, r, http.StatusBadRequest)
 		return
 	}
 
 	idStr := r.FormValue("id")
 	if idStr == "" {
-		http.Error(w, "Missing user ID", http.StatusBadRequest)
+		h.RenderErrorPage(w, r, http.StatusBadRequest)
 		return
 	}
 
 	id, err := strconv.Atoi(idStr)
 	if err != nil {
-		http.Error(w, "Invalid user ID", http.StatusBadRequest)
+		h.RenderErrorPage(w, r, http.StatusBadRequest)
 		return
 	}
 
 	err = h.UserDB.Delete(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNotFound) {
-			http.Error(w, "User not found", http.StatusNotFound)
+			h.RenderErrorPage(w, r, http.StatusNotFound)
 			return
 		}
 		log.Printf("failed to delete user %d: %v", id, err)
-		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		h.RenderErrorPage(w, r, http.StatusInternalServerError)
 		return
 	}
 
