@@ -146,7 +146,7 @@ func (h *Handlers) RegisterPage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pages.Registration(csrfToken).Render(r.Context(), w)
+	pages.Registration(csrfToken, nil, "").Render(r.Context(), w)
 }
 
 // RegisterSubmit handles registration form submission (POST /register)
@@ -179,13 +179,15 @@ func (h *Handlers) RegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	password := r.FormValue("password")
 	confirmPassword := r.FormValue("confirm_password")
 
-	// Validate — NoHTML checks raw values to reject injection attempts outright
+	// Validate — Required/MaxLength against raw values so a non-empty injected value
+	// doesn't also trigger "is required" after sanitization strips it to empty.
+	// NoHTML checks raw values to reject injection outright.
 	v := validation.New()
-	v.Required("first_name", firstName, "First Name").
-		MaxLength("first_name", firstName, 50, "First Name").
+	v.Required("first_name", rawFirstName, "First Name").
+		MaxLength("first_name", rawFirstName, 50, "First Name").
 		NoHTML("first_name", rawFirstName, "First Name")
-	v.Required("last_name", lastName, "Last Name").
-		MaxLength("last_name", lastName, 50, "Last Name").
+	v.Required("last_name", rawLastName, "Last Name").
+		MaxLength("last_name", rawLastName, 50, "Last Name").
 		NoHTML("last_name", rawLastName, "Last Name")
 	v.Required("email", email, "Email").Email("email", email, "Email")
 	v.Required("password", password, "Password").MinLength("password", password, 8, "Password")
@@ -196,7 +198,28 @@ func (h *Handlers) RegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !v.Result().IsValid() {
-		renderErrorPage(w, r, "Registration Errors", v.Result().Errors, "/register")
+		// Build per-field error map (first error per field only)
+		fieldErrors := make(map[string]string)
+		for _, e := range v.Result().Errors {
+			if _, exists := fieldErrors[e.Field]; !exists {
+				fieldErrors[e.Field] = e.Message
+			}
+		}
+
+		// Threat banner if injection was detected on any name field
+		threatMsg := ""
+		if validation.DetectThreat(rawFirstName) != validation.ThreatNone ||
+			validation.DetectThreat(rawLastName) != validation.ThreatNone {
+			threatMsg = "Script injection detected. The submission was rejected and this event has been logged."
+		}
+
+		csrfToken, csrfErr := h.generateCSRFToken()
+		if csrfErr != nil {
+			log.Printf("failed to generate CSRF token: %v", csrfErr)
+			http.Error(w, "Internal server error", http.StatusInternalServerError)
+			return
+		}
+		pages.Registration(csrfToken, fieldErrors, threatMsg).Render(r.Context(), w)
 		return
 	}
 

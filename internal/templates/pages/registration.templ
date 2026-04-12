@@ -4,7 +4,7 @@ import "secure-ui-showcase-go/internal/i18n"
 import "secure-ui-showcase-go/internal/templates"
 import "secure-ui-showcase-go/internal/templates/components"
 
-templ Registration(csrfToken string) {
+templ Registration(csrfToken string, fieldErrors map[string]string, threatMessage string) {
 	@templates.Layout("Registration", "Create a developer account to access protected Secure-UI demos. The registration form is built with secure-password-confirm, secure-input, and secure-form — all running live.", false, []string{"/static/styles/auth/auth.min.css"}, "secure-form", "secure-input", "secure-password-confirm") {
 		<div class="auth-page">
 			<!-- Brand Panel -->
@@ -62,13 +62,32 @@ templ Registration(csrfToken string) {
 					</header>
 
 					<div class="auth-form-body">
+						if threatMessage != "" {
+							<div class="alert alert-danger" role="alert">
+								<strong>Injection blocked:</strong> { threatMessage }
+							</div>
+						}
 						@components.SecureFormWrapper("POST", "/register", csrfToken, "critical", "registration-form") {
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.first_name"), "first_name", "text", "", "public", "", true, 1, 50)
+							if err, ok := fieldErrors["first_name"]; ok {
+								<p class="auth-field-error" role="alert">{ err }</p>
+							}
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.last_name"), "last_name", "text", "", "public", "", true, 1, 50)
-
+							if err, ok := fieldErrors["last_name"]; ok {
+								<p class="auth-field-error" role="alert">{ err }</p>
+							}
 							@components.SecureInputField(i18n.T(ctx, "reg.email"), "email", "email", "", "public", "", true)
+							if err, ok := fieldErrors["email"]; ok {
+								<p class="auth-field-error" role="alert">{ err }</p>
+							}
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.password"), "password", "password", "", "critical", "", true, 8, 0)
+							if err, ok := fieldErrors["password"]; ok {
+								<p class="auth-field-error" role="alert">{ err }</p>
+							}
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.confirm"), "confirm_password", "password", "", "critical", "", true, 8, 0)
+							if err, ok := fieldErrors["confirm_password"]; ok {
+								<p class="auth-field-error" role="alert">{ err }</p>
+							}
 
 							<div class="terms-row">
 								<input

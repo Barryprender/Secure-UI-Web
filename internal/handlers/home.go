@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 
+	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/templates/pages"
 )
 
@@ -98,7 +99,7 @@ func (h *Handlers) Table(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pages.Table(users, csrfToken).Render(r.Context(), w)
+	pages.Table(users, csrfToken, middleware.UserFromContext(r.Context())).Render(r.Context(), w)
 }
 
 // Registration renders the registration form page
@@ -110,5 +111,5 @@ func (h *Handlers) Registration(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	pages.Registration(csrfToken).Render(r.Context(), w)
+	pages.Registration(csrfToken, nil, "").Render(r.Context(), w)
 }

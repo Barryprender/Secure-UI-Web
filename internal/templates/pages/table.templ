@@ -5,7 +5,7 @@ import "secure-ui-showcase-go/internal/middleware"
 import "secure-ui-showcase-go/internal/models"
 import "fmt"
 
-templ Table(users []*models.User, csrfToken string) {
+templ Table(users []*models.User, csrfToken string, caller *models.User) {
 	@templates.Layout("Data Table", "User data table with filtering and sorting", false, nil, "secure-table") {
 		<section class="py-3xl">
 			<div class="container">
@@ -74,15 +74,17 @@ templ Table(users []*models.User, csrfToken string) {
 											</td>
 											<td data-key="created">{ user.CreatedAt.Format("2006-01-02") }</td>
 											<td data-key="actions">
-												<button
-													type="button"
-													class="btn btn-secondary btn-xs"
-													data-action="delete"
-													data-user-id={ fmt.Sprintf("%d", user.ID) }
-													data-user-name={ user.FirstName + " " + user.LastName }
-												>
-													Delete
-												</button>
+												if caller != nil && caller.Role == "admin" {
+													<button
+														type="button"
+														class="btn btn-secondary btn-xs"
+														data-action="delete"
+														data-user-id={ fmt.Sprintf("%d", user.ID) }
+														data-user-name={ user.FirstName + " " + user.LastName }
+													>
+														Delete
+													</button>
+												}
 											</td>
 										</tr>
 									}

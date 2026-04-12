@@ -18,6 +18,9 @@ templ SecureInputField(label, name, inputType, placeholder, securityTier, class 
 		if required {
 			required
 		}
+		if inputType != "email" && inputType != "password" {
+			threat-feedback
+		}
 	>
 		<label>{ label }</label>
 		<input
@@ -50,6 +53,9 @@ templ SecureInputFieldWithLength(label, name, inputType, placeholder, securityTi
 		}
 		if maxlength > 0 {
 			maxlength={ strconv.Itoa(maxlength) }
+		}
+		if inputType != "email" && inputType != "password" {
+			threat-feedback
 		}
 	>
 		<label>{ label }</label>

@@ -72,7 +72,14 @@ func (h *Handlers) RenderErrorPage(w http.ResponseWriter, r *http.Request, statu
 		}
 	}
 
-	w.WriteHeader(statusCode)
+	// For POST requests (form submissions), do not set a non-2xx status code.
+	// @view-transition { navigation: auto; } aborts cross-document transitions on
+	// non-2xx responses, leaving the browser in a broken state. The error content
+	// renders correctly at 200. For GET requests, set the real status so SEO crawlers
+	// and direct URL access receive accurate HTTP semantics.
+	if r.Method != http.MethodPost {
+		w.WriteHeader(statusCode)
+	}
 
 	err := pages.ErrorPage(statusCode, info.Title, info.Message).Render(r.Context(), w)
 	if err != nil {
