@@ -639,8 +639,14 @@
     background: var(--bg-primary);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius-2xl);
-    padding: var(--space-xl);
+    padding: var(--space-md);
     transition: background-color 0.4s ease, border-color 0.4s ease;
+}
+
+@media (min-width: 640px) {
+    .theming-live-demo {
+        padding: var(--space-xl);
+    }
 }
 
 .theming-live-demo-header {
@@ -780,13 +786,19 @@
    TOKEN REFERENCE TABLE
    ============================================ */
 
+.theming-token-table-wrap {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius-xl);
+    /* overflow-x: auto (non-visible) clips content to border-radius */
+}
+
 .theming-token-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 0.875rem;
-    border: 1px solid var(--border-subtle);
-    border-radius: var(--radius-xl);
-    overflow: hidden;
+    min-width: 480px;
 }
 
 .theming-token-table thead {
@@ -827,6 +839,7 @@
     padding: 2px 6px;
     border-radius: var(--radius-sm);
     border: 1px solid var(--border-subtle);
+    word-break: break-all;
 }
 
 .theming-token-swatch-cell {
@@ -935,6 +948,23 @@
     }
 }
 
+@media (max-width: 768px) {
+    .theming-hero-stats {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .theming-hero-stat {
+        width: 100%;
+    }
+
+    .theming-hero-stat + .theming-hero-stat {
+        border-inline-start: none;
+        border-block-start: 1px solid var(--th-hero-border);
+    }
+}
+
 @media (max-width: 640px) {
     .theming-presets-grid {
         grid-template-columns: 1fr 1fr;
@@ -955,6 +985,12 @@
     .home-theme-tab {
         font-size: 0.8125rem;
         padding: 0.4rem 0.875rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .theming-presets-grid {
+        grid-template-columns: 1fr;
     }
 }
 
