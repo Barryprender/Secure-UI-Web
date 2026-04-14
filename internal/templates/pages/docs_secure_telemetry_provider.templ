@@ -100,11 +100,6 @@ templ DocsSecureTelemetryProvider() {
 							<td>Count of <code>&lt;script&gt;</code> elements added after initial snapshot</td>
 						</tr>
 						<tr>
-							<td><code>devtoolsOpen</code></td>
-							<td>boolean</td>
-							<td>Window outer/inner size delta &gt;160px (devtools panel heuristic)</td>
-						</tr>
-						<tr>
 							<td><code>suspiciousScreenSize</code></td>
 							<td>boolean</td>
 							<td>Screen dimensions are zero or both under 100px</td>
@@ -220,7 +215,6 @@ type EnvironmentalSignals struct {
     HeadlessDetected       bool   ` + "`json:\"headlessDetected\"`" + `
     DomMutationDetected    bool   ` + "`json:\"domMutationDetected\"`" + `
     InjectedScriptCount    int    ` + "`json:\"injectedScriptCount\"`" + `
-    DevtoolsOpen           bool   ` + "`json:\"devtoolsOpen\"`" + `
     SuspiciousScreenSize   bool   ` + "`json:\"suspiciousScreenSize\"`" + `
     PointerType            string ` + "`json:\"pointerType\"`" + `
     MouseMovementDetected  bool   ` + "`json:\"mouseMovementDetected\"`" + `

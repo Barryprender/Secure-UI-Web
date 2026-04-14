@@ -38,7 +38,6 @@ webdriverDetected:        false,
 headlessDetected:         false,
 domMutationDetected:      false,
 injectedScriptCount:      0,
-devtoolsOpen:             false,
 suspiciousScreenSize:     false,
 pointerType:              "mouse",
 mouseMovementDetected:    true,
@@ -223,12 +222,6 @@ signature: "7c2bef09a1d3c8f2..."` }</code></pre>
 								<td><span class="telemetry-risk-badge telemetry-risk-badge--high">High</span></td>
 							</tr>
 							<tr>
-								<td><code>devtoolsOpen</code></td>
-								<td>boolean</td>
-								<td>Outer/inner window dimension gap &gt; 160 px — heuristic for open DevTools panel</td>
-								<td><span class="telemetry-risk-badge telemetry-risk-badge--medium">Medium</span></td>
-							</tr>
-							<tr>
 								<td><code>pointerType</code></td>
 								<td>"mouse" | "touch" | "pen" | "none"</td>
 								<td>Pointer type recorded from first <code>pointerdown</code> event; <code>none</code> = no pointer interaction</td>
@@ -321,9 +314,6 @@ func Score(env EnvironmentalSignals) (int, RiskDecision) {
        !env.KeyboardActivityDetected {
         score += 20
     }
-
-    // Investigative intent (low weight alone)
-    if env.DevtoolsOpen { score += 5 }
 
     switch {
     case score >= 50:
@@ -517,7 +507,6 @@ type EnvironmentalSignals struct {
     HeadlessDetected        bool   `+"`"+`json:"headlessDetected"`+"`"+`
     DomMutationDetected     bool   `+"`"+`json:"domMutationDetected"`+"`"+`
     InjectedScriptCount     int    `+"`"+`json:"injectedScriptCount"`+"`"+`
-    DevtoolsOpen            bool   `+"`"+`json:"devtoolsOpen"`+"`"+`
     SuspiciousScreenSize    bool   `+"`"+`json:"suspiciousScreenSize"`+"`"+`
     PointerType             string `+"`"+`json:"pointerType"`+"`"+`
     MouseMovementDetected   bool   `+"`"+`json:"mouseMovementDetected"`+"`"+`
