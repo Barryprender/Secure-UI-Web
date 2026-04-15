@@ -19,16 +19,24 @@ import (
 	"secure-ui-showcase-go/internal/services"
 )
 
+const (
+	defaultPort            = "8080"
+	defaultDBPath          = "./data/secure-ui.db"
+	csrfTokenTTL           = 1 * time.Hour
+	rateLimitMax           = 100
+	rateLimitWindow        = 1 * time.Minute
+	sessionCleanupInterval = 15 * time.Minute
+)
+
 func main() {
 	port := os.Getenv("PORT")
 	if port == "" {
-		port = "8080"
+		port = defaultPort
 	}
 
-	// Get database path from environment or use default
 	dbPath := os.Getenv("DB_PATH")
 	if dbPath == "" {
-		dbPath = "./data/secure-ui.db"
+		dbPath = defaultDBPath
 	}
 
 	// Ensure data directory exists
@@ -64,21 +72,20 @@ func main() {
 	userDB := models.NewUserDatabase(db)
 	sessionDB := models.NewSessionDatabase(db)
 	loginAttemptDB := models.NewLoginAttemptDatabase(db)
-	csrfStore := middleware.NewCSRFTokenStore(ctx, 1*time.Hour)
+	csrfStore := middleware.NewCSRFTokenStore(ctx, csrfTokenTTL)
 
 	// behindProxy=false: do not trust X-Forwarded-For/X-Real-IP by default.
 	// Set to true only when running behind a trusted reverse proxy.
 	behindProxy := os.Getenv("BEHIND_PROXY") == "true"
-	rateLimiter := middleware.NewRateLimiter(ctx, 100, 1*time.Minute, behindProxy)
+	rateLimiter := middleware.NewRateLimiter(ctx, rateLimitMax, rateLimitWindow, behindProxy)
 	countryService := services.NewCountryService(24 * time.Hour) // Cache for 24 hours
 	authService := services.NewAuthService(userDB, sessionDB, loginAttemptDB, 0, 0)
 
 	// Create handlers with dependencies injected
 	h := handlers.NewHandlers(userDB, csrfStore, countryService, authService, secureCookie)
 
-	// Session cleanup goroutine — purges expired sessions every 15 minutes
 	go func() {
-		ticker := time.NewTicker(15 * time.Minute)
+		ticker := time.NewTicker(sessionCleanupInterval)
 		defer ticker.Stop()
 		for {
 			select {
@@ -269,38 +276,7 @@ func main() {
 		),
 	)
 
-	// Start server
-	log.Println("Secure-UI Showcase Server (Go + Templ + SQLite)")
-	log.Println("Server-First Architecture with Progressive Enhancement")
-	log.Printf("Listening on http://localhost:%s\n", port)
-	log.Printf("Database: %s\n", dbPath)
-	log.Println("")
-	log.Println("Page Routes:")
-	log.Println("   GET  /              - Home page")
-	log.Println("   GET  /forms         - Form components demo")
-	log.Println("   GET  /dashboard     - Dashboard (auth required)")
-	log.Println("   GET  /table         - Table demo (auth required)")
-	log.Println("   GET  /registration  - Registration form")
-	log.Println("   GET  /theming       - Theming guide")
-	log.Println("   GET  /profile       - User profile (auth required)")
-	log.Println("")
-	log.Println("Auth Routes:")
-	log.Println("   GET  /login         - Login page")
-	log.Println("   POST /login         - Login submit")
-	log.Println("   GET  /register      - Registration page")
-	log.Println("   POST /register      - Registration submit")
-	log.Println("   POST /logout        - Logout")
-	log.Println("")
-	log.Println("API Routes (CSRF Protected):")
-	log.Println("   GET  /api/countries    - Get all countries (public)")
-	log.Println("   POST /api/forms/submit - Form submission (public)")
-	log.Println("   GET  /api/users        - Get all users (public)")
-	log.Println("   POST /api/users        - Create new user (auth required)")
-	log.Println("   GET  /api/users/:id    - Get user by ID (public)")
-	log.Println("   PUT  /api/users/:id    - Update user (self or admin)")
-	log.Println("   DELETE /api/users/:id  - Delete user (admin only)")
-	log.Println("")
-	log.Println("Press Ctrl+C to stop")
+	log.Printf("Secure-UI Showcase listening on :%s (db: %s)", port, dbPath)
 
 	srv := &http.Server{
 		Addr:              ":" + port,
