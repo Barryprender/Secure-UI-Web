@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "modernc.org/sqlite" // Pure Go SQLite driver (no CGO required)
 
@@ -150,8 +151,12 @@ func SeedSampleData(db *sql.DB) error {
 
 	log.Println("Seeding database with sample data...")
 
-	// All seed users get the password "password123" (bcrypt hashed)
-	defaultHash := hashPassword("password123")
+	seedPassword := os.Getenv("SEED_PASSWORD")
+	if seedPassword == "" {
+		log.Println("Warning: SEED_PASSWORD not set; using insecure default — set SEED_PASSWORD in production")
+		seedPassword = "password123"
+	}
+	defaultHash := hashPassword(seedPassword)
 
 	sampleUsers := []struct {
 		firstName    string
