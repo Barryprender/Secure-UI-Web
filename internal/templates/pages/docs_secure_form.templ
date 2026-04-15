@@ -189,7 +189,7 @@ form.addEventListener('secure-form-success', (e) => {
 							<td>Disable client-side validation</td>
 						</tr>
 						<tr>
-							<td><code>enhance</code></td>
+							<td><code>use-fetch</code></td>
 							<td>boolean</td>
 							<td><code>false</code></td>
 							<td>Enable JS fetch submission with JSON payload and telemetry. Without this attribute the form submits natively.</td>
@@ -198,7 +198,7 @@ form.addEventListener('secure-form-success', (e) => {
 							<td><code>csrf-header-name</code></td>
 							<td>string</td>
 							<td><code>"X-CSRF-Token"</code></td>
-							<td>HTTP header name used to send the CSRF token (enhance mode only)</td>
+							<td>HTTP header name used to send the CSRF token (use-fetch mode only)</td>
 						</tr>
 						<tr>
 							<td><code>csrf-field-name</code></td>
@@ -244,8 +244,8 @@ form.addEventListener('secure-form-success', (e) => {
 					<tbody>
 						<tr>
 							<td><code>secure-form-submit</code></td>
-							<td><code>{ ` formData, formElement, telemetry, preventDefault ` }</code></td>
-							<td>Fired before submission (cancelable via <code>event.preventDefault()</code>)</td>
+							<td><code>{ ` formData, cancelSubmission, telemetry ` }</code></td>
+							<td>Fired before submission. Call <code>e.detail.cancelSubmission()</code> to abort the fetch and reset form state, or <code>event.preventDefault()</code> to cancel the event.</td>
 						</tr>
 						<tr>
 							<td><code>secure-form-success</code></td>
@@ -320,7 +320,9 @@ form.addEventListener('secure-form-success', (e) => {
 						<pre><code class="language-javascript">{ `const form = document.querySelector('secure-form');
 
 form.addEventListener('secure-form-submit', async (e) => {
-  e.preventDefault();
+  // cancelSubmission() aborts the built-in fetch and re-enables the form.
+  // Use this when you want to handle the request yourself.
+  e.detail.cancelSubmission();
 
   const response = await fetch(form.getAttribute('action'), {
     method: 'POST',
