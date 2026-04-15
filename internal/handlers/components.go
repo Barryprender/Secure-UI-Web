@@ -60,12 +60,13 @@ func (h *Handlers) Components(w http.ResponseWriter, r *http.Request) {
 	case "secure-telemetry-provider":
 		t1, err1 := h.generateCSRFToken()
 		t2, err2 := h.generateCSRFToken()
-		if err1 != nil || err2 != nil {
-			log.Printf("failed to generate CSRF tokens for secure-telemetry-provider page: %v %v", err1, err2)
+		signingKey, err3 := generateSigningKey()
+		if err1 != nil || err2 != nil || err3 != nil {
+			log.Printf("failed to generate tokens for secure-telemetry-provider page: %v %v %v", err1, err2, err3)
 			http.Error(w, "Internal server error", http.StatusInternalServerError)
 			return
 		}
-		pages.ComponentSecureTelemetryProvider(t1, t2).Render(r.Context(), w)
+		pages.ComponentSecureTelemetryProvider(t1, t2, signingKey).Render(r.Context(), w)
 	case "secure-password-confirm":
 		t1, err := h.generateCSRFToken()
 		if err != nil {
