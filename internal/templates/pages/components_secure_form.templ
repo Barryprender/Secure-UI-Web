@@ -29,7 +29,7 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 				</div>
 				<div class="component-hero-demo">
 					<div class="component-hero-demo-label">Live Demo</div>
-					<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo1} csrf-header-name="X-CSRF-Token" security-tier="sensitive" enhance>
+					<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo1} csrf-header-name="X-CSRF-Token" security-tier="sensitive" use-fetch>
 						<secure-input label="Name" name="demo-name" type="text" security-tier="public" required></secure-input>
 						<secure-input label="Email" name="demo-email" type="email" security-tier="public" required></secure-input>
 						<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
@@ -46,7 +46,7 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 						<div class="config-card-header"><span class="config-label">csrf-token</span></div>
 						<div class="config-card-desc">Pass the server-rendered CSRF token as an attribute. The component injects it as a hidden <code>csrf_token</code> field and attaches it as a request header — your submit handler needs no extra logic. Use <code>csrf-field-name</code> and <code>csrf-header-name</code> to match your backend's expected names.</div>
 						<div class="config-demo">
-							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo4} csrf-header-name="X-CSRF-Token" security-tier="sensitive" enhance>
+							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo4} csrf-header-name="X-CSRF-Token" security-tier="sensitive" use-fetch>
 								<secure-input label="Email" name="cfg-csrf-email" type="email" security-tier="sensitive" placeholder="CSRF token injected automatically"></secure-input>
 								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
 							</secure-form>
@@ -68,7 +68,7 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 						<div class="config-card-header"><span class="config-label">security-tier="sensitive"</span></div>
 						<div class="config-card-desc">Every submission attempt is written to the audit log. Child fields with <code>security-tier="sensitive"</code> disable autocomplete and prevent browser caching. Use for login, profile, and any form collecting PII.</div>
 						<div class="config-demo">
-							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo2} csrf-header-name="X-CSRF-Token" security-tier="sensitive" enhance>
+							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo2} csrf-header-name="X-CSRF-Token" security-tier="sensitive" use-fetch>
 								<secure-input label="Email" name="cfg-sens-email" type="email" security-tier="sensitive" required></secure-input>
 								<secure-input label="Password" name="cfg-sens-pw" type="password" security-tier="critical" required></secure-input>
 								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Sign in</button>
@@ -97,7 +97,7 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 						<div class="config-card-header"><span class="config-label">security-tier="critical"</span></div>
 						<div class="config-card-desc">Highest risk tier. Rate limiting active on all child fields. All fields audited. Combined with <code>&lt;secure-telemetry-provider&gt;</code>, environmental signals (headless browser, webdriver flags, suspicious screen dimensions) are bundled into the payload alongside behavioral telemetry for a full bot detection signal set.</div>
 						<div class="config-demo">
-							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo3} csrf-header-name="X-CSRF-Token" security-tier="critical" enhance>
+							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo3} csrf-header-name="X-CSRF-Token" security-tier="critical" use-fetch>
 								<secure-input label="Account Number" name="cfg-crit-acct" type="text" security-tier="critical" placeholder="Critical tier — all signals active"></secure-input>
 								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
 							</secure-form>
@@ -119,7 +119,7 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 						<div class="config-card-header"><span class="config-label">novalidate</span></div>
 						<div class="config-card-desc">Disables native browser constraint validation popups. Component-controlled validation runs instead — consistent UX, no browser tooltip revealing shadow DOM internals. Required when mixing Secure-UI components with legacy fields that have browser validation enabled.</div>
 						<div class="config-demo">
-							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo5} csrf-header-name="X-CSRF-Token" novalidate security-tier="public" enhance>
+							<secure-form action="/api/demo/component-submit" method="POST" csrf-token={csrfDemo5} csrf-header-name="X-CSRF-Token" novalidate security-tier="public" use-fetch>
 								<secure-input label="Username" name="cfg-nv-user" type="text" security-tier="public" required placeholder="Component validation, no browser popup"></secure-input>
 								<button type="submit" class="btn btn-sm btn-accent btn-mt-sm">Submit</button>
 							</secure-form>
