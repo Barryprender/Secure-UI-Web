@@ -159,7 +159,7 @@ templ ComponentSecureForm(csrfDemo1 string, csrfDemo2 string, csrfDemo3 string, 
 
   // Act before the request fires
   if (telemetry.riskScore > 60) {
-    e.detail.preventDefault(); // block submission
+    e.detail.cancelSubmission(); // abort fetch + reset form state
     showChallenge();
   }
 });` }</code></pre>
