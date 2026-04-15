@@ -3,16 +3,14 @@ package handlers
 import (
 	"fmt"
 	"net/http"
+
+	"secure-ui-showcase-go/internal/middleware"
 )
 
 // RobotsTxt serves /robots.txt with explicit allow rules for known AI crawlers
 // and a pointer to /llms.txt for LLM-native agents.
 func (h *Handlers) RobotsTxt(w http.ResponseWriter, r *http.Request) {
-	scheme := "https"
-	if r.TLS == nil && r.Header.Get("X-Forwarded-Proto") != "https" {
-		scheme = "http"
-	}
-	base := scheme + "://" + r.Host
+	base := middleware.SiteBaseURLFromContext(r.Context())
 
 	// Private paths — same set for all agents.
 	disallow := "Disallow: /dashboard\nDisallow: /table\nDisallow: /profile\nDisallow: /api/\n"
@@ -47,11 +45,7 @@ func (h *Handlers) RobotsTxt(w http.ResponseWriter, r *http.Request) {
 // LLMsTxt serves /llms.txt — a machine-readable markdown summary of the site
 // for LLM agents, following the llmstxt.org convention.
 func (h *Handlers) LLMsTxt(w http.ResponseWriter, r *http.Request) {
-	scheme := "https"
-	if r.TLS == nil && r.Header.Get("X-Forwarded-Proto") != "https" {
-		scheme = "http"
-	}
-	base := scheme + "://" + r.Host
+	base := middleware.SiteBaseURLFromContext(r.Context())
 
 	body := fmt.Sprintf(`# Secure-UI
 
@@ -130,11 +124,7 @@ type sitemapEntry struct {
 // Sitemap serves /sitemap.xml with all public, indexable pages.
 // Auth-required pages (/dashboard, /table, /profile) are excluded.
 func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
-	scheme := "https"
-	if r.TLS == nil && r.Header.Get("X-Forwarded-Proto") != "https" {
-		scheme = "http"
-	}
-	base := scheme + "://" + r.Host
+	base := middleware.SiteBaseURLFromContext(r.Context())
 	// Use a stable date tied to the last known content update.
 	// Avoid time.Now() — dynamic lastmod signals to crawlers that
 	// content changes daily even when it doesn't, wasting crawl budget.
