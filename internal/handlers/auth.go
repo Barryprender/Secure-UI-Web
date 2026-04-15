@@ -11,7 +11,8 @@ import (
 	"secure-ui-showcase-go/internal/validation"
 )
 
-// cookieName returns the session cookie name based on secure mode
+const sessionCookieMaxAge = 86400 // 24 hours
+
 func (h *Handlers) cookieName() string {
 	return middleware.SessionCookieName(h.SecureCookie)
 }
@@ -22,7 +23,7 @@ func (h *Handlers) setSessionCookie(w http.ResponseWriter, token string) {
 		Name:     h.cookieName(),
 		Value:    token,
 		Path:     "/",
-		MaxAge:   86400, // 24 hours
+		MaxAge:   sessionCookieMaxAge,
 		HttpOnly: true,
 		Secure:   h.SecureCookie,
 		SameSite: http.SameSiteStrictMode,
@@ -79,10 +80,13 @@ func (h *Handlers) LoginSubmit(w http.ResponseWriter, r *http.Request) {
 	email := validation.Sanitize(r.FormValue("email"))
 	password := r.FormValue("password") // never sanitize passwords
 
-	// Basic input validation
+	// Basic input validation — MaxLength on password prevents bcrypt DoS (72-byte truncation)
 	v := validation.New()
-	v.Required("email", email, "Email").Email("email", email, "Email")
-	v.Required("password", password, "Password")
+	v.Required("email", email, "Email").
+		Email("email", email, "Email").
+		MaxLength("email", email, 254, "Email")
+	v.Required("password", password, "Password").
+		MaxLength("password", password, 72, "Password")
 	if !v.Result().IsValid() {
 		csrfToken, err := h.generateCSRFToken()
 		if err != nil {
@@ -189,8 +193,12 @@ func (h *Handlers) RegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	v.Required("last_name", rawLastName, "Last Name").
 		MaxLength("last_name", rawLastName, 50, "Last Name").
 		NoHTML("last_name", rawLastName, "Last Name")
-	v.Required("email", email, "Email").Email("email", email, "Email")
-	v.Required("password", password, "Password").MinLength("password", password, 8, "Password")
+	v.Required("email", email, "Email").
+		Email("email", email, "Email").
+		MaxLength("email", email, 254, "Email")
+	v.Required("password", password, "Password").
+		MinLength("password", password, 8, "Password").
+		MaxLength("password", password, 72, "Password")
 	v.Required("confirm_password", confirmPassword, "Confirm Password")
 
 	if password != confirmPassword {
@@ -268,11 +276,12 @@ func (h *Handlers) ChangePassword(w http.ResponseWriter, r *http.Request) {
 	newPassword := r.FormValue("new_password")
 	confirmPassword := r.FormValue("confirm_password")
 
-	// Validate inputs
 	v := validation.New()
-	v.Required("current_password", currentPassword, "Current Password")
+	v.Required("current_password", currentPassword, "Current Password").
+		MaxLength("current_password", currentPassword, 72, "Current Password")
 	v.Required("new_password", newPassword, "New Password").
-		MinLength("new_password", newPassword, 8, "New Password")
+		MinLength("new_password", newPassword, 8, "New Password").
+		MaxLength("new_password", newPassword, 72, "New Password")
 	v.Required("confirm_password", confirmPassword, "Confirm Password")
 
 	if newPassword != confirmPassword {
