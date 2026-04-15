@@ -268,7 +268,7 @@ export function CheckoutForm() {
     import('/components/secure-form/secure-form.js');
 
     const el = cardRef.current;
-    el?.addEventListener('secure-card', (e) => {
+    el?.addEventListener('secure-card-change', (e) => {
       console.log('card type:', e.detail.cardType);
       console.log('last4:', e.detail.last4);
       // full PAN never in detail
