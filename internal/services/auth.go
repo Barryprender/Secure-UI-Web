@@ -30,6 +30,19 @@ const (
 	DefaultLockoutWindow = 15 * time.Minute
 )
 
+// dummyHash is a valid bcrypt hash pre-computed at startup cost factor.
+// Used in the user-not-found path to perform a real bcrypt comparison,
+// keeping that path timing-indistinguishable from a wrong-password path.
+var dummyHash string
+
+func init() {
+	h, err := bcrypt.GenerateFromPassword([]byte("dummy-placeholder-no-match"), bcryptCost)
+	if err != nil {
+		panic(fmt.Sprintf("failed to pre-compute dummy bcrypt hash: %v", err))
+	}
+	dummyHash = string(h)
+}
+
 // AuthService handles authentication, registration, and session management
 type AuthService struct {
 	UserDB            *models.UserDatabase
@@ -104,11 +117,9 @@ func (s *AuthService) Login(email, password, ip, userAgent string) (string, erro
 	// Look up user
 	user, err := s.UserDB.GetByEmail(email)
 	if err != nil {
-		// User not found — run dummy bcrypt to prevent timing side-channel
-		_ = bcrypt.CompareHashAndPassword(
-			[]byte("$2a$12$000000000000000000000uGPuGDNMB5fXApYSKrhjYxLRmPCbInu"),
-			[]byte(password),
-		)
+		// User not found — run a real bcrypt comparison against the pre-computed
+		// dummy hash to keep this path timing-indistinguishable from wrong password.
+		_ = bcrypt.CompareHashAndPassword([]byte(dummyHash), []byte(password))
 		s.recordFailedAttempt(email, ip, userAgent)
 		return "", ErrInvalidCredentials
 	}
@@ -213,8 +224,10 @@ func (s *AuthService) ValidateSession(token string) (*models.User, error) {
 
 // RegisterUser creates a new user account with a hashed password
 func (s *AuthService) RegisterUser(firstName, lastName, email, password string) (*models.User, error) {
-	// Check if email already exists
-	existing, _ := s.UserDB.GetByEmail(email)
+	existing, err := s.UserDB.GetByEmail(email)
+	if err != nil {
+		return nil, fmt.Errorf("failed to check email availability: %w", err)
+	}
 	if existing != nil {
 		return nil, ErrEmailExists
 	}
