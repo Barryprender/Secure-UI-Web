@@ -10,14 +10,19 @@ import (
 
 // Home renders the index/home page
 func (h *Handlers) Home(w http.ResponseWriter, r *http.Request) {
-	// Only handle root path
 	if r.URL.Path != "/" {
 		http.NotFound(w, r)
 		return
 	}
 
-	// Render the new home page
-	pages.Home().Render(r.Context(), w)
+	signingKey, err := generateSigningKey()
+	if err != nil {
+		log.Printf("failed to generate home signing key: %v", err)
+		http.Error(w, "Internal server error", http.StatusInternalServerError)
+		return
+	}
+
+	pages.Home(signingKey).Render(r.Context(), w)
 }
 
 // Forms renders the form components demo page.

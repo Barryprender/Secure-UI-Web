@@ -6,7 +6,7 @@ import (
 	"secure-ui-showcase-go/internal/templates"
 )
 
-templ Home() {
+templ Home(signingKey string) {
 	@templates.Layout("Secure-UI — Secure UI Components with Bot Detection, CSRF & XSS Protection.", "Drop-in secure UI components with CSRF protection, XSS prevention, behavioral bot detection, and HMAC-signed telemetry. Zero dependencies. MIT licence. Works with any framework.", true, []string{"/static/styles/home/home.min.css"}, "secure-file-upload", "secure-form", "secure-input", "secure-submit-button", "secure-telemetry-provider", "secure-textarea") {
 		@templates.HomeJsonLDScript()
 		@templates.HomeFAQJsonLDScript()
@@ -174,8 +174,8 @@ templ Home() {
 					<span class="demo-panel-badge">{ i18n.T(ctx, "home.demo.panel_live") }</span>
 				</div>
 				<div id="demo-form-wrap">
-					<secure-telemetry-provider id="home-tp" signing-key="demo-key-replace-in-prod">
-						<secure-form action="#" method="POST" enhance>
+					<secure-telemetry-provider id="home-tp" signing-key={ signingKey }>
+						<secure-form action="#" method="POST" use-fetch>
 							<secure-input
 								name="email"
 								type="email"
