@@ -24,15 +24,10 @@ type contextKey string
 // CSRFTokenKey is the context key for CSRF tokens.
 const CSRFTokenKey contextKey = "csrfToken"
 
-// CSRFTokenGenerator interface for generating CSRF tokens
-type CSRFTokenGenerator interface {
-	GenerateToken() (string, error)
-}
-
 // Handlers holds all dependencies for HTTP handlers
 type Handlers struct {
 	UserDB         *models.UserDatabase
-	CSRFStore      CSRFTokenGenerator
+	CSRFStore      *middleware.CSRFTokenStore
 	CountryService *services.CountryService
 	AuthService    *services.AuthService
 	SecureCookie   bool // true in production (HTTPS) for __Host- cookie prefix
@@ -41,7 +36,7 @@ type Handlers struct {
 // NewHandlers creates a new Handlers instance with the given dependencies
 func NewHandlers(
 	userDB *models.UserDatabase,
-	csrfStore CSRFTokenGenerator,
+	csrfStore *middleware.CSRFTokenStore,
 	countryService *services.CountryService,
 	authService *services.AuthService,
 	secureCookie bool,
@@ -214,11 +209,8 @@ func extractUserID(path string) (int, error) {
 // CSRF Helpers
 // ----------------------------------------------------------------------------
 
-// generateCSRFToken generates a CSRF token if the store is available
+// generateCSRFToken generates a single-use CSRF token from the store.
 func (h *Handlers) generateCSRFToken() (string, error) {
-	if h.CSRFStore == nil {
-		return "", nil
-	}
 	return h.CSRFStore.GenerateToken()
 }
 
