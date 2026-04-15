@@ -245,14 +245,12 @@ func MIMETypeWrapper(next http.Handler) http.Handler {
 	})
 }
 
-// SecurityHeaders adds comprehensive security headers to all responses.
-// A unique CSP nonce is generated per request and stored in the context.
+// SecurityHeaders applies security headers without HSTS.
 func SecurityHeaders(next http.Handler) http.Handler {
 	return SecurityHeadersWithHSTS(false)(next)
 }
 
-// SecurityHeadersWithHSTS returns a middleware that adds security headers.
-// When httpsMode is true, HSTS is enabled to enforce HTTPS connections.
+// SecurityHeadersWithHSTS applies security headers; enables HSTS when httpsMode is true.
 func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
