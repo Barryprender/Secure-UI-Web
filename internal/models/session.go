@@ -15,7 +15,7 @@ type Session struct {
 	UserID    int
 	Token     string
 	IPAddress string
-	UserAgent string
+	UserAgent string    // stored for audit/forensics only; not checked during validation
 	ExpiresAt time.Time
 	CreatedAt time.Time
 }
