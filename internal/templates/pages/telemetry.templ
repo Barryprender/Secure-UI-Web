@@ -42,6 +42,8 @@ suspiciousScreenSize:     false,
 pointerType:              "mouse",
 mouseMovementDetected:    true,
 keyboardActivityDetected: true,
+pageLoadToFirstKeystroke: 1240,
+loadToSubmit:             8310,
 
 // HMAC-SHA-256 signed envelope
 nonce:     "a3f8b2c1d4e5f607...",
@@ -503,14 +505,16 @@ type Envelope struct {
 }
 
 type EnvironmentalSignals struct {
-    WebdriverDetected       bool   `+"`"+`json:"webdriverDetected"`+"`"+`
-    HeadlessDetected        bool   `+"`"+`json:"headlessDetected"`+"`"+`
-    DomMutationDetected     bool   `+"`"+`json:"domMutationDetected"`+"`"+`
-    InjectedScriptCount     int    `+"`"+`json:"injectedScriptCount"`+"`"+`
-    SuspiciousScreenSize    bool   `+"`"+`json:"suspiciousScreenSize"`+"`"+`
-    PointerType             string `+"`"+`json:"pointerType"`+"`"+`
-    MouseMovementDetected   bool   `+"`"+`json:"mouseMovementDetected"`+"`"+`
-    KeyboardActivityDetected bool  `+"`"+`json:"keyboardActivityDetected"`+"`"+`
+    WebdriverDetected        bool   `+"`"+`json:"webdriverDetected"`+"`"+`
+    HeadlessDetected         bool   `+"`"+`json:"headlessDetected"`+"`"+`
+    DomMutationDetected      bool   `+"`"+`json:"domMutationDetected"`+"`"+`
+    InjectedScriptCount      int    `+"`"+`json:"injectedScriptCount"`+"`"+`
+    SuspiciousScreenSize     bool   `+"`"+`json:"suspiciousScreenSize"`+"`"+`
+    PointerType              string `+"`"+`json:"pointerType"`+"`"+`
+    MouseMovementDetected    bool   `+"`"+`json:"mouseMovementDetected"`+"`"+`
+    KeyboardActivityDetected bool   `+"`"+`json:"keyboardActivityDetected"`+"`"+`
+    PageLoadToFirstKeystroke int    `+"`"+`json:"pageLoadToFirstKeystroke"`+"`"+`
+    LoadToSubmit             int    `+"`"+`json:"loadToSubmit"`+"`"+`
 }
 
 // Verify checks the HMAC-SHA-256 signature on the envelope.
