@@ -1000,7 +1000,7 @@ func (h *Handlers) Register(
 
   // Wire up input events on each live field
   document.querySelectorAll('#demo-panel secure-input').forEach(input => {
-    input.addEventListener('secure-input', () => {
+    input.addEventListener('secure-input-change', () => {
       const tel = typeof input.getFieldTelemetry === 'function' ? input.getFieldTelemetry() : null;
       if (tel) updateDlsField(input.getAttribute('name') ?? '', tel);
     });
