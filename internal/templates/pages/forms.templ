@@ -98,7 +98,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string, sign
 										csrf-token={ csrfLogin }
 										csrf-header-name="X-CSRF-Token"
 										security-tier="sensitive"
-										enhance
+										use-fetch
 									>
 										<form method="POST" action="/api/demo/login" novalidate>
 											<input type="hidden" name="csrf_token" value={ csrfLogin }/>
@@ -152,7 +152,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string, sign
 									csrf-token={ csrfSubscribe }
 									csrf-header-name="X-CSRF-Token"
 									security-tier="public"
-									enhance
+									use-fetch
 								>
 									<form method="POST" action="/api/demo/subscribe" novalidate>
 										<input type="hidden" name="csrf_token" value={ csrfSubscribe }/>
@@ -221,7 +221,7 @@ templ FormsPage(csrfLogin string, csrfSubscribe string, csrfPayment string, sign
 									csrf-token={ csrfPayment }
 									csrf-header-name="X-CSRF-Token"
 									security-tier="critical"
-									enhance
+									use-fetch
 								>
 									<form method="POST" action="/api/demo/payment" novalidate>
 										<input type="hidden" name="csrf_token" value={ csrfPayment }/>
