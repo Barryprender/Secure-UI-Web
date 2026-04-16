@@ -489,6 +489,7 @@ a:hover {
     padding: 1px;
     background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
     -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
     pointer-events: none;
@@ -578,7 +579,7 @@ a:hover {
 }
 
 /* Registration Page */
-.registration-form { display: grid; gap: var(--space-lg); }
+.registration-form { display: grid; gap: 0 }
 .terms-row { display: flex; align-items: flex-start; gap: var(--space-sm); }
 .terms-checkbox { margin-top: 0.25rem; }
 .terms-label { font-size: 0.875rem; color: var(--text-secondary); }
