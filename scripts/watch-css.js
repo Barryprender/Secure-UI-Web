@@ -1,20 +1,22 @@
 #!/usr/bin/env node
 /**
- * CSS watcher — run once in a terminal alongside your dev server:
+ * Asset watcher — run once in a terminal alongside your dev server:
  *
  *   node scripts/watch-css.js
  *
- * Watches static/styles/ recursively and regenerates *.min.css whenever a
- * source file is saved. Also rebuilds global.min.css when any bundled file
- * changes.
+ * Watches static/styles/ and static/js/ recursively.
+ * - *.css  → regenerates *.min.css; rebuilds global.min.css when a bundled file changes.
+ * - *.js   → regenerates *.min.js
  */
 'use strict';
 
-const fs     = require('fs');
-const path   = require('path');
-const minify = require('./minify-css');
+const fs        = require('fs');
+const path      = require('path');
+const minify    = require('./minify-css');
+const minifyJs  = require('./minify-js');
 
 const stylesDir = path.join(__dirname, '..', 'static', 'styles');
+const jsDir     = path.join(__dirname, '..', 'static', 'js');
 
 if (!fs.existsSync(stylesDir)) {
   console.error(`watch-css: directory not found: ${stylesDir}`);
@@ -77,8 +79,23 @@ function onChange(filename) {
   }, 120);
 }
 
+function onJsChange(filename) {
+  if (!filename) return;
+  filename = filename.replace(/\\/g, '/');
+  if (!filename.endsWith('.js') || filename.endsWith('.min.js')) return;
+
+  clearTimeout(timers['js:' + filename]);
+  timers['js:' + filename] = setTimeout(() => {
+    const full = path.join(jsDir, filename);
+    if (!fs.existsSync(full)) return;
+    minifyJs(full);
+  }, 120);
+}
+
 // recursive: true is required to detect changes in subdirectories.
 fs.watch(stylesDir, { persistent: true, recursive: true }, (_, filename) => onChange(filename));
+fs.watch(jsDir,     { persistent: true, recursive: true }, (_, filename) => onJsChange(filename));
 
 console.log(`[css] watching ${stylesDir}`);
-console.log('[css] Ctrl+C to stop');
+console.log(`[js]  watching ${jsDir}`);
+console.log('[   ] Ctrl+C to stop');
