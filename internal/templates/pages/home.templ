@@ -906,6 +906,10 @@ func (h *Handlers) Register(
         };
       }
 
+      if (Array.isArray(tel.detectedThreats) && tel.detectedThreats.length) {
+        obj.threats = tel.detectedThreats.map(t => ({ type: t.threatType, field: t.fieldName ?? null }));
+      }
+
       if (envelope?.signature) {
         obj.envelope = {
           nonce:     envelope.nonce,
