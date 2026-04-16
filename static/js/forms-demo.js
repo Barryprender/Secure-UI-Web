@@ -41,7 +41,7 @@ function handleInjectionBlocked(event) {
     `<div class="demo-response-status demo-response-status--error">` +
     `Submission blocked \u2014 injection attempt detected` +
     `</div>` +
-    `<p class="demo-response-placeholder" style="margin-top:0.75rem">` +
+    `<p class="demo-response-placeholder">` +
     `The <code>secure-form</code> component blocked this submission. ` +
     `Clear the highlighted field, then reset the form to submit again.` +
     `</p>`;
