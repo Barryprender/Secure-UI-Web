@@ -260,10 +260,11 @@ const (
 
 // DetectThreat checks input for HTML/script injection patterns.
 // Returns ThreatNone if the input is clean.
-// Uses bluemonday StrictPolicy as the primary detector: if SanitizeHTML changes the value,
-// HTML is present. Script-specific keywords are then checked for higher severity classification.
+// Uses '<' as the primary gate — all HTML injection requires an opening tag.
+// Avoids a SanitizeHTML round-trip which encodes legitimate characters like
+// apostrophes and ampersands, producing false positives on clean input.
 func DetectThreat(input string) ThreatLevel {
-	if SanitizeHTML(input) == input {
+	if !strings.Contains(input, "<") {
 		return ThreatNone
 	}
 	lower := strings.ToLower(input)
