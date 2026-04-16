@@ -117,8 +117,16 @@ async function handleDemoSubmit(event) {
     const data = await res.json();
     showResponse(responsePanel, data, res.status, telemetry);
 
-    // CSRF tokens are single-use (ConsumeToken). Refresh immediately so the
-    // form can be submitted again without a page reload.
+    // On success, reset the form — this clears the component's internal
+    // "Submitting..." status (no public API exists to clear it otherwise)
+    // and removes any risk-warning annotations on fields.
+    // form.reset() also zeroes the hidden CSRF input, so always refresh after.
+    if (res.ok) {
+      form.reset();
+    }
+
+    // CSRF tokens are single-use (ConsumeToken). Refresh so the form can be
+    // submitted again without a page reload.
     refreshCSRFToken(form);
   } catch (err) {
     showNetworkError(responsePanel, err.message);
