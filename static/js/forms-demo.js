@@ -36,14 +36,28 @@ function handleInjectionBlocked(event) {
   if (!responsePanel) return;
   const body = responsePanel.querySelector('.demo-response-body');
   if (!body) return;
+
   body.innerHTML =
     `<div class="demo-response-status demo-response-status--error">` +
     `Submission blocked \u2014 injection attempt detected` +
     `</div>` +
     `<p class="demo-response-placeholder" style="margin-top:0.75rem">` +
-    `The <code>secure-form</code> component blocked this submission client-side. ` +
-    `Clear the highlighted field to re-enable the form.` +
+    `The <code>secure-form</code> component blocked this submission. ` +
+    `Clear the highlighted field, then reset the form to submit again.` +
     `</p>`;
+
+  // form.reset() clears the threat accumulator and unblocks the form, but it
+  // also resets the hidden CSRF input to "" — refresh the token afterwards.
+  const resetBtn = document.createElement('button');
+  resetBtn.type = 'button';
+  resetBtn.className = 'demo-reset-form-btn';
+  resetBtn.textContent = 'Reset form';
+  resetBtn.addEventListener('click', () => {
+    form.reset();
+    refreshCSRFToken(form);
+    body.innerHTML = '<p class="demo-response-placeholder">Submit the form to see the live server response</p>';
+  });
+  body.appendChild(resetBtn);
 }
 
 async function handleDemoSubmit(event) {
