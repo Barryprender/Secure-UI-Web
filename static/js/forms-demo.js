@@ -46,6 +46,16 @@ function handleInjectionBlocked(event) {
     `Clear the highlighted field, then reset the form to submit again.` +
     `</p>`;
 
+  // Clear the field's external error message as soon as the user edits it.
+  // reportError() persists until clearExternalError() is called — the field's
+  // own validation does not clobber it by design.
+  const field = event.target.closest('secure-input, secure-textarea');
+  if (field) {
+    field.addEventListener('secure-input-change', () => {
+      field.clearExternalError?.();
+    }, { once: true });
+  }
+
   // form.reset() clears the threat accumulator and unblocks the form, but it
   // also resets the hidden CSRF input to "" — refresh the token afterwards.
   const resetBtn = document.createElement('button');
