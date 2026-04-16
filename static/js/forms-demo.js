@@ -46,18 +46,23 @@ function handleInjectionBlocked(event) {
     `Clear the highlighted field, then reset the form to submit again.` +
     `</p>`;
 
-  // Clear the field's external error message as soon as the user edits it.
-  // reportError() persists until clearExternalError() is called — the field's
-  // own validation does not clobber it by design.
+  // When the user edits the injected field, auto-reset the form entirely.
+  // This is the only way to clear data-state="blocked" and the threat
+  // accumulator (#o) from outside the component — form.reset() is the sole
+  // public API that does both. Accepting the UX tradeoff: all fields clear,
+  // but the form is fully unblocked and ready for a clean submission.
+  // form.reset() also zeroes the hidden CSRF input, so always refresh after.
   const field = event.target.closest('secure-input, secure-textarea');
   if (field) {
     field.addEventListener('secure-input-change', () => {
       field.clearExternalError?.();
+      form.reset();
+      refreshCSRFToken(form);
+      body.innerHTML = '<p class="demo-response-placeholder">Submit the form to see the live server response</p>';
     }, { once: true });
   }
 
-  // form.reset() clears the threat accumulator and unblocks the form, but it
-  // also resets the hidden CSRF input to "" — refresh the token afterwards.
+  // Explicit reset button as an alternative before editing the field.
   const resetBtn = document.createElement('button');
   resetBtn.type = 'button';
   resetBtn.className = 'demo-reset-form-btn';
