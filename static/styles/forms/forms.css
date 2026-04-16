@@ -791,6 +791,72 @@ secure-file-upload {
   opacity: 0.7;
 }
 
+.demo-resp-signal--threat {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border-color: rgba(239, 68, 68, 0.3);
+}
+
+.demo-resp-threats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
+  margin-top: 0.25rem;
+}
+
+.demo-resp-threats-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  font-family: var(--font-mono);
+}
+
+/* Injection-blocked message in response panel */
+.demo-blocked-desc {
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.5);
+  margin: var(--space-xs) 0 var(--space-xs);
+  line-height: 1.55;
+}
+
+.demo-blocked-desc code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: #f87171;
+  background: rgba(239, 68, 68, 0.1);
+  padding: 0.05rem 0.3rem;
+  border-radius: calc(var(--radius-sm) - 1px);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+}
+
+.demo-reset-form-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.625rem;
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: #f59e0b;
+  background: rgba(245, 158, 11, 0.08);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+
+.demo-reset-form-btn:hover {
+  background: rgba(245, 158, 11, 0.15);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: #fbbf24;
+}
+
+.demo-reset-form-btn:active {
+  background: rgba(245, 158, 11, 0.22);
+}
+
 /* PCI note below payment response panel */
 .demo-pci-note {
   display: flex;
