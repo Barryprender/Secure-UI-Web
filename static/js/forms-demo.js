@@ -23,6 +23,29 @@ const FORM_LABELS = {
 
 document.addEventListener('secure-form-submit', handleDemoSubmit);
 
+// Injection blocking (0.3.2+): secure-form-submit is never dispatched when an
+// injection is detected. Listen for the threat event directly so the response
+// panel updates immediately when the form is blocked.
+document.addEventListener('secure-threat-detected', handleInjectionBlocked);
+
+function handleInjectionBlocked(event) {
+  if (event.detail?.threatType !== 'injection') return;
+  const form = event.target.closest('secure-form');
+  if (!form || !DEMO_FORM_IDS.has(form.id)) return;
+  const responsePanel = document.getElementById(form.id + '-response');
+  if (!responsePanel) return;
+  const body = responsePanel.querySelector('.demo-response-body');
+  if (!body) return;
+  body.innerHTML =
+    `<div class="demo-response-status demo-response-status--error">` +
+    `Submission blocked \u2014 injection attempt detected` +
+    `</div>` +
+    `<p class="demo-response-placeholder" style="margin-top:0.75rem">` +
+    `The <code>secure-form</code> component blocked this submission client-side. ` +
+    `Clear the highlighted field to re-enable the form.` +
+    `</p>`;
+}
+
 async function handleDemoSubmit(event) {
   const form = event.target;
   const formId = form.id;
@@ -150,6 +173,19 @@ function showResponse(panel, data, httpStatus, telemetry = {}) {
     ? signals.map(s => `<span class="demo-resp-signal">${escH(s)}</span>`).join('')
     : `<span class="demo-resp-signal-none">no anomalies detected</span>`;
 
+  // detectedThreats (0.3.2+) — shown when non-injection threats were present
+  const threats = Array.isArray(telemetry.detectedThreats) ? telemetry.detectedThreats : [];
+  const threatsHtml = threats.length
+    ? `<div class="demo-resp-threats">` +
+        `<span class="demo-resp-threats-label">Threats:</span>` +
+        threats.map(t =>
+          `<span class="demo-resp-signal demo-resp-signal--threat">${escH(t.threatType)}` +
+          (t.fieldName ? ` on ${escH(t.fieldName)}` : '') +
+          `</span>`
+        ).join('') +
+      `</div>`
+    : '';
+
   body.innerHTML =
     `<div class="demo-resp-intel">` +
       `<div class="demo-resp-intel-row">` +
@@ -163,6 +199,7 @@ function showResponse(panel, data, httpStatus, telemetry = {}) {
         `<span class="demo-resp-verdict demo-resp-verdict--${escH(riskClass)}">${escH(verdict)}</span>` +
       `</div>` +
       `<div class="demo-resp-signals">${signalsHtml}</div>` +
+      threatsHtml +
     `</div>` +
     `<div class="demo-response-status ${escH(statusClass)}">` +
       `HTTP ${escH(String(httpStatus))} &mdash; ${escH(ok ? 'OK' : 'Error')}` +
@@ -199,6 +236,19 @@ function updateTelemetryPanel(telemetry, formId) {
   const signalsHtml = (telemetry.riskSignals ?? []).length
     ? telemetry.riskSignals.map(s => `<span class="demo-tel-signal">${escH(s)}</span>`).join('')
     : '<span class="demo-tel-none">none</span>';
+
+  // detectedThreats (0.3.2+)
+  const threats = Array.isArray(telemetry.detectedThreats) ? telemetry.detectedThreats : [];
+  const threatsSection = threats.length
+    ? `<div class="demo-tel-signals">` +
+        `<span class="demo-tel-signals-label">Threats:</span>` +
+        threats.map(t =>
+          `<span class="demo-tel-signal demo-tel-signal--threat">${escH(t.threatType)}` +
+          (t.fieldName ? ` \u00b7 ${escH(t.fieldName)}` : '') +
+          `</span>`
+        ).join('') +
+      `</div>`
+    : '';
 
   const fieldsHtml = (telemetry.fields ?? []).map(f => {
     const paste    = f.pasteDetected    ? '<span class="demo-tel-flag">paste</span>'    : '—';
@@ -241,6 +291,8 @@ function updateTelemetryPanel(telemetry, formId) {
       `<span class="demo-tel-signals-label">Signals:</span>` +
       signalsHtml +
     `</div>` +
+
+    threatsSection +
 
     `<div class="demo-tel-table-wrap">` +
       `<table class="demo-tel-table">` +
