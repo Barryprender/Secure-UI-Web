@@ -279,11 +279,16 @@ func DetectThreat(input string) ThreatLevel {
 	return ThreatHTMLInjection
 }
 
-// NoHTML adds a validation error if the field value contains any HTML markup.
+// NoHTML adds a validation error if the field value contains HTML markup.
+// Uses a targeted check for '<' rather than a round-trip through SanitizeHTML —
+// every HTML injection vector requires '<' to open a tag. Using SanitizeHTML
+// for comparison causes false positives on legitimate input (e.g. apostrophes
+// in names like "O'Brien" are encoded to &#39; by bluemonday, incorrectly
+// triggering the validator).
 // Use on plain-text fields (names, titles) where HTML is never valid input.
 // The error message is intentionally generic — it does not reveal detection logic.
 func (v *Validator) NoHTML(field, value, fieldName string) *Validator {
-	if SanitizeHTML(value) != value {
+	if strings.Contains(value, "<") {
 		v.result.AddError(field, fmt.Sprintf("%s contains invalid characters", fieldName))
 	}
 	return v
