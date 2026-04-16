@@ -199,9 +199,10 @@ func (h *Handlers) RegisterSubmit(w http.ResponseWriter, r *http.Request) {
 	v.Required("password", password, "Password").
 		MinLength("password", password, 8, "Password").
 		MaxLength("password", password, 72, "Password")
-	v.Required("confirm_password", confirmPassword, "Confirm Password")
-
-	if password != confirmPassword {
+	// confirm_password is only present on the no-JS path (native <noscript> inputs).
+	// When secure-password-confirm is active (JS enabled), only password is submitted
+	// and the component has already enforced match client-side.
+	if confirmPassword != "" && password != confirmPassword {
 		v.Result().AddError("confirm_password", "Passwords do not match")
 	}
 

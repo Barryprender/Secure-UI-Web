@@ -67,7 +67,8 @@ templ Registration(csrfToken string, fieldErrors map[string]string, threatMessag
 								<strong>Injection blocked:</strong> { threatMessage }
 							</div>
 						}
-						@components.SecureFormWrapper("POST", "/register", csrfToken, "critical", "registration-form") {
+						<form method="POST" action="/register" class="registration-form">
+							<input type="hidden" name="csrf_token" value={ csrfToken }/>
 							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.first_name"), "first_name", "text", "", "public", "", true, 1, 50)
 							if err, ok := fieldErrors["first_name"]; ok {
 								<p class="auth-field-error" role="alert">{ err }</p>
@@ -80,14 +81,31 @@ templ Registration(csrfToken string, fieldErrors map[string]string, threatMessag
 							if err, ok := fieldErrors["email"]; ok {
 								<p class="auth-field-error" role="alert">{ err }</p>
 							}
-							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.password"), "password", "password", "", "critical", "", true, 8, 0)
 							if err, ok := fieldErrors["password"]; ok {
 								<p class="auth-field-error" role="alert">{ err }</p>
 							}
-							@components.SecureInputFieldWithLength(i18n.T(ctx, "reg.confirm"), "confirm_password", "password", "", "critical", "", true, 8, 0)
 							if err, ok := fieldErrors["confirm_password"]; ok {
 								<p class="auth-field-error" role="alert">{ err }</p>
 							}
+							<!-- secure-password-confirm handles match validation, strength
+							     enforcement, show/hide toggle, and injection detection.
+							     Hidden input is created automatically (no secure-form ancestor). -->
+							<secure-password-confirm
+								name="password"
+								security-tier="critical"
+								required
+								min-length="8"
+								max-length="72"
+							></secure-password-confirm>
+							<!-- No-JS fallback: shown only when JavaScript is disabled.
+							     secure-password-confirm renders nothing without JS so
+							     these native inputs are the progressive-enhancement path. -->
+							<noscript>
+								<label for="reg-password-nojs">{ i18n.T(ctx, "reg.password") }</label>
+								<input id="reg-password-nojs" type="password" name="password" required minlength="8" maxlength="72"/>
+								<label for="reg-confirm-nojs">{ i18n.T(ctx, "reg.confirm") }</label>
+								<input id="reg-confirm-nojs" type="password" name="confirm_password" required minlength="8" maxlength="72"/>
+							</noscript>
 
 							<div class="terms-row">
 								<input
@@ -104,7 +122,7 @@ templ Registration(csrfToken string, fieldErrors map[string]string, threatMessag
 							<button type="submit" class="btn btn-primary w-full">
 									{ i18n.T(ctx, "reg.submit") }
 							</button>
-						}
+						</form>
 					</div>
 
 					<div class="auth-divider"></div>
