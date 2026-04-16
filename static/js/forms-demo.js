@@ -46,23 +46,36 @@ function handleInjectionBlocked(event) {
     `Clear the highlighted field, then reset the form to submit again.` +
     `</p>`;
 
-  // When the user edits the injected field, auto-reset the form entirely.
-  // This is the only way to clear data-state="blocked" and the threat
-  // accumulator (#o) from outside the component — form.reset() is the sole
-  // public API that does both. Accepting the UX tradeoff: all fields clear,
-  // but the form is fully unblocked and ready for a clean submission.
-  // form.reset() also zeroes the hidden CSRF input, so always refresh after.
+  // Clear only the field's external error when the user edits it.
+  // The form stays blocked (data-state="blocked") until submission is attempted.
   const field = event.target.closest('secure-input, secure-textarea');
   if (field) {
     field.addEventListener('secure-input-change', () => {
       field.clearExternalError?.();
-      form.reset();
-      refreshCSRFToken(form);
-      body.innerHTML = '<p class="demo-response-placeholder">Submit the form to see the live server response</p>';
     }, { once: true });
   }
 
-  // Explicit reset button as an alternative before editing the field.
+  // When the user submits while the form is still blocked, intercept the click,
+  // reset the threat accumulator via form.reset(), refresh the CSRF token, then
+  // re-trigger submission. secure-input shadow DOM values are NOT cleared by
+  // form.reset() — only native/hidden inputs reset — so field values survive
+  // intact and the re-triggered submission carries the correct data.
+  const submitBtn = form.querySelector('button[type="submit"]');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', async function onBlockedSubmit(e) {
+      if (form.dataset.state !== 'blocked') {
+        submitBtn.removeEventListener('click', onBlockedSubmit, { capture: true });
+        return;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      form.reset();
+      await refreshCSRFToken(form);
+      form.submit();
+    }, { capture: true });
+  }
+
+  // Explicit reset button — clears everything including field values.
   const resetBtn = document.createElement('button');
   resetBtn.type = 'button';
   resetBtn.className = 'demo-reset-form-btn';
