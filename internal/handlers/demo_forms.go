@@ -54,12 +54,12 @@ func (h *Handlers) DemoSubscribeHandler(w http.ResponseWriter, r *http.Request) 
 		return
 	}
 
-	name := validation.SanitizeHTML(demoJSONString(body["name"]))
+	name := validation.Sanitize(demoJSONString(body["name"]))
 	email := validation.Sanitize(demoJSONString(body["email"]))
 	plan := validation.Sanitize(demoJSONString(body["plan"]))
 
 	v := validation.New()
-	v.Required("name", name, "Name").MaxLength("name", name, 100, "Name")
+	v.Required("name", name, "Name").MaxLength("name", name, 100, "Name").NoHTML("name", name, "Name")
 	v.Required("email", email, "Email").Email("email", email, "Email")
 	v.Required("plan", plan, "Plan").OneOf("plan", plan, []string{"starter", "pro", "enterprise"}, "Plan")
 	if result := v.Result(); !result.IsValid() {
@@ -93,17 +93,17 @@ func (h *Handlers) DemoPaymentHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cardholderName := validation.SanitizeHTML(demoJSONString(body["cardholder_name"]))
-	billingAddress := validation.SanitizeHTML(demoJSONString(body["billing_address"]))
-	billingCity := validation.SanitizeHTML(demoJSONString(body["billing_city"]))
+	cardholderName := validation.Sanitize(demoJSONString(body["cardholder_name"]))
+	billingAddress := validation.Sanitize(demoJSONString(body["billing_address"]))
+	billingCity := validation.Sanitize(demoJSONString(body["billing_city"]))
 	billingPostcode := validation.Sanitize(demoJSONString(body["billing_postcode"]))
 	cardLast4 := validation.Sanitize(demoJSONString(body["card_last4"]))
 	cardType := validation.Sanitize(demoJSONString(body["card_type"]))
 
 	v := validation.New()
-	v.Required("cardholder_name", cardholderName, "Cardholder Name").MaxLength("cardholder_name", cardholderName, 100, "Cardholder Name")
-	v.Required("billing_address", billingAddress, "Billing Address")
-	v.Required("billing_city", billingCity, "City")
+	v.Required("cardholder_name", cardholderName, "Cardholder Name").MaxLength("cardholder_name", cardholderName, 100, "Cardholder Name").NoHTML("cardholder_name", cardholderName, "Cardholder Name")
+	v.Required("billing_address", billingAddress, "Billing Address").MaxLength("billing_address", billingAddress, 200, "Billing Address").NoHTML("billing_address", billingAddress, "Billing Address")
+	v.Required("billing_city", billingCity, "City").MaxLength("billing_city", billingCity, 100, "City").NoHTML("billing_city", billingCity, "City")
 	v.Required("billing_postcode", billingPostcode, "Postcode")
 	if result := v.Result(); !result.IsValid() {
 		writeValidationErrors(w, result.Errors)
