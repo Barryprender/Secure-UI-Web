@@ -757,8 +757,8 @@ func (h *Handlers) Register(
 				<dd class="faq-answer">For the majority of traffic, yes. Commodity bots — scrapers, credential stuffers, form spammers — are caught silently with no friction for real users. For sophisticated bots that mimic human behavior, use the risk score as a gate: serve CAPTCHA only when the score exceeds your threshold, typically 5–10% of requests. This eliminates the CAPTCHA burden for 90%+ of users while keeping a challenge in reserve for flagged sessions.</dd>
 			</div>
 			<div class="faq-item">
-				<dt class="faq-question">Is the signing key in the HTML attribute a security risk?</dt>
-				<dd class="faq-answer">Yes, if treated as a production secret. The <code>signing-key</code> attribute is a symmetric key visible in page source — it prevents casual forgery but not a motivated attacker who reads the HTML. For stronger integrity, rotate the key per-session: serve a short-lived key from a server endpoint, inject it via script, and validate server-side with a nonce check to block replay attacks.</dd>
+				<dt class="faq-question">How should I supply the signing key?</dt>
+				<dd class="faq-answer">Use <code>setSigningKey()</code> — the key is stored in a private JS field and never appears in the DOM, making it invisible to <code>getAttribute()</code>, devtools inspection, and XSS. The <code>signing-key</code> HTML attribute is supported for backward compatibility: if present, it is automatically migrated to the private field and removed from the DOM on mount. Even with the private field, the key lives in JS memory — a same-page XSS or compromised script can still read it from the heap. For stronger integrity, rotate the key per-session from a server nonce endpoint.</dd>
 			</div>
 			<div class="faq-item">
 				<dt class="faq-question">What risk score threshold should I use?</dt>
