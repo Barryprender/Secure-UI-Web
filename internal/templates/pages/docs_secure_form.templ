@@ -162,7 +162,7 @@ form.addEventListener('secure-form-success', (e) => {
 							<td><code>action</code></td>
 							<td>string</td>
 							<td>-</td>
-							<td>Form submission URL</td>
+							<td>Form submission URL. Cross-origin URLs and non-http(s) schemes (e.g. <code>javascript:</code>) are rejected — the component only submits to the same origin.</td>
 						</tr>
 						<tr>
 							<td><code>method</code></td>
@@ -206,6 +206,12 @@ form.addEventListener('secure-form-success', (e) => {
 							<td><code>"csrf_token"</code></td>
 							<td>Hidden input field name for CSRF token in native submit fallback</td>
 						</tr>
+						<tr>
+							<td><code>enctype</code></td>
+							<td>string</td>
+							<td>-</td>
+							<td>Form encoding type (native submit only)</td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -215,6 +221,11 @@ form.addEventListener('secure-form-success', (e) => {
 						<span class="docs-property-name">valid</span>
 						<span class="docs-property-type">boolean</span>
 						<span class="docs-property-description">Whether all child components pass validation (read-only)</span>
+					</div>
+					<div class="docs-property">
+						<span class="docs-property-name">securityTier</span>
+						<span class="docs-property-type">string</span>
+						<span class="docs-property-description">Active security tier (read-only after connection)</span>
 					</div>
 				</div>
 
@@ -230,6 +241,10 @@ form.addEventListener('secure-form-success', (e) => {
 				<div class="docs-method">
 					<div class="docs-method-signature">submit(): void</div>
 					<div class="docs-method-description">Programmatically submit the form</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
+					<div class="docs-method-description">Returns a copy of the form's internal audit log (capped at 1000 entries). Each entry includes event name, tier, ISO timestamp, and optional metadata. A <code>secure-audit</code> event is also dispatched on every audit call.</div>
 				</div>
 
 				<h3 class="docs-section-subtitle">Events</h3>
@@ -249,11 +264,93 @@ form.addEventListener('secure-form-success', (e) => {
 						</tr>
 						<tr>
 							<td><code>secure-form-success</code></td>
-							<td><code>{ ` formData, response, telemetry ` }</code></td>
-							<td>Fired after successful 2xx submission</td>
+							<td><code>{ ` status, ok, telemetry ` }</code></td>
+							<td>Fired after successful 2xx submission. <code>formData</code> and <code>response</code> are intentionally absent — field values must not propagate globally via a composed event. Read values from <code>form.getData()</code>; for full response control use <code>cancelSubmission()</code> in <code>secure-form-submit</code>.</td>
+						</tr>
+						<tr>
+							<td><code>secure-threat-detected</code></td>
+							<td><code>{ ` fieldName, threatType: 'csrf-token-absent', patternId, tier, timestamp ` }</code></td>
+							<td>Fired at submission on <code>sensitive</code> and <code>critical</code> tiers when a CSRF token is absent. A defence-in-depth signal — the request is also blocked server-side, but the event enables immediate client-side monitoring.</td>
 						</tr>
 					</tbody>
 				</table>
+			</section>
+
+			<section id="form-state" class="docs-section">
+				<h2 class="docs-section-title">Form State Feedback</h2>
+				<p class="docs-text"><code>&lt;secure-form&gt;</code> sets a <code>data-state</code> attribute on itself that you can target with CSS:</p>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>data-state</th>
+							<th>When set</th>
+							<th>Clears</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><code>blocked</code></td>
+							<td>Injection threat detected in any child field</td>
+							<td>On <code>reset()</code></td>
+						</tr>
+						<tr>
+							<td><code>success</code></td>
+							<td>Server returns 2xx</td>
+							<td>Automatically after 3 s</td>
+						</tr>
+						<tr>
+							<td><code>error</code></td>
+							<td>Server or network error</td>
+							<td>On next submission attempt</td>
+						</tr>
+					</tbody>
+				</table>
+				<p class="docs-text">Non-blocking telemetry signals (high velocity, paste-only entry, unfocused fill, etc.) surface as inline <code>warning</code> messages on the specific fields at submission — submission still proceeds. Override state styles by targeting <code>secure-form[data-state="blocked"] .secure-form</code> in CSS.</p>
+			</section>
+
+			<section id="risk-signals" class="docs-section">
+				<h2 class="docs-section-title">Risk Signals</h2>
+				<p class="docs-text">At submission, <code>&lt;secure-form&gt;</code> computes a risk score (0–100) from behavioral signals. Blocking signals prevent submission; all others annotate fields with inline warnings and appear in <code>telemetry.riskSignals</code>.</p>
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Signal</th>
+							<th>Condition</th>
+							<th>Score</th>
+							<th>Blocks</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr><td><code>injection_detected</code></td><td>Any field fired <code>secure-threat-detected</code> with <code>threatType: 'injection'</code></td><td>+40</td><td>Yes</td></tr>
+						<tr><td><code>session_too_fast</code></td><td>Submitted in under 3 s</td><td>+30</td><td>No</td></tr>
+						<tr><td><code>all_fields_pasted</code></td><td>All fields filled by paste with no keystrokes</td><td>+25</td><td>No</td></tr>
+						<tr><td><code>csrf_token_absent</code></td><td>CSRF token absent on sensitive/critical tier</td><td>+20</td><td>No</td></tr>
+						<tr><td><code>field_filled_without_focus</code></td><td>Any field has <code>focusCount = 0</code></td><td>+15</td><td>No</td></tr>
+						<tr><td><code>high_velocity_typing</code></td><td>Any field velocity &gt; 15 ks/s</td><td>+15</td><td>No</td></tr>
+						<tr><td><code>session_fast</code></td><td>Submitted in under 8 s</td><td>+10</td><td>No</td></tr>
+						<tr><td><code>form_probing</code></td><td>Field focused/blurred &gt; 1× with no input</td><td>+10</td><td>No</td></tr>
+						<tr><td><code>high_correction_count</code></td><td>Any field with &gt; 5 corrections</td><td>+5</td><td>No</td></tr>
+						<tr><td><code>autofill_detected</code></td><td>All fields autofilled (trust signal)</td><td>−10</td><td>No</td></tr>
+					</tbody>
+				</table>
+				<p class="docs-text"><code>SessionTelemetry</code> shape on the <code>telemetry</code> object:</p>
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">SessionTelemetry</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `interface SessionTelemetry {
+  sessionDuration: number;        // ms from form mount to submission
+  fieldCount: number;
+  fields: FieldTelemetrySnapshot[];
+  riskScore: number;              // 0–100
+  riskSignals: string[];
+  submittedAt: string;            // ISO 8601
+  detectedThreats?: ThreatDetectedDetail[];  // omitted when no threats
+}` }</code></pre>
+					</div>
+				</div>
 			</section>
 
 			<section id="examples" class="docs-section">
@@ -324,13 +421,16 @@ form.addEventListener('secure-form-submit', async (e) => {
   // Use this when you want to handle the request yourself.
   e.detail.cancelSubmission();
 
+  // Read field values from the element — formData is not in the event detail.
+  const data = form.getData();
+
   const response = await fetch(form.getAttribute('action'), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-CSRF-Token': form.getAttribute('csrf-token')
     },
-    body: JSON.stringify(e.detail.formData)
+    body: JSON.stringify(data)
   });
 
   if (response.ok) {
