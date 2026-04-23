@@ -314,6 +314,27 @@ templ Home(signingKey string) {
 				</div>
 			</div>
 		</div>
+		<div class="tel-security-model">
+			<p class="tel-security-model-heading">Security model</p>
+			<div class="tel-security-model-grid">
+				<p class="tel-security-model-item">
+					<strong>Tamper-evidence, not cryptographic proof</strong>
+					The HMAC key lives in client-side JS memory. Any same-page XSS or privileged script can read it from the heap and forge envelopes. Treat the signature as a deterrent against scripted attacks — rotate the key per-session from a server nonce endpoint for stronger guarantees.
+				</p>
+				<p class="tel-security-model-item">
+					<strong>All signals are heuristic</strong>
+					A determined attacker can spoof behavioral signals. The value is raising the cost of commodity automated attacks — not eliminating them. Always combine with server-side rate limiting and validation.
+				</p>
+				<p class="tel-security-model-item">
+					<strong>Prefer <code>setSigningKey()</code> over the HTML attribute</strong>
+					Supplying the key via <code>setSigningKey()</code> means it never appears in the DOM. The <code>signing-key</code> HTML attribute is supported for compatibility but is automatically removed from the DOM on mount. The derived <code>CryptoKey</code> is cached and cleared on disconnect.
+				</p>
+				<p class="tel-security-model-item">
+					<strong>Non-secure contexts</strong>
+					<code>SubtleCrypto</code> is unavailable on <code>http://</code> origins — the signature will be an empty string. Treat unsigned envelopes as lowest-trust submissions and enforce HTTPS in production.
+				</p>
+			</div>
+		</div>
 	</div>
 </section>
 
