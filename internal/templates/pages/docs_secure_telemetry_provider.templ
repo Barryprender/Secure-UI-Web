@@ -52,7 +52,7 @@ templ DocsSecureTelemetryProvider() {
 						<span class="docs-code-language">HTML</span>
 					</div>
 					<div class="docs-code-content">
-						<pre><code class="language-markup">{ `<secure-telemetry-provider signing-key="YOUR_SECRET">
+						<pre><code class="language-markup">{ `<secure-telemetry-provider id="provider">
   <secure-form action="/submit" method="POST"
     security-tier="sensitive">
     <secure-input type="email" label="Email"
@@ -61,7 +61,12 @@ templ DocsSecureTelemetryProvider() {
     </secure-input>
     <button type="submit">Submit</button>
   </secure-form>
-</secure-telemetry-provider>` }</code></pre>
+</secure-telemetry-provider>
+
+<script type="module">
+  // Inject the key via JS — never as an HTML attribute in production.
+  document.getElementById('provider').setSigningKey('YOUR_SECRET');
+</script>` }</code></pre>
 					</div>
 				</div>
 			</section>
@@ -126,11 +131,25 @@ templ DocsSecureTelemetryProvider() {
 			<section id="signing" class="docs-section">
 				<h2 class="docs-section-title">Signing</h2>
 				<p class="docs-text">
-					When a <code>signing-key</code> attribute is provided, signals are signed with
-					HMAC-SHA-256 via the Web Crypto API (<code>SubtleCrypto</code>).
-					In non-secure contexts (<code>http://</code>), <code>SubtleCrypto</code> is unavailable
-					and the signature will be an empty string — treat such envelopes with reduced trust.
+					When a signing key is provided, signals are signed with HMAC-SHA-256 via the Web Crypto API
+					(<code>SubtleCrypto</code>). Supply the key via <code>setSigningKey()</code> — the key is stored
+					in a private JS field and is never readable from the DOM. The <code>signing-key</code> HTML attribute
+					is supported for backward compatibility: it is automatically migrated to the private field and
+					removed from the DOM on <code>connectedCallback</code>.
 				</p>
+				<p class="docs-text">
+					In non-secure contexts (<code>http://</code>), <code>SubtleCrypto</code> is unavailable
+					and the signature will be an empty string — treat such envelopes as lowest-trust submissions.
+				</p>
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Tamper-evidence, not cryptographic proof</div>
+					<div class="docs-callout-text">
+						The signing key lives in client-side JS memory. Any same-page XSS, compromised browser extension,
+						or privileged script can read the key from the heap and forge envelopes. Treat the signature as a
+						low-effort-forgery deterrent and the signals as heuristic inputs to a server-side risk model — not
+						as ground truth. For stronger guarantees, rotate the key per-session via a server nonce endpoint.
+					</div>
+				</div>
 
 				<div class="docs-code-block">
 					<div class="docs-code-header">
@@ -172,12 +191,16 @@ templ DocsSecureTelemetryProvider() {
 							<td><code>signing-key</code></td>
 							<td>string</td>
 							<td>-</td>
-							<td>HMAC-SHA-256 symmetric key. Must match the server-side verification key.</td>
+							<td>Backward-compatible HTML attribute. On mount, the value is migrated to a private JS field and the attribute is removed from the DOM. Prefer the <code>setSigningKey()</code> method for production use — the key never appears in the DOM at all.</td>
 						</tr>
 					</tbody>
 				</table>
 
 				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">setSigningKey(key: string): void</div>
+					<div class="docs-method-description">Supplies the HMAC-SHA-256 signing key programmatically. The key is stored in a private JS field only — it never appears in the DOM. Prefer this over the <code>signing-key</code> HTML attribute in production. The cached <code>CryptoKey</code> is invalidated when the key value changes.</div>
+				</div>
 				<div class="docs-method">
 					<div class="docs-method-signature">collectSignals(): EnvironmentalSignals</div>
 					<div class="docs-method-description">Returns a point-in-time snapshot of all environmental signals</div>
