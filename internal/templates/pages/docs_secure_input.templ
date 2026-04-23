@@ -600,7 +600,7 @@ if !v.Result().IsValid() {
 							<td><code>pattern</code></td>
 							<td>string</td>
 							<td>-</td>
-							<td>Regex pattern for validation</td>
+							<td>Regex validation pattern. Patterns longer than 200 characters are not compiled client-side (ReDoS mitigation) — browser native validation applies instead.</td>
 						</tr>
 						<tr>
 							<td><code>threat-feedback</code></td>
@@ -641,7 +641,19 @@ if !v.Result().IsValid() {
 				</div>
 				<div class="docs-method">
 					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
-					<div class="docs-method-description">Returns array of audit log entries for this component</div>
+					<div class="docs-method-description">Returns the component's audit log entries</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getFieldTelemetry(): FieldTelemetry</div>
+					<div class="docs-method-description">Returns behavioral signals for this field: dwell time, typing velocity, correction count, paste/autofill detection, and focus metrics</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">reportError(message: string, variant?: 'error' | 'warning'): void</div>
+					<div class="docs-method-description">Display an external error or warning message on this field (e.g. from a server validation response). Default variant is <code>'error'</code>.</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">clearExternalError(): void</div>
+					<div class="docs-method-description">Clear a message previously set by <code>reportError()</code></div>
 				</div>
 
 				<h3 class="docs-section-subtitle">Events</h3>
@@ -655,9 +667,14 @@ if !v.Result().IsValid() {
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>secure-input</code></td>
-							<td><code>{ `{ name, value, masked, tier }` }</code></td>
-							<td>Fired on every input change</td>
+							<td><code>secure-input-change</code></td>
+							<td><code>{ `{ name, masked, tier }` }</code></td>
+							<td>Fired on every input change. <code>value</code> is intentionally absent — read <code>(e.target as SecureInput).value</code> directly.</td>
+						</tr>
+						<tr>
+							<td><code>secure-audit</code></td>
+							<td><code>{ `{ event, tier, timestamp, data? }` }</code></td>
+							<td>Fired on every audit entry — validation, focus events, and submission signals</td>
 						</tr>
 						<tr>
 							<td><code>secure-threat-detected</code></td>
@@ -721,7 +738,8 @@ console.log('Email is valid');
 
 // Listen for changes
 emailInput.addEventListener('secure-input-change', (e) => {
-console.log('New value:', e.detail.value);
+// value is not in e.detail — read it from the element directly
+console.log('New value:', e.target.value);
 console.log('Security tier:', e.detail.tier);
 });
 
