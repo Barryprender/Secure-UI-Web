@@ -267,17 +267,17 @@ console.log(envelope.signature);` }</code></pre>
 			<!-- Signing key notes -->
 			<section class="security-section">
 				<h2 class="security-section-title">Signing key lifecycle</h2>
-				<p class="security-callout">The <code>signing-key</code> is a symmetric HMAC-SHA-256 secret. It must also be known server-side to verify the signature — never send it to the client in a way visible to third-party scripts.</p>
+				<p class="security-callout">The signing key is a symmetric HMAC-SHA-256 secret stored in a private JS field — never in the DOM. It must also be known server-side to verify the signature. Use <code>setSigningKey()</code> to supply it; the key is never readable via <code>getAttribute()</code>, devtools, or XSS.</p>
 				<div class="security-telemetry-panel security-telemetry-panel--top">
 					<div class="security-telemetry-header">
 						<span class="security-telemetry-title">Cached CryptoKey</span>
 						<span class="security-telemetry-badge">Imported once per key value</span>
 					</div>
 					<p class="panel-body-text">
-						The <code>CryptoKey</code> derived from the <code>signing-key</code> attribute is imported once and cached for the lifetime of the component. It is re-imported only when the attribute value changes, and cleared on <code>disconnectedCallback</code>. This avoids the cost of a <code>SubtleCrypto.importKey()</code> call on every form submission.
+						The <code>CryptoKey</code> derived from the signing key is imported once and cached for the lifetime of the component. It is re-imported only when the key value changes via <code>setSigningKey()</code>, and cleared on <code>disconnectedCallback</code>. This avoids the cost of a <code>SubtleCrypto.importKey()</code> call on every form submission.
 					</p>
 					<p class="panel-body-text--last">
-						Rotate the key by issuing a new value from your server (e.g. a per-session nonce endpoint). The component detects the change via <code>attributeChangedCallback</code> and invalidates the cache before the next <code>sign()</code> call.
+						Rotate the key by fetching a fresh value from a per-session server endpoint and calling <code>setSigningKey(newKey)</code>. The cached <code>CryptoKey</code> is invalidated before the next <code>sign()</code> call. The <code>signing-key</code> HTML attribute is supported for backward compatibility: if present, it is automatically migrated to the private field and removed from the DOM on <code>connectedCallback</code>.
 					</p>
 				</div>
 			</section>
