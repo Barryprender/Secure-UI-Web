@@ -260,6 +260,32 @@ templ DocsSecureTextarea() {
 					</div>
 				</div>
 
+				<h3 class="docs-section-subtitle">Methods</h3>
+				<div class="docs-method">
+					<div class="docs-method-signature">focus(): void</div>
+					<div class="docs-method-description">Focus the textarea element</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">blur(): void</div>
+					<div class="docs-method-description">Remove focus from the textarea element</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
+					<div class="docs-method-description">Returns the component's audit log entries</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getFieldTelemetry(): FieldTelemetry</div>
+					<div class="docs-method-description">Returns behavioral signals: dwell, velocity, corrections, paste/autofill detection, focus metrics</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">reportError(message: string, variant?: 'error' | 'warning'): void</div>
+					<div class="docs-method-description">Display an external validation message on this field. Default variant is <code>'error'</code>.</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">clearExternalError(): void</div>
+					<div class="docs-method-description">Clear a message previously set by <code>reportError()</code></div>
+				</div>
+
 				<h3 class="docs-section-subtitle">Events</h3>
 				<table class="docs-api-table">
 					<thead>
@@ -271,9 +297,14 @@ templ DocsSecureTextarea() {
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>secure-textarea</code></td>
+							<td><code>secure-textarea-change</code></td>
 							<td><code>{ `{ name, value, tier }` }</code></td>
 							<td>Fired on every content change</td>
+						</tr>
+						<tr>
+							<td><code>secure-audit</code></td>
+							<td><code>{ `{ event, tier, timestamp, data? }` }</code></td>
+							<td>Fired on every audit entry</td>
 						</tr>
 						<tr>
 							<td><code>secure-threat-detected</code></td>
