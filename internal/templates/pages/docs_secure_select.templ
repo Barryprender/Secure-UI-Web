@@ -391,6 +391,18 @@ for (const { code, name } of countries) {
 					<div class="docs-method-signature">getAuditLog(): AuditLogEntry[]</div>
 					<div class="docs-method-description">Returns all audit entries including blocked injection attempts</div>
 				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">getFieldTelemetry(): FieldTelemetry</div>
+					<div class="docs-method-description">Returns behavioral signals for this field</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">reportError(message: string, variant?: 'error' | 'warning'): void</div>
+					<div class="docs-method-description">Display an external validation message on this field. Default variant is <code>'error'</code>.</div>
+				</div>
+				<div class="docs-method">
+					<div class="docs-method-signature">clearExternalError(): void</div>
+					<div class="docs-method-description">Clear a message previously set by <code>reportError()</code></div>
+				</div>
 
 				<h3 class="docs-section-subtitle">Events</h3>
 				<table class="docs-api-table">
@@ -403,9 +415,14 @@ for (const { code, name } of countries) {
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>secure-select</code></td>
+							<td><code>secure-select-change</code></td>
 							<td><code>{ `{ name, value, tier }` }</code></td>
-							<td>Fired on valid selection change. Not fired when an injection attempt is blocked.</td>
+							<td>Fired on valid selection change. <code>value</code> is a string array for multi-select, a string for single-select. Not fired when an injection attempt is blocked.</td>
+						</tr>
+						<tr>
+							<td><code>secure-audit</code></td>
+							<td><code>{ `{ event, tier, timestamp, data? }` }</code></td>
+							<td>Fired on every audit entry</td>
 						</tr>
 					</tbody>
 				</table>
