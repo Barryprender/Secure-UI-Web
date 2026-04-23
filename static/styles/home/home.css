@@ -1803,6 +1803,72 @@ a.framework-demo-card:hover {
 }
 
 /* ============================================
+   TELEMETRY SECURITY MODEL CALLOUT
+   ============================================ */
+
+.tel-security-model {
+    margin-block-start: var(--space-xl);
+    padding: var(--space-md) var(--space-lg);
+    border: 1px solid var(--border-subtle);
+    border-block-start: 2px solid #f59e0b;
+    border-radius: var(--radius-lg);
+    background: color-mix(in oklch, var(--bg-secondary) 60%, transparent);
+}
+
+.tel-security-model-heading {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #f59e0b;
+    margin-block-end: var(--space-sm);
+}
+
+.tel-security-model-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-sm) var(--space-xl);
+}
+
+.tel-security-model-item {
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--text-secondary);
+}
+
+.tel-security-model-item strong {
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-block-end: 0.2rem;
+}
+
+.tel-security-model-item code {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--accent-primary);
+    background: color-mix(in oklch, var(--accent-primary) 10%, transparent);
+    padding: 0.1em 0.35em;
+    border-radius: var(--radius-sm);
+}
+
+@media (max-width: 700px) {
+    .tel-security-model-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .tel-security-model {
+        border-block-start-color: #b45309;
+    }
+    .tel-security-model-heading {
+        color: #b45309;
+    }
+}
+
+/* ============================================
    THEMING SECTION
    ============================================ */
 
