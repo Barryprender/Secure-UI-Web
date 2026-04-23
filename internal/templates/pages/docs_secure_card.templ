@@ -95,8 +95,8 @@ templ DocsSecureCard() {
     name,        // field name attribute
     cardType,    // 'visa' | 'mastercard' | 'amex' | ...
     last4,       // last 4 digits (safe to log)
-    expiryMonth, // 'MM'
-    expiryYear,  // 'YY'
+    expiryMonth, // number 1–12
+    expiryYear,  // number, 4-digit (e.g. 2027)
     cardholderName,
     valid,       // all fields pass validation
     tier,        // always 'critical'
@@ -201,7 +201,7 @@ templ DocsSecureCard() {
 				<h3 class="docs-section-subtitle">Methods</h3>
 				<div class="docs-method">
 					<div class="docs-method-signature">getCardData(): &#123; number, expiry, cvc, name &#125; | null</div>
-					<div class="docs-method-description">Returns raw card data for tokenization via a payment SDK. Returns null if the form is not valid. Use only to pass data to a client-side tokenizer — never send raw card data to your own server.</div>
+					<div class="docs-method-description">Returns raw PAN, expiry, CVC, and cardholder name for immediate handoff to a payment SDK tokenizer. Returns null if validation has not passed. Never transmit raw card data to your own server. This method is a public JS API — any script on the page with a reference to this element can call it. You must enforce a strict Content Security Policy on any page rendering this component to prevent third-party scripts from exfiltrating card data. Call once, pass to the SDK immediately, do not store the return value.</div>
 				</div>
 				<div class="docs-method">
 					<div class="docs-method-signature">reset(): void</div>
@@ -228,7 +228,7 @@ templ DocsSecureCard() {
 					<tbody>
 						<tr>
 							<td><code>secure-card</code></td>
-							<td><pre><code class="language-js">{` name, cardType, last4, expiryMonth, expiryYear, cardholderName, valid, tier `}</code></pre></td>
+							<td><pre><code class="language-js">{` name, cardType, last4, expiryMonth (number 1–12), expiryYear (number, 4-digit), cardholderName, valid, tier `}</code></pre></td>
 							<td>Fired on any field change. Full PAN and CVC intentionally absent.</td>
 						</tr>
 					</tbody>
