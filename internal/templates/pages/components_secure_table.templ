@@ -742,7 +742,7 @@ const columns = [
 onMounted(async () => {
   await import('/components/secure-table/secure-table.js');
   tableEl.value.columns = columns;
-  tableEl.value.data = props.rows;
+  tableEl.value.data    = props.rows;
 });
 
 watch(() => props.rows, (rows) => {
