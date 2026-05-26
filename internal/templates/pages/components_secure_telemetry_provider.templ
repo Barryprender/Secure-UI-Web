@@ -583,18 +583,12 @@ func Score(env EnvironmentalSignals) int {
     });
 
     provider.addEventListener('secure-form-success', async (e) => {
-      const formData = e.detail?.formData ?? {};
-      let responseData = null;
-      try {
-        const clone = e.detail?.response?.clone?.();
-        if (clone) responseData = await clone.json();
-      } catch {}
       const snapshot = heroPending ?? {};
       heroPending = null;
       const { telemetry, signals, envelope } = snapshot;
       if (!telemetry || !signals) return;
       const envScore = computeEnvScore(signals);
-      bodyEl.innerHTML = buildPanel(telemetry, signals, envelope, envScore, formData, responseData);
+      bodyEl.innerHTML = buildPanel(telemetry, signals, envelope, envScore);
     });
   }
 
@@ -621,18 +615,12 @@ func Score(env EnvironmentalSignals) int {
     });
 
     cardProvider.addEventListener('secure-form-success', async (e) => {
-      const formData = e.detail?.formData ?? {};
-      let responseData = null;
-      try {
-        const clone = e.detail?.response?.clone?.();
-        if (clone) responseData = await clone.json();
-      } catch {}
       const snapshot = pending ?? {};
       pending = null;
       const { telemetry, signals, envelope } = snapshot;
       if (!telemetry || !signals) return;
       const envScore = computeEnvScore(signals);
-      cardBody.innerHTML = buildPanel(telemetry, signals, envelope, envScore, formData, responseData);
+      cardBody.innerHTML = buildPanel(telemetry, signals, envelope, envScore);
     });
   }
 
@@ -669,22 +657,12 @@ func Score(env EnvironmentalSignals) int {
     return n < 0 ? 'none before submit' : n + '\u202fms';
   }
 
-  function buildPanel(telemetry, env, envelope, envScore, formData, responseData) {
+  function buildPanel(telemetry, env, envelope, envScore) {
     const formScore = telemetry.riskScore ?? 0;
     const totalScore = Math.min(100, formScore + envScore);
     const verdictLabel = totalScore <= 30 ? 'ALLOW' : totalScore <= 60 ? 'REVIEW' : 'BLOCK';
 
     const obj = {};
-
-    // Captured form data
-    if (formData && Object.keys(formData).length) {
-      obj.capturedData = Object.fromEntries(
-        Object.entries(formData).filter(([, v]) => v !== '' && v != null)
-      );
-    }
-    if (responseData) {
-      obj.serverResponse = responseData;
-    }
 
     // Risk summary
     obj.risk = {
