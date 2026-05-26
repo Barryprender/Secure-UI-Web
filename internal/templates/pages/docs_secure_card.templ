@@ -97,12 +97,12 @@ templ DocsSecureCard() {
     last4,       // last 4 digits (safe to log)
     expiryMonth, // number 1–12
     expiryYear,  // number, 4-digit (e.g. 2027)
-    cardholderName,
     valid,       // all fields pass validation
     tier,        // always 'critical'
   } = e.detail;
 
-  // full PAN and CVC intentionally absent
+  // full PAN, CVC, and cardholderName intentionally absent
+  // use getCardData() to retrieve raw values for SDK tokenisation
 });` }</code></pre>
 					</div>
 				</div>
@@ -228,7 +228,7 @@ templ DocsSecureCard() {
 					<tbody>
 						<tr>
 							<td><code>secure-card</code></td>
-							<td><pre><code class="language-js">{` name, cardType, last4, expiryMonth (number 1–12), expiryYear (number, 4-digit), cardholderName, valid, tier `}</code></pre></td>
+							<td><pre><code class="language-js">{` name, cardType, last4, expiryMonth (number 1–12), expiryYear (number, 4-digit), valid, tier `}</code></pre></td>
 							<td>Fired on any field change. Full PAN and CVC intentionally absent.</td>
 						</tr>
 					</tbody>
