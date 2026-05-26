@@ -298,8 +298,8 @@ templ DocsSecureTextarea() {
 					<tbody>
 						<tr>
 							<td><code>secure-textarea-change</code></td>
-							<td><code>{ `{ name, value, tier }` }</code></td>
-							<td>Fired on every content change</td>
+							<td><code>{ `{ name, tier }` }</code></td>
+							<td>Fired on every content change. <code>value</code> is intentionally absent — read <code>(e.target as SecureTextarea).value</code> directly.</td>
 						</tr>
 						<tr>
 							<td><code>secure-audit</code></td>
