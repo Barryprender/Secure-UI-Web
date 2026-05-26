@@ -877,7 +877,6 @@ func (h *Handlers) Register(
 
       const tp = document.getElementById('home-tp');
       const tel = e.detail?.telemetry ?? {};
-      const raw = e.detail?.formData ?? {};
 
       const envSignals = tp ? tp.collectSignals() : null;
       let envelope = null;
@@ -888,16 +887,7 @@ func (h *Handlers) Register(
       const riskScore = tel.riskScore ?? 0;
       const verdict = riskScore <= 30 ? 'ALLOW' : riskScore <= 60 ? 'REVIEW' : 'BLOCK';
 
-      // Mask password values
-      const capturedData = Object.fromEntries(
-        Object.entries(raw).map(([k, v]) =>
-          [k, k === 'password' ? '\u2022'.repeat(Math.min(String(v).length, 10)) : v]
-        )
-      );
-
       const obj = {};
-
-      if (Object.keys(capturedData).length) obj.capturedData = capturedData;
 
       obj.risk = {
         score:   riskScore,
