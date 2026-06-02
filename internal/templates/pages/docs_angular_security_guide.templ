@@ -3,7 +3,7 @@ package pages
 import "secure-ui-showcase-go/internal/templates"
 
 templ DocsAngularSecurityGuide() {
-	@templates.Layout("Angular Security Development Guideline — OWASP A01–A10", "A practical Angular security guideline mapping OWASP A01–A10 controls to Angular-specific enforcement rules, ESLint configuration, CI gates, and supply chain hardening.", true, []string{"/static/styles/documentation/documentation.min.css"}) {
+	@templates.Layout("Angular Security Development Guideline — OWASP A01–A10", "OWASP A01–A10 mapped to Angular controls. Covers CSP, Trusted Types, bypassSecurityTrust* policy, supply chain hardening, HTTP interceptors, and route guard security for enterprise Angular teams.", true, []string{"/static/styles/documentation/documentation.min.css"}) {
 		@templates.DocsPageJsonLDScript("Angular Security Development Guideline", "OWASP A01–A10 mapped to Angular-specific controls with enforceable linting rules, CI gates, and supply chain hardening for enterprise Angular teams.")
 		<div class="docs-container">
 			<nav class="docs-breadcrumb">
@@ -447,7 +447,10 @@ audit-level=moderate` }</code></pre>
 					it ships lifecycle-script blocking and release cooldown enforcement as opt-in defaults —
 					making it the first major package manager to operationalize supply chain defence at
 					install time. Angular teams should evaluate pnpm as the default package manager
-					{ "for" } new projects.
+					{ "for" } new projects. Migration cost is low but non-zero: validate
+					<code>ng build</code> and <code>ng serve</code> compatibility, update CI install
+					scripts to <code>pnpm install --frozen-lockfile</code>, and confirm that any
+					Angular CLI schematics resolve correctly under pnpm's stricter hoisting rules.
 				</p>
 
 				<div class="docs-code-block">
@@ -576,6 +579,11 @@ strict-peer-dependencies=true` }</code></pre>
 							<td>No</td>
 							<td>Signing operations must occur server-side only.</td>
 						</tr>
+						<tr>
+							<td>Database connection strings</td>
+							<td>No</td>
+							<td>More common than expected in Angular monorepos where backend config leaks into shared environment files. Any value that reaches the frontend bundle is public.</td>
+						</tr>
 					</tbody>
 				</table>
 
@@ -628,23 +636,33 @@ export class GeocodeService {
 					</div>
 					<div class="docs-code-content">
 						<pre><code class="language-typescript">{ `import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { catchError, throwError } from 'rxjs';
 import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 
-const ALLOWED_ORIGINS: ReadonlySet<string> = new Set([
-  window.location.origin,
+// Provide this token in app.config.ts so the allowlist works in both
+// browser and SSR environments (window is not available server-side).
+export const APP_ORIGIN = new InjectionToken<string>('APP_ORIGIN');
+
+const EXTRA_ALLOWED_ORIGINS: ReadonlySet<string> = new Set([
   'https://api.example.com',
 ]);
 
 export const securityInterceptor: HttpInterceptorFn = (req, next) => {
   const auth = inject(AuthService);
   const router = inject(Router);
+  const platformId = inject(PLATFORM_ID);
+  // APP_ORIGIN must be provided; fallback to empty string suppresses
+  // window access in SSR and causes all non-relative URLs to be blocked.
+  const appOrigin = inject(APP_ORIGIN, { optional: true }) ?? '';
+  const allowed = new Set([appOrigin, ...EXTRA_ALLOWED_ORIGINS]);
 
   try {
-    const url = new URL(req.url, window.location.origin);
-    if (!ALLOWED_ORIGINS.has(url.origin)) {
+    const base = isPlatformBrowser(platformId) ? window.location.origin : appOrigin;
+    const url = new URL(req.url, base);
+    if (!allowed.has(url.origin)) {
       return throwError(() => new Error('Request to disallowed origin: ' + url.origin));
     }
   } catch {
@@ -678,10 +696,13 @@ export const securityInterceptor: HttpInterceptorFn = (req, next) => {
 					</div>
 					<div class="docs-code-content">
 						<pre><code class="language-typescript">{ `import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { securityInterceptor } from './security.interceptor';
+import { securityInterceptor, APP_ORIGIN } from './security.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    // Provide the app's own origin so the interceptor works in SSR
+    // (window.location is not available server-side).
+    { provide: APP_ORIGIN, useValue: 'https://app.example.com' },
     provideHttpClient(withInterceptors([securityInterceptor])),
   ],
 };` }</code></pre>
