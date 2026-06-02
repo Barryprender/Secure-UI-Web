@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strings"
 
+	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/templates/pages"
 )
 
@@ -47,7 +48,8 @@ func (h *Handlers) Documentation(w http.ResponseWriter, r *http.Request) {
 	case "secure-password-confirm":
 		pages.DocsSecurePasswordConfirm().Render(r.Context(), w)
 	case "angular-security-guide":
-		pages.DocsAngularSecurityGuide().Render(r.Context(), w)
+		ctx := middleware.WithPageKeywords(r.Context(), "angular security owasp, angular csp trusted types, angular supply chain security, angular eslint security rules, bypassSecurityTrust, angular interceptor security, angular security guide, owasp a01 a10 angular")
+		pages.DocsAngularSecurityGuide().Render(ctx, w)
 	default:
 		http.NotFound(w, r)
 	}
