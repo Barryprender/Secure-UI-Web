@@ -94,6 +94,7 @@ npm install secure-ui-components
 ## Documentation
 
 - [Documentation Index](%[1]s/documentation): Full API reference for all components — attributes, events, methods, CSS custom properties.
+- [Angular Security Development Guideline](%[1]s/documentation/angular-security-guide): OWASP A01–A10 mapped to Angular-specific controls with enforceable ESLint rules, CI gates, CSP/Trusted Types configuration, bypassSecurityTrust* policy, supply chain hardening, and HTTP interceptor security patterns.
 - [Theming Guide](%[1]s/theming): CSS custom property system and five built-in theme presets. Override at :root, per-component, or per-instance.
 - [Telemetry Guide](%[1]s/telemetry): How behavioral intelligence works — signals captured, risk scoring algorithm, HMAC signing, and privacy guarantees.
 
@@ -128,7 +129,7 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 	// Use a stable date tied to the last known content update.
 	// Avoid time.Now() — dynamic lastmod signals to crawlers that
 	// content changes daily even when it doesn't, wasting crawl budget.
-	lastmod := "2026-04-08"
+	lastmod := "2026-06-02"
 
 	entries := []sitemapEntry{
 		{"/", "1.0", "weekly"},
@@ -161,6 +162,7 @@ func (h *Handlers) Sitemap(w http.ResponseWriter, r *http.Request) {
 		{"/documentation/secure-card", "0.8", "weekly"},
 		{"/documentation/secure-telemetry-provider", "0.8", "weekly"},
 		{"/documentation/secure-password-confirm", "0.8", "weekly"},
+		{"/documentation/angular-security-guide", "0.8", "monthly"},
 	}
 
 	w.Header().Set("Content-Type", "application/xml; charset=utf-8")
