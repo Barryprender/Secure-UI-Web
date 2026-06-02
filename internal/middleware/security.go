@@ -122,6 +122,9 @@ type siteBaseURLKey struct{}
 // canonicalURLKey is a private type for the canonical page URL context key.
 type canonicalURLKey struct{}
 
+// pageKeywordsKey is a private type for per-page keyword overrides.
+type pageKeywordsKey struct{}
+
 // SiteBaseURLFromContext extracts the site base URL (scheme://host) from the request context.
 func SiteBaseURLFromContext(ctx context.Context) string {
 	if u, ok := ctx.Value(siteBaseURLKey{}).(string); ok {
@@ -134,6 +137,20 @@ func SiteBaseURLFromContext(ctx context.Context) string {
 func CanonicalURLFromContext(ctx context.Context) string {
 	if u, ok := ctx.Value(canonicalURLKey{}).(string); ok {
 		return u
+	}
+	return ""
+}
+
+// WithPageKeywords returns a new context carrying page-specific keyword overrides.
+// When set, the Head template uses these keywords instead of the global default.
+func WithPageKeywords(ctx context.Context, keywords string) context.Context {
+	return context.WithValue(ctx, pageKeywordsKey{}, keywords)
+}
+
+// PageKeywordsFromContext returns per-page keywords if set, otherwise empty string.
+func PageKeywordsFromContext(ctx context.Context) string {
+	if k, ok := ctx.Value(pageKeywordsKey{}).(string); ok {
+		return k
 	}
 	return ""
 }
