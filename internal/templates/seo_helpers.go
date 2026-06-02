@@ -118,6 +118,7 @@ func DocsIndexJsonLD(siteURL, canonicalURL string) string {
 			{"@type": "TechArticle", "name": "secure-card", "url": siteURL + "/documentation/secure-card"},
 			{"@type": "TechArticle", "name": "secure-telemetry-provider", "url": siteURL + "/documentation/secure-telemetry-provider"},
 			{"@type": "TechArticle", "name": "secure-password-confirm", "url": siteURL + "/documentation/secure-password-confirm"},
+			{"@type": "TechArticle", "name": "Angular Security Development Guideline", "url": siteURL + "/documentation/angular-security-guide"},
 		},
 	}
 	b, err := json.Marshal(data)
