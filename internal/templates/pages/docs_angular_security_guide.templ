@@ -1,0 +1,820 @@
+package pages
+
+import "secure-ui-showcase-go/internal/templates"
+
+templ DocsAngularSecurityGuide() {
+	@templates.Layout("Angular Security Development Guideline — OWASP A01–A10", "A practical Angular security guideline mapping OWASP A01–A10 controls to Angular-specific enforcement rules, ESLint configuration, CI gates, and supply chain hardening.", true, []string{"/static/styles/documentation/documentation.min.css"}) {
+		@templates.DocsPageJsonLDScript("Angular Security Development Guideline", "OWASP A01–A10 mapped to Angular-specific controls with enforceable linting rules, CI gates, and supply chain hardening for enterprise Angular teams.")
+		<div class="docs-container">
+			<nav class="docs-breadcrumb">
+				<a href="/documentation">Documentation</a>
+				<span class="docs-breadcrumb-separator">/</span>
+				<span class="docs-breadcrumb-current">Angular Security Guide</span>
+			</nav>
+
+			<header class="docs-component-header">
+				<div class="docs-component-icon">
+					<svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+						<path d="M12 2L3 6v6c0 5.25 3.75 10.15 9 11.25C17.25 22.15 21 17.25 21 12V6L12 2z" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"></path>
+						<path d="M8.5 12.5l2.5 2.5 4.5-4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+					</svg>
+				</div>
+				<div class="docs-component-info">
+					<h1 class="docs-component-name">Angular Security Development Guideline</h1>
+					<p class="docs-component-description">
+						OWASP A01–A10 mapped to Angular-specific controls with enforceable linting rules,
+						CI gates, and supply chain hardening. Written for enterprise Angular teams building
+						production applications.
+					</p>
+				</div>
+			</header>
+
+			<nav class="docs-toc">
+				<div class="docs-toc-title">On this page</div>
+				<ul class="docs-toc-list">
+					<li><a href="#built-in-protections">Angular's Built-In Protections</a></li>
+					<li><a href="#owasp-mapping">OWASP A01–A10 Mapping</a></li>
+					<li><a href="#csp-trusted-types">CSP and Trusted Types</a></li>
+					<li><a href="#bypass-security-trust">bypassSecurityTrust* Policy</a></li>
+					<li><a href="#direct-dom-access">Direct DOM Access</a></li>
+					<li><a href="#supply-chain">Supply Chain Security</a></li>
+					<li><a href="#version-currency">Angular Version Currency</a></li>
+					<li><a href="#secrets">Secrets and Environment Files</a></li>
+					<li><a href="#http-interceptors">HTTP Interceptors as Security Layer</a></li>
+					<li><a href="#route-guards">Route Guards vs. Server-Side Authorization</a></li>
+					<li><a href="#references">References</a></li>
+				</ul>
+			</nav>
+
+			<section id="built-in-protections" class="docs-section">
+				<h2 class="docs-section-title">Angular's Built-In Protections</h2>
+				<p class="docs-text">
+					Angular establishes a security floor that covers the most common DOM-based attack vectors.
+					Understanding what the framework provides — and where it stops — is the starting point
+					{ "for" } any team security guideline.
+				</p>
+
+				<div class="docs-callout docs-callout--success">
+					<div class="docs-callout-title">What Angular covers by default</div>
+					<div class="docs-callout-text">
+						<strong>Template sanitization:</strong> Angular treats all binding values as untrusted
+						and sanitizes HTML, style, and URL contexts before DOM insertion. Resource URLs
+						(<code>src</code> on scripts and objects) cannot be sanitized and are blocked unless
+						explicitly trusted via <code>DomSanitizer</code>.<br/><br/>
+						<strong>AOT compilation:</strong> The Ahead-of-Time compiler eliminates template
+						injection at build time. Dynamic template strings cannot carry injected executable
+						code.<br/><br/>
+						<strong>CSRF:</strong> <code>HttpClient</code> implements the cookie-to-header CSRF
+						pattern (<code>XSRF-TOKEN</code> &#8594; <code>X-XSRF-TOKEN</code>) automatically
+						{ "for" } same-origin requests.<br/><br/>
+						<strong>SSR header validation:</strong> Angular SSR validates
+						<code>Host</code>, <code>X-Forwarded-Host</code>, <code>X-Forwarded-Proto</code>,
+						<code>X-Forwarded-Prefix</code>, and <code>X-Forwarded-Port</code> to prevent
+						header-based host injection.
+					</div>
+				</div>
+
+				<p class="docs-text">
+					Everything below covers what Angular does not enforce automatically.
+				</p>
+			</section>
+
+			<section id="owasp-mapping" class="docs-section">
+				<h2 class="docs-section-title">OWASP A01–A10 Mapping</h2>
+				<p class="docs-text">
+					<strong>Addressed:</strong> Angular provides the control directly.
+					<strong>Complementary:</strong> Angular provides partial coverage; team policy closes the gap.
+					<strong>Gap:</strong> Angular provides nothing; the team must implement entirely.
+				</p>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Category</th>
+							<th>Angular Control</th>
+							<th>Remaining Gap</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><strong>A01</strong> Broken Access Control</td>
+							<td>Route guards (<code>CanActivate</code>, <code>CanMatch</code>)</td>
+							<td>Guards protect navigation only. Lazy-loaded bundles still download. Server must enforce authorization on every request.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--authenticated">Complementary</span></td>
+						</tr>
+						<tr>
+							<td><strong>A02</strong> Cryptographic Failures</td>
+							<td>Interceptors can enforce HTTPS; Angular forms obscure credentials from UI</td>
+							<td><code>environment.ts</code> is client-side source. All values are accessible in DevTools. API keys must not appear in any Angular source file.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--authenticated">Complementary</span></td>
+						</tr>
+						<tr>
+							<td><strong>A03</strong> Injection</td>
+							<td>Template sanitization; <code>DomSanitizer</code>; Trusted Types; AOT compilation</td>
+							<td><code>bypassSecurityTrust*</code> methods and direct DOM access via <code>ElementRef.nativeElement</code> bypass all built-in protections.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--public">Addressed</span></td>
+						</tr>
+						<tr>
+							<td><strong>A04</strong> Insecure Design</td>
+							<td>Dependency injection centralizes auth services</td>
+							<td>Interceptor chain design and consistent auth service usage are not enforced by the framework. Code review and lint rules are required.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--authenticated">Complementary</span></td>
+						</tr>
+						<tr>
+							<td><strong>A05</strong> Security Misconfiguration</td>
+							<td>Nonce-based CSP via <code>autoCsp</code>; Trusted Types policies (<code>angular</code>, <code>angular#bundler</code>)</td>
+							<td>CSP and Trusted Types are disabled by default. Both must be explicitly configured { "for" } every production build.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--sensitive">Addressed when configured</span></td>
+						</tr>
+						<tr>
+							<td><strong>A06</strong> Vulnerable &amp; Outdated Components</td>
+							<td>None built in</td>
+							<td>Committed lockfiles, <code>npm ci</code> in CI, disabled lifecycle scripts, behavioural package scanning, major-version adoption cooldown.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--critical">Gap</span></td>
+						</tr>
+						<tr>
+							<td><strong>A07</strong> Authentication Failures</td>
+							<td><code>HttpClient</code> CSRF; interceptors { "for" } auth token injection</td>
+							<td>Session lifetime, MFA, account lockout, and credential rotation are entirely the application's responsibility.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--authenticated">Complementary</span></td>
+						</tr>
+						<tr>
+							<td><strong>A08</strong> Software &amp; Data Integrity Failures</td>
+							<td>None built in</td>
+							<td>Subresource Integrity { "for" } CDN assets, signed releases, and behavioural package scanning must be enforced at CI level.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--critical">Gap</span></td>
+						</tr>
+						<tr>
+							<td><strong>A09</strong> Logging &amp; Monitoring Failures</td>
+							<td>None built in</td>
+							<td>Angular provides no structured logging. Custom <code>ErrorHandler</code> and HTTP interceptors must be implemented.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--critical">Gap</span></td>
+						</tr>
+						<tr>
+							<td><strong>A10</strong> SSRF</td>
+							<td>Angular SSR validates forwarded headers; interceptor-based URL allowlisting</td>
+							<td>Client-side controls cannot prevent SSRF. Server-side request validation is the security boundary.</td>
+							<td><span class="docs-tier-badge docs-tier-badge--authenticated">Complementary</span></td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section id="csp-trusted-types" class="docs-section">
+				<h2 class="docs-section-title">CSP and Trusted Types</h2>
+				<p class="docs-text">
+					Angular supports nonce-based Content Security Policy via the <code>autoCsp</code> build
+					option and the <code>ngCspNonce</code> attribute on the application root element. Trusted
+					Types enforcement uses policies named <code>angular</code>, <code>angular#bundler</code>,
+					and <code>angular#unsafe-bypass</code>.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Enforce: CSP and Trusted Types mandatory in production</div>
+					<div class="docs-callout-text">
+						Both are opt-in and inactive by default. Nonces must be generated at the origin server
+						per-request — never hardcoded. Responses served through a CDN cache must not carry
+						nonce-bearing CSP headers; generate nonces at the edge or serve those responses
+						uncached.
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">angular.json — autoCsp</span>
+						<span class="docs-code-language">JSON</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-json">{ `{
+  "projects": {
+    "my-app": {
+      "architect": {
+        "build": {
+          "options": {
+            "optimization": true,
+            "security": {
+              "autoCsp": {
+                "unsafeEval": false
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Content-Security-Policy header</span>
+						<span class="docs-code-language">HTTP</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-bash">{ `Content-Security-Policy:
+  require-trusted-types-for 'script';
+  trusted-types angular angular#bundler;
+  script-src 'nonce-{SERVER_NONCE}' 'strict-dynamic';
+  object-src 'none';
+  base-uri 'none'` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">index.html — nonce propagation</span>
+						<span class="docs-code-language">HTML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-markup">{ `<!-- Nonce injected server-side per request — never cached -->
+<app-root ngCspNonce="{{ .Nonce }}"></app-root>` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="bypass-security-trust" class="docs-section">
+				<h2 class="docs-section-title">bypassSecurityTrust* Policy</h2>
+				<p class="docs-text">
+					Angular's <code>DomSanitizer.bypassSecurityTrust*</code> methods —
+					<code>bypassSecurityTrustHtml</code>, <code>bypassSecurityTrustScript</code>,
+					<code>bypassSecurityTrustUrl</code>, <code>bypassSecurityTrustResourceUrl</code>,
+					<code>bypassSecurityTrustStyle</code> — explicitly tell Angular to render a value
+					without sanitization. Each call is a deliberate opt-out of XSS protection.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Enforce: PR-level justification required for every use</div>
+					<div class="docs-callout-text">
+						Every call to a <code>bypassSecurityTrust*</code> method must carry an inline comment
+						explaining why bypass is necessary, what alternative was considered, and who reviewed it.
+						Block at lint level; allow specific instances via <code>eslint-disable-next-line</code>
+						only after documented security review. Track approved bypass count as a security metric.
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">ESLint — ban bypassSecurityTrust* at call sites</span>
+						<span class="docs-code-language">JSON</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-json">{ `{
+  "rules": {
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.property.name=/^bypassSecurityTrust/]",
+        "message": "bypassSecurityTrust* bypasses Angular XSS protection. Add an inline justification comment and obtain security review before using eslint-disable."
+      }
+    ]
+  }
+}` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Approved use — required justification pattern</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `// SECURITY: value is a static SVG asset path assembled from
+// an allowlist of known-safe strings. No user input reaches this call.
+// Reviewed: security-team 2026-01-15. Ticket: SEC-421.
+// eslint-disable-next-line no-restricted-syntax
+const safeUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+  ALLOWED_ICON_PATHS[iconKey]
+);` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="direct-dom-access" class="docs-section">
+				<h2 class="docs-section-title">Direct DOM Access</h2>
+				<p class="docs-text">
+					Native browser DOM APIs do not apply Angular's security model. Code that accesses the
+					DOM directly — via <code>ElementRef.nativeElement</code>,
+					<code>document.getElementById</code>, <code>document.createElement</code>, or
+					<code>innerHTML</code> assignment — bypasses sanitization and Trusted Types enforcement.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Enforce: ban direct DOM access via ESLint</div>
+					<div class="docs-callout-text">
+						Prohibit <code>ElementRef.nativeElement</code>, raw <code>innerHTML</code>
+						assignment, and <code>document.write</code> in application code. Where direct
+						DOM access is unavoidable (third-party library integration, canvas operations),
+						apply the same approval process as <code>bypassSecurityTrust*</code>.
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">ESLint — ban innerHTML and nativeElement</span>
+						<span class="docs-code-language">JSON</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-json">{ `{
+  "rules": {
+    "no-restricted-properties": [
+      "error",
+      {
+        "object": "ElementRef",
+        "property": "nativeElement",
+        "message": "Direct DOM access via ElementRef.nativeElement bypasses Angular's security model. Use Angular template bindings or Renderer2."
+      }
+    ],
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "AssignmentExpression[left.property.name='innerHTML']",
+        "message": "innerHTML assignment bypasses Trusted Types and Angular sanitization. Use [innerHTML] binding with DomSanitizer, or Renderer2."
+      },
+      {
+        "selector": "CallExpression[callee.object.name='document'][callee.property.name='write']",
+        "message": "document.write is unsafe and disallowed."
+      }
+    ]
+  }
+}` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Preferred Alternative: Renderer2</h3>
+				<p class="docs-text">
+					<code>Renderer2</code> provides a platform-agnostic DOM abstraction that respects
+					Angular's security model and works correctly in SSR contexts.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Renderer2 — safe DOM manipulation</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `// Avoid: direct DOM access
+this.elementRef.nativeElement.innerHTML = content;
+
+// Prefer: Renderer2
+@Component({ selector: 'app-widget', template: '<div #host></div>' })
+export class WidgetComponent {
+  @ViewChild('host') host!: ElementRef;
+  constructor(private renderer: Renderer2) {}
+
+  addText(text: string): void {
+    const node = this.renderer.createText(text);
+    this.renderer.appendChild(this.host.nativeElement, node);
+  }
+}` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="supply-chain" class="docs-section">
+				<h2 class="docs-section-title">Supply Chain Security</h2>
+				<p class="docs-text">
+					Supply chain compromise is the highest-growth attack surface { "for" } Angular teams in
+					2025–2026. Standard static analysis and <code>npm audit</code> do not detect it: the
+					attack inserts malicious code into packages that pass all existing checks before
+					publishing.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Threat landscape — cited figures</div>
+					<div class="docs-callout-text">
+						Sonatype identified <strong>454,648 malicious packages</strong> published across npm,
+						PyPI, Maven Central, NuGet, and Hugging Face in 2025, bringing the cumulative total to
+						over 1.2 million. Over 99% of detected open-source malware in 2025 originated on
+						npm. <em>Sonatype 2026 State of the Software Supply Chain Report.</em><br/><br/>
+						In September 2025, Socket disclosed <strong>Shai-Hulud</strong> — the first
+						self-replicating worm on a public package registry. Starting from a compromised
+						<code>{ "@" }ctrl/tinycolor</code>, the worm spread to 500+ packages through credential
+						theft and automated publishing. CERT/CC issued advisory VU#534320.
+						<em>Sources: Socket blog; CERT/CC.</em><br/><br/>
+						In March 2026, the Axios npm package was compromised with a WAVESHAPER.V2 implant,
+						attributed to UNC1069 (BlueNoroff / Stardust Chollima). Socket's automated detection
+						flagged the malicious package within six minutes of publication.
+						<em>Source: Socket blog, April 2026.</em><br/><br/>
+						Lazarus Group-associated packages: Sonatype identified 800+ in 2025; Socket's broader
+						attribution tracked 1,700+ across npm and other registries, 97% concentrated on npm.
+					</div>
+				</div>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Enforce: supply chain hardening checklist</div>
+					<div class="docs-callout-text">
+						1. Commit <code>package-lock.json</code> or <code>pnpm-lock.yaml</code> — never add the lockfile to <code>.gitignore</code>.<br/>
+						2. Use <code>npm ci --ignore-scripts</code> (or <code>pnpm install --frozen-lockfile</code>) in CI — never <code>npm install</code>.<br/>
+						3. Set <code>ignore-scripts=true</code> in <code>.npmrc</code> to disable lifecycle scripts by default.<br/>
+						4. Enforce a 7–14 day cooldown on new major-version adoption — do not update on release day.<br/>
+						5. Integrate Socket or Snyk { "for" } behavioural scanning beyond <code>npm audit</code>.<br/>
+						6. Review all transitive dependencies with install scripts before enabling them.
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">.npmrc — disable lifecycle scripts</span>
+						<span class="docs-code-language">Shell</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-bash">{ `# .npmrc
+ignore-scripts=true
+audit-level=moderate` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">CI pipeline — frozen install</span>
+						<span class="docs-code-language">YAML</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-bash">{ `# GitHub Actions
+- name: Install dependencies
+  run: npm ci --ignore-scripts
+
+- name: Security audit
+  run: npm audit --audit-level=moderate` }</code></pre>
+					</div>
+				</div>
+
+				<h3 class="docs-section-subtitle">Package Manager Evaluation</h3>
+				<p class="docs-text">
+					pnpm has been building consumer-side security controls since v10. As of v11 (April 2026),
+					it ships lifecycle-script blocking and release cooldown enforcement as opt-in defaults —
+					making it the first major package manager to operationalize supply chain defence at
+					install time. Angular teams should evaluate pnpm as the default package manager
+					{ "for" } new projects.
+				</p>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">pnpm .npmrc — security defaults</span>
+						<span class="docs-code-language">Shell</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-bash">{ `# pnpm .npmrc
+ignore-scripts=true
+strict-peer-dependencies=true` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="version-currency" class="docs-section">
+				<h2 class="docs-section-title">Angular Version Currency</h2>
+				<p class="docs-text">
+					Running <code>npm audit</code> on an Angular project more than two major versions behind
+					current typically surfaces advisories that cannot be resolved without upgrading the
+					framework itself — peer dependency constraints prevent patching individual packages
+					in isolation.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Enforce: stay within one major version of current</div>
+					<div class="docs-callout-text">
+						Define a maximum acceptable age { "for" } each major version before upgrade is mandatory.
+						Once a version reaches end-of-life, unresolvable advisory counts grow and patching
+						individual packages requires forking at significant maintenance cost.
+					</div>
+				</div>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Phase</th>
+							<th>Duration</th>
+							<th>Action Required</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Active LTS</td>
+							<td>18 months from release</td>
+							<td>Apply patch updates. Schedule minor updates quarterly.</td>
+						</tr>
+						<tr>
+							<td>Maintenance</td>
+							<td>6 months after Active LTS ends</td>
+							<td>Plan major version upgrade. Create migration ticket. Begin dependency audit.</td>
+						</tr>
+						<tr>
+							<td>End of Life</td>
+							<td>After maintenance window</td>
+							<td>Upgrade is mandatory. Unresolvable advisories accumulate. Each week of delay increases remediation cost.</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="docs-callout docs-callout--info">
+					<div class="docs-callout-title">Angular update tooling</div>
+					<div class="docs-callout-text">
+						Use <code>ng update @angular/core @angular/cli</code> to perform guided major version
+						migrations. The CLI runs schematics that automate most breaking-change adaptations.
+						Review the BREAKING CHANGES section of each release changelog manually — automated
+						migration covers most changes, not all.
+					</div>
+				</div>
+			</section>
+
+			<section id="secrets" class="docs-section">
+				<h2 class="docs-section-title">Secrets and Environment Files</h2>
+				<p class="docs-text">
+					Angular's <code>environment.ts</code> and <code>environment.prod.ts</code> files are
+					TypeScript source code compiled into the application bundle. Everything in them is
+					accessible to any user who opens DevTools. There is no obfuscation mechanism that makes
+					this safe.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Enforce: zero secrets in Angular source files</div>
+					<div class="docs-callout-text">
+						API keys, private credentials, signing keys, and service tokens must never appear
+						in <code>environment.ts</code>, constants files, or any TypeScript source that
+						compiles into the browser bundle. Treat the Angular build output as fully public.
+					</div>
+				</div>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Value</th>
+							<th>Permitted in environment.ts</th>
+							<th>Notes</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>API base URL</td>
+							<td>Yes</td>
+							<td>A public endpoint is not a secret.</td>
+						</tr>
+						<tr>
+							<td>Feature flags</td>
+							<td>Yes</td>
+							<td>Assume all flag values are visible to users.</td>
+						</tr>
+						<tr>
+							<td>Analytics tracking ID</td>
+							<td>Yes</td>
+							<td>Designed { "for" } public use.</td>
+						</tr>
+						<tr>
+							<td>Private API key</td>
+							<td>No</td>
+							<td>Proxy all authenticated calls through a backend service.</td>
+						</tr>
+						<tr>
+							<td>OAuth client secret</td>
+							<td>No</td>
+							<td>OAuth flows requiring a client secret must go through a backend.</td>
+						</tr>
+						<tr>
+							<td>Signing keys / HMAC secrets</td>
+							<td>No</td>
+							<td>Signing operations must occur server-side only.</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">Secure backend proxy pattern</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `// Correct: Angular calls your own API; server holds the credential
+@Injectable({ providedIn: 'root' })
+export class GeocodeService {
+  constructor(private http: HttpClient) {}
+
+  geocode(address: string): Observable<GeoResult> {
+    return this.http.get<GeoResult>('/api/geocode', { params: { address } });
+  }
+}
+
+// Incorrect: private key visible in DevTools source tab
+// const MAPS_KEY = 'AIza...';
+// return this.http.get('https://maps.api.com?key=' + MAPS_KEY);` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="http-interceptors" class="docs-section">
+				<h2 class="docs-section-title">HTTP Interceptors as a Security Layer</h2>
+				<p class="docs-text">
+					Angular HTTP interceptors inspect and transform every outgoing request and incoming
+					response. They are the correct place to enforce authentication token injection, CSRF
+					header attachment, response error handling, and outbound URL validation.
+				</p>
+
+				<div class="docs-callout docs-callout--info">
+					<div class="docs-callout-title">Standard interceptor chain</div>
+					<div class="docs-callout-text">
+						Define and document a standard interceptor chain { "for" } every application. At minimum:<br/>
+						1. <strong>URL allowlist</strong> — block requests to non-allowlisted origins<br/>
+						2. <strong>Auth token injection</strong> — attach Bearer token to authorized requests<br/>
+						3. <strong>CSRF header</strong> — attach CSRF token to mutating requests<br/>
+						4. <strong>Error handler</strong> — normalize 401/403 responses and trigger auth flows
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">security.interceptor.ts — URL allowlist + auth token + error handling</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `import { HttpInterceptorFn, HttpErrorResponse } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+
+const ALLOWED_ORIGINS: ReadonlySet<string> = new Set([
+  window.location.origin,
+  'https://api.example.com',
+]);
+
+export const securityInterceptor: HttpInterceptorFn = (req, next) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  try {
+    const url = new URL(req.url, window.location.origin);
+    if (!ALLOWED_ORIGINS.has(url.origin)) {
+      return throwError(() => new Error('Request to disallowed origin: ' + url.origin));
+    }
+  } catch {
+    return throwError(() => new Error('Malformed request URL: ' + req.url));
+  }
+
+  const token = auth.getAccessToken();
+  const secured = token
+    ? req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + token) })
+    : req;
+
+  return next(secured).pipe(
+    catchError((err: unknown) => {
+      if (err instanceof HttpErrorResponse) {
+        if (err.status === 401) auth.clearSession();
+        if (err.status === 401 || err.status === 403) {
+          router.navigate(['/login'], { queryParams: { returnUrl: router.url } });
+        }
+      }
+      return throwError(() => err);
+    })
+  );
+};` }</code></pre>
+					</div>
+				</div>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">app.config.ts — register interceptor</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import { securityInterceptor } from './security.interceptor';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideHttpClient(withInterceptors([securityInterceptor])),
+  ],
+};` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="route-guards" class="docs-section">
+				<h2 class="docs-section-title">Route Guards vs. Server-Side Authorization</h2>
+				<p class="docs-text">
+					Angular route guards (<code>CanActivate</code>, <code>CanActivateChild</code>,
+					<code>CanMatch</code>) prevent navigation to protected routes when conditions are
+					not met. They are a UX mechanism, not a security boundary.
+				</p>
+
+				<div class="docs-callout docs-callout--warning">
+					<div class="docs-callout-title">Critical: guards do not protect data or code</div>
+					<div class="docs-callout-text">
+						Route guards block navigation in the browser. They do not prevent:<br/>
+						— Lazy-loaded module bundles from downloading to the browser<br/>
+						— Direct HTTP requests to API endpoints<br/>
+						— An attacker reading guarded component code from the application bundle<br/><br/>
+						Authorization must be enforced server-side on every API request, regardless of what
+						any client-side guard does. Guards improve UX by redirecting unauthorized users;
+						they cannot replace server-side access control.
+					</div>
+				</div>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Concern</th>
+							<th>Route Guard</th>
+							<th>Server-Side</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Prevent navigation to a URL</td>
+							<td>Yes — redirects the user</td>
+							<td>Not needed</td>
+						</tr>
+						<tr>
+							<td>Prevent data exposure</td>
+							<td>No — bypassed by direct API call</td>
+							<td>Yes — enforce on every request</td>
+						</tr>
+						<tr>
+							<td>Prevent code download</td>
+							<td>No — bundles still transfer</td>
+							<td>Not typically applicable</td>
+						</tr>
+						<tr>
+							<td>Authorize resource access</td>
+							<td>No — client-side only</td>
+							<td>Yes — authoritative boundary</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="docs-code-block">
+					<div class="docs-code-header">
+						<span class="docs-code-title">auth.guard.ts — navigation UX, not security boundary</span>
+						<span class="docs-code-language">TypeScript</span>
+					</div>
+					<div class="docs-code-content">
+						<pre><code class="language-typescript">{ `import { CanActivateFn } from '@angular/router';
+import { inject } from '@angular/core';
+import { AuthService } from './auth.service';
+import { Router } from '@angular/router';
+
+// Improves UX by redirecting unauthenticated users.
+// Does NOT secure data or API — server-side auth is the boundary.
+export const authGuard: CanActivateFn = (_route, state) => {
+  const auth = inject(AuthService);
+  const router = inject(Router);
+
+  if (auth.isAuthenticated()) return true;
+
+  return router.createUrlTree(['/login'], {
+    queryParams: { returnUrl: state.url }
+  });
+};` }</code></pre>
+					</div>
+				</div>
+			</section>
+
+			<section id="references" class="docs-section">
+				<h2 class="docs-section-title">References</h2>
+
+				<table class="docs-api-table">
+					<thead>
+						<tr>
+							<th>Source</th>
+							<th>Relevance</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td><a href="https://angular.dev/best-practices/security" target="_blank" rel="noopener noreferrer">Angular Security Guide — angular.dev</a></td>
+							<td>Official Angular documentation on XSS prevention, CSRF, Trusted Types, CSP nonce configuration</td>
+						</tr>
+						<tr>
+							<td><a href="https://owasp.org/www-project-top-ten/" target="_blank" rel="noopener noreferrer">OWASP Top 10 — owasp.org</a></td>
+							<td>Authoritative reference { "for" } the A01–A10 categories used in this guideline</td>
+						</tr>
+						<tr>
+							<td><a href="https://www.sonatype.com/state-of-the-software-supply-chain/2026/open-source-malware" target="_blank" rel="noopener noreferrer">Sonatype 2026 State of the Software Supply Chain</a></td>
+							<td>Source { "for" } 454,648 malicious packages figure, 1.2M cumulative total, 99% npm concentration</td>
+						</tr>
+						<tr>
+							<td><a href="https://socket.dev/blog/tinycolor-supply-chain-attack-affects-40-packages" target="_blank" rel="noopener noreferrer">Socket — Shai-Hulud disclosure</a></td>
+							<td>September 2025 self-replicating npm worm: { "@" }ctrl/tinycolor origin, 500+ packages affected</td>
+						</tr>
+						<tr>
+							<td><a href="https://www.kb.cert.org/vuls/id/534320" target="_blank" rel="noopener noreferrer">CERT/CC — VU#534320</a></td>
+							<td>Official advisory { "for" } the Shai-Hulud self-replicating worm</td>
+						</tr>
+						<tr>
+							<td><a href="https://socket.dev/blog/axios-npm-package-compromised" target="_blank" rel="noopener noreferrer">Socket — Axios compromise</a></td>
+							<td>March 2026 Axios npm compromise: WAVESHAPER.V2 implant, UNC1069/BlueNoroff attribution</td>
+						</tr>
+						<tr>
+							<td><a href="https://www.reversinglabs.com/sscs-report" target="_blank" rel="noopener noreferrer">ReversingLabs 2026 SSCS Report</a></td>
+							<td>Independent confirmation: 73% increase in malicious open-source package detections in 2025</td>
+						</tr>
+						<tr>
+							<td><a href="https://mondoo.com/blog/npm-supply-chain-security-package-manager-defenses-2026" target="_blank" rel="noopener noreferrer">Mondoo — npm supply chain security analysis</a></td>
+							<td>Package manager security comparison including pnpm v11 lifecycle-script blocking defaults</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+		</div>
+	}
+}
