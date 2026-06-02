@@ -46,6 +46,8 @@ func (h *Handlers) Documentation(w http.ResponseWriter, r *http.Request) {
 		pages.DocsSecureTelemetryProvider().Render(r.Context(), w)
 	case "secure-password-confirm":
 		pages.DocsSecurePasswordConfirm().Render(r.Context(), w)
+	case "angular-security-guide":
+		pages.DocsAngularSecurityGuide().Render(r.Context(), w)
 	default:
 		http.NotFound(w, r)
 	}
