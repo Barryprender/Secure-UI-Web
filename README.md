@@ -171,7 +171,7 @@ To get `make` on Windows: `choco install make` (requires [Chocolatey](https://ch
 |-----------|-----------|
 | Language | Go 1.24 |
 | Routing | `net/http` (stdlib) |
-| Templates | [templ](https://templ.guide/) v0.3.977 |
+| Templates | [templ](https://templ.guide/) v0.3.1001 |
 | Database | SQLite via modernc.org/sqlite |
 | Auth | bcrypt via golang.org/x/crypto |
 | Frontend | [secure-ui-components](../secure-ui-components/) web components |
