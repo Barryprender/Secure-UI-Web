@@ -97,7 +97,12 @@ async function handleDemoSubmit(event) {
   // Stop the component's own fetch so we control the response display.
   event.preventDefault();
 
-  const { formData, telemetry = {} } = event.detail;
+  // 0.4.x: formData was removed from the secure-form-submit detail — sensitive
+  // field values must not propagate via a composed event. Read the values from
+  // the element via its public getData() API (collects all secure fields,
+  // including secure-select and secure-card last4/expiry/holder).
+  const telemetry = event.detail?.telemetry ?? {};
+  const formData = form.getData();
   const action = form.getAttribute('action');
   const csrfToken = form.getAttribute('csrf-token') ?? '';
 
@@ -110,14 +115,6 @@ async function handleDemoSubmit(event) {
   // Disable submit button during in-flight request.
   const submitBtn = form.querySelector('button[type="submit"]');
   if (submitBtn) submitBtn.disabled = true;
-
-  // Supplement formData with current secure-select values.
-  // The component snapshots values at event-dispatch time; reading them again
-  // here guards against any edge case where the snapshot was stale.
-  form.querySelectorAll('secure-select[name]').forEach(sel => {
-    const n = sel.getAttribute('name');
-    if (n) formData[n] = sel.value;
-  });
 
   // For the payment form, attach safe card identifiers from the
   // secure-card element. Full PAN and CVC are never present here.
