@@ -255,9 +255,9 @@ templ DocsSecureDatetime() {
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>secure-datetime</code></td>
-							<td><pre><code class="language-js">{` name, value, tier `}</code></pre></td>
-							<td>Fired on value change</td>
+							<td><code>secure-datetime-change</code></td>
+							<td><pre><code class="language-js">{` name, type, tier `}</code></pre></td>
+							<td>Fired on value change. The raw value is intentionally absent — read it from <code>e.target.value</code>.</td>
 						</tr>
 					</tbody>
 				</table>

@@ -336,9 +336,9 @@ upload.setScanHook(async (file) => {
 					</thead>
 					<tbody>
 						<tr>
-							<td><code>secure-file-upload</code></td>
+							<td><code>secure-file-change</code></td>
 							<td><code>{ ` name, files, tier ` }</code></td>
-							<td>Fired when files are selected and validated</td>
+							<td>Fired when files are selected and validated. <code>files</code> is <code>SecureFileMeta[]</code> (name, size, type) — raw <code>File</code> objects are intentionally absent; read them from <code>e.target.files</code>.</td>
 						</tr>
 						<tr>
 							<td><code>secure-audit</code></td>
