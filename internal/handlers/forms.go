@@ -6,7 +6,6 @@ import (
 	"net/http"
 	"time"
 
-	"secure-ui-showcase-go/internal/middleware"
 	"secure-ui-showcase-go/internal/validation"
 )
 
@@ -178,7 +177,6 @@ type successPageData struct {
 	Title   string
 	Message string
 	BackURL string
-	Nonce   string
 }
 
 var successPageTmpl = template.Must(template.New("success").Parse(`<!DOCTYPE html>
@@ -188,28 +186,7 @@ var successPageTmpl = template.Must(template.New("success").Parse(`<!DOCTYPE htm
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Success - Secure-UI</title>
     <link rel="stylesheet" href="/static/styles/secure-ui/secure-ui.css">
-    <style nonce="{{.Nonce}}">
-        .success-container {
-            max-width: 600px;
-            margin: 4rem auto;
-            padding: 2rem;
-            text-align: center;
-            background: var(--secure-ui-color-bg-secondary);
-            border-radius: 8px;
-        }
-        .success-icon { font-size: 4rem; margin-bottom: 1rem; }
-        .success-message { font-size: 1.5rem; color: var(--secure-ui-color-success); margin-bottom: 1rem; }
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.75rem 1.5rem;
-            background: var(--secure-ui-color-primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 4px;
-        }
-        .back-link:hover { opacity: 0.9; }
-    </style>
+    <link rel="stylesheet" href="/static/styles/status/success-page.min.css">
 </head>
 <body>
     <div class="success-container">
@@ -222,14 +199,13 @@ var successPageTmpl = template.Must(template.New("success").Parse(`<!DOCTYPE htm
 </html>`))
 
 // renderSuccessPage renders an HTML success page
-func renderSuccessPage(w http.ResponseWriter, r *http.Request, title, message, backURL string) {
+func renderSuccessPage(w http.ResponseWriter, _ *http.Request, title, message, backURL string) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 
 	if err := successPageTmpl.Execute(w, successPageData{
 		Title:   title,
 		Message: message,
 		BackURL: backURL,
-		Nonce:   middleware.NonceFromContext(r.Context()),
 	}); err != nil {
 		log.Printf("failed to render success page: %v", err)
 	}
