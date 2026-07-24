@@ -98,7 +98,6 @@ type errorPageData struct {
 	Title   string
 	Errors  []validation.ValidationError
 	BackURL string
-	Nonce   string
 }
 
 var errorPageTmpl = template.Must(template.New("error").Parse(`<!DOCTYPE html>
@@ -108,52 +107,7 @@ var errorPageTmpl = template.Must(template.New("error").Parse(`<!DOCTYPE html>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{.Title}} - Secure-UI</title>
     <link rel="stylesheet" href="/static/styles/global/global.min.css">
-    <style nonce="{{.Nonce}}">
-        body {
-            min-block-size: 100dvh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-        }
-        .error-container {
-            max-width: 560px;
-            width: 100%;
-            margin-inline: auto;
-            padding: 2rem;
-            background: var(--bg-secondary, #0f1623);
-            border: 1px solid var(--border-subtle);
-            border-radius: 10px;
-        }
-        .error-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-block-end: 1.25rem;
-        }
-        .error-list { list-style: none; padding: 0; margin: 0 0 1.5rem; display: flex; flex-direction: column; gap: 0.5rem; }
-        .error-list li {
-            padding: 0.625rem 0.875rem;
-            background: color-mix(in oklch, oklch(55% 0.22 25) 12%, transparent);
-            border-inline-start: 3px solid oklch(55% 0.22 25);
-            border-radius: 4px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-        }
-        .back-link {
-            display: inline-flex;
-            align-items: center;
-            padding: 0.625rem 1.25rem;
-            background: var(--accent-primary, oklch(65% 0.2 250));
-            color: #fff;
-            text-decoration: none;
-            border-radius: 6px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-        .back-link:hover { opacity: 0.88; }
-    </style>
+    <link rel="stylesheet" href="/static/styles/status/error-page.min.css">
 </head>
 <body>
     <div class="error-container">
@@ -168,7 +122,7 @@ var errorPageTmpl = template.Must(template.New("error").Parse(`<!DOCTYPE html>
 </html>`))
 
 // renderErrorPage renders an HTML error page for form submissions
-func renderErrorPage(w http.ResponseWriter, r *http.Request, title string, errs []validation.ValidationError, backURL string) {
+func renderErrorPage(w http.ResponseWriter, _ *http.Request, title string, errs []validation.ValidationError, backURL string) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	w.WriteHeader(http.StatusBadRequest)
 
@@ -176,7 +130,6 @@ func renderErrorPage(w http.ResponseWriter, r *http.Request, title string, errs 
 		Title:   title,
 		Errors:  errs,
 		BackURL: backURL,
-		Nonce:   middleware.NonceFromContext(r.Context()),
 	}); err != nil {
 		log.Printf("failed to render error page: %v", err)
 	}
