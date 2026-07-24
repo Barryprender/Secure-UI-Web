@@ -55,4 +55,3 @@ __pycache__/
 secure-ui-components/
 node_modules/
 .npm-components/
-package-lock.json
