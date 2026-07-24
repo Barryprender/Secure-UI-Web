@@ -35,7 +35,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
 # ── Stage 3: Runtime ──────────────────────────────────────────────────────────
 FROM alpine:3.21
 
-RUN addgroup -S app && adduser -S app -G app
+# su-exec drops privileges in the entrypoint after the volume is chowned.
+RUN apk add --no-cache su-exec && addgroup -S app && adduser -S app -G app
 
 WORKDIR /app
 
@@ -51,11 +52,14 @@ COPY --chown=app:app googlee3e4329654703f64.html ./
 # Built web components (from npm package)
 COPY --from=components --chown=app:app /components/node_modules/secure-ui-components/dist/ ./secure-ui-components/dist/
 
-# Data directory — will be replaced by a Fly volume mount at /app/data
+# Data directory — replaced by the Fly volume mount at /app/data
 RUN mkdir -p /app/data && chown app:app /app/data
 
-USER app
+# Starts as root only long enough to chown the mounted volume, then runs the
+# server as the unprivileged app user (see docker-entrypoint.sh).
+COPY --chmod=0755 docker-entrypoint.sh /app/docker-entrypoint.sh
 
 EXPOSE 8080
 
+ENTRYPOINT ["/app/docker-entrypoint.sh"]
 CMD ["./server"]
