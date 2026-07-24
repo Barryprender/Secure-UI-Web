@@ -24,6 +24,9 @@ function minify(src) {
     .replace(/\s*\{\s*/g, '{')
     .replace(/\s*\}\s*/g, '}')
     .replace(/\s*;\s*/g, ';')
+    // Strip space after a declaration colon. Only after — space *before* a colon
+    // is a descendant combinator (".card :hover") and removing it changes meaning.
+    .replace(/:\s+/g, ':')
     .replace(/\s*,\s*/g, ',')
     .replace(/\s*>\s*/g, '>')
     .replace(/\s*~\s*/g, '~')
