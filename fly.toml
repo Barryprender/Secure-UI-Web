@@ -8,6 +8,20 @@ primary_region = 'cdg'
 
 [build]
 
+[env]
+  # Served over HTTPS behind the Fly proxy: enables the Secure flag and the
+  # __Host- cookie prefix, and makes the rate limiter key on the real client IP.
+  SECURE_COOKIE = 'true'
+  BEHIND_PROXY = 'true'
+  # Explicit path on the mounted volume so the database survives deploys.
+  DB_PATH = '/app/data/secure-ui.db'
+
+# Persistent SQLite storage. Without this the database lives in the container
+# filesystem and is destroyed on every deploy and machine stop.
+[mounts]
+  source = 'data'
+  destination = '/app/data'
+
 [http_service]
   internal_port = 8080
   force_https = true
