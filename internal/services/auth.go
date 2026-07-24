@@ -224,8 +224,9 @@ func (s *AuthService) ValidateSession(token string) (*models.User, error) {
 
 // RegisterUser creates a new user account with a hashed password
 func (s *AuthService) RegisterUser(firstName, lastName, email, password string) (*models.User, error) {
+	// ErrNotFound is the expected result for an available email; anything else is a real failure.
 	existing, err := s.UserDB.GetByEmail(email)
-	if err != nil {
+	if err != nil && !errors.Is(err, models.ErrNotFound) {
 		return nil, fmt.Errorf("failed to check email availability: %w", err)
 	}
 	if existing != nil {
