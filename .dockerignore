@@ -23,7 +23,7 @@ Thumbs.db
 data/
 
 # Web components — sourced from npm in the Node build stage, not the local context
+# package-lock.json is deliberately included: the Node stage installs from it with `npm ci`
 secure-ui-components/
 node_modules/
 .npm-components/
-package-lock.json
