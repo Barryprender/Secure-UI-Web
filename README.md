@@ -18,13 +18,18 @@ A server-first web application built with Go, Templ, and SQLite. Demonstrates se
 ## Prerequisites
 
 - [Go 1.24+](https://go.dev/doc/install)
-- [templ](https://templ.guide/) — `go install github.com/a-h/templ/cmd/templ@latest`
+- [Node.js 18+](https://nodejs.org/) — the web components are installed from npm
+- [templ](https://templ.guide/) — installed by `make install` at the version pinned in `go.mod`
 - Ensure `$(go env GOPATH)/bin` is in your PATH
+
+`make` is not available in PowerShell by default. On Windows either use the PowerShell
+commands below, run the `make` targets from Git Bash, or install make with
+`choco install make` (requires [Chocolatey](https://chocolatey.org/)).
 
 ## Quick Start
 
 ```bash
-# Install dependencies
+# Install dependencies (locked versions) and the templ + air CLIs
 make install
 
 # Generate templ templates
@@ -34,6 +39,16 @@ make generate
 make run
 ```
 
+PowerShell, without `make`:
+
+```powershell
+npm ci; npm run sync
+go mod download
+go install github.com/a-h/templ/cmd/templ@(go list -m -f '{{.Version}}' github.com/a-h/templ)
+templ generate
+go run ./cmd/server
+```
+
 Open **http://localhost:8080**
 
 For development with hot reload:
@@ -41,6 +56,14 @@ For development with hot reload:
 ```bash
 make dev
 ```
+
+```powershell
+# PowerShell equivalent
+templ generate; air
+```
+
+`air` regenerates templates on every rebuild, so `templ generate` is only needed
+for the first run.
 
 ## Project Structure
 
@@ -129,30 +152,22 @@ DB_PATH=/path/to/db.sqlite make run
 
 ## Available Commands
 
-```
-make install    — Install Go dependencies and tools (templ, air)
-make generate   — Compile .templ files to Go code
-make dev        — Development server with hot reload (via air)
-make build      — Build production binary to bin/
-make run        — Run server directly
-make clean      — Remove generated files and binaries
-make fmt        — Format Go and templ files
-make test       — Run tests
-```
+| Command | Purpose | PowerShell equivalent |
+|---|---|---|
+| `make install` | Install locked dependencies and tools (templ, air) | see [Quick Start](#quick-start) |
+| `make components` | Upgrade secure-ui-components to latest, refresh lock file, sync `dist/` | `npm install secure-ui-components@latest; npm run sync` |
+| `make generate` | Compile `.templ` files to Go code | `templ generate` |
+| `make dev` | Development server with hot reload (via air) | `templ generate; air` |
+| `make run` | Run server directly | `templ generate; go run ./cmd/server` |
+| `make build` | Build production binary to `bin/` | `templ generate; go build -o bin/showcase-server.exe ./cmd/server` |
+| `make fmt` | Format Go and templ files | `go fmt ./...; templ fmt .` |
+| `make test` | Run tests | `go test -v ./...` |
+| `make clean` | Remove generated files and binaries | `Remove-Item -Recurse -Force -ErrorAction Ignore bin, tmp; Get-ChildItem -Recurse -Filter *_templ.go cmd, internal \| Remove-Item` |
+| `make css-bundle` | Minify all CSS and assemble `global.min.css` | `node scripts/bundle-css.js` |
+| `make download-prism` | Download Prism.js syntax highlighting files | `go run scripts/download_prism.go` |
 
-### Windows (PowerShell) — without `make`
-
-`make` is not available in PowerShell by default. Use these equivalents:
-
-| Command | PowerShell equivalent |
-|---|---|
-| `make generate` | `templ generate` |
-| `make dev` | `templ generate; air` |
-| `make run` | `templ generate; go run cmd/server/main.go` |
-| `make build` | `templ generate; go build -o bin/showcase-server cmd/server/main.go` |
-| `make fmt` | `go fmt ./...; templ fmt .` |
-| `make test` | `go test -v ./...` |
-| `make clean` | `Remove-Item -Recurse -Force bin, tmp` |
+`*_templ.go` files are generated and not committed, so `templ generate` must run
+before any build. `make clean` removes them; re-run `make generate` afterwards.
 
 To get `make` on Windows: `choco install make` (requires [Chocolatey](https://chocolatey.org/)).
 
