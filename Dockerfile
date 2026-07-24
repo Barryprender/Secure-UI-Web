@@ -4,20 +4,22 @@
 FROM node:22-alpine AS components
 
 WORKDIR /components
-COPY package.json ./
-RUN npm install --omit=dev
+# npm ci installs the exact locked version with integrity verification.
+COPY package.json package-lock.json ./
+RUN npm ci --omit=dev
 
 # ── Stage 2: Build Go binary ──────────────────────────────────────────────────
 FROM golang:1.24-alpine AS builder
 
 WORKDIR /src
 
-# Install templ CLI
-RUN go install github.com/a-h/templ/cmd/templ@v0.3.977
-
 # Fetch dependencies before copying source (improves layer caching)
 COPY go.mod go.sum ./
 RUN go mod download
+
+# Install the templ CLI at the exact version go.mod requires — the code generator
+# and the runtime library must be the same version.
+RUN go install github.com/a-h/templ/cmd/templ@$(go list -m -f '{{.Version}}' github.com/a-h/templ)
 
 # Copy full source
 COPY . .
