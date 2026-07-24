@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"errors"
 	"log"
 	"net"
 	"net/http"
@@ -234,9 +235,15 @@ func (h *Handlers) RegisterSubmit(w http.ResponseWriter, r *http.Request) {
 
 	_, err := h.AuthService.RegisterUser(firstName, lastName, email, password)
 	if err != nil {
-		// Generic error to prevent email enumeration
+		// Distinguish the causes in the log only (never the email or password).
+		// The response stays identical either way to prevent email enumeration.
+		if errors.Is(err, services.ErrEmailExists) {
+			log.Printf("registration rejected: email already registered")
+		} else {
+			log.Printf("registration failed: %v", err)
+		}
 		renderErrorPage(w, r, "Registration Error", []validation.ValidationError{
-			{Field: "general", Message: "Unable to complete registration. Please try again."},
+			{Field: "general", Message: "Unable to complete registration. If you already have an account, sign in instead."},
 		}, "/register")
 		return
 	}
