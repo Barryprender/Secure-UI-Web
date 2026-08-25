@@ -32,9 +32,9 @@ func InitDatabase(dbPath string) (*sql.DB, error) {
 
 	// Harden SQLite with security and performance PRAGMAs
 	pragmas := []string{
-		"PRAGMA journal_mode=WAL",    // Write-Ahead Logging for concurrent reads
-		"PRAGMA foreign_keys=ON",     // Enforce foreign key constraints
-		"PRAGMA secure_delete=ON",    // Zero-fill deleted data on disk
+		"PRAGMA journal_mode=WAL", // Write-Ahead Logging for concurrent reads
+		"PRAGMA foreign_keys=ON",  // Enforce foreign key constraints
+		"PRAGMA secure_delete=ON", // Zero-fill deleted data on disk
 	}
 	for _, p := range pragmas {
 		if _, err := db.Exec(p); err != nil {

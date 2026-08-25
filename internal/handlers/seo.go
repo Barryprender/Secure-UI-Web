@@ -18,14 +18,14 @@ func (h *Handlers) RobotsTxt(w http.ResponseWriter, r *http.Request) {
 	// AI crawlers that respect their own User-agent block.
 	// Listed individually so each can be selectively adjusted later.
 	aiAgents := []string{
-		"GPTBot",        // OpenAI
-		"ChatGPT-User",  // OpenAI browsing
-		"anthropic-ai",  // Anthropic
-		"ClaudeBot",     // Anthropic
-		"PerplexityBot", // Perplexity
+		"GPTBot",             // OpenAI
+		"ChatGPT-User",       // OpenAI browsing
+		"anthropic-ai",       // Anthropic
+		"ClaudeBot",          // Anthropic
+		"PerplexityBot",      // Perplexity
 		"Googlebot-Extended", // Google AI Overviews
-		"YouBot",        // You.com
-		"cohere-ai",     // Cohere
+		"YouBot",             // You.com
+		"cohere-ai",          // Cohere
 	}
 
 	body := "User-agent: *\nAllow: /\n" + disallow + "\n"
@@ -51,39 +51,39 @@ func (h *Handlers) LLMsTxt(w http.ResponseWriter, r *http.Request) {
 
 > Zero-dependency, security-first Web Components for HTML forms. Built-in XSS protection, CSRF defence, behavioral bot detection, PCI-compliant payment input, and audit logging — active by default on every component. Works with any server framework, template engine, or plain HTML.
 
-Secure-UI is a TypeScript library published to npm as ` + "`secure-ui-components`" + `. Each component is a native Custom Element (Web Component) with a closed Shadow DOM, CSP-safe adopted stylesheets, and zero runtime dependencies. Security tier is declared per-field; the library enforces the corresponding protections automatically.
+Secure-UI is a TypeScript library published to npm as `+"`secure-ui-components`"+`. Each component is a native Custom Element (Web Component) with a closed Shadow DOM, CSP-safe adopted stylesheets, and zero runtime dependencies. Security tier is declared per-field; the library enforces the corresponding protections automatically.
 
 ## Components
 
-- [secure-input](%[1]s/documentation/secure-input): Secure text input with XSS sanitisation, rate limiting, paste detection, and four security tiers (public / authenticated / sensitive / critical). Audit log available via ` + "`getAuditLog()`" + `.
+- [secure-input](%[1]s/documentation/secure-input): Secure text input with XSS sanitisation, rate limiting, paste detection, and four security tiers (public / authenticated / sensitive / critical). Audit log available via `+"`getAuditLog()`"+`.
 - [secure-select](%[1]s/documentation/secure-select): Secure dropdown with server-side allowlist validation, security tiers, and audit logging. Prevents client-side option injection.
 - [secure-textarea](%[1]s/documentation/secure-textarea): Secure multi-line input with HTML sanitisation, configurable character limits, rate limiting, and security tiers.
 - [secure-form](%[1]s/documentation/secure-form): Form orchestrator with built-in CSRF token injection, JSON submission, behavioral telemetry collection, and progressive enhancement fallback.
 - [secure-file-upload](%[1]s/documentation/secure-file-upload): File upload with MIME type validation, size limits, drag-and-drop, preview generation, and virus scan hook support.
 - [secure-datetime](%[1]s/documentation/secure-datetime): Date/time picker with range validation, timezone handling, and audit logging.
 - [secure-table](%[1]s/documentation/secure-table): Data table with client-side sorting, column filtering, and per-column security tier display rules. Supports slotted HTML or programmatic data binding.
-- [secure-card](%[1]s/documentation/secure-card): PCI-compliant payment card input with Luhn validation, card type detection (Visa, Mastercard, Amex, Discover), PAN masking on blur, and CVC protection. Full PAN and CVC are never exposed in DOM events, hidden inputs, or audit logs — only ` + "`last4`" + ` and ` + "`cardType`" + ` are shared.
+- [secure-card](%[1]s/documentation/secure-card): PCI-compliant payment card input with Luhn validation, card type detection (Visa, Mastercard, Amex, Discover), PAN masking on blur, and CVC protection. Full PAN and CVC are never exposed in DOM events, hidden inputs, or audit logs — only `+"`last4`"+` and `+"`cardType`"+` are shared.
 - [secure-telemetry-provider](%[1]s/documentation/secure-telemetry-provider): Behavioral intelligence provider. Captures keystroke timing, dwell time, paste detection, autofill signals, and typing velocity. Signs the telemetry payload with HMAC-SHA256 (CryptoKey cached per session). Accumulates threat signals from all child components. Risk scoring flags bot-like or scripted interactions without tracking users.
-- [secure-password-confirm](%[1]s/documentation/secure-password-confirm): Dual-field password entry with real-time match validation, strength enforcement, show/hide toggle, injection detection on both fields, and a ` + "`secure-threat-detected`" + ` event. Security tier locked to critical. Raw password never exposed in events — retrieve via ` + "`getPasswordValue()`" + ` only.
+- [secure-password-confirm](%[1]s/documentation/secure-password-confirm): Dual-field password entry with real-time match validation, strength enforcement, show/hide toggle, injection detection on both fields, and a `+"`secure-threat-detected`"+` event. Security tier locked to critical. Raw password never exposed in events — retrieve via `+"`getPasswordValue()`"+` only.
 
 ## Security Model
 
 - **Security tiers**: public, authenticated, sensitive, critical — declared per field, enforced by the component.
-- **CSRF**: ` + "`secure-form`" + ` injects tokens automatically and validates the header on submission.
+- **CSRF**: `+"`secure-form`"+` injects tokens automatically and validates the header on submission.
 - **XSS**: All output is sanitised; Shadow DOM isolates component internals from the host page.
-- **Audit logging**: Every component exposes ` + "`getAuditLog()`" + ` returning timestamped interaction records without capturing raw sensitive values.
+- **Audit logging**: Every component exposes `+"`getAuditLog()`"+` returning timestamped interaction records without capturing raw sensitive values.
 - **Rate limiting**: Configurable per-component, client-side, with exponential back-off.
-- **CSP-safe**: No ` + "`eval()`" + `, no ` + "`innerHTML`" + ` with unsanitised input, no inline event handlers. Styles applied via ` + "`adoptedStyleSheets`" + `.
+- **CSP-safe**: No `+"`eval()`"+`, no `+"`innerHTML`"+` with unsanitised input, no inline event handlers. Styles applied via `+"`adoptedStyleSheets`"+`.
 
 ## Installation
 
-` + "```" + `bash
+`+"```"+`bash
 npm install secure-ui-components
-` + "```" + `
+`+"```"+`
 
-` + "```" + `html
+`+"```"+`html
 <script type="module" src="/components/index.js"></script>
-` + "```" + `
+`+"```"+`
 
 ## Live Demos
 
@@ -100,7 +100,7 @@ npm install secure-ui-components
 
 ## Legal & Privacy
 
-- [Cookie Policy](%[1]s/cookies): Two cookies only — ` + "`__Host-session`" + ` (HttpOnly, SameSite=Strict, 24h) and ` + "`lang`" + ` (preference, 1 year). No analytics, no tracking, no third-party cookies.
+- [Cookie Policy](%[1]s/cookies): Two cookies only — `+"`__Host-session`"+` (HttpOnly, SameSite=Strict, 24h) and `+"`lang`"+` (preference, 1 year). No analytics, no tracking, no third-party cookies.
 - [MIT License](https://github.com/Barryprender/Secure-UI/blob/main/LICENSE): Open source, free to use.
 
 ## Source

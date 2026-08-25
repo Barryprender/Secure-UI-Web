@@ -131,7 +131,7 @@ func (h *Handlers) SubmitFormHandler(w http.ResponseWriter, r *http.Request) {
 		for _, header := range files {
 			v := validation.New()
 			v.FileSize("documents", header, 5*1024*1024, "Documents"). // 5MB
-										FileType("documents", header, []string{".pdf", ".doc", ".docx"}, "Documents")
+											FileType("documents", header, []string{".pdf", ".doc", ".docx"}, "Documents")
 
 			if !v.Result().IsValid() {
 				for _, err := range v.Result().Errors {

@@ -216,7 +216,6 @@ func main() {
 		optAuth(apiMux),
 	))
 
-
 	// Language switcher — sets lang cookie and redirects; no CSRF needed
 	mux.HandleFunc("/lang", h.SetLanguage)
 

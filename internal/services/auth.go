@@ -45,11 +45,11 @@ func init() {
 
 // AuthService handles authentication, registration, and session management
 type AuthService struct {
-	UserDB            *models.UserDatabase
-	SessionDB         *models.SessionDatabase
-	LoginAttemptDB    *models.LoginAttemptDatabase
-	lockoutThreshold  int
-	lockoutWindow     time.Duration
+	UserDB           *models.UserDatabase
+	SessionDB        *models.SessionDatabase
+	LoginAttemptDB   *models.LoginAttemptDatabase
+	lockoutThreshold int
+	lockoutWindow    time.Duration
 }
 
 // NewAuthService creates a new AuthService with the given dependencies.
