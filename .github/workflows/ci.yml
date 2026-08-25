@@ -1,0 +1,143 @@
+# The checks that were previously only ever run by hand.
+#
+# Nothing here warns. Every step either passes or fails the build, because a
+# check whose output someone has to read and interpret is a check that stops
+# being run.
+#
+# This repository does not build from a clean checkout on its own: *_templ.go is
+# generated and gitignored, and secure-ui-components/dist comes from npm. Every
+# job therefore reproduces the Dockerfile's first two stages before it can
+# compile anything.
+
+name: CI
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  # Must match the toolchain line in go.mod and the pinned builder in the
+  # Dockerfile. The floor exists because govulncheck found 23 standard-library
+  # vulnerabilities reachable from this server's request path below 1.25.13.
+  # Raise all three together.
+  GO_VERSION: "1.25.13"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      # npm ci installs the exact locked version with integrity verification,
+      # the same way the Dockerfile's components stage does.
+      - name: Web components
+        run: |
+          npm ci --omit=dev
+          npm run sync
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      # The generator and the runtime library must be the same version, so the
+      # CLI version is read from go.mod rather than pinned separately.
+      - name: templ generate
+        run: |
+          go install github.com/a-h/templ/cmd/templ@$(go list -m -f '{{.Version}}' github.com/a-h/templ)
+          templ generate
+
+      # Only tracked files. templ generate has just written *_templ.go into the
+      # working tree, and gofmt's opinion of generated code is not this
+      # repository's problem.
+      - name: Formatting
+        run: |
+          unformatted="$(gofmt -l $(git ls-files '*.go'))"
+          if [ -n "$unformatted" ]; then
+            echo "gofmt would change these files:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Test
+        run: go test ./... -count=1
+
+      # Reported, not gated. Coverage is 10.2% across internal/ from three tests
+      # in one file; a floor set to today's number would ratify that rather than
+      # measure it. Print it on every run so the number is visible, and set a
+      # floor here once the handler and middleware paths are actually covered.
+      - name: Coverage
+        run: |
+          go test ./... -count=1 -coverpkg=./internal/... -coverprofile=coverage.out
+          go tool cover -func=coverage.out | tail -1
+
+  vulnerabilities:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      # go.mod's build floor was set by this check. Running it keeps that floor
+      # honest: a new advisory against the pinned toolchain fails the build
+      # instead of shipping quietly to secure-ui-web.fly.dev.
+      #
+      # No templ generate here — govulncheck reports on the module's own
+      # dependency graph, and the generated templates add no imports.
+      - name: govulncheck
+        run: |
+          go install golang.org/x/vuln/cmd/govulncheck@latest
+          govulncheck ./...
+
+  sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: ${{ env.GO_VERSION }}
+          cache: true
+
+      # Pinned, like everything else that decides what ships. @latest here would
+      # mean the check's own output could change without a commit.
+      - name: Install cyclonedx-gomod
+        run: go install github.com/CycloneDX/cyclonedx-gomod/cmd/cyclonedx-gomod@v1.9.0
+
+      # The same build constraints the Dockerfile uses. Go's module selection
+      # depends on them, so an SBOM generated for another target is not an SBOM
+      # of the container that gets deployed.
+      - name: Regenerate
+        env:
+          CGO_ENABLED: "0"
+          GOOS: linux
+          GOARCH: amd64
+        run: cyclonedx-gomod app -json -output sbom.regenerated.json -main cmd/server .
+
+      # A committed SBOM nobody regenerates is worse than none, because it is
+      # believed. serialNumber and the timestamp change on every run, so compare
+      # the parts that describe the product.
+      - name: Committed SBOM is current
+        run: |
+          python3 scripts/sbom_canonical.py sbom.json > committed.txt
+          python3 scripts/sbom_canonical.py sbom.regenerated.json > current.txt
+          if ! diff -u committed.txt current.txt; then
+            echo
+            echo "sbom.json is stale. Regenerate and commit it:"
+            echo "  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 cyclonedx-gomod app -json -output sbom.json -main cmd/server ."
+            exit 1
+          fi
