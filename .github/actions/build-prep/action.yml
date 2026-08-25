@@ -1,0 +1,51 @@
+# Everything needed before this module will compile.
+#
+# A clean checkout of this repository does not build: *_templ.go is generated
+# and gitignored, and secure-ui-components/dist comes from npm. Anything that
+# type-checks the module needs both — and that is not only `go build`. govulncheck
+# loads and type-checks every package before it can trace a call path, and
+# cyclonedx-gomod runs `go list -deps` against the main package. Both fail on a
+# bare checkout with "invalid package name", which is what they report instead of
+# saying the generated files are missing.
+#
+# Shared here rather than repeated per job so a change to the build prep cannot
+# apply to some jobs and not others.
+
+name: Build prep
+description: Install web components, generate templ templates, and set up Go
+
+inputs:
+  go-version:
+    description: Go toolchain version
+    required: true
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-node@v4
+      with:
+        node-version: "22"
+        cache: npm
+
+    # npm ci installs the exact locked version with integrity verification, the
+    # same way the Dockerfile's components stage does.
+    - name: Web components
+      shell: bash
+      run: |
+        npm ci --omit=dev
+        npm run sync
+
+    - uses: actions/setup-go@v5
+      with:
+        go-version: ${{ inputs.go-version }}
+        cache: true
+
+    # The generator and the runtime library must be the same version: a newer
+    # CLI emits calls to templ helpers the pinned library does not have, and the
+    # package then fails to compile. Read the version from go.mod rather than
+    # pinning it separately, so the two cannot drift.
+    - name: templ generate
+      shell: bash
+      run: |
+        go install github.com/a-h/templ/cmd/templ@$(go list -m -f '{{.Version}}' github.com/a-h/templ)
+        templ generate

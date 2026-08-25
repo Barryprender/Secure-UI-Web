@@ -4,10 +4,9 @@
 # check whose output someone has to read and interpret is a check that stops
 # being run.
 #
-# This repository does not build from a clean checkout on its own: *_templ.go is
-# generated and gitignored, and secure-ui-components/dist comes from npm. Every
-# job therefore reproduces the Dockerfile's first two stages before it can
-# compile anything.
+# Every job starts with .github/actions/build-prep, because nothing in this
+# repository type-checks from a bare checkout — see that file for why that
+# applies to govulncheck and the SBOM generator too, not just `go build`.
 
 name: CI
 
@@ -32,32 +31,11 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22"
-          cache: npm
-
-      # npm ci installs the exact locked version with integrity verification,
-      # the same way the Dockerfile's components stage does.
-      - name: Web components
-        run: |
-          npm ci --omit=dev
-          npm run sync
-
-      - uses: actions/setup-go@v5
+      - uses: ./.github/actions/build-prep
         with:
           go-version: ${{ env.GO_VERSION }}
-          cache: true
 
-      # The generator and the runtime library must be the same version, so the
-      # CLI version is read from go.mod rather than pinned separately.
-      - name: templ generate
-        run: |
-          go install github.com/a-h/templ/cmd/templ@$(go list -m -f '{{.Version}}' github.com/a-h/templ)
-          templ generate
-
-      # Only tracked files. templ generate has just written *_templ.go into the
+      # Only tracked files. build-prep has just written *_templ.go into the
       # working tree, and gofmt's opinion of generated code is not this
       # repository's problem.
       - name: Formatting
@@ -88,17 +66,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: ./.github/actions/build-prep
         with:
           go-version: ${{ env.GO_VERSION }}
-          cache: true
 
       # go.mod's build floor was set by this check. Running it keeps that floor
       # honest: a new advisory against the pinned toolchain fails the build
       # instead of shipping quietly to secure-ui-web.fly.dev.
-      #
-      # No templ generate here — govulncheck reports on the module's own
-      # dependency graph, and the generated templates add no imports.
       - name: govulncheck
         run: |
           go install golang.org/x/vuln/cmd/govulncheck@latest
@@ -108,10 +82,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-go@v5
+      - uses: ./.github/actions/build-prep
         with:
           go-version: ${{ env.GO_VERSION }}
-          cache: true
 
       # Pinned, like everything else that decides what ships. @latest here would
       # mean the check's own output could change without a commit.
