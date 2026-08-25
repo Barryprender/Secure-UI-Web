@@ -9,7 +9,11 @@ COPY package.json package-lock.json ./
 RUN npm ci --omit=dev
 
 # ── Stage 2: Build Go binary ──────────────────────────────────────────────────
-FROM golang:1.24-alpine AS builder
+# Pinned to the patch, not the minor. `1.24` and `1.25` float to whatever the
+# tag points at on the day of the build, which is how a rebuild silently
+# reintroduces a vulnerability go.mod's floor was raised to clear. Raise this
+# and the toolchain line in go.mod together.
+FROM golang:1.25.13-alpine AS builder
 
 WORKDIR /src
 
