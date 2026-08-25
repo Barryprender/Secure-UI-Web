@@ -55,3 +55,6 @@ __pycache__/
 secure-ui-components/
 node_modules/
 .npm-components/
+
+# CI SBOM comparison artifact
+sbom.regenerated.json

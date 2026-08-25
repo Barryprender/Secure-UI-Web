@@ -213,29 +213,29 @@ func InjectLayoutCSRF(store *CSRFTokenStore) func(http.Handler) http.Handler {
 // Go's http.FileServer relies on the OS MIME database which can be
 // incomplete on minimal Linux containers (e.g. Render, Docker Alpine).
 var mimeTypes = map[string]string{
-	".css":  "text/css; charset=utf-8",
-	".js":   "text/javascript; charset=utf-8",
-	".mjs":  "text/javascript; charset=utf-8",
-	".json": "application/json; charset=utf-8",
-	".svg":  "image/svg+xml",
-	".png":  "image/png",
-	".ico":  "image/x-icon",
-	".woff": "font/woff",
+	".css":   "text/css; charset=utf-8",
+	".js":    "text/javascript; charset=utf-8",
+	".mjs":   "text/javascript; charset=utf-8",
+	".json":  "application/json; charset=utf-8",
+	".svg":   "image/svg+xml",
+	".png":   "image/png",
+	".ico":   "image/x-icon",
+	".woff":  "font/woff",
 	".woff2": "font/woff2",
-	".map":  "application/json",
+	".map":   "application/json",
 }
 
 // staticCacheMaxAge maps file extensions to Cache-Control max-age values.
 // Fonts and images are immutable in practice; CSS/JS may change between deploys.
 var staticCacheMaxAge = map[string]string{
-	".css":  "public, max-age=31536000, immutable", // 1 year — content-hashed
-	".js":   "public, max-age=31536000, immutable", // 1 year — content-hashed
-	".mjs":  "public, max-age=31536000, immutable", // 1 year — content-hashed
-	".png":   "public, max-age=31536000", // 1 year
-	".svg":   "public, max-age=31536000", // 1 year
-	".ico":   "public, max-age=31536000", // 1 year
-	".woff":  "public, max-age=31536000", // 1 year
-	".woff2": "public, max-age=31536000", // 1 year
+	".css":   "public, max-age=31536000, immutable", // 1 year — content-hashed
+	".js":    "public, max-age=31536000, immutable", // 1 year — content-hashed
+	".mjs":   "public, max-age=31536000, immutable", // 1 year — content-hashed
+	".png":   "public, max-age=31536000",            // 1 year
+	".svg":   "public, max-age=31536000",            // 1 year
+	".ico":   "public, max-age=31536000",            // 1 year
+	".woff":  "public, max-age=31536000",            // 1 year
+	".woff2": "public, max-age=31536000",            // 1 year
 }
 
 // MIMETypeWrapper wraps an http.Handler and sets the correct Content-Type
@@ -333,11 +333,11 @@ func SecurityHeadersWithHSTS(httpsMode bool) func(http.Handler) http.Handler {
 // The cleanup goroutine (every 1 minute) evicts IPs with no recent requests,
 // bounding memory to O(active unique IPs within the current window).
 type RateLimiter struct {
-	requests     map[string][]time.Time
-	mu           sync.Mutex
-	limit        int
-	window       time.Duration
-	behindProxy  bool
+	requests    map[string][]time.Time
+	mu          sync.Mutex
+	limit       int
+	window      time.Duration
+	behindProxy bool
 }
 
 // NewRateLimiter creates a new rate limiter.
