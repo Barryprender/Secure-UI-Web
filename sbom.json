@@ -1,0 +1,453 @@
+{
+  "$schema": "http://cyclonedx.org/schema/bom-1.6.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.6",
+  "serialNumber": "urn:uuid:74b43d38-fb1d-4726-b81f-cbdd8be3b26c",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-08-25T19:58:31+02:00",
+    "tools": [
+      {
+        "vendor": "CycloneDX",
+        "name": "cyclonedx-gomod",
+        "version": "v1.9.0",
+        "hashes": [
+          {
+            "alg": "MD5",
+            "content": "65cbc1ec88a8c3189115ad33a7c2343c"
+          },
+          {
+            "alg": "SHA-1",
+            "content": "b54c75682df4c136ad89254b6d7e9c15f19b4bd3"
+          },
+          {
+            "alg": "SHA-256",
+            "content": "f5bfd4eca2c1efa06a5aa5b1d178557240a4ebdb7c90b52d9f36cf3b522a7ecc"
+          },
+          {
+            "alg": "SHA-384",
+            "content": "b2f51fe6db80bea6b465e8872ef0353e7926d8c7c01a61c6aa31130e407b6ef552997c18c42f86a385d15cb1bfd119fb"
+          },
+          {
+            "alg": "SHA-512",
+            "content": "036aeb48216e21224aebb85a8daee68c5b6a58a51cdf94b345d52d77181323835ad3c2156dd90ec8f122bfebe49459ae7462ecd0f4b4a4a7f0655c41016180fd"
+          }
+        ],
+        "externalReferences": [
+          {
+            "url": "https://github.com/CycloneDX/cyclonedx-gomod",
+            "type": "vcs"
+          },
+          {
+            "url": "https://cyclonedx.org",
+            "type": "website"
+          }
+        ]
+      }
+    ],
+    "component": {
+      "bom-ref": "pkg:golang/secure-ui-showcase-go@v0.0.0-20260825175715-bdf719c5ad6f?type=module#cmd/server",
+      "type": "application",
+      "name": "secure-ui-showcase-go",
+      "version": "v0.0.0-20260825175715-bdf719c5ad6f",
+      "purl": "pkg:golang/secure-ui-showcase-go@v0.0.0-20260825175715-bdf719c5ad6f?type=module\u0026goos=linux\u0026goarch=amd64#cmd/server",
+      "properties": [
+        {
+          "name": "cdx:gomod:build:env:CGO_ENABLED",
+          "value": "0"
+        },
+        {
+          "name": "cdx:gomod:build:env:GOARCH",
+          "value": "amd64"
+        },
+        {
+          "name": "cdx:gomod:build:env:GOOS",
+          "value": "linux"
+        },
+        {
+          "name": "cdx:gomod:build:env:GOVERSION",
+          "value": "go1.25.13"
+        }
+      ]
+    }
+  },
+  "components": [
+    {
+      "bom-ref": "pkg:golang/github.com/a-h/templ@v0.3.1001?type=module",
+      "type": "library",
+      "name": "github.com/a-h/templ",
+      "version": "v0.3.1001",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "c870d381ec4009d26db728b26a67131d7af642421e545d4cba42f2e3810084c6"
+        }
+      ],
+      "purl": "pkg:golang/github.com/a-h/templ@v0.3.1001?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/a-h/templ",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/github.com/andybalholm/brotli@v1.2.1?type=module",
+      "type": "library",
+      "name": "github.com/andybalholm/brotli",
+      "version": "v1.2.1",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "47e7f9c4fdbce5502b243460a30adf6fd0ea2f5f3254ad202805bf17e7935aba"
+        }
+      ],
+      "purl": "pkg:golang/github.com/andybalholm/brotli@v1.2.1?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/andybalholm/brotli",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/github.com/aymerick/douceur@v0.2.0?type=module",
+      "type": "library",
+      "name": "github.com/aymerick/douceur",
+      "version": "v0.2.0",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "32ffa601e1f543e9fd16bfa8c9a98e94091434f58f940f0f3c6474400698b8f9"
+        }
+      ],
+      "purl": "pkg:golang/github.com/aymerick/douceur@v0.2.0?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/aymerick/douceur",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/github.com/dustin/go-humanize@v1.0.1?type=module",
+      "type": "library",
+      "name": "github.com/dustin/go-humanize",
+      "version": "v1.0.1",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "1b392163b4f954d8449301f43d52608f3f9f5f5ae106b47ba514f79839297826"
+        }
+      ],
+      "purl": "pkg:golang/github.com/dustin/go-humanize@v1.0.1?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/dustin/go-humanize",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/github.com/google/uuid@v1.6.0?type=module",
+      "type": "library",
+      "name": "github.com/google/uuid",
+      "version": "v1.6.0",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "348bda24330eb231c0f27d630212d2833ac0cf2d4782bfa136b6f9edefbde05d"
+        }
+      ],
+      "purl": "pkg:golang/github.com/google/uuid@v1.6.0?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/google/uuid",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/github.com/gorilla/css@v1.0.1?type=module",
+      "type": "library",
+      "name": "github.com/gorilla/css",
+      "version": "v1.0.1",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "9ed35a048821a7a266bd69f16d92803682f2b974cf678700325a3a4728656cef"
+        }
+      ],
+      "purl": "pkg:golang/github.com/gorilla/css@v1.0.1?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/gorilla/css",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/github.com/microcosm-cc/bluemonday@v1.0.27?type=module",
+      "type": "library",
+      "name": "github.com/microcosm-cc/bluemonday",
+      "version": "v1.0.27",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "329114a2d9259300922de1fe41dc7554980da8b969636297c1714cd3cca065f9"
+        }
+      ],
+      "purl": "pkg:golang/github.com/microcosm-cc/bluemonday@v1.0.27?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/microcosm-cc/bluemonday",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/github.com/remyoudompheng/bigfft@v0.0.0-20230129092748-24d4a6f8daec?type=module",
+      "type": "library",
+      "name": "github.com/remyoudompheng/bigfft",
+      "version": "v0.0.0-20230129092748-24d4a6f8daec",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "5b4f4854973de2272ae0d8d8ddc95becb93c3b5a89f01741105f33d226d4d2b1"
+        }
+      ],
+      "purl": "pkg:golang/github.com/remyoudompheng/bigfft@v0.0.0-20230129092748-24d4a6f8daec?type=module\u0026goos=linux\u0026goarch=amd64",
+      "externalReferences": [
+        {
+          "url": "https://github.com/remyoudompheng/bigfft",
+          "type": "vcs"
+        }
+      ]
+    },
+    {
+      "bom-ref": "pkg:golang/golang.org/x/crypto@v0.51.0?type=module",
+      "type": "library",
+      "name": "golang.org/x/crypto",
+      "version": "v0.51.0",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "2013d7c0f7cac58edc590677f1908844f239d182de7af0cb94b9f20b9c111932"
+        }
+      ],
+      "purl": "pkg:golang/golang.org/x/crypto@v0.51.0?type=module\u0026goos=linux\u0026goarch=amd64"
+    },
+    {
+      "bom-ref": "pkg:golang/golang.org/x/exp@v0.0.0-20251023183803-a4bb9ffd2546?type=module",
+      "type": "library",
+      "name": "golang.org/x/exp",
+      "version": "v0.0.0-20251023183803-a4bb9ffd2546",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "9a029e24ca6f8b4cb1fec5391acc50ee9eacdb0b4e9c600765608750ce0a1b36"
+        }
+      ],
+      "purl": "pkg:golang/golang.org/x/exp@v0.0.0-20251023183803-a4bb9ffd2546?type=module\u0026goos=linux\u0026goarch=amd64"
+    },
+    {
+      "bom-ref": "pkg:golang/golang.org/x/net@v0.55.0?type=module",
+      "type": "library",
+      "name": "golang.org/x/net",
+      "version": "v0.55.0",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "6dcbf16899f77b553a227b055add4952ad5a4a39d1c4bcd3dabb43d8a7e40c5f"
+        }
+      ],
+      "purl": "pkg:golang/golang.org/x/net@v0.55.0?type=module\u0026goos=linux\u0026goarch=amd64"
+    },
+    {
+      "bom-ref": "pkg:golang/golang.org/x/sys@v0.45.0?type=module",
+      "type": "library",
+      "name": "golang.org/x/sys",
+      "version": "v0.45.0",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "74ee1cccdcf388b8a25e994b4200421290af5d0ddd9e49f449d699498750f856"
+        }
+      ],
+      "purl": "pkg:golang/golang.org/x/sys@v0.45.0?type=module\u0026goos=linux\u0026goarch=amd64"
+    },
+    {
+      "bom-ref": "pkg:golang/modernc.org/libc@v1.67.6?type=module",
+      "type": "library",
+      "name": "modernc.org/libc",
+      "version": "v1.67.6",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "795390be93287552ca39d4fe2ef04f8dd42a7eb66afa90b7f41ca0713f84ece2"
+        }
+      ],
+      "purl": "pkg:golang/modernc.org/libc@v1.67.6?type=module\u0026goos=linux\u0026goarch=amd64"
+    },
+    {
+      "bom-ref": "pkg:golang/modernc.org/mathutil@v1.7.1?type=module",
+      "type": "library",
+      "name": "modernc.org/mathutil",
+      "version": "v1.7.1",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "18265519775a37c813a81d4c7ffbaca7563f852aa0236bc01863f88d9302c4e5"
+        }
+      ],
+      "purl": "pkg:golang/modernc.org/mathutil@v1.7.1?type=module\u0026goos=linux\u0026goarch=amd64"
+    },
+    {
+      "bom-ref": "pkg:golang/modernc.org/memory@v1.11.0?type=module",
+      "type": "library",
+      "name": "modernc.org/memory",
+      "version": "v1.11.0",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "a38402f1a310ce673008adeddd4c7f6479b014fcc4ea17f66392db911b3e85b2"
+        }
+      ],
+      "purl": "pkg:golang/modernc.org/memory@v1.11.0?type=module\u0026goos=linux\u0026goarch=amd64"
+    },
+    {
+      "bom-ref": "pkg:golang/modernc.org/sqlite@v1.44.3?type=module",
+      "type": "library",
+      "name": "modernc.org/sqlite",
+      "version": "v1.44.3",
+      "scope": "required",
+      "hashes": [
+        {
+          "alg": "SHA-256",
+          "content": "fb7f49bd5fc758c718b250304711dbf34ebbc3edb3a30bc5394ace588cbd3e36"
+        }
+      ],
+      "purl": "pkg:golang/modernc.org/sqlite@v1.44.3?type=module\u0026goos=linux\u0026goarch=amd64"
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:golang/secure-ui-showcase-go@v0.0.0-20260825175715-bdf719c5ad6f?type=module#cmd/server",
+      "dependsOn": [
+        "pkg:golang/github.com/a-h/templ@v0.3.1001?type=module",
+        "pkg:golang/github.com/andybalholm/brotli@v1.2.1?type=module",
+        "pkg:golang/github.com/microcosm-cc/bluemonday@v1.0.27?type=module",
+        "pkg:golang/golang.org/x/crypto@v0.51.0?type=module",
+        "pkg:golang/modernc.org/sqlite@v1.44.3?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/github.com/a-h/templ@v0.3.1001?type=module",
+      "dependsOn": [
+        "pkg:golang/github.com/andybalholm/brotli@v1.2.1?type=module",
+        "pkg:golang/golang.org/x/net@v0.55.0?type=module",
+        "pkg:golang/golang.org/x/sys@v0.45.0?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/github.com/andybalholm/brotli@v1.2.1?type=module"
+    },
+    {
+      "ref": "pkg:golang/github.com/aymerick/douceur@v0.2.0?type=module"
+    },
+    {
+      "ref": "pkg:golang/github.com/dustin/go-humanize@v1.0.1?type=module"
+    },
+    {
+      "ref": "pkg:golang/github.com/google/uuid@v1.6.0?type=module"
+    },
+    {
+      "ref": "pkg:golang/github.com/gorilla/css@v1.0.1?type=module"
+    },
+    {
+      "ref": "pkg:golang/github.com/microcosm-cc/bluemonday@v1.0.27?type=module",
+      "dependsOn": [
+        "pkg:golang/github.com/aymerick/douceur@v0.2.0?type=module",
+        "pkg:golang/github.com/gorilla/css@v1.0.1?type=module",
+        "pkg:golang/golang.org/x/net@v0.55.0?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/github.com/remyoudompheng/bigfft@v0.0.0-20230129092748-24d4a6f8daec?type=module"
+    },
+    {
+      "ref": "pkg:golang/golang.org/x/crypto@v0.51.0?type=module",
+      "dependsOn": [
+        "pkg:golang/golang.org/x/net@v0.55.0?type=module",
+        "pkg:golang/golang.org/x/sys@v0.45.0?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/golang.org/x/exp@v0.0.0-20251023183803-a4bb9ffd2546?type=module"
+    },
+    {
+      "ref": "pkg:golang/golang.org/x/net@v0.55.0?type=module",
+      "dependsOn": [
+        "pkg:golang/golang.org/x/crypto@v0.51.0?type=module",
+        "pkg:golang/golang.org/x/sys@v0.45.0?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/golang.org/x/sys@v0.45.0?type=module"
+    },
+    {
+      "ref": "pkg:golang/modernc.org/libc@v1.67.6?type=module",
+      "dependsOn": [
+        "pkg:golang/github.com/dustin/go-humanize@v1.0.1?type=module",
+        "pkg:golang/github.com/google/uuid@v1.6.0?type=module",
+        "pkg:golang/github.com/remyoudompheng/bigfft@v0.0.0-20230129092748-24d4a6f8daec?type=module",
+        "pkg:golang/golang.org/x/exp@v0.0.0-20251023183803-a4bb9ffd2546?type=module",
+        "pkg:golang/golang.org/x/sys@v0.45.0?type=module",
+        "pkg:golang/modernc.org/mathutil@v1.7.1?type=module",
+        "pkg:golang/modernc.org/memory@v1.11.0?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/modernc.org/mathutil@v1.7.1?type=module",
+      "dependsOn": [
+        "pkg:golang/github.com/remyoudompheng/bigfft@v0.0.0-20230129092748-24d4a6f8daec?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/modernc.org/memory@v1.11.0?type=module",
+      "dependsOn": [
+        "pkg:golang/github.com/remyoudompheng/bigfft@v0.0.0-20230129092748-24d4a6f8daec?type=module",
+        "pkg:golang/golang.org/x/sys@v0.45.0?type=module",
+        "pkg:golang/modernc.org/mathutil@v1.7.1?type=module"
+      ]
+    },
+    {
+      "ref": "pkg:golang/modernc.org/sqlite@v1.44.3?type=module",
+      "dependsOn": [
+        "pkg:golang/github.com/dustin/go-humanize@v1.0.1?type=module",
+        "pkg:golang/github.com/google/uuid@v1.6.0?type=module",
+        "pkg:golang/github.com/remyoudompheng/bigfft@v0.0.0-20230129092748-24d4a6f8daec?type=module",
+        "pkg:golang/golang.org/x/exp@v0.0.0-20251023183803-a4bb9ffd2546?type=module",
+        "pkg:golang/golang.org/x/sys@v0.45.0?type=module",
+        "pkg:golang/modernc.org/libc@v1.67.6?type=module",
+        "pkg:golang/modernc.org/mathutil@v1.7.1?type=module",
+        "pkg:golang/modernc.org/memory@v1.11.0?type=module"
+      ]
+    }
+  ]
+}
