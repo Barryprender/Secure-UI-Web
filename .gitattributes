@@ -2,3 +2,10 @@
 # containers (core.autocrlf is enabled on Windows checkouts).
 *.sh text eol=lf
 Dockerfile text eol=lf
+
+# Go sources must keep LF endings. gofmt has no CRLF mode, so with
+# core.autocrlf a Windows working tree makes `gofmt -l` report every tracked
+# file as unformatted — the CI gate passes on the Linux runner while the same
+# command is unusable locally.
+*.go text eol=lf
+*.yml text eol=lf
